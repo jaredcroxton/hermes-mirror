@@ -1,2 +1,25 @@
 # hermes-mirror
-Agent Backup 
+
+Agent Backup and reproducibility mirror for Jared Croxton's Hermes setup.
+
+This public repository stores sanitized setup notes, agent specs, reusable skills, and recovery documentation.
+
+## Security policy
+
+This repo is public. Do not commit:
+
+- `.env` files
+- API keys or tokens
+- OAuth credential files
+- cookies
+- SSH private keys
+- raw private emails
+- raw calendar data
+- sensitive PII
+
+Use templates, examples, and documentation instead.
+
+## Current mirrored agents and skills
+
+- `agents/BLAST.md` — BLAST build-and-ship agent spec.
+- `skills/claude-code-builder/SKILL.md` — sanitized public copy of the local Hermes BLAST skill.
