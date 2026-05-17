@@ -22,7 +22,7 @@ Use templates, examples, and documentation instead.
 ## Current mirrored agents and skills
 
 - `agents/BLAST.md` — BLAST build-and-ship agent spec.
-- `agents/Bob_Builder.md` - Forge dedicated build-and-ship sub-agent profile spec.
+- `agents/Bob_Builder.md` - bob_builder dedicated build-and-ship sub-agent profile spec.
 - `agents/Notebook_Nelly.md` - Notebook_Nelly NotebookLM research and content generation profile spec.
 - `skills/claude-code-builder/SKILL.md` — sanitized public copy of the local Hermes BLAST skill.
 - `skills/notebooklm/SKILL.md` - sanitized public copy of the local Hermes NotebookLM skill.
