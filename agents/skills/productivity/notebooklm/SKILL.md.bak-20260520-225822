@@ -1,0 +1,339 @@
+---
+name: notebooklm
+description: Use when the user asks to create a podcast, summarise URLs, make a study guide, use NotebookLM, generate an audio overview, create a quiz, add sources, make flashcards, or produce a briefing doc. Orchestrate NotebookLM CLI workflows for source-grounded generation.
+version: 1.0.0
+author: PerformOS / Jared Croxton
+license: MIT
+metadata:
+  hermes:
+    tags: [notebooklm, research, podcast, study-guide, quiz, flashcards, briefing-doc, audio-overview]
+    related_skills: [claude-code-builder]
+---
+
+# NotebookLM
+
+## What this skill does
+
+When you are asked to create a podcast, summarise research, build a study guide, generate a quiz, or do anything that needs NotebookLM, this skill tells you exactly what CLI commands to run. You handle the reasoning and orchestration. NotebookLM handles the generation.
+
+## Trigger phrases
+
+Use this skill for requests containing or implying:
+
+- create a podcast
+- summarise these URLs
+- make a study guide
+- notebooklm
+- audio overview
+- generate a quiz
+- add these sources
+- make flashcards
+- briefing doc
+
+## Auth context
+
+NotebookLM uses Google OAuth. It is authenticated via the browser flow. Check auth before every workflow:
+
+```bash
+notebooklm status       # shows authenticated email
+notebooklm list         # confirms connection works
+```
+
+If either fails, run:
+
+```bash
+notebooklm login        # opens browser for Google OAuth
+```
+
+## MCP vs CLI
+
+The default Notebook_Nelly workflow uses the `notebooklm` CLI from `notebooklm-py`. A separate NotebookLM MCP server is not required when the CLI is installed and authenticated.
+
+If the user specifically asks to connect a NotebookLM MCP server, do not invent a package name. Ask for or locate the exact MCP server command, then add it to the relevant Hermes profile with:
+
+```bash
+hermes -p notebooknelly mcp add notebooklm --command "<exact MCP server command>"
+hermes -p notebooknelly mcp test notebooklm
+```
+
+Then reload MCP in the profile with `/reload-mcp` or restart `notebook_nelly chat`. Keep the CLI workflow as the fallback unless the MCP server is verified.
+
+## Installation
+
+One time:
+
+```bash
+pip install notebooklm-py
+```
+
+## Core workflow
+
+Always follow this order.
+
+### Step 0: Check auth and connection
+
+```bash
+notebooklm status
+notebooklm list
+```
+
+If either fails, run `notebooklm login` before continuing.
+
+### Step 1: Create the notebook
+
+```bash
+notebooklm create "<descriptive title>"
+```
+
+Note the notebook ID returned. Use it in all subsequent commands with `-n <id>` to avoid context conflicts.
+
+### Step 2: Add sources
+
+URL:
+
+```bash
+notebooklm source add "https://..." -n <notebook_id>
+```
+
+PDF or local file:
+
+```bash
+notebooklm source add ./file.pdf -n <notebook_id>
+```
+
+YouTube video:
+
+```bash
+notebooklm source add "https://youtube.com/..." -n <notebook_id>
+```
+
+Web research, fast:
+
+```bash
+notebooklm source add-research "your query" -n <notebook_id>
+```
+
+Web research, deep, runs in background:
+
+```bash
+notebooklm source add-research "your query" --mode deep --no-wait -n <notebook_id>
+```
+
+Wait for sources to process before generating:
+
+```bash
+notebooklm source list -n <notebook_id>
+```
+
+Status should show `ready` before proceeding.
+
+### Step 3: Generate the artifact
+
+Podcast or audio overview:
+
+```bash
+notebooklm generate audio "instructions" -n <id>
+```
+
+Study guide:
+
+```bash
+notebooklm generate report --format study-guide -n <id>
+```
+
+Briefing document:
+
+```bash
+notebooklm generate report --format briefing-doc -n <id>
+```
+
+Quiz:
+
+```bash
+notebooklm generate quiz -n <id>
+```
+
+Flashcards:
+
+```bash
+notebooklm generate quiz -n <id>
+# then download as flashcards
+```
+
+Mind map:
+
+```bash
+notebooklm generate report --format mind-map -n <id>
+```
+
+Video explainer:
+
+```bash
+notebooklm generate video "instructions" -n <id>
+```
+
+After starting generation, return the artifact ID immediately. Do not wait in the main conversation. Generation takes 5 to 45 minutes depending on type.
+
+Check artifact status:
+
+```bash
+notebooklm artifact list -n <notebook_id>
+```
+
+The command returns artifact ID and status: `pending`, `in_progress`, or `completed`.
+
+### Step 4: Download the output
+
+Once status shows `completed`, download the requested artifact.
+
+Audio podcast:
+
+```bash
+notebooklm download audio ./output.mp3 -n <notebook_id>
+```
+
+Report, study guide, or briefing doc:
+
+```bash
+notebooklm download report ./output.md -n <notebook_id>
+```
+
+Quiz as JSON or Markdown:
+
+```bash
+notebooklm download quiz --format markdown quiz.md -n <notebook_id>
+```
+
+Flashcards:
+
+```bash
+notebooklm download flashcards --format markdown cards.md -n <notebook_id>
+```
+
+Slide deck:
+
+```bash
+notebooklm download slide-deck ./slides.pdf -n <notebook_id>
+notebooklm download slide-deck ./slides.pptx --format pptx -n <notebook_id>
+```
+
+Mind map:
+
+```bash
+notebooklm download mind-map ./map.json -n <notebook_id>
+```
+
+## PerformOS use cases
+
+These are the high-value workflows for Jared's stack.
+
+### Weekly sales briefing podcast
+
+Use this when you want a Pocket Customer or LearnOS briefing turned into an audio file for managers.
+
+```bash
+notebooklm create "Weekly Sales Briefing - <date>"
+notebooklm source add ./briefing.md -n <id>
+notebooklm generate audio "Create a 5-minute podcast for sales managers. Tone: direct, motivating. Cover key metrics, coaching focus for the week, and one call-to-action." -n <id>
+notebooklm download audio ./briefing-<date>.mp3 -n <id>
+```
+
+### Training module study guide
+
+Use this when converting a LearnOS module into a self-study resource.
+
+```bash
+notebooklm create "LearnOS: <module name>"
+notebooklm source add "https://your-learnos-url/module" -n <id>
+notebooklm generate report --format study-guide --append "Audience: new sales agents. Keep language simple. Focus on the 6 Accor Plus pillars." -n <id>
+notebooklm download report ./study-guide-<module>.md -n <id>
+```
+
+### Research digest for MIT assignments
+
+Use this when pulling together academic sources for ECU or MIT coursework.
+
+```bash
+notebooklm create "MIT Module <number> - <topic>"
+notebooklm source add-research "<topic> agentic AI frameworks" --mode deep --no-wait -n <id>
+notebooklm research wait --import-all -n <id>
+notebooklm ask "Summarise the key frameworks, authors, and debates relevant to <topic>. APA 7 style where possible." -n <id>
+notebooklm generate report --format briefing-doc -n <id>
+```
+
+### Roleplay scenario quiz
+
+Use this when turning Pocket Customer pillar content into a quiz for agent training.
+
+```bash
+notebooklm create "Pocket Customer Quiz - <pillar>"
+notebooklm source add ./pillar-content.md -n <id>
+notebooklm generate quiz -n <id>
+notebooklm download quiz --format markdown quiz-<pillar>.md -n <id>
+```
+
+## Generation timing
+
+Typical times:
+
+- Source processing: 30 seconds to 10 minutes
+- Study guide or briefing doc: 5 to 15 minutes
+- Quiz or flashcards: 5 to 15 minutes
+- Audio podcast: 10 to 20 minutes
+- Video: 15 to 45 minutes
+
+Always fire and return the artifact ID. Never make the user wait in the conversation. Tell them to check status with:
+
+```bash
+notebooklm artifact list -n <notebook_id>
+```
+
+## Error handling
+
+Auth or cookie error:
+
+- Cause: session expired.
+- Fix: run `notebooklm status`, then `notebooklm login`.
+
+No notebook context:
+
+- Cause: context not set.
+- Fix: use `-n <id>` explicitly.
+
+Rate limited:
+
+- Cause: Google quota.
+- Fix: wait 5 to 10 minutes, then retry.
+
+Download fails:
+
+- Cause: generation is not complete.
+- Fix: check `notebooklm artifact list -n <notebook_id>` for status.
+
+`GENERATION_FAILED`:
+
+- Cause: Google rate limit.
+- Fix: wait and retry, or use the NotebookLM web UI.
+
+## Combining with Claude Code Builder
+
+You can chain this skill with the `claude-code-builder` skill. Example:
+
+1. Use NotebookLM to generate a briefing doc from research sources.
+2. Download the briefing as Markdown.
+3. Pass the Markdown content to Claude Code to build a styled HTML dashboard from it.
+4. Deploy to Vercel and return the live URL.
+
+This turns raw research into a live, shareable web page in one Hermes session.
+
+## Verification checklist
+
+- [ ] NotebookLM auth checked with `notebooklm status`.
+- [ ] NotebookLM connection checked with `notebooklm list`.
+- [ ] Notebook created and notebook ID captured.
+- [ ] Every command uses `-n <notebook_id>` explicitly.
+- [ ] Sources added and confirmed `ready` before generation.
+- [ ] Artifact generation started.
+- [ ] Artifact ID returned to Jared immediately.
+- [ ] Download completed after status becomes `completed`.
+- [ ] If output needs a live page, hand off to Forge and `claude-code-builder`.

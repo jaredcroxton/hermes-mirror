@@ -1,28 +1,41 @@
-# hermes-mirror
+# Hermes Agent Ecosystem — Full Mirror
 
-Agent Backup and reproducibility mirror for Jared Croxton's Hermes setup.
+**Last backup:** 27 May 2026
+**Purpose:** Reproducible backup of all agent configurations, souls, skills, and memory. If anything happens to the local Hermes installation, this repo can regenerate the full agent ecosystem.
 
-This public repository stores sanitized setup notes, agent specs, reusable skills, and recovery documentation.
+## What's included
 
-## Security policy
+| Directory | Contents |
+|-----------|----------|
+| `agents/souls/` | All 18 agent soul files (Brock, Bob, Lara, Sam, Polly, Harry, Atticus, Nelly, Dexter, Jules, Leo, Otto, Rex, Serge, + Agent Registry) |
+| `agents/profiles/` | Per-agent Hermes profiles (config.yaml, skills) — 7 agents |
+| `agents/skills/` | All Hermes skills from `~/.hermes/skills/` |
+| `config/` | Main Hermes config.yaml, CLAUDE.md, AGENTS.md, agent-startup.md |
+| `memory/` | Memory export (sanitized — no tokens or PII) |
+| `performos-website/` | Latest PerformOS website build package (11 files) |
 
-This repo is public. Do not commit:
+## Regeneration guide
 
-- `.env` files
-- API keys or tokens
-- OAuth credential files
-- cookies
-- SSH private keys
-- raw private emails
-- raw calendar data
-- sensitive PII
+If you need to restore from this mirror:
 
-Use templates, examples, and documentation instead.
+1. **Agent souls** — Copy `agents/souls/*.md` back to `/Users/jc/Desktop/Obsidian/Agents/`
+2. **Hermes config** — Copy `config/config.yaml` to `~/.hermes/config.yaml`
+3. **Skills** — Copy `agents/skills/*` to `~/.hermes/skills/`
+4. **Agent profiles** — Copy each profile from `agents/profiles/` to `~/.hermes/profiles/`
+5. **API keys** — Restore from your own secure backup (NOT in this repo)
+6. **State DB** — Recreate from your own secure backup (NOT in this repo)
 
-## Current mirrored agents and skills
+## What's NOT included (for security)
 
-- `agents/BLAST.md` — BLAST build-and-ship agent spec.
-- `agents/Bob_Builder.md` - bob_builder dedicated build-and-ship sub-agent profile spec.
-- `agents/Notebook_Nelly.md` - Notebook_Nelly NotebookLM research and content generation profile spec.
-- `skills/claude-code-builder/SKILL.md` — sanitized public copy of the local Hermes BLAST skill.
-- `skills/notebooklm/SKILL.md` - sanitized public copy of the local Hermes NotebookLM skill.
+- API keys, tokens, or `.env` files
+- Raw state databases (`state.db`) — may contain tokens in conversation history
+- Private emails, phone numbers, or PII
+- Session transcripts
+
+## Agent registry
+
+See `agents/souls/Agent Registry.md` for the full agent roster with profiles, bots, and soul file paths.
+
+## Automated backup
+
+This mirror is updated manually. To refresh, clone the repo and run the backup script from the Hermes environment.
