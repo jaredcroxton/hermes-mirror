@@ -1,7 +1,8 @@
 model:
-  default: deepseek-v4-pro
-  provider: deepseek
-  base_url: https://api.deepseek.com/v1
+  default: openrouter/owl-alpha
+  provider: openrouter
+  base_url: https://openrouter.ai/api/v1
+  api_mode: chat_completions
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
@@ -34,7 +35,6 @@ terminal:
   singularity_image: docker://nikolaik/python-nodejs:python3.11-nodejs20
   modal_image: nikolaik/python-nodejs:python3.11-nodejs20
   daytona_image: nikolaik/python-nodejs:python3.11-nodejs20
-  vercel_runtime: node24
   container_cpu: 1
   container_memory: 5120
   container_disk: 51200
@@ -44,6 +44,7 @@ terminal:
   docker_extra_args: []
   docker_run_as_host_user: false
   persistent_shell: true
+  vercel_runtime: node24
 web:
   backend: ''
   search_backend: ''
@@ -95,6 +96,7 @@ compression:
   protect_last_n: 20
   hygiene_hard_message_limit: 400
   protect_first_n: 3
+  abort_on_summary_failure: false
 prompt_caching:
   cache_ttl: 5m
 openrouter:
@@ -201,6 +203,11 @@ display:
   compact: false
   personality: kawaii
   resume_display: full
+  resume_exchanges: 10
+  resume_max_user_chars: 300
+  resume_max_assistant_chars: 200
+  resume_max_assistant_lines: 3
+  resume_skip_tool_only: true
   busy_input_mode: interrupt
   tui_auto_resume_recent: false
   bell_on_complete: false
@@ -236,6 +243,10 @@ display:
 dashboard:
   theme: default
   show_token_analytics: false
+  oauth:
+    client_id: ''
+    portal_url: ''
+  public_url: ''
 privacy:
   redact_pii: false
 tts:
@@ -366,14 +377,16 @@ approvals:
   mcp_reload_confirm: true
   destructive_slash_confirm: false
 command_allowlist:
-- script execution via -e/-c flag
-- overwrite system file via redirection
 - delete in root path
-- kill hermes/gateway process (self-termination)
 - recursive delete
-- overwrite project env/config via redirection
-- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
 - stop/restart hermes gateway (kills running agents)
+- overwrite system file via redirection
+- script execution via heredoc
+- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
+- kill hermes/gateway process (self-termination)
+- script execution via -e/-c flag
+- git force push (rewrites remote history)
+- overwrite project env/config via redirection
 quick_commands: {}
 hooks: {}
 hooks_auto_accept: false
@@ -404,6 +417,7 @@ kanban:
   default_assignee: ''
   auto_decompose: true
   auto_decompose_per_tick: 3
+  dispatch_stale_timeout_seconds: 14400
 code_execution:
   mode: project
 logging:
@@ -420,11 +434,16 @@ model_catalog:
   providers: {}
 network:
   force_ipv4: false
+gateway:
+  media_delivery_allow_dirs: []
+  trust_recent_files: true
+  trust_recent_files_seconds: 600
 sessions:
   auto_prune: false
   retention_days: 90
   vacuum_after_prune: true
   min_interval_hours: 24
+  write_json_snapshots: false
 onboarding:
   seen:
     busy_input_prompt: true
@@ -441,6 +460,18 @@ x_search:
   model: grok-4.20-reasoning
   timeout_seconds: 180
   retries: 2
+secrets:
+  bitwarden:
+    enabled: false
+    access_token_env: BWS_ACCESS_TOKEN
+    project_id: ''
+    cache_ttl_seconds: 300
+    override_existing: true
+    auto_install: true
+    server_url: ''
+paste_collapse_threshold: 5
+paste_collapse_threshold_fallback: 5
+paste_collapse_char_threshold: 2000
 _config_version: 23
 platform_toolsets:
   cli:

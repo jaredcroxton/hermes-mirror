@@ -42,8 +42,13 @@ Custom handler scripts are a fallback path, not the default. Use them only when 
 
 ## Production routing patterns
 
-### Lara (Learning Design): full-package vs single-sheet
+### Lara (Learning Design): full-package vs single-sheet, sub-agent routing, model migration
+
 Lara defaults to a single-sheet Excel output. When the user wants her complete learning design methodology (Bloom's outcomes, Tell-Show-Do-Check, activities, assessment, materials, facilitator brief), explicitly request "your full standard learning design package with all the tabs you normally include." Specify the exact tabs: Cover, Outcomes, Session Plan, Activities, Assessment, Materials, Facilitator Brief. Without this instruction, Lara produces a minimal single-sheet workbook. See `references/lara-full-package-pattern.md`.
+
+**Lara's sub-agents (3):** Lara spawns Rory_Research (deep topic research, source validation, pre-design scan), Ava_Activities (creative activity design, pattern library, two-option constraint), and Eva_Evaluation (Kirkpatrick planning, assessment design, manager reinforcement). Soul files at `/Users/jc/Desktop/Obsidian/Agents/Rory_Research-Soul.md`, `Ava_Activities-Soul.md`, `Eva_Evaluation-Soul.md`. Sub-agents produce raw material; Lara owns the final design integration. See `references/agent-sub-agent-structure-pattern.md` in performos-website-builds for the full pattern.
+
+**Model migration (27 May 2026):** Lara was migrated from gpt-5.4 / openai-codex to deepseek-v4-pro / deepseek. Symptoms: `Provider authentication failed` on gateway start. Root cause: openai-codex OAuth token expired or gpt-5.4 model unavailable. Fix: update model.default, model.provider, model.base_url in profile config.yaml. Copy DEEPSEEK_API_KEY from default profile if not present. Restart gateway.
 
 ### File delivery after specialist production
 After any specialist agent produces a file, deliver it in-chat via MEDIA or send_message. Do not just tell the user the file path. The user expects files to appear in the conversation. Already captured in memory; reinforced here for routing agents.

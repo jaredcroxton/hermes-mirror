@@ -25,6 +25,30 @@ Brock is the CEO-level strategic thinking partner and router. Specialist agents 
 - SOUL path: `/Users/jc/Desktop/Obsidian/Agents/Lara_Learningdesign.md`
 - Runtime: always on
 - Handoff rule: use when Jared needs training architecture or learning assets.
+- Model: deepseek-v4-pro (provider: deepseek)
+
+#### Lara sub-agents
+
+##### Rory_Research
+
+- Role: deep topic research, source validation, thinker lens application, pre-design scan execution, evidence synthesis, content source documentation.
+- Reports to: Lara_LearningDesign
+- SOUL path: `/Users/jc/Desktop/Obsidian/Agents/Rory_Research-Soul.md`
+- Runtime: leaf (spawned by Lara)
+
+##### Ava_Activities
+
+- Role: creative activity design, pattern library application, gamification, Liberating Structures, Thiagi framegames, the two-option constraint.
+- Reports to: Lara_LearningDesign
+- SOUL path: `/Users/jc/Desktop/Obsidian/Agents/Ava_Activities-Soul.md`
+- Runtime: leaf (spawned by Lara)
+
+##### Eva_Evaluation
+
+- Role: Kirkpatrick planning, assessment design matched to Bloom's level, evaluation instruments, manager reinforcement design, transfer planning.
+- Reports to: Lara_LearningDesign
+- SOUL path: `/Users/jc/Desktop/Obsidian/Agents/Eva_Evaluation-Soul.md`
+- Runtime: leaf (spawned by Lara)
 
 ### Sam_StudyNerd
 

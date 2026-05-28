@@ -153,7 +153,7 @@ For profile-backed specialist agents, run gateway commands through that profile'
 
 **Rolling out a new default model across all specialist profiles**
 1. **Verify first. Never bulk-roll out an untested model name.** Run a one-shot probe against the intended provider/model, for example: `hermes chat -q "Reply exactly OK" --provider openai-codex -m "gpt-5.4" --quiet`.
-2. Confirm auth route and provider. Jared prefers ChatGPT/Codex where possible without separate API costs; this usually means `openai-codex`, not an OpenAI API key. Check with `hermes status --all` and `hermes auth list`.
+2. Confirm auth route and provider. Jared prefers ChatGPT/Codex where possible without separate API costs; this usually means `openai-codex`, not an OpenAI API key. Check with `hermes status --all` and `hermes auth list`. For profile-wide OpenAI Codex rollouts, verify each profile can see valid Codex OAuth credentials. Profile `auth.json` files are isolated; if probes fail with `Codex auth is missing access_token`, copy the verified `openai-codex` provider and credential-pool entries from `~/.hermes/auth.json` into each affected `~/.hermes/profiles/<name>/auth.json`, preserving backups and file mode `0600`.
 3. Update main config: `hermes config set model.default "<verified-model>"` and `hermes config set model.provider "<verified-provider>"`.
 4. Apply to every profile: `hermes --profile <name> config set model.default "<verified-model>"` and `hermes --profile <name> config set model.provider "<verified-provider>"`.
 5. Profiles that commonly need this treatment: bobbuilder, harryhr, laralearning, nellynotebook, pollyperformos, samstudynerd, atticuscounsel.
@@ -161,7 +161,7 @@ For profile-backed specialist agents, run gateway commands through that profile'
 7. Verify with both `hermes profile list` and direct profile probes such as `hermes --profile bobbuilder chat -q "Reply exactly BOB_OK" --quiet`.
 8. If removing a provider such as Grok/xAI, clean auxiliary config, plugins, auth pools, and profile-local auth too. See `references/profile-model-migration-and-provider-cleanup.md`.
 
-Pitfall: `gpt-5.5` failed with HTTP 404 for Jared's configured account. `gpt-5.4` was verified working through `openai-codex` in this session. Do not assume adjacent model names exist or are accessible.
+Pitfall: Do not assume adjacent model names exist or are accessible. Always probe the exact intended model/provider before rollout. `gpt-5.5` was verified working through `openai-codex` for Jared's configured account on 28 May 2026.
 
 **Switching a single profile's model/provider**
 

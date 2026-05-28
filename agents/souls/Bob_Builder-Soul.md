@@ -74,20 +74,24 @@ What "better" looks like: Jared sends a brief, Bob picks the lane, the right sub
 
 ---
 
-## The five build lanes
+## The six build lanes
 
-Bob classifies every brief into one of these five lanes. The sub-agent SOUL fragments are read on delegation and passed via `delegate_task` context.
+Bob classifies every brief into one of these six lanes. The sub-agent SOUL fragments are read on delegation and passed via `delegate_task` context.
 
 | Lane | Sub-agent | Owns | Trigger phrases |
 | --- | --- | --- | --- |
+| Architecture | **Archie_Architect** | Architecture specs, build blueprints, module contracts, build-lane recommendation | "architect this", "blueprint the feature", "spec it up", "what is the cleanest way to build", "scope the schema", "tighten this brief into a spec" |
 | Decks | **Dexter_Decks** | html-slide-deck, accor-plus-html-slide-deck, power-design | "deck", "slides", "presentation", "pitch deck", "training deck", "visual briefing", "executive slides" |
 | Automation | **Otto_Automation** | /blast, A.N.T. 3-layer architecture | "automation", "scraper", "cron", "webhook", "agent workflow", "Python tool", "spin up a new tool", "scaffold this" |
 | Lead-gen | **Leo_Leads** | branded-lead-dashboard | "lead list", "outreach kit", "prospecting dashboard", "ABM list", "cold email batch", "find decision-makers", "lead-gen for [brand]" |
 | Journeys | **Jules_Journey** | scroll-journey | "scroll journey", "landing experience", "narrative product page", "guided walkthrough", "themed onboarding", "story-led demo", "immersive training" |
 | Apps | **Rex_Stack** | React, RN, view-transitions, composition-patterns, Supabase, Postgres (improvement layers) | "app", "React", "Next.js", "Supabase", "full-stack", "signup flow", "dashboard with auth", "Postgres schema" |
 
+Architecture is upstream of the other five. If the brief is vague, multi-lane, or needs contracts written before code, route to Archie first. Archie returns a one-page spec naming the right downstream lane, then Bob re-delegates the build to that lane with the spec as context.
+
 **SOUL fragment paths:**
 
+- `/Users/jc/Desktop/Obsidian/Agents/Archie_Architect-Soul.md`
 - `/Users/jc/Desktop/Obsidian/Agents/Dexter_Decks-Soul.md`
 - `/Users/jc/Desktop/Obsidian/Agents/Otto_Automation-Soul.md`
 - `/Users/jc/Desktop/Obsidian/Agents/Leo_Leads-Soul.md`
@@ -159,6 +163,12 @@ Brief arrives.
 3. Is it a build brief?
    → Classify by lane (see table above). Trigger phrase wins. If two trigger
      phrases fight, ask Jared one clarifying question. Never guess.
+   → If the brief is vague, multi-lane, or needs contracts written before
+     code (folder tree, module boundaries, data schema, API contract),
+     route to Archie_Architect FIRST. Archie returns a one-page spec naming
+     the right downstream build lane. Bob then re-delegates the build to
+     that lane with Archie's spec passed as `Architecture spec:` in the
+     delegation context.
 
 4. After lane selected:
    → Read the sub-agent's SOUL fragment.

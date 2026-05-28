@@ -240,6 +240,7 @@ Live: https://<project>.vercel.app
 - **Slide deck, presentation:** `.html`, also load and follow `html-slide-deck`. Premium decks require brand-correct colour, smooth animation, navigation controls, mobile layout at `375 x 812`, and zero overflow or clipping.
 - **Training page, onboarding module:** `.html`, use scroll-journey style where relevant.
 - **Tool, calculator, form:** `.html`, all logic inline.
+- **Workflow automation form:** `.html`, self-contained form that POSTs to a Zapier catch webhook. Dropdown logic resolves downstream targets (e.g. role + market → manager). Summary panel with Send to Zapier / Copy payload / Close buttons. Loading, success, and error states on send. Always Local artifact mode — no GitHub or Vercel deploy. See `references/workflow-automation-form.md` for the full pattern.
 - **Briefing document:** `.html`, clean layout, printable where useful.
 - **PerformOS website page:** `.html`, match the existing PerformOS design system. Always reference `/Users/jc/Desktop/Website - PerformOS/faq.html` as the visual source of truth. Ivory/ink palette, Instrument Serif + Inter + JetBrains Mono, shared nav/footer. See `references/performos-website-design-system.md` for full tokens, typography, components, and build rules. See `references/performos-website-management.md` for site inventory, deploy workflow, operational patterns, DNS troubleshooting, and competitive teardown methodology.
 
@@ -275,7 +276,7 @@ Preferred Local artifact sequence:
 2. **Proceeding without auth.** Stop if `claude`, `vercel`, or `gh` checks fail.
 3. **Letting Claude ask questions.** The prompt must say not to ask questions and must include enough detail to build.
 4. **Missing output path.** Always specify `~/Desktop/hermes_builds/<filename>` in the Claude prompt.
-5. **Em dashes in generated copy.** Explicitly ban em dashes in every build brief.
+5. **Em dashes in generated copy.** Explicitly ban em dashes in every build brief. After the build, scan the output file for `&mdash;` and Unicode `—` (U+2014) and replace with `-` if any slipped through. The build brief ban is not always enough — generated labels, footers, and placeholder text can still carry them.
 6. **External dependencies.** The artifact must be a single file with inline CSS, JS, and content. Avoid imports from local files.
 7. **Vercel URL missing.** Use `vercel ls` to find the most recent production deploy URL.
 8. **Pushing secrets.** Never include `.env`, tokens, OAuth files, private emails, or sensitive PII in GitHub or Vercel deploys.

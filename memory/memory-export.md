@@ -23,3 +23,4 @@
 - **Build rule (27 May):** Brock produces .md files with strategy + full code blocks. Hand to Jared directly. Never push Vercel or GitHub. Brock's job ends when files hit Jared's desktop.
 - **Course page:** course.html. GA4 ID G-HMWH2EPLZ3.
 - **Lead capture:** Calendly first; track CTA clicks as `calendly_click`, completed bookings later.
+Last automated backup: 29 May 2026 09:02
