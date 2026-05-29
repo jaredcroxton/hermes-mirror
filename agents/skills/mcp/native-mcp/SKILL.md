@@ -245,6 +245,25 @@ pip install --upgrade mcp
 - Look at Hermes Agent startup logs for connection messages
 - Tool names are prefixed with `mcp_{server}_{tool}` -- look for that pattern
 
+### Zapier MCP token expired (401) — recovery
+If `mcporter list-tools zapier` returns `SSE error: Non-200 status code (401)`, the Zapier session token has expired. This is not a code bug — Zapier rotates MCP session tokens regularly.
+
+Recovery:
+1. Go to `https://zapier.com/mcp` → find the connection for "hermes" → re-authorise or generate a fresh token
+2. The token will look like a base64 string. Jared will provide it in chat.
+3. Update the Bearer token in `/Users/jc/config/mcporter.json` (the `Authorization` header under `mcpServers.zapier.headers`)
+4. Re-test: `npx -y mcporter --config /Users/jc/config/mcporter.json list-tools zapier`
+5. If tools are listed (not just `get_configuration_url`), auth is restored
+
+**Important:** After token recovery, Zapier MCP may still only show one tool (`get_configuration_url`). This means no actions have been enabled on the Zapier dashboard yet. The user must:
+1. Click the `get_configuration_url` result or go directly to `https://zapier.com/mcp`
+2. Add the desired actions (Gmail send, Google Sheets lookup, Google Calendar create, etc.)
+3. Return here and re-run `list-tools zapier` — the new actions will now appear
+
+The first action in many workflows is `gmail_send_email`, which has no `message` or `instructions` parameters in its default form — it expects structured parameters (`to`, `subject`, `body`, optional `file` for attachments). Always check the tool schema from `list-tools` output before calling.
+
+Happened on 29 May 2026 during a new-hire onboarding Zap build. Token was refreshed by Jared providing a new base64 token in chat. Zapier MCP actions were then enabled on the dashboard (Gmail, Google Sheets, Google Calendar, Google Drive). After enabling, 78 tools were available.
+
 ### Connection keeps dropping
 
 The client retries up to 5 times with exponential backoff (1s, 2s, 4s, 8s, 16s, capped at 60s). If the server is fundamentally unreachable, it gives up after 5 attempts. Check the server process and network connectivity.

@@ -24,3 +24,4 @@
 - **Course page:** course.html. GA4 ID G-HMWH2EPLZ3.
 - **Lead capture:** Calendly first; track CTA clicks as `calendly_click`, completed bookings later.
 Last automated backup: 29 May 2026 09:02
+Last automated backup: 30 May 2026 09:01

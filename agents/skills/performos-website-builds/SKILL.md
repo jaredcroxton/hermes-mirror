@@ -7,6 +7,10 @@ description: How Brock produces PerformOS website builds — research, legal, st
 
 ## The rules that change everything
 
+The rules below are for **PerformOS projects only** (sites that represent the PerformOS brand). For **non-PerformOS builds** (personal projects, gym sites, client demos, etc.), deployment workflow is decided case by case — Jared may ask for direct Vercel deploy or may want files handed to him. Ask if unclear.
+
+For PerformOS projects:
+
 1. **Brock NEVER pushes to Vercel. Brock NEVER pushes to GitHub. Brock NEVER deploys.**
 2. **Brock hands markdown files directly to Jared.** Not to Bob_Builder. Not to Claude. Not to anti-gravity.
 3. **Brock's job ends when files are on Jared's desktop.**
@@ -14,6 +18,12 @@ description: How Brock produces PerformOS website builds — research, legal, st
 These rules were locked in after Jared explicitly corrected the workflow multiple times (27 May 2026):
 > "Yeah, you totally stuff the website up."
 > "In future, with PerformOS markdown strategy code, you hand them to me, not Claude or Antogravity. You don't push it to Vercel or GitHub. You don't need to do any of that. You just hand the markdown files to me before you've done."
+
+For non-PerformOS builds where Jared asks for deployment:
+1. Confirm Vercel CLI is authenticated (`vercel --version` + `gh auth status` — both live in the default profile, no need for Bob's profile)
+2. `git init`, `gh repo create`, `vercel --prod --yes` — all run from terminal in the build directory
+3. Vercel auto-links GitHub repo on first deploy
+4. Share the live URL and GitHub URL with Jared
 
 ## Brock's lane
 
@@ -103,6 +113,9 @@ Brock owns agent soul design. When Jared asks to build out an agent's capability
 4. Confirm the file is saved and count lines
 
 Brock writes souls. Bob's sub-agents handle build execution. If the soul update requires craft-specific depth that benefits from a longer generative pass (like Rex_Stack's React patterns or Dexter_Decks' slide architecture), Brock writes a one-page brief and Jared can hand it to Claude Code for the deep generation pass. But for structural additions (Archie's competitive analysis, Lara's thinkers and activity library), Brock writes them directly.
+
+- **Simple HTML builds should not go to Bob.** Jared asked for a gym homepage. Delegating to Bob Builder caused a 600s timeout — Brock ended up writing the HTML directly and deploying via terminal. For single-file HTML sites (under ~100 lines of content), Brock writes the file directly. Delegate to Bob only for complex builds requiring his specialist skills (interactive dashboards, React apps, multi-page sites with builds).
+- **Non-PerformOS Vercel deploy pattern (verified 29 May 2026).** When Jared asks for a live URL on a non-PerformOS project (personal sites, gym pages, demos, HTML dashboards): use terminal in the default profile. Steps: `git init` in build dir → `git add .` + `git commit -m "Initial"` → `gh repo create jaredcroxton/<slug> --public --description "<description>" --source=.` (creates repo AND pushes) → `vercel --prod --yes` from the build dir. Vercel auto-links GitHub and returns a live `*.vercel.app` URL plus an aliased clean URL (permanent). Both `vercel --version` and `gh auth status` were confirmed working in default profile as of 29 May 2026. Vercel auth at `~/.vercel/auth.json`, GitHub hosts at `~/.config/gh/hosts.yml`. Example: Jared's Gym site deployed in under 60 seconds to `https://jareds-gym.vercel.app` using this flow.
 
 ## Reference files
 

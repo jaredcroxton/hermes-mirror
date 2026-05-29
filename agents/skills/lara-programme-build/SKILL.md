@@ -9,6 +9,9 @@ tags: [lara, learning-design, training, programme, spreadsheet]
 ## Trigger
 Use when Jared asks Brock to build a training programme via Lara_LearningDesign. This is the standard delegation pattern that prevents Lara from timing out on large single-pass builds. Before any build fires, Brock must ask Jared the 10 discovery questions.
 
+### Lara has NO sub-agents
+Lara is a single specialist agent. She does not delegate internally. Brock's delegation to her is 2-pass sequential (Pass 1: source MDs, Pass 2: Excel). Do not ask Lara about sub-agents — she has none. Only Sam_StudyNerd uses the orchestrator-with-sub-agents pattern.
+
 ## The pattern
 
 ### Step 0: Discovery (Brock only)

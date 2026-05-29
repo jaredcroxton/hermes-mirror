@@ -2,26 +2,29 @@
 name: notebooklm
 description: Complete API for Google NotebookLM - full programmatic access including features not in the web UI. Create notebooks, add sources, generate all artifact types, download in multiple formats. Activates on explicit /notebooklm or intent like "create a podcast about X"
 ---
-<!-- notebooklm-py v0.4.1 -->
+<!-- notebooklm-py v0.6.0 -->
 # NotebookLM Automation
 
 Complete programmatic access to Google NotebookLM—including capabilities not exposed in the web UI. Create notebooks, add sources (URLs, YouTube, PDFs, audio, video, images), chat with content, generate all artifact types, and download results in multiple formats.
 
+> **Session notes:** See `references/session-notes.md` for login fix (Playwright/Chromium crash on macOS) and the audio+video generation pattern for course content delivery via Telegram.
+
 ## Installation
 
-**From PyPI (Recommended):**
+**Using uv (recommended on macOS):**
 ```bash
-pip install notebooklm-py
+uv tool install "notebooklm-py[browser]"
 ```
 
-**From GitHub (use latest release tag, NOT main branch):**
+**Upgrade existing install:**
 ```bash
-# Get the latest release tag (using curl)
-LATEST_TAG=$(curl -s https://api.github.com/repos/teng-lin/notebooklm-py/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
-pip install "git+https://github.com/teng-lin/notebooklm-py@${LATEST_TAG}"
+cd /tmp && UV_TOOL_DIR=$HOME/.local/share/uv/tools uv tool install "notebooklm-py[browser]" --force
 ```
 
-⚠️ **DO NOT install from main branch** (`pip install git+https://github.com/teng-lin/notebooklm-py`). The main branch may contain unreleased/unstable changes. Always use PyPI or a specific release tag, unless you are testing unreleased features.
+**From PyPI:**
+```bash
+pip install "notebooklm-py[browser]"
+```
 
 **Skill install methods:**
 
@@ -489,7 +492,8 @@ notebooklm artifact list --json
 
 | Error | Cause | Action |
 |-------|-------|--------|
-| Auth/cookie error | Session expired | Run `notebooklm auth check` then `notebooklm login` |
+| Auth/cookie error | Session expired | Run `notebooklm auth check` then `notebooklm login --fresh` |
+| Playwright/Chromium crash on login | Playwright `[browser]` extra not installed or stale Chromium | Reinstall with `uv tool install "notebooklm-py[browser]" --force`, then `$HOME/.local/share/uv/tools/notebooklm-py/bin/python -m playwright install chromium`, then `notebooklm login --fresh` |
 | "No notebook context" | Context not set | Use `-n <id>` or `--notebook <id>` flag (parallel), or `notebooklm use <id>` (single-agent) |
 | "No result found for RPC ID" | Rate limiting | Wait 5-10 min, retry |
 | `GENERATION_FAILED` | Google rate limit | Wait and retry later |
@@ -609,9 +613,30 @@ notebooklm language --help     # Language settings
 ```
 
 **Diagnose auth:** `notebooklm auth check` - shows cookie domains, storage path, validation status
-**Re-authenticate:** `notebooklm login`
+**Re-authenticate:** `notebooklm login` (use `--fresh` flag if browser closes immediately)
 **Check version:** `notebooklm --version`
 **Refresh a CLI-managed install:** `notebooklm skill install`
+
+## Login Troubleshooting (Playwright / Chromium Crash on macOS)
+
+**Symptom:** `notebooklm login` fails with `TargetClosedError` or browser window opens then immediately closes.
+**Cause:** Playwright not installed or stale Chromium binary incompatible with current macOS.
+
+**Fix:**
+```bash
+# Reinstall with browser extra
+cd /tmp && UV_TOOL_DIR=$HOME/.local/share/uv/tools uv tool install "notebooklm-py[browser]" --force
+
+# Install Chromium browser binary
+$HOME/.local/share/uv/tools/notebooklm-py/bin/python -m playwright install chromium
+
+# Login with clean profile
+notebooklm login --fresh
+```
+
+**If `notebooklm doctor` says auth passes but `notebooklm list` returns auth error:** Cookies are stale. Run `notebooklm login --fresh` — do not just retry `notebooklm login`.
+**If `notebooklm login --browser chrome` fails with "Playwright not installed":** The `[browser]` extra is missing. Reinstall with it as shown above.
+**Note:** `notebooklm login --browser chrome` uses your system Chrome but also requires Playwright. Always install the full `[browser]` extra.
 
 ---
 
