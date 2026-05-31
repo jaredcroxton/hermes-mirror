@@ -2,7 +2,7 @@
 name: notebooklm
 description: Complete API for Google NotebookLM - full programmatic access including features not in the web UI. Create notebooks, add sources, generate all artifact types, download in multiple formats. Activates on explicit /notebooklm or intent like "create a podcast about X"
 ---
-<!-- notebooklm-py v0.6.0 -->
+<!-- notebooklm-py v0.6.0, skill updated 31 May 2026: video rate limit + Telegram media upload pitfalls -->
 # NotebookLM Automation
 
 Complete programmatic access to Google NotebookLM—including capabilities not exposed in the web UI. Create notebooks, add sources (URLs, YouTube, PDFs, audio, video, images), chat with content, generate all artifact types, and download results in multiple formats.
@@ -481,7 +481,15 @@ notebooklm artifact list --json
 - Sources: `processing` → `ready` (or `error`)
 - Artifacts: `pending` or `in_progress` → `completed` (or `unknown`)
 
-## Error Handling
+## Pitfalls
+
+- **Video generation rate limits are aggressive.** NotebookLM allows very few video generations per day per account (estimated 2-4). Videos can also fail mid-generation with "artifact was removed from the server" which means the daily quota was hit. When this happens, do NOT retry immediately — the quota will not reset for hours or until the next day. Tell the user and offer the NotebookLM web UI as an alternative (separate quota pool).
+
+- **Audio generation is more reliable** than video but can still hit rate limits in bulk sessions. Generate audio first if both are needed.
+
+- **Source processing takes time.** After adding a source, wait for `source status=ready` before generating artifacts. Use `source wait` to block until ready.
+
+- **Artifacts can disappear.** If an artifact vanishes from `artifact list` during a `artifact wait`, the server removed it — usually a rate limit or quota issue. Do not assume the generation is still happening.
 
 **On failure, offer the user a choice:**
 1. Retry the operation
@@ -497,6 +505,7 @@ notebooklm artifact list --json
 | "No notebook context" | Context not set | Use `-n <id>` or `--notebook <id>` flag (parallel), or `notebooklm use <id>` (single-agent) |
 | "No result found for RPC ID" | Rate limiting | Wait 5-10 min, retry |
 | `GENERATION_FAILED` | Google rate limit | Wait and retry later |
+| "Artifact was removed from the list" | Google daily quota exceeded | Wait 30-60 min. Generate videos one at a time, not in parallel. Fallback: NotebookLM web UI. |
 | Download fails | Generation incomplete | Check `artifact list` for status |
 | Invalid notebook/source ID | Wrong ID | Run `notebooklm list` to verify |
 | RPC protocol error | Google changed APIs | May need CLI update |
@@ -525,17 +534,23 @@ All commands use consistent exit codes:
 - Sources (add, list, delete)
 - Chat/queries
 - Mind-map, study-guide, report, data-table generation
+- Audio (podcast) generation — occasional rate limits but generally reliable
 
 **Unreliable operations:** These may fail with rate limiting:
-- Audio (podcast) generation
-- Video generation
+- Video generation — daily account-level quota; audio and video share the same quota pool. Generating multiple videos from the same account in one session frequently hits the limit.
 - Quiz and flashcard generation
 - Infographic and slide deck generation
 
-**Workaround:** If generation fails:
+**Video generation pitfall (30 May 2026):** Generating videos for multiple notebooks in one session can exhaust the daily quota. When the quota is hit, the artifact is removed from the server list before completion. The CLI reports "artifact was removed from the list by the server." This is not a transient error — it will not resolve by retrying in the same session.
+- **Workaround:** Generate one video per session, or spread across multiple sessions separated by several hours, or use the NotebookLM web UI (separate quota from API).
+- **Do not:** Attempt to generate more than 2 videos from the same account in a single session. The second one will likely fail.
+
+**Workaround for unreliable operations:**
 1. Check status: `notebooklm artifact list`
-2. Retry after 5-10 minutes
-3. Use the NotebookLM web UI as fallback
+2. Retry after 5-10 minutes for audio; hours or next day for video
+3. Use the NotebookLM web UI as fallback for video
+4. Use the NotebookLM web UI as fallback (separate quota)
+5. See `references/session-notes.md` for video rate limit and Telegram delivery pitfalls
 
 **Processing times vary significantly.** Use the subagent pattern for long operations:
 
@@ -612,8 +627,17 @@ notebooklm download --help     # Download content
 notebooklm language --help     # Language settings
 ```
 
-**Diagnose auth:** `notebooklm auth check` - shows cookie domains, storage path, validation status
-**Re-authenticate:** `notebooklm login` (use `--fresh` flag if browser closes immediately)
+**Login browser crash fix:** If `notebooklm login` fails with `TargetClosedError` (Chromium crashes before you can interact), the persistent browser profile is corrupted. Fix:
+```bash
+notebooklm login --fresh
+```
+This clears the cached browser profile and starts a clean session. Always try `--fresh` before reinstalling.
+
+**Chromium version mismatch fix:** If `notebooklm` was upgraded but Playwright browsers are missing or from an old version:
+```bash
+/Users/jc/.local/share/uv/tools/notebooklm-py/bin/python -m playwright install chromium
+```
+Then retry `notebooklm login --fresh`. (use `--fresh` flag if browser closes immediately)
 **Check version:** `notebooklm --version`
 **Refresh a CLI-managed install:** `notebooklm skill install`
 

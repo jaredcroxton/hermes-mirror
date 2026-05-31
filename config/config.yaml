@@ -1,13 +1,13 @@
 model:
-  default: openrouter/owl-alpha
-  provider: openrouter
-  base_url: https://openrouter.ai/api/v1
-  api_mode: chat_completions
+  default: gpt-5.5
+  provider: openai-codex
+  base_url: https://chatgpt.com/backend-api/codex
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
 toolsets:
 - hermes-cli
+- kanban
 agent:
   max_turns: 90
   gateway_timeout: 1800
@@ -15,6 +15,8 @@ agent:
   api_max_retries: 3
   service_tier: ''
   tool_use_enforcement: auto
+  task_completion_guidance: true
+  environment_probe: true
   gateway_timeout_warning: 900
   clarify_timeout: 600
   gateway_notify_interval: 180
@@ -64,6 +66,8 @@ browser:
     user_id: ''
     session_key: ''
     adopt_existing_tab: false
+    rewrite_loopback_urls: false
+    loopback_host_alias: host.docker.internal
 checkpoints:
   enabled: false
   max_snapshots: 20
@@ -413,8 +417,9 @@ kanban:
   failure_limit: 2
   worker_log_rotate_bytes: 2097152
   worker_log_backup_count: 1
-  orchestrator_profile: ''
+  orchestrator_profile: default
   default_assignee: ''
+  max_in_progress_per_profile: null
   auto_decompose: true
   auto_decompose_per_tick: 3
   dispatch_stale_timeout_seconds: 14400
@@ -435,6 +440,7 @@ model_catalog:
 network:
   force_ipv4: false
 gateway:
+  strict: false
   media_delivery_allow_dirs: []
   trust_recent_files: true
   trust_recent_files_seconds: 600

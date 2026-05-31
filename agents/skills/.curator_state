@@ -1,9 +1,9 @@
 {
-  "last_report_path": "/Users/jc/.hermes/logs/curator/20260523-215720",
-  "last_run_at": "2026-05-23T21:57:20.206624+00:00",
-  "last_run_duration_seconds": 60.065826,
-  "last_run_summary": "auto: no changes; llm: Scanned all 4 agent-created skills and checked them as umbrella candidates, not as pairwise duplicate checks.\n\nWhat I processed:\n- `apollo-io`: already a class-level workflow skill for Apollo.io prospecting/enrichment, with the session-spec…",
-  "last_run_summary_shown_at": "2026-05-23T21:57:20.206624+00:00",
+  "last_report_path": "/Users/jc/.hermes/logs/curator/20260530-222818",
+  "last_run_at": "2026-05-30T22:28:18.162538+00:00",
+  "last_run_duration_seconds": 421.19403,
+  "last_run_summary": "auto: no changes; llm: Now I need to analyze the skills for consolidation opportunities. Let me first list all the skills and then look for clusters.\n\nFrom the skills list, I have 15 agent-created skills. Let me examine them for potential clustering:\n\n1. apollo-i…",
+  "last_run_summary_shown_at": "2026-05-30T22:28:18.162538+00:00",
   "paused": false,
-  "run_count": 1
+  "run_count": 2
 }

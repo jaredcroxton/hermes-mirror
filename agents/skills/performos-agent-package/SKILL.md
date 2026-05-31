@@ -1,6 +1,6 @@
 ---
 name: performos-agent-package
-description: Use when Jared asks about selling or positioning the PerformOS 5-agent bundle to clients. Covers pricing model, token budget, security framing, compliance checklist, proposal structure, and internal financial model.
+description: Use when Jared asks about selling or positioning the PerformOS agent package to clients. Covers cloud (Orgo) and local editions, two-tier Standard/Advanced pricing, "up to 10 fully customisable agents" positioning, security framing, compliance checklist, proposal structure, and internal financial model.
 tags: [performos, sales, pricing, agent-package, commercial, zapier]
 ---
 
@@ -8,6 +8,91 @@ tags: [performos, sales, pricing, agent-package, commercial, zapier]
 
 ## Trigger
 Use when Jared asks about selling agent packages to businesses, positioning PerformOS to clients, updating proposal PDFs, discussing pricing and margins, or building Zapier-powered automations for clients.
+
+## Two Product Variants
+
+PerformOS sells TWO distinct product lines. Do not confuse them or blend details between documents.
+
+### Variant 1: Cloud-Hosted (Orgo + Zapier)
+- Hosted on Orgo.ai Scale infrastructure
+- Tools connected through Zapier Enterprise MCP
+- Pricing: $4,995 AUD/mo + $3,000 setup
+- 50M+ token budget, 5 agents (expandable)
+- 4 hours/month support included
+- SOC 2 Type II via Orgo + Zapier
+- Communication: "managed cloud AI team"
+- Detailed financial model in `references/pricing-model.md`
+
+## Local Edition (PerformOS-Owned Managed Appliance)
+
+Private-cloud GPU alternative: when Jared is testing or positioning AWS-hosted Ollama/Hermes rather than a client-site appliance, use `references/aws-private-cloud-gpu-stack.md`. Keep the language clear: AWS GPU = PerformOS Private Cloud AI Team, not Local Appliance.
+
+AWS private-cloud and Ollama deployment guidance lives in `references/aws-private-cloud-ollama.md`. Use it when Jared is comparing Lightsail, EC2 GPU, client-site Mac, and always-on Ollama model hosting for the PerformOS AI Team offer. — Updated June 2026
+- Runs locally on a PerformOS-owned managed appliance placed in the client's approved environment
+- Client does **not** own the appliance; PerformOS retains ownership and the contract must cover custody, return, damage, wipe, and recovery
+- Client IT can security-review, approve, connect, and govern the appliance through their network and login standards
+- MCP servers connect to client-approved tools (email, CRM, internal systems)
+- All inference local, zero data leaves the approved local environment unless the client chooses an approved integration path
+- Pre-built agent profiles, soul files, tool configurations included
+- **Two client-facing tiers: Standard ($3,000 setup) and Advanced ($6,000 setup)**
+- Monthly retainer: $4,999 AUD/mo (same for both tiers)
+- Up to 10 fully customisable agents included; additional at $500/agent/mo
+- 1-hour monthly optimisation call included
+- 3-month quarterly refresher (2 hours) included
+- Ad-hoc optimisation beyond included hours: $350/hour
+- **6-month minimum engagement** (changed from 12-month, June 2026)
+- Travel for face-to-face onboarding available (costs additional)
+- Curated upskilling course links included
+- Communication: "your private AI team, running locally"
+
+### Key Differentiators for Local Edition
+- Zero data retention: all processing on client hardware, encrypted at rest
+- No API costs: unlimited local inference, no per-token billing
+- No vendor lock-in: runs on commodity Mac hardware (Mac Studio / MacBook Pro)
+- Customizable, not just configurable: 4-hour deep discovery during onboarding customizes every agent to the client's business
+- "You do not get a template. You get a team that knows your business."
+
+### Local Edition — Client-Facing Tier Structure
+
+**RULE: Never mention Mac Mini, Mac hardware, Ollama, or model parameter sizes in client-facing materials.** The client buys "Standard" or "Advanced." That is all they need to know. Hardware and model specifics stay in internal docs only.
+
+| Tier | What the client gets | Setup | Monthly |
+|---|---|---|---|
+| Standard | Up to 10 fully customisable AI agents. 8B parameter models. Built for everyday business tasks — writing, analysis, coaching, research, admin, HR, learning design, talent acquisition, marketing, churn management. 24GB RAM provisioned during onboarding. | $3,000 | $4,999 |
+| Advanced | Up to 10 fully customisable AI agents. Larger models (14B to 70B). Built for complex reasoning, strategic thinking, heavyweight analysis, and nuanced judgement. Same 10 agents, significantly more capability per agent. 48GB RAM provisioned during onboarding due to larger model sizes. | $6,000 | $4,999 |
+
+**Both tiers include:** Same 10 agents. Same onboarding (10 hours). Same monthly optimisation call. Same quarterly refresher. Same curated upskilling links. **6-month minimum term** (changed from 12-month, June 2026).
+
+**10 agents included in both tiers (reordered June 2026):**
+
+| # | Agent | Business function |
+|---|---|---|
+| 1 | CEO Advisor | Strategic thinking partner — board prep, decision framing, stakeholder prep |
+| 2 | HR and Compliance | Employment law, workplace incidents, APAC market legislation |
+| 3 | Talent Acquisition | Recruitment pipelines, no-show reduction, hiring quality, source tracking |
+| 4 | Churn and Acquisition Expert | Retention analysis, customer acquisition strategy, churn prediction |
+| 5 | Learning Designer | Training programmes, onboarding, L&D content, learner/manager packs |
+| 6 | Builder and Deployer | Dashboards, automations, internal tools, web apps |
+| 7 | Research and Synthesis | Document digestion, market intelligence, competitive analysis |
+| 8 | Chief of Staff | Email triage, meeting prep, operations, travel, follow-up tracking |
+| 9 | Marketing and SEO Strategist | SEO, content strategy, AI-powered website optimisation, marketing campaigns |
+| 10 | Growth Optimiser | New agent implementation, ongoing optimisation, performance analytics |
+
+**Key positioning points:**
+- BOTH tiers run up to 10 agents. The difference is model capability, not agent count.
+- Both tiers are fully customisable — every agent is tailored to the client's business.
+- Setup fee is the same regardless of how many agents the client actually uses (up to 10).
+- Monthly retainer is the same for both tiers.
+- **Do not say "8B" or "14B to 70B" in client-facing materials unless the prospect is technical.** Use "Standard models for everyday tasks" and "Advanced models with significantly more processing capacity for complex reasoning" as default framing. If they ask for specifics, explain in plain language: parameter count = number of learned connections, more parameters = stronger reasoning on complex problems. See `references/tier-comparison-deck-language.md` for exact wording.
+
+**Internal hardware reference (NEVER shared with clients):**
+
+| Tier | Internal machine | RAM | SSD | Internal cost (AUD) |
+|---|---|---|---|---|
+| Standard | Mac Mini M4 (10c CPU/GPU) | 24 GB | 512 GB | A$1,599 |
+| Advanced | Mac Mini M4 Pro (14c/20c) | 48 GB | 1 TB | A$3,399 |
+
+**Verified pricing source:** Apple Australia Store, May–June 2026. M4 24GB 512GB = A$1,599. M4 Pro 14c/20c 48GB 1TB = A$3,399. Always verify current pricing at apple.com/au before quoting — do not estimate from memory.
 
 ## The offering
 
@@ -182,7 +267,129 @@ When Jared asks for proposal materials, produce TWO separate PDFs:
 3. Send both via Telegram with MEDIA: path
 4. Label clearly: "CLIENT PROPOSAL" and "INTERNAL — Financial Model"
 
-## Do not confuse with
+## Local Deployment Edition (Updated — June 2026)
+
+A second variant of the package runs on a PerformOS-owned managed local appliance placed in the client's approved environment. No cloud APIs are required for inference, and zero data leaves the approved local environment unless the client chooses an approved integration path. This is a separate product from the Orgo-hosted cloud edition.
+
+**Key differences at a glance:**
+- Cloud edition uses Orgo hosting ($324/mo cost) + DeepSeek API tokens
+- Local edition uses a PerformOS-owned managed appliance + local inference
+- Client does not buy or own the appliance; they provide approved access, custody, and IT governance during the engagement
+- Local edition has no per-token costs — unlimited inference
+- Local edition can work offline depending on tool integrations
+- Two tiers: Standard ($3K setup) and Advanced ($6K setup)
+- Both tiers: $4,999/mo, up to 10 fully customisable agents
+- 6-month minimum term
+
+**Full product document:** `/Users/jc/Desktop/Obsidian/PerformOS/AI-Team-Package-Local-Spec.md`
+
+**When to pitch local vs cloud:** Local is for clients with data sovereignty requirements, "no external AI" policies, or healthcare/financial/government sectors. Cloud is for clients who want fully managed hosting and multi-device access.
+
+## AI Image Generation for Marketing (New Capability — June 2026)
+
+The Marketing and SEO Strategist agent can generate brand-consistent marketing images.
+
+**How it works:**
+1. Feed the agent brand guidelines: logo, colour palette, fonts, reference images
+2. Agent builds a brand prompt template from these assets
+3. When requested, agent constructs a generation prompt from template + specific brief
+4. Fires image generation API, returns result, iterates on feedback
+
+**Image generation API options:**
+
+| Tool | Cost per image | Strengths |
+|---|---|---|
+| Flux (FAL/Black Forest Labs) | $0.01-$0.05 | Fast, cheap, very good quality |
+| OpenAI DALL-E 3 | $0.04-$0.08 | Great quality, good prompt following |
+| Midjourney API | $0.04-$0.10 | Best for artistic/marketing visuals |
+| Ideogram | $0.02-$0.08 | Best for text in images |
+
+**For brand consistency:** Use image-to-image generation with 3-4 reference images. The model learns the visual style and applies it to new prompts.
+
+**Cost to business:** ~$0.05-$0.10/image. At 50 assets/month = $2.50-$5.00/month.
+**Potential revenue add-on:** $200-$500/month per client for "AI marketing asset generator" agent.
+
+**Pitfall:** Client must own or have rights to reference images they provide. Never scrape competitor images for brand training — copyright and trademark risk.
+
+## Cloud Cost Comparison (for client-facing slide decks)
+
+When pitching the Local Edition against cloud AI alternatives, use these verified figures:
+
+**GPT-5.5 API (OpenAI) — 10 agents, heavy use (~2B tokens/month):**
+- Input: $15/1M tokens × ~1.5B = ~$22,500
+- Output: $60/1M tokens × ~500M = ~$30,000
+- Total: ~$10,000-$20,000/month (varies with caching)
+
+**Claude Opus 4 API (Anthropic) — 10 agents, heavy use (~2B tokens/month):**
+- Input: $15/1M tokens × ~1.5B = ~$22,500
+- Output: $75/1M tokens × ~500M = ~$37,500
+- Total: ~$6,000-$12,000/month (varies with caching)
+
+**What the client pays for PerformOS Local: $4,999/month flat.**
+
+**WhatsApp Business API cost reference (if client wants messenger integration):**
+- Service rate (cheapest): $0.01-$0.03/conversation (varies by country)
+- Marketing rate: $0.06-$0.12/conversation
+- 1,000 conversations/month in Australia: ~$20-$95
+- Need a BSP (Twilio, WATI, Interakt) adding 10-30% markup
+- First 1,000 conversations often free for new accounts (30-90 day window)
+- Compare to Telegram API: $0, unlimited messages, no per-conversation cost
+
+## Dashboard and Remote Access Networking
+
+When a client needs to access their agent dashboard from outside their local network:
+
+**Option A — Tailscale Funnel (recommended for most clients):**
+- Install Tailscale on the Mac mini + client devices
+- Tailscale Funnel exposes the local dashboard via a public HTTPS URL
+- Traffic encrypted through Tailscale WireGuard tunnel
+- No inbound firewall rules needed on client network
+- Free for personal use; Teams plan $15/user/month for business
+- Client just opens a URL — no VPN app friction for basic access
+- Best balance of security and usability
+
+**Option B — Tailscale Mesh VPN (for technical clients):**
+- Install Tailscale on all devices
+- Client accesses dashboard via Tailscale private IP
+- End-to-end encrypted, zero third-party data exposure
+- Free for up to 3 users per network
+- Requires client to install and authenticate Tailscale app
+
+**Option C — ngrok (demos and proof-of-concept only):**
+- `ngrok http 8081 --host-header=rewrite`
+- Gives a public HTTPS URL in seconds
+- Free tier: random URL on each restart, rate limited
+- Paid: $25/month for reserved domains
+- Not suitable for production client use
+
+**Option D — Cloud-hosted dashboard (for clients without strict data policies):**
+- Host dashboard frontend on Vercel or DigitalDashboard
+- Dashboard talks to Mac mini via outbound connection from Mac mini
+- Lowest friction for end users (just a URL)
+- Data in transit between cloud and local — some clients will reject this
+
+**Do NOT recommend:** Static-site-only approaches (Cloudflare Pages, pure Vercel) for the chat interface. Chat requires a live connection to Hermes/Ollama on the Mac mini. Static sites cannot proxy interactive AI conversations without a backend relay.
+
+**Practical rollout plan:**
+1. Phase 1: Self-contained dashboard + server on Mac mini, local URL only
+2. Phase 2: Add Tailscale Funnel for remote access with clean HTTPS URL
+3. Phase 3: For enterprise clients, deploy private cloud relay behind their domain
+
+## Lightsail, Ollama, and remote appliance operations
+
+When Jared asks whether Amazon Lightsail should run Hermes agents, Ollama, or part of the PerformOS Local AI Team infrastructure, use `references/lightsail-ollama-hosting.md`.
+
+When Jared asks how to edit, support, troubleshoot, or remotely maintain a client-site Mac/local appliance, use `references/managed-local-appliance-remote-support.md`.
+
+Short answer:
+- Lightsail is a good always-on **agent hosting and cloud control layer**.
+- Lightsail is not the default AI engine for the Local Edition.
+- Start with $24 USD/month for Hermes hosting.
+- Test Ollama only on $84 or $168 tiers first for small models.
+- For a 19 GB Ollama model, treat 32 GB RAM as tight minimum and 64 GB RAM as comfortable; the $384 USD/month General Purpose Lightsail tier is the first normal Lightsail plan worth serious consideration.
+- Treat the $384 USD/month tier as a serious control layer and CPU-only model test host, not an automatic first purchase.
+- Keep client-private inference and data sovereignty workflows on the PerformOS-owned local appliance unless the client explicitly approves a cloud integration path.
+- Never position a client system as running from Jared's home Mac or home Wi-Fi. Use client-site appliance, private cloud, or hybrid model only.
 
 - **performos-website-builds** — that skill is about building PerformOS-branded website pages as markdown deliverables. This skill is about selling agent packages to clients.
 - **lara-programme-build** — that skill is about building training programmes. This skill may reference the Learning Designer agent as one of the 5, but does not cover programme build methodology.
@@ -211,18 +418,26 @@ Jared's Vercel project is under `jaredcroxtons-projects`.
 
 ## Pitfalls
 
+- **Two product variants exist.** Cloud (Orgo) edition and Local (Ollama) edition are separate products with different architectures. Always confirm which variant the client needs before pitching. Local is for data sovereignty; Cloud is for fully managed.
 - **Security is the lead, not the footnote.** Enterprise clients will reject proposals that lead with features and bury security. Always lead with data governance, approval gates, and compliance.
 - **"Yes correct" is not confirmation.** Jared often says "yes correct" to acknowledge a framing question without actually answering follow-up inputs. Always verify you have ALL required data before building. Unanswered questions = wait.
-- **Triple-party risk.** The chain is Client → PerformOS → Orgo.ai. Each is a separate security surface. Name the data flow explicitly.
-- **Token costs are deceptively low.** With caching, 56M tokens costs ~$9/mo. This is the margin lever. Do not frame tokens as the cost driver.
+- **Triple-party risk.** The chain is Client → PerformOS → Orgo.ai (cloud edition). Each is a separate security surface. Name the data flow explicitly. Local edition has two main surfaces: Client environment → PerformOS-owned managed appliance. If Lightsail is added as a cloud control layer, name it separately and explain what data does and does not pass through it.
+- **Mac Mini over MacBook:** Always recommend Mac Mini for local deployments. It is cheaper (A$1,599 vs ~$2,100+ for MacBook Air with equivalent RAM), designed for always-on desk use, and the client never needs to carry a server. A laptop is the wrong form factor for a dedicated AI agent machine.
+- **Token costs are deceptively low (cloud edition).** With caching, 56M tokens costs ~$9/mo. This is the margin lever. Do not frame tokens as the cost driver.
 - **Zapier pricing is in GBP.** When converting for Australian clients, apply current exchange rate. Note the currency difference clearly.
 - **Two-document discipline.** Always produce both documents when asked for a proposal. External and internal are never the same file. Do not accidentally leak internal margins to a client.
 
 ## References
 
-- `references/pricing-model.md` — detailed financial model with sensitivity analysis, token cost breakdown, setup payback period, and model pricing assumptions
+- `references/pricing-model.md` — detailed financial model with sensitivity analysis, token cost breakdown, setup payback period, and model pricing assumptions (Cloud/Orgo edition)
 - `references/zapier-pricing.md` — current Zapier Platform and Enterprise pricing in GBP
+- `references/local-edition-agents.md` — full agent list, use cases, model selection, hardware tiers, and MCP connections for the Local Edition
+- `references/local-edition-governance.md` — Google Drive folder structure, naming conventions, and retention policy for client governance docs
+- `references/tier-comparison-deck-language.md` — exact plain-language framing for Standard vs Advanced tiers in client-facing decks and one-pagers. Includes deck layout pattern, pricing display rule, and what never appears in client materials. Written June 2026.
+
+- `references/lightsail-ollama-hosting.md` — Amazon Lightsail guidance for Hermes hosting, Ollama testing, $24/$84/$168/$384 tier logic, 19 GB model sizing, and the strategic split between cloud control layer and PerformOS-owned local appliance.
+- `references/managed-local-appliance-remote-support.md` — client-site appliance remote admin, Git-backed agent updates, support escalation, MDM, and the no-home-Wi-Fi positioning rule.
 
 ## Version
 
-Locked 29 May 2026 by Jared Croxton. Updated with 200 interactions/agent/day model, two-document proposal pattern, Zapier authorisation flow, and Obsidian naming rule.
+Locked 06 June 2026 by Jared Croxton. Updated June 2026 with: confirmed AU Mac Mini pricing (M4 24GB/512GB = A$1,599, M4 Pro 48GB/1TB = A$3,399), two-tier Standard/Advanced client-facing deck layout pattern with plain-language model tier descriptions, and reference file for tier comparison language in `references/tier-comparison-deck-language.md`.

@@ -1,4 +1,10 @@
-# Mobile HTML deck QA
+# Mobile HTML Deck QA — Original File
+
+This file has been supplemented by `references/brand-and-build-guidance.md` which contains the Brand-First Rule, pitch-vs-deck deployment patterns, animation quality bar, and brand config quick reference.
+
+# Mobile HTML Deck QA Pattern
+
+[original content preserved below]
 
 Session learning: Jared explicitly expects HTML slide decks to be built and verified for mobile, not only desktop.
 

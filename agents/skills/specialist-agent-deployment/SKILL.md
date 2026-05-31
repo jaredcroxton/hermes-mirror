@@ -42,6 +42,18 @@ Custom handler scripts are a fallback path, not the default. Use them only when 
 
 ## Production routing patterns
 
+### Kanban governance for specialist agents
+
+For the default Jared ecosystem rule set, see `references/kanban-governance-for-specialist-agents.md`.
+
+For the applied Brock-led Kanban governance pattern, specialist soul snippets, config pattern, readiness test, and Telegram workflow examples, see `references/kanban-governance-jared-agent-ecosystem.md`.
+
+Default rule: **Brock is the Kanban orchestrator. Specialists are workers. Only Jared and Brock create cross-agent workflows by default.** Specialists should work their assigned lane and escalate to Brock with a comment or block if another specialist is needed.
+
+Before enabling Kanban workflows across Bob, Nelly, Lara, Sam, Polly, or Harry, add a Kanban operating block to the relevant SOUL files. Include: task card is source of truth, read full context first, stay inside lane, do not create cross-agent child tasks unless Jared or Brock explicitly says so, and complete with a structured handoff covering work done, files changed, checks run, risks, and next action.
+
+Use `references/kanban-governance-for-specialist-agents.md` for the exact Brock block, generic specialist block, specialist-specific additions, Telegram `/kanban` start patterns, and the recommended first Bob-only test workflow.
+
 ### Lara (Learning Design): full-package vs single-sheet, sub-agent routing, model migration
 
 Lara defaults to a single-sheet Excel output. When the user wants her complete learning design methodology (Bloom's outcomes, Tell-Show-Do-Check, activities, assessment, materials, facilitator brief), explicitly request "your full standard learning design package with all the tabs you normally include." Specify the exact tabs: Cover, Outcomes, Session Plan, Activities, Assessment, Materials, Facilitator Brief. Without this instruction, Lara produces a minimal single-sheet workbook. See `references/lara-full-package-pattern.md`.
@@ -67,6 +79,7 @@ Prefer `hermes --profile <profile> chat -q "..." --quiet` over send_message for 
 
 ## References
 - `references/atticus-handler-pattern.md` for the handler fallback template when a custom polling path is truly required.
+- `references/kanban-governance-for-specialist-agents.md` for the Brock-as-Kanban-orchestrator model, specialist SOUL blocks, Telegram `/kanban` start patterns, and first test workflow.
 - `references/brock-agent-to-agent-routing.md` for the Brock-as-router pattern when Jared needs multi-agent pipelines without copy-paste.
 - `references/lara-full-package-pattern.md` for triggering Lara's complete multi-tab learning design output.
 - `references/execute-code-file-corruption-pitfall.md` for the read_file/write_file line-number corruption bug and fix.

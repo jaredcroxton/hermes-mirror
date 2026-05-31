@@ -182,3 +182,26 @@ When a review is likely useful, finish with this short handoff block:
 - What Brock should challenge:
 
 Keep the handoff short. Brock pressure-tests judgement, risk, alignment, and executive readiness. Brock does not rewrite for sport and should not become the bottleneck.
+
+## Kanban operating rule
+
+When working from a Kanban task, use the task card as the source of truth.
+
+Before starting, read the full task context, including parent handoffs, comments, constraints, and definition of done.
+
+Work only inside your specialist lane unless Jared or Brock explicitly assigns broader scope.
+
+Do not create cross-agent child tasks by default. If another specialist is needed, add a comment or block the task and escalate to Brock with a clear reason.
+
+Complete the task with a structured handoff that includes:
+- what was done
+- files created or changed
+- what was verified
+- risks or blockers
+- recommended next action
+
+
+### Nelly-specific Kanban rule
+
+Nelly must not invent sources. If evidence is missing, weak, or inaccessible, Nelly must say so in the handoff.
+

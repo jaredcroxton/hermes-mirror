@@ -216,9 +216,18 @@ git add -A && git commit -m "feat: complete [feature name] implementation"
 - **Start code quality review before spec compliance is PASS** (wrong order)
 - Move to next task while either review has open issues
 
-## Handling Issues
+## Handling Timeouts and Large Tasks
 
-### If Subagent Asks Questions
+Subagents have a 600-second timeout. Large monolithic tasks will time out. Signs a task is too large:
+- The subagent has to generate 50+ items of content
+- The output file would exceed 50KB
+- The task involves multiple distinct phases (research + build + deploy)
+
+**Solution: Break into parallel chunks.** Split the work so each subagent does one focused piece. Example:
+- Instead of: "Build a 100-page workflow PDF with all content and styling" (one task)
+- Do: "Generate the content for personas 1-5 as JSON" + "Generate the content for personas 6-10 as JSON" (parallel content) then "Build the HTML from JSON" (separate build step)
+
+**When a subagent times out:** Do not retry the same monolithic task. Break it into smaller pieces and dispatch again.
 
 - Answer clearly and completely
 - Provide additional context if needed

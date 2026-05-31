@@ -326,36 +326,7 @@ if (new URLSearchParams(location.search).has('verify')) {
 
 Open the deck with `?verify` to capture clean, settled screenshots of every slide.
 
-## Quality gate before delivery
-
-One final checklist. Fix any failure before delivery.
-
-**Layout and render**
-
-- Every slide or section fits the target viewport with no overflow or clipping.
-- If mobile-relevant, layout is readable at 375x812.
-- Navigation, keyboard, and swipe all work when the artifact is a slide deck.
-- Active-slide animations trigger when the artifact uses slide states.
-- No console errors.
-- If Jared asked for a companion PDF, export it from the final HTML and verify both files exist before delivery.
-
-**Copy QA**
-
-- No placeholder text remains.
-- No em dashes anywhere. Use commas, periods, or parentheses.
-- Spelling and brand names correct.
-
-**Craft**
-
-- Consistent spacing and alignment across slides or sections.
-- Strong text contrast on every background.
-- No default-looking fonts unless intentional.
-- No stretched, squashed, or low-resolution media.
-- No cramped text blocks and no orphaned headings.
-- Colours match the product brand.
-- Final file size is within the brief's budget.
-
-If the deck fails the quality gate, fix it before delivery.
+## Quality gate before delivery\n\nOne final checklist. Fix any failure before delivery.\n\n**Layout and render**\n\n- Every slide or section fits the target viewport with no overflow or clipping.\n- If mobile-relevant, layout is readable at 375x812.\n- Navigation, keyboard, and swipe all work when the artifact is a slide deck.\n- Active-slide animations trigger when the artifact uses slide states.\n- No console errors.\n- **After removing visual effects (like 3D perspective, transforms, or animations), verify all intended content remains visible and properly positioned.**\n- If Jared asked for a companion PDF, export it from the final HTML and verify both local files exist before delivery.\n\n**Copy QA**\n\n- No placeholder text remains.\n- No em dashes anywhere. Use commas, periods, or parentheses.\n- Spelling and brand names correct.\n\n**Craft**\n\n- Consistent spacing and alignment across slides or sections.\n- Strong text contrast on every background.\n- No default-looking fonts unless intentional.\n- No stretched, squashed, or low-resolution media.\n- No cramped text blocks and no orphaned headings.\n- Colours match the product brand.\n- Final file size is within the brief's budget.\n\nIf the deck fails the quality gate, fix it before delivery.
 
 ## Brand configs
 
@@ -382,6 +353,7 @@ If the deck fails the quality gate, fix it before delivery.
 - Buttons: 12px radius, rounded
 - Voice: straightforward, anti-SaaS, corporate-adjacent
 - Do not use dark backgrounds, lime/green, terminal aesthetics, or warm cream
+- Used for: LearnOS product pages, academy module pages (light theme contexts only)
 
 ### Pocket Customer
 
@@ -427,12 +399,13 @@ If the deck fails the quality gate, fix it before delivery.
 - Buttons: pill
 - Voice: direct, data-first, no fluff
 - Do not use light backgrounds, serif fonts, pastel colours, or generic SaaS language
+- Used for: PerformOS AI Team sales deck (performos-ai-team-deck, rebuilt 30 May 2026)
 
 ## Delivery format
 
 If building through Bob or Claude Code, return:
 
-```text
+```
 Done.
 File: [path]
 GitHub: [url]

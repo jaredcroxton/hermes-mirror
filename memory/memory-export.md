@@ -25,3 +25,4 @@
 - **Lead capture:** Calendly first; track CTA clicks as `calendly_click`, completed bookings later.
 Last automated backup: 29 May 2026 09:02
 Last automated backup: 30 May 2026 09:01
+Last automated backup: 01 June 2026 09:02

@@ -7,7 +7,7 @@ license: MIT
 metadata:
   hermes:
     tags: [claude-code, github, vercel, build, deploy, blast, frontend]
-    related_skills: [claude-code, github-repo-management]
+related_skills: [claude-code, github-repo-management]
 ---
 
 # Claude Code Builder: BLAST Protocol
@@ -18,12 +18,31 @@ Use this skill whenever the user asks Hermes to build, deploy, or ship a finishe
 
 The responsibility split is fixed:
 
-- **Hermes / GPT-5.5** reasons, plans, writes the build brief, verifies prerequisites, orchestrates the workflow, and reports the final links.
-- **Claude Code CLI** writes the finished file.
+- **Hermes / Brock** reasons, plans, writes the build brief, verifies prerequisites, orchestrates the workflow, and reports the final links.
+- **Bob Builder / Forge** (profile `bobbuilder`) executes builds via `delegate_task`.
+- **Claude Code CLI** writes the finished file (when Bob is Claude-based).
 - **GitHub** stores the source of truth.
 - **Vercel** deploys the public production URL.
 
 The user-facing result must be a live URL when deployment succeeds.
+
+## Delegation Rules (Non-Negotiable)
+
+**Brock does NOT execute build, research, or enhancement tasks himself.**
+
+| Task type | Who does it | How |
+|---|---|---|
+| Greenfield build (new file, new page, new dashboard) | Bob Builder | `delegate_task` to bobbuilder |
+| Research / competitor analysis | Research subagent | `delegate_task` with `toolsets: ["web"]` |
+| Content generation (100+ workflows, copy, etc.) | Content subagent | `delegate_task` with `toolsets: ["file"]` |
+| Large-file enhancement (500+ line existing file, targeted CSS/JS fixes) | Bob times out at 600s. **Brock does targeted `patch` edits directly.** | `patch` tool in parent session |
+| Quick one-line edits to existing files | Brock | `patch` / `write_file` |
+| Reading files, reviewing output | Brock | `read_file` |
+| Strategic decisions before build | Brock clarifies with Jared first | `clarify` if needed |
+
+**Why Bob times out on large-file tasks:** Reading a 500+ line file + understanding context + generating targeted edits exceeds the 600s `delegate_task` limit. Bob works best on greenfield builds with a clear brief.
+
+**Research note:** The `web_search` tool does NOT exist in this Hermes setup. For research tasks, delegate to a subagent with `toolsets: ["web"]` which has access to web-independent search, or use `browser_navigate` + `browser_snapshot` directly for specific URLs. Do NOT call `web_search` — it fails with "Tool does not exist."
 
 ## Trigger Phrases
 
@@ -41,6 +60,23 @@ Load and follow this skill for requests containing or implying:
 - Vercel deploy
 - make this live
 - send me the link
+
+## Research Delegation
+
+When research or competitive analysis is needed, do NOT use the browser tool directly. The headless browser is detected and blocked by Google, Bing, and DuckDuckGo.
+
+Instead, use `delegate_task` with `toolsets: ["web"]` to spawn a subagent that has access to `web_fetch` and `web_search` which work differently and more reliably for research.
+
+Brock writes the research brief. The subagent does the research. Brock reviews and synthesises.
+
+When a request arrives that involves building, coding, deploying, or shipping a finished artifact, the FIRST action is to delegate to Bob Builder (Forge) via `delegate_task`. Brock writes the brief and sets the constraints. Bob executes.
+
+Exceptions where Brock handles directly:
+- Quick one-line patches or edits to existing files (use patch/write_file)
+- Reading files or reviewing output
+- Strategic decisions that need human input before a build begins
+
+Everything else goes to Bob. This is not optional. Brock executing build tasks himself is a failure mode.
 
 ## Auth Context
 
@@ -237,7 +273,7 @@ Live: https://<project>.vercel.app
 ## Build Types
 
 - **Dashboard, KPI view, sales report:** `.html`, dark theme, lime accent.
-- **Slide deck, presentation:** `.html`, also load and follow `html-slide-deck`. Premium decks require brand-correct colour, smooth animation, navigation controls, mobile layout at `375 x 812`, and zero overflow or clipping.
+- **Slide deck, presentation:** `.html`, also load and follow `html-slide-deck`. Premium decks require brand-correct colour, smooth animation, navigation controls, mobile layout at `375 x 812`, and zero overflow or clipping. For reusable animation code (particle canvas, spring easing, gradient borders, count-up stats, parallax orbs, typing effects, alternating slide-ins, pulse dots), see `references/html-animation-patterns.md`.
 - **Training page, onboarding module:** `.html`, use scroll-journey style where relevant.
 - **Tool, calculator, form:** `.html`, all logic inline.
 - **Workflow automation form:** `.html`, self-contained form that POSTs to a Zapier catch webhook. Dropdown logic resolves downstream targets (e.g. role + market → manager). Summary panel with Send to Zapier / Copy payload / Close buttons. Loading, success, and error states on send. Always Local artifact mode — no GitHub or Vercel deploy. See `references/workflow-automation-form.md` for the full pattern.
@@ -286,6 +322,12 @@ Preferred Local artifact sequence:
 12. **Bulk model rollouts without verification.** Before changing the whole agent stack, probe the intended provider/model first. `gpt-5.5` failed for Jared's account; `gpt-5.4` via `openai-codex` was verified working.
 13. **Git push blocked in sandbox.** `git push origin main` times out in the Hermes sandbox because the osxkeychain credential helper cannot be reached from the isolated environment. For deployments, use `vercel --prod --yes` directly from the project directory instead. The git commit is still created locally; the user pushes from their terminal later.
 14. **Editing existing website repos.** When editing files in an existing tracked repo (not `~/Desktop/hermes_builds/`), the working tree can be overwritten by external processes. After writing a file, verify it with `grep` for expected content before deploying. If the file regressed, restore from the last commit with `git checkout <commit> -- <filename>`, then redeploy with `vercel --prod --yes`.
+15. **Bob timeout on large-file enhancement tasks.** When the task involves reading an existing large file (500+ lines) and making targeted visual/CSS/JS enhancements, `delegate_task` to bobbuilder often times out at the 600s limit. The workaround is: for targeted fixes to existing files, apply `patch` edits directly from the parent session instead of delegating. Use `delegate_task` for Bob only on greenfield builds or tasks with a clear small-file scope.
+16. **Git commit shortcut error.** The `git add` command does not accept a `-m` flag. Use `git add -A` (or `git add <file>`) followed by `git commit -m "message"` as two separate commands. Never combine them as `git add -m`.
+17. **Vite blocked host with ngrok tunnel.** When tunneling a local Vite dev server through ngrok, Vite returns "Blocked request. This host is not allowed." The fix is to add the ngrok hostname to `server.allowedHosts` in `vite.config.ts`. Then restart the dev server. Changes to vite.config.ts are not hot-reloaded.
+18. **web_search tool does not exist.** The `web_search` tool is not available in this Hermes setup. Use `browser_navigate` + `browser_snapshot` for web research instead. Note: the headless browser is detected and blocked by Google/Bing/DuckDuckGo. For research that requires search engines, use `delegate_task` with `toolsets: ["web"]` to spawn a subagent with `web_fetch`/`web_search` access.
+19. **Jared expects Brock to route, not execute.** When the user asks for something to be built, coded, or deployed, the correct response is delegation — not doing the work in Brock's session. Jared has corrected this explicitly multiple times. The hierarchy is: Brock (strategy, briefs, decisions) → Bob Builder (builds, code, deploys) → Research subagents (research, analysis). Brock only touches files directly for quick patches, reviews, or when the user explicitly asks Brock to do it.
+20. **HTML slide deck animation pitfalls.** See `references/html-animation-patterns.md` section "Known Pitfalls" for 13 specific issues discovered during the June 2026 code review. Key ones: no 3D perspective ( clips content ), particles hidden behind opaque slide backgrounds, card gradient borders never render, nav dots must be `<button>`, HiDPI canvas scaling, `prefers-reduced-motion` gate, count-up guard for text stats, touch swipe vertical guard.
 
 ## Verification Checklist
 

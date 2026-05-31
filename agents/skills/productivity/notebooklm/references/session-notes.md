@@ -2,43 +2,38 @@
 
 ## Login Fix for notebooklm-py (macOS)
 
-**Symptom:** `notebooklm login` fails with `playwright._impl._errors.TargetClosedError: BrowserType.launch_persistent_context: Target, context or browser has been closed`.
-
-**Root cause:** Playwright not installed, or stale Chromium binary incompatible with current macOS version.
+**Symptom:** `notebooklm login` fails with `TargetClosedError`.
 
 **Fix (tested 31 May 2026, macOS 26.4.1, notebooklm-py 0.6.0):**
 
 ```bash
-# 1. Reinstall with browser extra
 cd /tmp && UV_TOOL_DIR=$HOME/.local/share/uv/tools uv tool install "notebooklm-py[browser]" --force
-
-# 2. Install Playwright's Chromium
 $HOME/.local/share/uv/tools/notebooklm-py/bin/python -m playwright install chromium
-
-# 3. Login with --fresh if persistent profile is corrupted
 notebooklm login --fresh
 ```
 
-**If login still fails with "browser closed":** Use `notebooklm login --fresh` to clear the cached browser profile. The stale profile can cause immediate closure.
+Use `--fresh` to clear a corrupted persistent browser profile.
 
-**Version check:** Run `notebooklm --version` before and after to confirm upgrade took effect.
+## Audio + Video Generation Pattern
 
-## Audio + Video Generation Pattern (Course Content)
+1. Create notebook, add sources, wait for source processing
+2. `notebooklm generate audio "..." --json` and `notebooklm generate video "..." --json`
+3. Wait with `notebooklm artifact wait <id> -n <notebook_id>`
+4. Download with `notebooklm download audio/video`
+5. Deliver via Telegram MEDIA tag
 
-**Use case:** Jared requests a podcast (audio) and video from a course week's NotebookLM notebook. Deliver both via Telegram.
+Audio takes 10-20 min. Video takes 15-45 min. Do not poll in main conversation.
 
-**Pattern:**
-1. Identify the correct NotebookLM notebook (check `notebooklm list`)
-2. Verify sources are loaded and status=ready
-3. Generate audio: `notebooklm generate audio "Focus on [key themes]" --json` -> capture artifact_id
-4. Generate video: `notebooklm generate video "Focus on [key themes]" --json` -> capture artifact_id
-5. Wait for both: `notebooklm artifact wait <audio_id>` and `notebooklm artifact wait <video_id>`
-6. Download: `notebooklm download audio ./podcast.mp3 -a <audio_id>` and `notebooklm download video ./explainer.mp4 -a <video_id>`
-7. Deliver via Telegram: send_message with MEDIA:/path/to/file in message body
+## Video Rate Limit: Artifact Removed from Server
 
-**Notes:**
-- Audio format: use `--format deep-dive` for detailed lectures, `--format brief` for summaries
-- Video style: `--style whiteboard` or `--style classic` for educational content
-- Check `notebooklm artifact list` to confirm COMPLETED status before downloading
-- Generation is NOT instant (10-45 min). Use subagent pattern or notify_on_complete for long waits.
-- Auth can expire mid-session. If `notebooklm list` returns auth error, re-run `notebooklm login --fresh` immediately.
+**Symptom:** `artifact wait` reports "artifact was removed from the list by the server."
+
+**Cause:** Google daily quota exceeded. The artifact vanishes from `artifact list`.
+
+**Fix:** Wait 30-60 min. Generate videos one at a time, not in parallel. Fallback: use NotebookLM web UI.
+
+**Do NOT:** Retry immediately in a loop.
+
+## Telegram Media Upload Limit
+
+Files over ~3-5MB fail to upload via `send_message` MEDIA tag (gateway HTTP timeout, not Telegram API limit). Compress audio with ffmpeg `-b:a 32k -ar 22050` to get under 3MB before sending. For large files, tell user the Desktop path instead.
