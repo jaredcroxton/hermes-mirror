@@ -22,6 +22,11 @@ triggers:
   - "rebuild the homepage"
   - "ship the SEO cluster"
   - "take control of this project"
+  - "AgentOS SEO"
+  - "private AI team SEO"
+  - "free AdWords"
+  - "Google Ads credits"
+  - "SEO research for AgentOS"
 ---
 
 # SEO Content Pipeline
@@ -57,6 +62,22 @@ Multi-file SEO asset production for PerformOS. Covers the full content cluster l
 25. **Schema verify** — curl each page, grep for `application/ld+json`, confirm schema types per page context.
 26. **Search Console handoff** — user creates property at search.google.com/search-console, verifies, submits sitemap.
 22. **Search Console handoff** — user creates property at search.google.com/search-console, verifies, submits sitemap. Cannot be agent-done (needs Google login).
+
+## AgentOS SEO research pattern
+
+When Jared asks for SEO research, free AdWords, Google Ads credits, or low-cost acquisition for **AgentOS by PerformOS**, do not produce a quick keyword list yourself. Treat it as a multi-agent SEO workflow.
+
+Recommended routing:
+1. **Serge_SEO** — keyword and intent map for private AI team / custom AI agents / AI agents for business.
+2. **Serge_SEO** — free and low-cost Google acquisition research: Google Ads credits, Keyword Planner, Search Console, Google Business Profile, free SEO tools, conversion tracking, and 30-day no/low-cost launch plan.
+3. **Serge_SEO** — competitor and SERP landscape for private AI agents, AI automation agency, AI workforce, Google Chat AI assistant, AI business assistant.
+4. **Polly_PerformOS** — brand-safe SEO review: reject terms that commoditise the offer, define metadata-vs-body language, check product architecture against PerformOS / LearnOS / PulseCheck 360 / AgentOS.
+5. **Brock** — final synthesis for Jared: executive call, page architecture, keyword priorities, free Google setup steps, paid-search test plan, 30-day action plan, risks, and single next action.
+
+Early strategic hypothesis to test, not assume:
+- Do not lead only with "AI agents" because it may attract hobbyists, SaaS shoppers, and low-ticket chatbot buyers.
+- Commercially stronger lanes may be "private AI team for business," "custom AI agents for business," "AI business automation consultant," "AI assistant for business leaders," and "AI transformation for small business."
+- Positioning gap to explore: **private AI team for business leaders**, not another chatbot or subscription.
 
 ## Keyword strategy rule
 

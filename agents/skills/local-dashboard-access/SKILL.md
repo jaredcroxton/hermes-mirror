@@ -156,3 +156,97 @@ cloudflared tunnel --url http://localhost:9119 run my-tunnel
 - Hermes dashboard default port: 9119
 - ngrok auth config: `~/.config/ngrok/ngrok.yml`
 - Local ngrok API: `http://localhost:4040`
+
+## Tabbed Dashboard Pattern
+
+When building dashboards with multiple data sets (e.g., weekly batches of GitHub trending repos), use a **tabbed single-file HTML** pattern:
+
+### Structure
+
+```html
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('batch1')">Batch 1 — 01 June 2026</button>
+  <button class="tab-btn" onclick="switchTab('batch2')">Batch 2 — 01 June 2026</button>
+</div>
+<div class="tab-panel active" id="batch1"></div>
+<div class="tab-panel" id="batch2"></div>
+```
+
+### Tab switching JS
+
+```javascript
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('[onclick="switchTab(\'' + tab + '\')"]').classList.add('active');
+  document.getElementById(tab).classList.add('active');
+  renderTab(tab);
+}
+```
+
+### Data: embed inline, never fetch
+
+`file://` protocol blocks `fetch()` to local JSON files due to CORS. Always embed data as inline variables:
+
+```javascript
+var BATCHES = {
+  'batch1': [{name: '...', stars: 123, ...}, ...],
+  'batch2': [{name: '...', stars: 456, ...}, ...]
+};
+// Data embedded inline. No fetch needed.
+```
+
+This makes the dashboard fully self-contained — a single HTML file, zero external dependencies, portable via any file transfer method.
+
+### Performlytics color palette (use for all dashboards)
+
+```css
+:root {
+  --bg: #0A0A0A;
+  --text: #F0F0F5;
+  --text-muted: #A0A0B0;
+  --accent: #3B82F6;
+  --accent-hover: #60A5FA;
+  --violet: #8B5CF6;
+  --cyan: #22D3EE;
+  --surface: #111111;
+  --surface-hover: #1A1A1A;
+  --border: #222222;
+}
+/* Fonts: Archivo (headings), Inter (body), JetBrains Mono (mono/metrics) */
+/* Never use lime (#D4FF3B) — it is reserved for PerformOS brand, not Performlytics */
+```
+
+### Card grid pattern
+
+```css
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 18px;
+  padding: 20px 0;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px 20px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.card:hover {
+  border-color: var(--accent-hover);
+  background: var(--surface-hover);
+}
+```
+
+### Pitfall: Unicode breaks JavaScript in embedded data
+
+When scraping text for dashboard cards, always sanitize Unicode before embedding in `<script>` tags:
+
+```python
+text = text.replace('\u2014', '--').replace('\u2013', '-')
+           .replace('\u2018', "'").replace('\u2019', "'")
+           .replace('\u201c', '"').replace('\u201d', '"')
+```
+
+Em dashes, en dashes, and curly quotes silently corrupt JavaScript parsing when embedded inline. Symptoms: `REPOS` variable undefined, no cards rendering, silent JS exceptions with empty error messages.

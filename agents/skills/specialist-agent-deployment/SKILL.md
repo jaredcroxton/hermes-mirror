@@ -34,7 +34,9 @@ User explicitly prefers the agent to "just make it work" rather than being asked
 - Prefer profile-backed gateways over ad hoc polling scripts.
 - When the user says a specialist SOUL was updated, verify the canonical source file first and confirm any stated backup path exists before treating the update as landed.
 - Do not assume the Hermes profile is implemented as a symlink at a guessed path. Check the actual profile wiring before reporting profile-link state.
-- Verify with a live identity or reply test before claiming the specialist is ready.
+- Separate verification into **soul ready**, **profile brain works**, **gateway loaded**, and **live on Telegram/transport**. See `references/profile-brain-vs-live-transport-verification.md`.
+- For fresh Telegram bots, verify the BotFather token with `getMe`, restart the profile gateway, then recognise `Bad Request: chat not found` as the normal sign that the user has not pressed **Start** in the new bot chat yet. See `references/profile-telegram-bot-verification.md`.
+- Verify with a live identity or reply test before claiming the specialist is fully ready.
 - Report the concrete profile, source-of-truth SOUL path, gateway state, and verification result.
 
 ## Handler fallback
@@ -83,6 +85,8 @@ Prefer `hermes --profile <profile> chat -q "..." --quiet` over send_message for 
 - `references/brock-agent-to-agent-routing.md` for the Brock-as-router pattern when Jared needs multi-agent pipelines without copy-paste.
 - `references/lara-full-package-pattern.md` for triggering Lara's complete multi-tab learning design output.
 - `references/execute-code-file-corruption-pitfall.md` for the read_file/write_file line-number corruption bug and fix.
+- `references/profile-brain-vs-live-transport-verification.md` for separating soul readiness, local profile brain, gateway state, and real Telegram/live transport verification.
+- `references/profile-telegram-bot-verification.md` for BotFather token `getMe` validation, profile-local `.env` wiring, gateway log checks, and the Telegram **Start** / `chat not found` pitfall.
 - `references/seo-content-pipeline.md` for the full Serge→Polly→Bob SEO content production pipeline (keyword brief to HTML delivery).
 
 ## Full deployment sequence (Telegram bot)
@@ -133,10 +137,12 @@ hermes --profile <profile> gateway install
 hermes --profile <profile> gateway start
 ```
 
-9. **Verify gateway is loaded:**
+9. **Verify gateway is loaded and Telegram connected:**
 ```bash
 hermes --profile <profile> gateway status
+tail -n 80 ~/.hermes/profiles/<profile>/logs/gateway.log
 ```
+Look for `Connected to Telegram (polling mode)` and `✓ telegram connected`. If a proactive Telegram `sendMessage` returns `Bad Request: chat not found`, tell the user to open the bot and press **Start**, then run the end-to-end test again. That is a Telegram first-contact rule, not a Hermes failure.
 
 ## Model migration: openai-codex timeout → DeepSeek
 

@@ -72,6 +72,10 @@ Never commit:
 
 Before pushing mirror updates, inspect the diff for secrets and private data. If the user asks to mirror something that may contain secrets, create a sanitized template or README instead.
 
+For scheduled agent-ecosystem mirror jobs, use the cron-safe backup pattern in `references/public-agent-mirror-cron-backups.md`: copy with excludes, redact before `git add`, scan for common raw token prefixes without printing secret values, and verify local `HEAD` matches remote `main` after push.
+
+Cron pitfall: scheduled jobs may block approval-sensitive shell patterns such as `find ... -delete`, `execute_code` local Python, or `grep | perl` inspection. Split the workflow into small terminal steps, prefer copy-time excludes over destructive cleanup, and only report success after verification passes.
+
 ## 1. Cloning Repositories
 
 Cloning is pure `git` — works identically either way:

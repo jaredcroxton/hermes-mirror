@@ -99,6 +99,17 @@ Brock is the CEO-level strategic thinking partner and router. Specialist agents 
 - Runtime: CLI/on-demand
 - Handoff rule: use for legal/commercial/privacy/IP/regulatory analysis. HR or employment-law questions go to Harry. Atticus does analysis only and always flags what a qualified Australian solicitor must confirm before reliance.
 
+### Mira_Creative
+
+- Role: brand visual agent. Turns one uploaded reference image into a reusable brand content pack: visual DNA profile, prompt pack, on brand image variants, consistency review, saved style profile, optional image to video second stage.
+- Profile: `miracreative`
+- Alias: `mira_creative`
+- Telegram bot: not configured. Recommended `Mira_Creative_bot`. Do not start the Mira gateway until she has a Telegram bot token.
+- SOUL path: `/Users/jc/Desktop/Obsidian/Agents/Mira_Creative-Soul.md`
+- Props library: `/Users/jc/Desktop/Obsidian/Agents/Mira_Creative/`
+- Runtime: CLI/on-demand
+- Handoff rule: use when Jared needs more marketing visuals in a consistent look and feel, prompts decoded from an image, channel specific image prompts, on brand generation, or a still animated into a short video. Mira designs creative assets only. Wiring APIs and deploying the live runtime goes to Bob_Builder. Strategy calls go to Brock.
+
 ## Other specialist agents
 
 ### Bob_Builder

@@ -13,11 +13,13 @@ metadata:
 
 # Native MCP Client
 
-Hermes Agent has a built-in MCP client that connects to MCP servers at startup, discovers their tools, and makes them available as first-class tools the agent can call directly. No bridge CLI needed -- tools from MCP servers appear alongside built-in tools like `terminal`, `read_file`, etc.
+Hermes Agent has a built-in MCP client that connects to MCP servers at startup, discovers their tools, and makes them available as first-class tools the agent can call directly. No bridge CLI needed — tools from MCP servers appear alongside built-in tools like `terminal`, `read_file`, etc.
 
 ## References
 
-- `references/mcporter-zapier-keepalive.md` — Zapier via mcporter bridge setup, including the `lifecycle: keep-alive` requirement for `mcporter serve --stdio`.
+- `references/zapier-mcp-patterns.md`
+- `references/firecrawl-mcp-syntax.md` — tool names, schemas, mcporter bug workaround, blocking page list
+- `references/zapier-maporter.md` — keep-alive setup, draft-only email workflow.
 - `references/profile-design-mcp-stitch.md` — profile-specific pattern for connecting design MCP servers such as Google Stitch to Bob/Builder while keeping Stitch as UI/UX source of truth and Bob as BLAST executor.
 
 ## When to Use
@@ -33,9 +35,9 @@ For ad-hoc, one-off MCP tool calls from the terminal without configuring anythin
 
 ## Prerequisites
 
-- **mcp Python package** -- optional dependency; install with `pip install mcp`. If not installed, MCP support is silently disabled.
-- **Node.js** -- required for `npx`-based MCP servers (most community servers)
-- **uv** -- required for `uvx`-based MCP servers (Python-based servers)
+- **mcp Python package** — optional dependency; install with `pip install mcp`. If not installed, MCP support is silently disabled.
+- **Node.js** — required for `npx`-based MCP servers (most community servers)
+- **uv** — required for `uvx`-based MCP servers (Python-based servers)
 
 Install the MCP SDK:
 
@@ -62,7 +64,7 @@ Restart Hermes Agent. On startup it will:
 3. Register them with the prefix `mcp_time_*`
 4. Inject them into all platform toolsets
 
-You can then use the tools naturally -- just ask the agent to get the current time.
+You can then use the tools naturally — just ask the agent to get the current time.
 
 ## Configuration Reference
 
@@ -161,7 +163,7 @@ mcp_servers:
     args: ["-y", "@modelcontextprotocol/server-filesystem", "/home/user/projects"]
 ```
 
-The subprocess inherits a **filtered** environment (see Security section below) plus any variables you specify in `env`.
+The subprocess inherits a **filtered** environment (see Security section below) plus any variables you specify in the `env` config key.
 
 ### HTTP / StreamableHTTP Transport
 
@@ -228,11 +230,11 @@ Common causes:
 - **Package not found**: For npx servers, the npm package may not exist or may need `-y` in args to auto-install.
 - **Timeout**: The server took too long to start. Increase `connect_timeout`.
 - **Port conflict**: For HTTP servers, the URL may be unreachable.
-- **mcporter bridge lifecycle**: If using `mcporter serve --servers <name> --stdio` and the connection closes immediately, run the bridge directly and check stderr. Some HTTP servers such as Zapier must have `"lifecycle": "keep-alive"` in mcporter config before the daemon bridge can serve them. See `references/mcporter-zapier-keepalive.md`.
+- **mcporter bridge lifecycle**: If using `mcporter serve --servers <name> --stdio` and the connection closes immediately, run the bridge directly and check stderr. Some HTTP servers such as Zapier must have `"lifecycle": "keep-alive"` in mcporter config before the daemon bridge can serve them. See `references/zapier-mcporter.md`.
 
 ### "MCP server 'X' requires HTTP transport but mcp.client.streamable_http is not available"
 
-Your `mcp` package version doesn't include HTTP client support. Upgrade:
+Your `mcp` package version does not include HTTP client support. Upgrade:
 
 ```bash
 pip install --upgrade mcp
@@ -246,27 +248,20 @@ pip install --upgrade mcp
 - Tool names are prefixed with `mcp_{server}_{tool}` -- look for that pattern
 
 ### Zapier MCP token expired (401) — recovery
+
 If `mcporter list-tools zapier` returns `SSE error: Non-200 status code (401)`, the Zapier session token has expired. This is not a code bug — Zapier rotates MCP session tokens regularly.
 
 Recovery:
-1. Go to `https://zapier.com/mcp` → find the connection for "hermes" → re-authorise or generate a fresh token
-2. The token will look like a base64 string. Jared will provide it in chat.
-3. Update the Bearer token in `/Users/jc/config/mcporter.json` (the `Authorization` header under `mcpServers.zapier.headers`)
-4. Re-test: `npx -y mcporter --config /Users/jc/config/mcporter.json list-tools zapier`
+1. Go to `https://zapier.com/mcp` -> find the connection for "hermes" -> re-authorise or generate a fresh token
+2. The token looks like a base64 string. Jared will provide it in chat (usually pasted alongside the Zapier connect URL on one line).
+3. The token is the **second whitespace-delimited token** on that line. Store it raw (do not base64-decode) as the Bearer value in `/Users/jc/config/mcporter.json`.
+4. Re-test: `npx -y mcporter --config /Users/jc/config/mcporter.json list zapier`
 5. If tools are listed (not just `get_configuration_url`), auth is restored
 
-**Important:** After token recovery, Zapier MCP may still only show one tool (`get_configuration_url`). This means no actions have been enabled on the Zapier dashboard yet. The user must:
+After token recovery, Zapier MCP may only show one tool (`get_configuration_url`). This means no actions have been enabled on the Zapier dashboard yet. The user must:
 1. Click the `get_configuration_url` result or go directly to `https://zapier.com/mcp`
 2. Add the desired actions (Gmail send, Google Sheets lookup, Google Calendar create, etc.)
-3. Return here and re-run `list-tools zapier` — the new actions will now appear
-
-The first action in many workflows is `gmail_send_email`, which has no `message` or `instructions` parameters in its default form — it expects structured parameters (`to`, `subject`, `body`, optional `file` for attachments). Always check the tool schema from `list-tools` output before calling.
-
-Happened on 29 May 2026 during a new-hire onboarding Zap build. Token was refreshed by Jared providing a new base64 token in chat. Zapier MCP actions were then enabled on the dashboard (Gmail, Google Sheets, Google Calendar, Google Drive). After enabling, 78 tools were available.
-
-### Connection keeps dropping
-
-The client retries up to 5 times with exponential backoff (1s, 2s, 4s, 8s, 16s, capped at 60s). If the server is fundamentally unreachable, it gives up after 5 attempts. Check the server process and network connectivity.
+3. Re-run `list zapier` -- the new actions will then appear
 
 ## Zapier / mcporter setup note
 
@@ -281,13 +276,21 @@ mcp_servers:
     connect_timeout: 60
 ```
 
-The mcporter Zapier entry must include `lifecycle: "keep-alive"`; otherwise `hermes mcp test zapier` may fail with `Connection closed` and direct bridge stderr may say the server is not configured for keep-alive. See `references/zapier-mcporter.md` for the full setup, per-profile verification commands, specialist-gateway restart steps, and Gmail draft-with-attachment workflow.
+The mcporter Zapier entry must include `lifecycle: "keep-alive"`; otherwise `hermes mcp test zapier` may fail with `Connection closed`. See `references/zapier-mcporter.md` for the full verified setup and profile-by-profile steps.
+
+When calling Zapier MCP tools from the terminal with mcporter, use **positional string args** (not a named JSON body), and let Zapier infer structured params from the natural-language instruction string rather than hand-supplying `to`/`cc`/`bcc` positionally — those fields expect arrays. See `references/zapier-mcporter-calls.md`.
+
+## Zapier MCP — native client vs mcporter bridge
+
+When Zapier MCP is configured through Hermes' native MCP client, tools are discovered at startup and called directly from the agent as first-class tools (recommended for specialist profiles that use Zapier actions regularly).
+
+When calling from the terminal ad-hoc, use `mcporter call` with positional string args. This is the right "works now" path when the native client route is unconfigured or broken. Do not use Zapier MCP as the everyday email-reading path if a local tool like Himalaya is available — Zapier was 30-60s per call with 2+ billing tasks in our session.
 
 ## Examples
 
 ### Zapier via mcporter
 
-For Zapier MCP, use mcporter as the stdio bridge and make sure the mcporter server entry is configured with `lifecycle: "keep-alive"`; otherwise `mcporter list zapier --schema` may work but `hermes mcp test zapier` can fail with `Connection closed` because `mcporter serve` only bridges keep-alive servers. See `references/zapier-mcporter-keepalive.md` for the exact mcporter JSON, Hermes YAML, verification commands, and onboarding handoff.
+For Zapier MCP, use mcporter as the stdio bridge and make sure the mcporter server entry is configured with `lifecycle: "keep-alive"`. See `references/zapier-mcporter.md` and `references/zapier-mcporter-calls.md`.
 
 ```yaml
 mcp_servers:
@@ -331,7 +334,7 @@ mcp_servers:
     command: "npx"
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
-      GITHUB_PERSONAL_ACCESS_TOKEN: "REDACTED_GITHUB_TOKEN"
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
     timeout: 60
 ```
 
@@ -344,7 +347,7 @@ mcp_servers:
   company_api:
     url: "https://mcp.mycompany.com/v1/mcp"
     headers:
-      Authorization: "Bearer REDACTED_OPENAI_STYLE_TOKEN"
+      Authorization: "Bearer sk_xxxxxxxxxxxxxxxxxxxx"
       X-Team-Id: "engineering"
     timeout: 180
     connect_timeout: 30
@@ -366,12 +369,12 @@ mcp_servers:
     command: "npx"
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
-      GITHUB_PERSONAL_ACCESS_TOKEN: "REDACTED_GITHUB_TOKEN"
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
 
   company_api:
     url: "https://mcp.internal.company.com/mcp"
     headers:
-      Authorization: "Bearer REDACTED_OPENAI_STYLE_TOKEN"
+      Authorization: "Bearer sk-xxxxxxxxxxxxxxxxxxxx"
     timeout: 300
 ```
 
@@ -379,7 +382,7 @@ All tools from all servers are registered and available simultaneously. Each ser
 
 ## Sampling (Server-Initiated LLM Requests)
 
-Hermes supports MCP's `sampling/createMessage` capability — MCP servers can request LLM completions through the agent during tool execution. This enables agent-in-the-loop workflows (data analysis, content generation, decision-making).
+Hermes supports MCP's `sampling/createMessage` capability -- MCP servers can request LLM completions through the agent during tool execution. This enables agent-in-the-loop workflows (data analysis, content generation, decision-making).
 
 Sampling is **enabled by default**. Configure per server:
 

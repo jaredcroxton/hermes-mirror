@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DASHBOARD_TITLE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0A; --text: #F0F0F5; --text-muted: #A0A0B0;
+  --accent: #3B82F6; --accent-hover: #60A5FA; --violet: #8B5CF6; --cyan: #22D3EE;
+  --surface: #111111; --surface-hover: #1A1A1A; --border: #222222;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+.header { background: linear-gradient(135deg, #0A0A0A 0%, #111827 100%); border-bottom: 1px solid var(--border); padding: 32px 24px 28px; text-align: center; }
+.header h1 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 2.4rem; letter-spacing: 0.02em; text-transform: uppercase; }
+.header h1 span { color: var(--accent); }
+.header .subtitle { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-top: 4px; }
+.tab-nav { display: flex; justify-content: center; gap: 0; padding: 0; border-bottom: 1px solid var(--border); background: var(--surface); }
+.tab-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; padding: 14px 32px; background: transparent; color: var(--text-muted); border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
+.tab-btn:hover { color: var(--text); background: var(--surface-hover); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.container { max-width: 1300px; margin: 0 auto; padding: 0 24px 60px; }
+.section-header { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--violet); padding: 32px 0 16px; border-bottom: 2px solid var(--violet); opacity: 0.9; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 18px; padding: 20px 0; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px 20px; transition: border-color 0.2s, background 0.2s; }
+.card:hover { border-color: var(--accent-hover); background: var(--surface-hover); }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.card-title { font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); text-decoration: none; transition: color 0.2s; word-break: break-word; flex: 1; }
+.card-title:hover { color: var(--accent-hover); }
+.card-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; flex: 1; }
+.card-stats { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+.stat { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--text); }
+.stat-badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--cyan); background: rgba(34,211,238,0.08); border-radius: 999px; padding: 3px 10px; }
+.why-box { border-left: 3px solid var(--violet); padding: 10px 14px; margin: 10px 0 14px; background: rgba(139,92,246,0.04); border-radius: 0 8px 8px 0; }
+.why-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--violet); margin-bottom: 4px; }
+.why-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+.badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 999px; white-space: nowrap; background: rgba(29,161,242,0.12); color: #1DA1F2; border: 1px solid rgba(29,161,242,0.25); }
+.timestamp { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); text-align: center; padding: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+@media (max-width: 768px) { .header h1 { font-size: 1.6rem; } .card-grid { grid-template-columns: 1fr; } .tab-btn { padding: 12px 16px; font-size: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>DASHBOARD_HEADING <span>HIGHLIGHT</span></h1>
+  <div class="subtitle">SUBTITLE_TEXT</div>
+</div>
+
+<div class="tab-nav">
+  <!-- TABS_HERE: <button class="tab-btn active" onclick="switchTab('TAB_ID')">TAB_LABEL</button> -->
+</div>
+
+<!-- PANELS_HERE: <div class="tab-panel active" id="TAB_ID"></div> -->
+
+<div class="timestamp" id="last-updated">LAST_UPDATED_TEXT</div>
+
+<script>
+// DATA: embed inline. Never use fetch() with file:// protocol — CORS blocks it.
+var BATCHES = {
+  // TAB_ID: [{ name: '...', description: '...', stars: 123, ... }, ...]
+};
+
+var CATEGORY_ORDER = ['CATEGORY_1', 'CATEGORY_2'];
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelector('[onclick="switchTab(\'' + tab + '\')"]').classList.add('active');
+  document.getElementById(tab).classList.add('active');
+  renderTab(tab);
+}
+
+function buildCard(repo) {
+  // Customize per dashboard
+  return '<div class="card">' +
+    '<div class="card-top">' +
+      '<a class="card-title" href="' + repo.url + '" target="_blank" rel="noopener">' + repo.name + '</a>' +
+    '</div>' +
+    '<div class="card-desc">' + repo.description + '</div>' +
+    '<div class="card-stats">' +
+      '<span class="stat">' + repo.stars + '</span>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderTab(tab) {
+  var repos = BATCHES[tab];
+  if (!repos) return;
+  var container = document.getElementById(tab);
+  var groups = {};
+  CATEGORY_ORDER.forEach(function(cat) { groups[cat] = []; });
+  repos.forEach(function(repo) {
+    var cat = repo.category || 'Other';
+    if (groups[cat]) groups[cat].push(repo);
+    else groups[cat] = [repo];
+  });
+  var html = '';
+  CATEGORY_ORDER.forEach(function(cat) {
+    var items = groups[cat];
+    if (!items || items.length === 0) return;
+    html += '<h2 class="section-header">' + cat + ' (' + items.length + ')</h2>';
+    html += '<div class="card-grid">';
+    items.forEach(function(repo) { html += buildCard(repo); });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// Initial render
+Object.keys(BATCHES).forEach(function(key) { renderTab(key); });
+</script>
+</body>
+</html>

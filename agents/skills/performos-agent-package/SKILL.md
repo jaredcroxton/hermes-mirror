@@ -56,6 +56,8 @@ AWS private-cloud and Ollama deployment guidance lives in `references/aws-privat
 
 **RULE: Never mention Mac Mini, Mac hardware, Ollama, or model parameter sizes in client-facing materials.** The client buys "Standard" or "Advanced." That is all they need to know. Hardware and model specifics stay in internal docs only.
 
+**AgentOS pricing page pattern:** when turning this tier structure into website copy, use `references/agentos-pricing-page-pattern.md`. Lead with "Private AI team for business leaders" and frame the two tiers as reasoning depth, not agent count. Do not make 8B vs 14B-70B the headline. Use "Standard = everyday business support" and "Advanced = complex leadership reasoning" first, then explain model sizes in a technical FAQ if needed.
+
 | Tier | What the client gets | Setup | Monthly |
 |---|---|---|---|
 | Standard | Up to 10 fully customisable AI agents. 8B parameter models. Built for everyday business tasks — writing, analysis, coaching, research, admin, HR, learning design, talent acquisition, marketing, churn management. 24GB RAM provisioned during onboarding. | $3,000 | $4,999 |
@@ -96,7 +98,60 @@ AWS private-cloud and Ollama deployment guidance lives in `references/aws-privat
 
 ## The offering
 
-PerformOS sells a managed 5-agent team to enterprise clients. The client gets pre-built specialist AI agents running on their own infrastructure, with their own data and tool connections.
+PerformOS sells a managed AI team to business clients. The client gets pre-built and customised specialist AI agents running on approved infrastructure, with their own data, governance, and tool connections.
+
+### AgentOS naming and product architecture
+
+When Jared asks what to call the private AI team product, default recommendation is **AgentOS by PerformOS**.
+
+Brand architecture:
+- **PerformOS** — parent company / performance operating system
+- **LearnOS** — learning and capability product
+- **PulseCheck 360** — feedback and diagnostic product
+- **AgentOS** — private AI agent team product
+
+Preferred positioning:
+- "Your private AI team, built for work."
+- "AgentOS gives your business a private AI team inside the tools your people already use."
+- "Turn AI from a monthly subscription into a managed team of private business agents."
+
+Avoid positioning it as "10 bots" or "Google Chat bots." Google Chat is only the front door. The product is the managed agent layer: role design, business knowledge, permissions, tools, governance, and ongoing optimisation.
+
+### Google Chat delivery model
+
+When Jared asks how AgentOS works inside Google Chat, explain it simply:
+
+**Leader → Google Chat → PerformOS agent layer → AI model + business knowledge + approved tools**
+
+Three practical setup models:
+1. **One Google Chat space per agent** — simplest for pilots. Example: AI CEO Advisor, AI Sales Coach, AI HR Advisor.
+2. **One Google Chat app with agent selection** — cleaner at scale. Backend routes user messages to the right agent.
+3. **Private DMs for personalised leader agents** — premium executive experience.
+
+The backend must identify the user, check permission, route to the right agent, call the model and tools, and return the answer to Google Chat.
+
+### Personalisation structure
+
+Do not sell personalisation as just changing the agent name. Each personalised agent needs:
+- agent identity and purpose
+- user or leader context
+- business context
+- behaviour rules
+- approved knowledge sources
+- approved tools
+- access controls
+- escalation rules
+
+Knowledge should be separated into zones:
+- company-wide knowledge available to all agents
+- function knowledge available only to relevant agents
+- leader-specific knowledge available only to that leader's private agent
+
+Recommended commercial framing:
+- **Standard** — up to 10 business-function agents for shared team use
+- **Advanced / Leadership personalisation** — up to 10 personalised leader agents, with higher setup fee because discovery, permissions, and tuning take more time
+
+Default strategic advice: sell the 10-agent business team first, then offer leader-personalised agents as the premium setup.
 
 ### The 5 agents
 
@@ -267,6 +322,16 @@ When Jared asks for proposal materials, produce TWO separate PDFs:
 3. Send both via Telegram with MEDIA: path
 4. Label clearly: "CLIENT PROPOSAL" and "INTERNAL — Financial Model"
 
+## AgentOS page copy and positioning patterns
+
+AgentOS is the product name for the private AI team offer: **AgentOS by PerformOS**.
+
+Category line: **Private AI team for business leaders.**
+
+When creating AgentOS website copy, pricing pages, security pages, solution pages, or hero/demo sections, use `references/agentos-page-copy-patterns.md`. It captures the current pricing, security, solution architecture, and hero conversation animation pattern.
+
+Key rule: do not sell AgentOS as "10 bots" or another AI subscription. Sell it as a managed private AI team built around the client's roles, workflows, approved sources, infrastructure boundary, and leadership rhythm.
+
 ## Local Deployment Edition (Updated — June 2026)
 
 A second variant of the package runs on a PerformOS-owned managed local appliance placed in the client's approved environment. No cloud APIs are required for inference, and zero data leaves the approved local environment unless the client chooses an approved integration path. This is a separate product from the Orgo-hosted cloud edition.
@@ -434,6 +499,7 @@ Jared's Vercel project is under `jaredcroxtons-projects`.
 - `references/local-edition-agents.md` — full agent list, use cases, model selection, hardware tiers, and MCP connections for the Local Edition
 - `references/local-edition-governance.md` — Google Drive folder structure, naming conventions, and retention policy for client governance docs
 - `references/tier-comparison-deck-language.md` — exact plain-language framing for Standard vs Advanced tiers in client-facing decks and one-pagers. Includes deck layout pattern, pricing display rule, and what never appears in client materials. Written June 2026.
+- `references/agentos-pricing-page-pattern.md` — pricing page copy pattern for AgentOS: Standard vs Advanced cards, comparison table language, setup fee explanation, FAQ, and the rule that tiering is reasoning depth, not agent count.
 
 - `references/lightsail-ollama-hosting.md` — Amazon Lightsail guidance for Hermes hosting, Ollama testing, $24/$84/$168/$384 tier logic, 19 GB model sizing, and the strategic split between cloud control layer and PerformOS-owned local appliance.
 - `references/managed-local-appliance-remote-support.md` — client-site appliance remote admin, Git-backed agent updates, support escalation, MDM, and the no-home-Wi-Fi positioning rule.

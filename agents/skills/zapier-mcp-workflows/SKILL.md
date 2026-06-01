@@ -9,17 +9,44 @@ tags: [zapier, mcp, automation, accor-plus, hr, onboarding, governance]
 ## When to use
 Use when Jared asks to build Zapier-powered automations through MCP. This includes onboarding flows, notification chains, sales KPI tracking, interview booking, and any workflow where Zapier MCP tools are called via mcporter.
 
+## Fallback rule: use Zapier MCP first when it is already working
+
+This session (01 Jun 2026) established the workflow lesson: when a better tool (Himalaya for email) is not yet configured and the user wants a result, use the already-working Zapier MCP immediately. Do not spend 20+ minutes debugging setup while the user waits.
+
+**Rule:** When the user asks for something that works through an already-authenticated Zapier MCP connection, answer via Zapier MCP first. Log the better tool as a follow-up. Do not lead with setup when the user's actual ask is "show me X."
+
+## mcporter positional arg syntax — the detail that matters
+
+Every Zapier MCP tool is called as: `zapier.<toolname>` (namespaced).
+
+**Working pattern (always use this):**
+```
+npx -y mcporter --config /Users/jc/config/mcporter.json call zapier gmail_create_draft \
+  'Clear natural language instructions including to, subject, body' \
+  'output_hint fields'
+```
+
+- First arg: `instructions` — full natural language sentence, Zapier's LLM extracts structured params from it
+- Second arg: `output_hint` — comma-separated fields you want back
+- Third+ args: optional positional params for search queries, message IDs, etc.
+
+**Do NOT use:**
+- `--params '{"key":"value"}'` — fails when tools expect arrays (to, cc, bcc). Zapier's resolver handles array inference from instructions text.
+- `--param key value` flags — mcporter parses them wrong for MCP tools
+
+**Gmail array inference:** Writing `"Create a draft to jaredcroxton@gmail.com"` in instructions is enough. Zapier resolves `to: ["jaredcroxton@gmail.com"]` automatically. You do not pass `to:` separately.
+
 ## Config and auth
 - Config file: `/Users/jc/config/mcporter.json`
 - Base URL: `https://mcp.zapier.com/api/v1/connect`
-- Auth: Bearer token
+- Auth: Bearer token (base64-encoded `client_id:client_secret`)
 
 ### Auth lifecycle
 1. Token expires → mcporter returns `401 / SSE error: Non-200 status code`
 2. Fix: Go to https://zapier.com/mcp → re-authorise the connection → copy new token
-3. Update mcporter.json Authorization header with new Bearer value
-4. Verify: `npx -y mcporter --config /Users/jc/config/mcporter.json list-tools zapier`
-5. Expected: 78 tools listed (after actions are added in the Zapier dashboard)
+3. Paste the full `client_id:client_secret` string into mcporter.json (NOT just client_id)
+4. Verify: `npx -y mcporter --config /Users/jc/config/mcporter.json list zapier`
+5. Expected: 77+ tools listed
 
 ### Adding tools to the MCP server
 After auth, only `get_configuration_url` appears. Jared must add specific actions at https://zapier.com/mcp:

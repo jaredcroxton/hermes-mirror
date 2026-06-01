@@ -27,34 +27,68 @@ requires the external `himalaya` CLI.
 - `references/configuration.md` (config file setup + IMAP/SMTP authentication)
 - `references/message-composition.md` (MML syntax for composing emails)
 
-## Prerequisites
+## Prerequisites — CHECK BEFORE YOU START
 
 1. Himalaya CLI installed (`himalaya --version` to verify)
-2. A configuration file at `~/.config/himalaya/config.toml`
+2. **himalaya SKILL.md loaded** — the config format is easy to get wrong and failing at config wastes 15-30 minutes. Load this skill first. Confirm you have read references/configuration.md before writing any config file.
 3. IMAP/SMTP credentials configured (password stored securely)
+4. **Gmail: 2FA must be ON before generating App Passwords**
+5. **Gmail: IMAP must be enabled at mail.google.com → Settings → Forwarding and POP/IMAP**
 
-### Installation
+## Fallback rule — USE ZAPIER MCP FIRST IF IT IS ALREADY CONNECTED
 
-```bash
-# Pre-built binary (Linux/macOS — recommended)
-curl -sSL https://raw.githubusercontent.com/pimalaya/himalaya/master/install.sh | PREFIX=~/.local sh
+Do NOT attempt Himalaya setup when:
+- Zapier MCP `/api/v1/connect` is already authenticated and returning results
+- The user is waiting for a result (reading emails, sending drafts)
+- Setup will take more than 2 minutes
 
-# macOS via Homebrew
-brew install himalaya
+In those cases: use Zapier MCP as the working fallback. Log Himalaya as the long-term target. Do not grind through config debugging live when the user is waiting.
 
-# Or via cargo (any platform with Rust)
-cargo install himalaya --locked
+## v1.2.0 config format — this is the part that bites you
+
+The configuration file lives at `~/.config/himalaya/config.toml` (not `~/Library/Application Support/...`). The format uses **dotted keys under the account block**, NOT sub-tables for imap/smtp. This is counterintuitive and the GitHub sample docs lag behind v1.2.0.
+
+Correct format (Gmail example — from references/configuration.md):
+
+```toml
+[accounts.personal]
+email = "you@gmail.com"
+display-name = "Your Name"
+default = true
+
+backend.type = "imap"
+backend.host = "imap.gmail.com"
+backend.port = 993
+backend.encryption.type = "tls"
+backend.login = "you@gmail.com"
+backend.auth.type = "password"
+backend.auth.raw = "izvfrbvxlekek"  # or use backend.auth.cmd for pass/keyring
+
+message.send.backend.type = "smtp"
+message.send.backend.host = "smtp.gmail.com"
+message.send.backend.port = 587
+message.send.backend.encryption.type = "start-tls"
+message.send.backend.login = "you@gmail.com"
+message.send.backend.auth.type = "password"
+message.send.backend.auth.raw = "same-or-different-app-password"
+
+folder.aliases.inbox = "INBOX"
+folder.aliases.sent = "[Gmail]/Sent Mail"
+folder.aliases.drafts = "[Gmail]/Drafts"
+folder.aliases.trash = "[Gmail]/Trash"
 ```
 
-## Configuration Setup
+**Do NOT use:**
+- `[accounts.personal.imap]` sub-tables — silently ignored in v1.2.0
+- `imap.server = "imaps://..."` — the GitHub sample config uses this but v1.2.0 does not accept it
+- `passwd.raw` as the key name in sub-tables — it is `backend.auth.raw` or `backend.auth.cmd`
+- `folder.alias.X` (singular) — silently ignored; use `folder.aliases.X` (plural)
 
-Run the interactive wizard to set up an account:
-
+**Quick verification before writing config:**
 ```bash
-himalaya account configure
+himalaya account list
 ```
-
-Or create `~/.config/himalaya/config.toml` manually:
+If BACKENDS column is empty, the config format is wrong. Fix before proceeding. If `himalaya account doctor personal` says OK but BACKENDS is still empty, the config keys are wrong — re-read references/configuration.md and rewrite.
 
 ```toml
 [accounts.personal]
