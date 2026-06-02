@@ -101,6 +101,37 @@ Service Quotas → AWS services → Amazon Elastic Compute Cloud → Running On-
 
 For one `g6.2xlarge`, request at least **8 vCPUs**. Prefer **16 vCPUs** because it is still modest and gives room for testing. If AWS asks for justification, say it is a short private AI inference proof-of-concept using Ollama and the instance will be stopped when not actively testing.
 
+## User data startup script
+
+For GPI instances with the Deep Learning AMI, use this `#!/bin/bash` user data script to auto-install Ollama on first boot:
+
+```bash
+#!/bin/bash
+# Auto-install Ollama on first boot
+curl -fsSL https://ollama.com/install.sh | sh
+# Pull a lightweight test model
+ollama pull llama3.2:3b
+```
+
+Paste into the User data field (under Advanced details). No other startup config needed for first test.
+
+## Step-by-step pacing
+
+When walking Jared through AWS console screens or EC2 terminal commands, use ONE instruction per turn. Show only the next step. Never dump multiple steps at once.
+
+Signals: Jared says "step by step", "don't rush", "don't give me a lot of information at once", or "you are losing me."
+
+Good: "Click where it says **AWS services** in the left sidebar."
+Bad: "Click AWS services, then search for EC2, then click the quota name, then..."
+
+Let him confirm each step with a screenshot or message before moving to the next.
+
+**Correction (2 Jun 2026):** When explaining Docker, containerd, LVM volumes, and disk mounts, do NOT dump the full technical pipeline. Jared said "you are losing me." Keep it to one action per turn with minimal explanation. Let the terminal output speak for itself. The user does not need to understand Docker internals to deploy Open WebUI.
+
+When a client-facing agent interface is needed, do not explain the full architecture. Just say "here is the URL" and let them use it.
+
+**Correction (2 Jun 2026, disk cleanup):** When Jared says "talk me through" a fix, do exactly that — one step at a time with clear before/after. Show what is using the space, explain the single action, then show the result. Do not chain multiple commands or explain all possible outcomes upfront.
+
 ## Cost-control rules
 
 Always frame EC2 as hourly until Jared deliberately chooses always-on.
@@ -165,6 +196,165 @@ For client-site hardware:
 
 Avoid calling AWS EC2 GPU a local appliance. It is private cloud, not physically local to the client.
 
+## AgentOS client deployment pattern (full stack)
+
+When Jared is building a real client deployment (not just a quick test), the full stack runs entirely on one EC2 GPU instance:
+
+```
+EC2 GPU instance (g6.2xlarge, L4 GPU)
+├── Ollama (GPU model serving on localhost:11434)
+├── Hermes (agents, gateway, Telegram connectivity)
+├── Open WebUI (ChatGPT-style browser interface on port 8080)
+└── Docker containers (Open WebUI runs in Docker)
+```
+
+Key rule: **nothing runs on Jared's Mac.** The EC2 is the client's complete private AI server. Jared SSHs in once to configure, then hands the client a URL and a Telegram bot. No desktop, no software installs, no Mac.
+
+Full deployment sequence:
+
+1. Launch EC2 GPU instance (g6.2xlarge with Deep Learning AMI)
+2. Mount ephemeral volume if available (see Mounting ephemeral volumes section)
+3. Install Ollama, pull model (llama3.1:8b minimum for tool calling)
+4. Install Hermes, configure to use Ollama as OpenAI-compatible provider
+5. Install Open WebUI via Docker
+6. Open port 8080 from security group (My IP for testing, later to client's IP)
+7. Configure Telegram bot credentials in Hermes .env
+8. Start Hermes gateway service
+9. Client receives: browser URL + Telegram bot link
+
+## Mounting ephemeral volumes on EC2
+
+Deep Learning AMIs often include an ephemeral NVMe volume (e.g. 419GB at /dev/nvme1n1) that is pre-formatted as ext4 inside an LVM logical volume. The root volume is typically only 30GB — too small for Docker images, Ollama models, and Open WebUI.
+
+Mount sequence:
+
+```bash
+# Find the volume
+lsblk -f | grep nvme1n1
+# Mount LVM logical volume
+sudo mkdir -p /data
+sudo mount /dev/vg.01/lv_ephemeral /data
+df -h /data
+```
+
+Docker data-root relocation (required — Open WebUI Docker build exceeds root capacity):
+
+```bash
+sudo systemctl stop docker
+sudo mkdir -p /data/docker /data/containerd
+sudo rsync -aP /var/lib/docker/ /data/docker/
+# Configure Docker data-root
+echo '{"data-root":"/data/docker"}' | sudo tee /etc/docker/daemon.json
+# Relocate containerd root too
+sudo systemctl stop containerd
+sudo rsync -aP /var/lib/containerd/ /data/containerd/
+# Write minimal containerd config
+sudo bash -c 'cat > /etc/containerd/config.toml << EOF
+root = "/data/containerd"
+EOF'
+sudo systemctl start containerd docker
+```
+
+## Hermes config for local Ollama
+
+When Hermes shares the same EC2 with Ollama, configure it as a custom OpenAI-compatible provider:
+
+```yaml
+model:
+  default: "llama3.1:8b"
+  provider: "custom"
+  base_url: "http://localhost:11434/v1"
+```
+
+Do NOT use `provider: ollama` or `provider: auto` — these route differently. Use `provider: custom` with the explicit `base_url`.
+
+The Ollama v1 API is compatible with OpenAI chat completions. Hermes tool calling works with llama3.1:8b and above. llama3.2:3b does NOT support function calling reliably — models must be 8B+ for proper tool use.
+
+## Model selection for agent workloads
+
+- **llama3.2:3b (2GB)** — fast, works for chat, but does NOT support tool calling. Use for Open WebUI only, not Hermes agents. Will not respond to function calls — Hermes chat returns tool JSON instead of text.
+- **llama3.1:8b (4.9GB)** — minimum viable agent model. Supports tool calling. Good for basic agent work, Telegram bots, file ops. BUT: system-prompt-heavy agent work (SOUL.md context) often results in hallucination on 8B models. The model may ignore or confabulate the system prompt.
+- **phi4:14b (~14GB)** — better reasoning, fits on L4 (23GB VRAM) with headroom. Handles system prompts and SOUL context reliably. Recommended for production agent use.
+- **llama3.1:70b (~40GB)** — too large for L4. Needs A10G or A100.
+
+On the g6.2xlarge L4 (23GB VRAM), the sweet spot is 8B-14B models. Keep at least 2GB VRAM free for CUDA overhead.
+
+**Verification pattern:** After pulling a model, test it directly via Ollama API before configuring Hermes. Use curl to the `/v1/chat/completions` endpoint. Verify the model responds with coherent text, not tool JSON or empty responses. Then configure Hermes and test with a simple identity probe.
+
+## Agent soul creation pattern (for client deployments)
+
+When building a specialist agent for a specific business (e.g. AP for Accor Plus):
+
+1. **Scrape the business website** using Firecrawl to extract branding, products, markets, and key facts. Use `formats: ["markdown"]` with `onlyMainContent: true`.
+
+2. **Write the SOUL.md** with these sections:
+   - Who the agent is (identity statement)
+   - Full business context (scraped facts, numbers, markets, products)
+   - How the agent operates (decision-making principles)
+   - Key leadership context (who it advises, what they do)
+   - Voice and tone
+
+3. **Upload to EC2** and create a Hermes profile:
+   ```bash
+   scp soul.md ec2:/home/ubuntu/
+   hermes profile create <name> --clone
+   cp soul.md ~/.hermes/profiles/<name>/SOUL.md
+   ```
+
+4. **Configure the profile** to use local Ollama:
+   ```python
+   c['model']['default'] = 'llama3.1:8b'
+   c['model']['provider'] = 'custom'
+   c['model']['base_url'] = 'http://localhost:11434/v1'
+   ```
+
+5. **Create a browser interface** if the agent needs a visual chat page (see Browser agent interface pattern).
+
+## Browser agent interface pattern
+
+For agents that need a visual chat page without Open WebUI, serve both the HTML and a backend proxy from a single Python server. Do NOT have browser JavaScript call Ollama's API directly — `fetch('http://localhost:11434')` resolves to the client's machine, not the EC2. The page loads but all API calls fail silently.
+
+**Architecture:**
+```
+Browser → :8090 (public) → Python server → localhost:11434 (Ollama)
+  GET /      → serves HTML
+  POST /api/chat → proxies to Ollama v1/chat/completions
+```
+
+**The Python server must:**
+1. Serve the HTML on GET /
+2. Proxy POST /api/chat to Ollama (same-origin, no CORS)
+3. Pre-warm the model at startup — otherwise the first user query triggers a 10-30 second model load that exceeds browser timeouts
+
+**Serve command:**
+```bash
+nohup python3 /home/ubuntu/<agent>-server.py > /tmp/<agent>-server.log 2>&1 &
+```
+
+See `templates/ec2-agent-chat-server.py` for a complete deployable template. Replace MODEL, PORT, SYSTEM_PROMPT, and HTML per agent.
+
+**The HTML** must include the full system prompt from SOUL.md as the first message in the conversation array. Design matches client brand colors. The JavaScript calls `/api/chat` (same origin), NOT `http://localhost:11434`.
+
+## Open WebUI Docker install
+
+```bash
+docker run -d --network host --name open-webui \
+  -v /data/open-webui:/app/backend/data \
+  -e OLLAMA_BASE_URL=http://127.0.0.1:11434 \
+  ghcr.io/open-webui/open-webui:main
+```
+
+Runs on port 8080. First user to create an account becomes admin. Open port 8080 in security group for access.
+
+## Client handover
+
+When deployment is complete and tested, the client receives exactly two things:
+
+1. **A URL** — Open WebUI chat interface at their domain or the EC2 public IP:8080
+2. **A Telegram bot** — the bot handle they message for agent access
+
+Nothing else. No login credentials. No AWS console access. No terminal. No key files. The EC2 runs 24/7 under PerformOS management.
+
 ## Plain-English explanation pattern
 
 When Jared asks what EC2 GPU is, explain it like this:
@@ -174,6 +364,54 @@ When Jared asks what EC2 GPU is, explain it like this:
 - The GPU is the muscle that makes local AI models respond faster.
 - EC2 gives you a server to build on, but AWS charges while it is running.
 
+## Ollama model storage on separate volumes
+
+When the root volume is small (30 GB typical on Deep Learning AMIs) and Ollama pulls large models, the root fills. Move models to the ephemeral data volume.
+
+**The sequence that works:**
+
+```bash
+# 1. Stop ollama
+sudo systemctl stop ollama
+
+# 2. Move models to data volume
+sudo mv /home/ubuntu/.ollama /data/ollama-models
+
+# 3. Symlink for the ubuntu user
+sudo ln -s /data/ollama-models /home/ubuntu/.ollama
+sudo chown -R ubuntu:ubuntu /data/ollama-models
+
+# 4. Fix the SERVICE user — THIS IS THE TRAP
+# The ollama systemd service runs as user 'ollama', not 'ubuntu'.
+# The ollama user cannot traverse /home/ubuntu/ (permission denied).
+# Symlink in /home/ubuntu/.ollama is INVISIBLE to the service.
+# Fix: set OLLAMA_MODELS in a systemd drop-in
+sudo mkdir -p /etc/systemd/system/ollama.service.d
+echo '[Service]
+Environment="OLLAMA_MODELS=/data/ollama-models"' | sudo tee /etc/systemd/system/ollama.service.d/override.conf
+sudo chown -R ollama:ollama /data/ollama-models
+sudo systemctl daemon-reload
+sudo systemctl start ollama
+```
+
+**Common traps:**
+- Double-nesting: after `mv`, the structure may be `/data/ollama-models/models/blobs/` instead of `/data/ollama-models/blobs/`. Flatten with `mv /data/ollama-models/models/* /data/ollama-models/ && rmdir /data/ollama-models/models`.
+- Leftover process: if `systemctl stop` leaves a zombie ollama on port 11434, kill with `sudo fuser -k 11434/tcp`.
+- Models disappear: after moving and restarting, `ollama list` may show empty. Check `OLLAMA_MODELS` env var is actually set: `sudo cat /proc/$(pgrep -f "ollama serve")/environ | tr '\0' '\n' | grep OLLAMA`.
+- Lost models: if a model disappears after relocation (common with phi4:14b), just `ollama pull <model>` again. Blobs may be cached but manifests were pointing to old paths.
+
+## Chat UI behind Ollama is NOT a Hermes agent
+
+A web page with a system prompt calling Ollama's chat API can TALK. It cannot ACT.
+
+| Architecture | Tools | Result |
+|---|---|---|
+| HTML → Ollama directly | None | "Here is how you could..." |
+| HTML → proxy → Ollama | None | Same — just a chat UI |
+| Hermes runtime → Ollama | Terminal, browser, files, web, memory | Actually does the work |
+
+Do not let Jared believe a branded chat page is a deployed agent. To get a real agent, route through Hermes runtime with tool access. The model (Ollama or cloud) provides reasoning. The runtime provides hands. Both are required.
+
 ## Pitfalls
 
 - Do not recommend the free-tier EC2 instance for a 19 GB Ollama model. It is usually CPU-only and too small.
@@ -182,6 +420,8 @@ When Jared asks what EC2 GPU is, explain it like this:
 - Do not add Lightsail before the EC2 GPU model performance is proven.
 - Do not overbuild dashboards, support systems, or multi-agent profiles before confirming the model runs well.
 - Do not treat monthly price as the first decision. First test hourly for a few hours.
+- Do not move Ollama model storage without setting OLLAMA_MODELS for the systemd service user. The ubuntu user symlink is invisible to the ollama service user.
+- Do not ship a branded chat page and call it a deployed agent. A chat UI behind Ollama is a chatbot, not an agent. Hermes runtime is required for tools.
 
 ## Reference
 

@@ -4,10 +4,12 @@ description: Use when building Zapier MCP automated workflows for Accor Plus (HR
 tags: [zapier, mcp, automation, accor-plus, hr, onboarding, governance]
 ---
 
-# Zapier MCP — Accor Plus Workflow Builder
+# Zapier MCP — Accor Plus Workflow Builder (DEPRECATED)
+
+> **Deprecated 02 Jun 2026.** Zapier MCP and mcporter have been removed. mcporter config (`/Users/jc/config/mcporter.json`) deleted. Replaced by n8n native Gmail node (OAuth, no rotating tokens) for workflow automation and Google Cloud OAuth for Hermes agent email access. This skill is retained as historical reference only — pricing, enterprise features, and data privacy patterns remain valid.
 
 ## When to use
-Use when Jared asks to build Zapier-powered automations through MCP. This includes onboarding flows, notification chains, sales KPI tracking, interview booking, and any workflow where Zapier MCP tools are called via mcporter.
+DO NOT use this skill for active builds. Zapier MCP is no longer connected. Use `n8n-local-setup` for automation workflows instead.
 
 ## Fallback rule: use Zapier MCP first when it is already working
 

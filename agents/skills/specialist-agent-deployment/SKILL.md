@@ -83,7 +83,10 @@ Prefer `hermes --profile <profile> chat -q "..." --quiet` over send_message for 
 - `references/atticus-handler-pattern.md` for the handler fallback template when a custom polling path is truly required.
 - `references/kanban-governance-for-specialist-agents.md` for the Brock-as-Kanban-orchestrator model, specialist SOUL blocks, Telegram `/kanban` start patterns, and first test workflow.
 - `references/brock-agent-to-agent-routing.md` for the Brock-as-router pattern when Jared needs multi-agent pipelines without copy-paste.
+- `references/agentos-ec2-governance.md` for the Obsidian↔EC2 governance model (source-of-truth vs runtime, sync pipeline, client deliverables, session export).
 - `references/lara-full-package-pattern.md` for triggering Lara's complete multi-tab learning design output.
+- `references/ollama-ec2-storage.md` for EC2 Ollama model storage management — moving models to data volume, double-nesting fix, ollama user permissions, OLLAMA_MODELS env var, port conflict recovery.
+- `references/self-hosted-chat-ui-pitfall.md` for the browser-localhost-vs-server-localhost pitfall, backend proxy pattern, and model pre-warming when serving chat UIs from EC2.
 - `references/execute-code-file-corruption-pitfall.md` for the read_file/write_file line-number corruption bug and fix.
 - `references/profile-brain-vs-live-transport-verification.md` for separating soul readiness, local profile brain, gateway state, and real Telegram/live transport verification.
 - `references/profile-telegram-bot-verification.md` for BotFather token `getMe` validation, profile-local `.env` wiring, gateway log checks, and the Telegram **Start** / `chat not found` pitfall.

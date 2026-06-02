@@ -1,16 +1,16 @@
 ---
 name: claude-code-builder
-description: Use when the user asks to build, deploy, create a dashboard, create a deck, push to GitHub, ship a page/tool, or deploy to Vercel. Orchestrate the BLAST build protocol using Claude Code, GitHub, and Vercel.
+description: Use when the user asks to build, deploy, create a dashboard, create a deck, push to GitHub, ship a page/tool, or deploy to Vercel. Orchestrate the Express build protocol using Claude Code, GitHub, and Vercel.
 version: 1.0.0
 author: PerformOS / Jared Croxton
 license: MIT
 metadata:
   hermes:
-    tags: [claude-code, github, vercel, build, deploy, blast, frontend]
+    tags: [claude-code, github, vercel, build, deploy, express, frontend]
 related_skills: [claude-code, github-repo-management]
 ---
 
-# Claude Code Builder: BLAST Protocol
+# Claude Code Builder: Express Protocol
 
 ## Overview
 
@@ -60,6 +60,14 @@ Load and follow this skill for requests containing or implying:
 - Vercel deploy
 - make this live
 - send me the link
+- express (and "Express Protocol" or "/express")
+- blast / BLAST / B.L.A.S.T. — redirect user to "Express" (the framework was renamed; BLAST is dead)
+
+**Cross-reference — do not confuse with similarly-named items:**
+- `Taste` — not a standalone skill. Taste design thinking lives inside `claude-design` (process+taste for one-off artifacts) and `popular-web-designs` (top 50 brand design systems sourced from VoltAgent/awesome-design-md). Both live in Bob's profile under `creative/`.
+- `Awesome Design` / "top 50 websites" — this IS `popular-web-designs`. Each brand (Stripe, Airbnb, Figma, NVIDIA, etc.) is a separate template file. Not a separate named skill.
+
+See `references/express-taste-bundle-placement.md` for details on how the Taste bundle works (claude-design + popular-web-designs) and why it loads in Blueprint, not Stylize.
 
 ## Research Delegation
 
@@ -106,20 +114,22 @@ bob_builder chat -q "Build a dark theme KPI dashboard and deploy it"
 Forge's identity and local profile details are captured in `references/forge-profile.md`. Do not rename the profile or alias unless the user explicitly asks. The public mirror spec lives at `agents/Bob_Builder.md` in `jaredcroxton/hermes-mirror`, even though the agent's display identity is Forge.
 
 ## Default Output Directory
-
-All builds land in:
+```
+Deploy:
 
 ```bash
-~/Desktop/hermes_builds/
+vercel --prod --yes
 ```
 
-Create it if needed:
+**Note:** The `--name` flag is deprecated as of Vercel CLI v53.1+. Do not use it. Vercel auto-generates the project name from the repo or directory name.
+
+Extract the URL containing `vercel.app` from Vercel output. If no URL appears, run:
 
 ```bash
-mkdir -p ~/Desktop/hermes_builds
+vercel ls
 ```
 
-## BLAST Protocol
+## Express Protocol
 
 Every build follows these five phases in order. Do not skip phases. Use these exact phase names when reporting status: **Blueprint, Link, Architect, Stylize, Trigger**. Do not substitute alternate expansions like Login or Authorise.
 
@@ -132,6 +142,14 @@ Before running any command, write a complete build brief. Internally answer:
 3. What colors, fonts, and layout apply?
 4. Which GitHub repo does it land in?
 5. What is the Vercel project name?
+
+**Taste bundle auto-loads here.** Before answering the five questions, load both:
+- `claude-design` — design process and taste framework. This gives the design-taste lens for every decision in this phase.
+- `popular-web-designs` — top 50 brand reference. This gives real-world design benchmarks (Stripe, Airbnb, Figma, etc.).
+
+Use both to shape the five answers into a proper design brief. By the end of Blueprint, the functional spec AND the design direction are locked. No design decisions happen later in the process.
+
+See `references/express-taste-bundle-placement.md` for the rationale behind Taste-in-Blueprint and the before/after flow.
 
 Default visual system (PerformOS master brand):
 
@@ -272,12 +290,14 @@ Create `vercel.json` if needed:
   "routes": [{"src": "/", "dest": "/<filename>"}]
 }
 ```
-
+```
 Deploy:
 
 ```bash
-vercel --prod --yes --name <vercel-project-name>
+vercel --prod --yes
 ```
+
+**Note:** The `--name` flag is deprecated as of Vercel CLI v53.1+. Do not use it. Vercel auto-generates the project name from the repo or directory name.
 
 Extract the URL containing `vercel.app` from Vercel output. If no URL appears, run:
 
@@ -304,6 +324,7 @@ Live: https://<project>.vercel.app
 - **Workflow automation form:** `.html`, self-contained form that POSTs to a Zapier catch webhook. Dropdown logic resolves downstream targets (e.g. role + market → manager). Summary panel with Send to Zapier / Copy payload / Close buttons. Loading, success, and error states on send. Always Local artifact mode — no GitHub or Vercel deploy. See `references/workflow-automation-form.md` for the full pattern.
 - **Briefing document:** `.html`, clean layout, printable where useful.
 - **PerformOS website page:** `.html`, match the existing PerformOS design system. Always reference `/Users/jc/Desktop/Website - PerformOS/faq.html` as the visual source of truth. Ivory/ink palette, Instrument Serif + Inter + JetBrains Mono, shared nav/footer. See `references/performos-website-design-system.md` for full tokens, typography, components, and build rules. See `references/performos-website-management.md` for site inventory, deploy workflow, operational patterns, DNS troubleshooting, and competitive teardown methodology.
+- **World-class quality upgrade:** when Jared says "make it world class" or "use the right people" about an existing artifact, use the world-class goal brief pattern: read the artifact, write 10 numbered quality goals, delegate to Bob with Taste bundle. See `references/world-class-goal-brief.md`.
 
 ## Local artifact mode
 
@@ -352,27 +373,33 @@ PY
 7. **Vercel URL missing.** Use `vercel ls` to find the most recent production deploy URL.
 8. **Pushing secrets.** Never include `.env`, tokens, OAuth files, private emails, or sensitive PII in GitHub or Vercel deploys.
 9. **Drifting Forge's identity.** The local profile name remains `bobbuilder` and alias remains `bob_builder`; the agent identity shown to the user is Forge. Keep public mirror paths stable unless Jared asks for a rename.
-10. **Wrong BLAST expansion.** The phases are Blueprint, Link, Architect, Stylize, Trigger. If verification output shows other names, patch the SOUL or skill text and re-test the profile.
+10. **Wrong framework expansion.** The phases are Blueprint, Link, Architect, Stylize, Trigger (Express Protocol). If verification output shows BLAST, patch the SOUL or skill text and re-test the profile.
 11. **Forcing Claude when Bob is on Codex.** Always verify the active Bob provider/model before using Claude-specific commands. Jared prefers ChatGPT/Codex where possible without separate API costs.
 12. **Bulk model rollouts without verification.** Before changing the whole agent stack, probe the intended provider/model first. `gpt-5.5` failed for Jared's account; `gpt-5.4` via `openai-codex` was verified working.
 13. **Git push blocked in sandbox.** `git push origin main` times out in the Hermes sandbox because the osxkeychain credential helper cannot be reached from the isolated environment. For deployments, use `vercel --prod --yes` directly from the project directory instead. The git commit is still created locally; the user pushes from their terminal later.
 14. **Editing existing website repos.** When editing files in an existing tracked repo (not `~/Desktop/hermes_builds/`), the working tree can be overwritten by external processes. After writing a file, verify it with `grep` for expected content before deploying. If the file regressed, restore from the last commit with `git checkout <commit> -- <filename>`, then redeploy with `vercel --prod --yes`.
 15. **Bob timeout on large-file enhancement tasks.** When the task involves reading an existing large file (500+ lines) and making targeted visual/CSS/JS enhancements, `delegate_task` to bobbuilder often times out at the 600s limit. The workaround is: for targeted fixes to existing files, apply `patch` edits directly from the parent session instead of delegating. Use `delegate_task` for Bob only on greenfield builds or tasks with a clear small-file scope.
-16. **Git commit shortcut error.** The `git add` command does not accept a `-m` flag. Use `git add -A` (or `git add <file>`) followed by `git commit -m "message"` as two separate commands. Never combine them as `git add -m`.
-17. **Vite blocked host with ngrok tunnel.** When tunneling a local Vite dev server through ngrok, Vite returns "Blocked request. This host is not allowed." The fix is to add the ngrok hostname to `server.allowedHosts` in `vite.config.ts`. Then restart the dev server. Changes to vite.config.ts are not hot-reloaded.
+15b. **Full-featured dashboard builds time out on first attempt.** When a build includes data model + scoring logic + world-class UI + Taste bundle, the total time exceeds 600s even for Bob. The split-build pattern solves this: Phase A (data engine, 200-210s) then Phase B (dashboard UI, 280-340s). See `references/dashboard-split-build-pattern.md` for delegation pattern and trigger conditions.
+16. **Bob timeout on complex first builds with full Express + Taste + data pipeline.** When a build includes multiple phases (data engine, UI, cron scripts), delegate it in two phases to stay under 600s. Phase A: data files only (JSON, weights, README). Phase B: UI and deployment. Each phase stays under 300s. Do not send the entire build in one goal — it will time out.
+
+15b. **Bob timeout on complex multi-component builds.** When a single build involves multiple distinct components (data engine + UI + cron scripts + deploy), the 600s `delegate_task` limit will likely be exceeded. The workaround is to split the build into sequential phases, each delegated separately: Phase A (data model + sample data), Phase B (UI build), Phase C (automation/cron). Each phase is a separate `delegate_task` call. See `references/split-build-pattern.md`.
+16. **delegate_task requires `goal`, not `context`, as the task spec.** The `delegate_task` tool requires a `goal` parameter (string) describing what the subagent should accomplish. Do NOT pass the task description as `context` — it will fail with "Provide either 'goal' (single task) or 'tasks' (batch)." The `context` field is for background information only. Always use `goal` for the primary task instruction.
+17. **Git commit shortcut error.** The `git add` command does not accept a `-m` flag. Use `git add -A` (or `git add <file>`) followed by `git commit -m "message"` as two separate commands. Never combine them as `git add -m`.
 18. **web_search tool does not exist.** The `web_search` tool is not available in this Hermes setup. Use `browser_navigate` + `browser_snapshot` for web research instead. Note: the headless browser is detected and blocked by Google/Bing/DuckDuckGo. For research that requires search engines, use `delegate_task` with `toolsets: ["web"]` to spawn a subagent with `web_fetch`/`web_search` access.
 19. **Jared expects Brock to route, not execute.** When the user asks for something to be built, coded, or deployed, the correct response is delegation — not doing the work in Brock's session. Jared has corrected this explicitly multiple times. The hierarchy is: Brock (strategy, briefs, decisions) → Bob Builder (builds, code, deploys) → Research subagents (research, analysis). Brock only touches files directly for quick patches, reviews, or when the user explicitly asks Brock to do it.
 21. **Local artifacts go to the Obsidian vault by default.** When Jared asks for something to be saved, created, or built as a local artifact, the default output path is now `~/Desktop/Obsidian/` (the Obsidian vault directory), not `~/Desktop/hermes_builds/`. The hermes_builds directory is still used for web artifacts, dashboards, and deployable files. Everything else — notes, research, flows, strategy docs, agent context — goes to Obsidian unless the user explicitly asks for a different location.
-22. **Tabbed dashboard pattern for time-series comparisons.** When building dashboards that compare batches over time (e.g. weekly GitHub trending repos), use a tabbed layout with separate inline JSON data per batch rather than separate files. Each batch gets its own tab button. Data is embedded inline in the HTML (no fetch calls) to avoid CORS issues from file:// URLs. Extract GitHub Trending data via `browser_console` with `JSON.stringify(Array.from(document.querySelectorAll('article.Box-row')).map(...))` — this is faster and more structured than parsing browser_snapshot text.
-23. **Cron mode limitations tightened.** In cron jobs: `execute_code` is blocked, piped interpreters are blocked, `patch` tool may not work reliably, and direct git push times out in the sandbox. For cron-triggered builds, use `write_file` + `read_file` + standalone `python3` scripts (not piped). For deployments, use `vercel --prod --yes` from the project directory rather than git push.
-20. **HTML slide deck animation pitfalls.** See `references/html-animation-patterns.md` section "Known Pitfalls" for 13 specific issues discovered during the June 2026 code review. Key ones: no 3D perspective ( clips content ), particles hidden behind opaque slide backgrounds, card gradient borders never render, nav dots must be `<button>`, HiDPI canvas scaling, `prefers-reduced-motion` gate, count-up guard for text stats, touch swipe vertical guard.
+22. **`localhost` in JavaScript resolves to client, not server.** When building a web UI (chat, dashboard) served from a remote host (EC2, VPS) that calls a backend API running on the same server, never use `fetch('http://localhost:<port>')` in the JavaScript. `localhost` in the browser always means the user's machine. Use a same-origin backend proxy (`/api/chat`) or the server's public IP/domain. See `local-dashboard-access` skill and `references/ec2-api-proxy-server.md` for the proxy pattern.
+23. **Tabbed dashboard pattern for time-series comparisons.** When building dashboards that compare batches over time (e.g. weekly GitHub trending repos), use a tabbed layout with separate inline JSON data per batch rather than separate files. Each batch gets its own tab button. Data is embedded inline in the HTML (no fetch calls) to avoid CORS issues from file:// URLs. Extract GitHub Trending data via `browser_console` with `JSON.stringify(Array.from(document.querySelectorAll('article.Box-row')).map(...))` — this is faster and more structured than parsing browser_snapshot text.
+24. **Cron mode limitations tightened.** In cron jobs: `execute_code` is blocked, piped interpreters are blocked, `patch` tool may not work reliably, and direct git push times out in the sandbox. For cron-triggered builds, use `write_file` + `read_file` + standalone `python3` scripts (not piped). For deployments, use `vercel --prod --yes` from the project directory rather than git push.
+20. **Vercel `--name` flag deprecated.** As of Vercel CLI v53.1+, the `--name` flag is deprecated. Do not use `vercel --prod --yes --name <project>`. Use `vercel --prod --yes` without `--name`. Vercel auto-generates the project name from the repo or directory name.
 21. **delegate_task returns summaries, not structured data.** Subagents return a text summary of what they did — not the actual JSON, CSV, or structured data they collected. If the task requires structured output (a JSON array of repos, a list of research findings), the subagent's summary will not contain it. **Workaround for web page data extraction:** use `browser_navigate` + `browser_console` with a JavaScript `JSON.stringify(...)` expression that queries the DOM directly (e.g. `document.querySelectorAll('article.Box-row')`). This returns structured data in one call. **Workaround for API data:** download to a temp file (`curl -o /tmp/data.json`), then read with `read_file` or process with a standalone `python3` script.
 22. **Cron job mode: execute_code and piped interpreters blocked.** When running as a scheduled cron job, `execute_code` is blocked ("Cron jobs run without a user present to approve it"). Piped commands that feed interpreter input (`curl | python3`, `cat | python3`) are blocked by security scanning. **Workaround:** download API responses to temp files first (`curl -s -o /tmp/file.json`), then read with `read_file` or run a standalone `python3 -c "..."` that reads the local file. Never pipe directly to an interpreter in cron mode.
 23. **browser_console is the fastest page-data extraction method.** When scraping structured data from a loaded page, use `browser_console` with a JavaScript expression instead of parsing `browser_snapshot` text. The snapshot output is verbose, truncated, and requires manual parsing. A single `browser_console` call with `JSON.stringify(Array.from(document.querySelectorAll(...)).map(...))` extracts all repo names, descriptions, star counts, and growth metrics in one structured response. This is the preferred pattern for any data extraction from GitHub Trending, search result pages, or any listing page with consistent DOM structure.
 
 ## Verification Checklist
 
-- [ ] Blueprint brief written with filename, content, visual system, repo, and Vercel project name.
+- [ ] **Taste bundle loaded** — `claude-design` and `popular-web-designs` loaded in Phase 1 before any design decisions.
+- [ ] Blueprint brief written with filename, content, visual system, repo, and Vercel project name. Design direction is locked here.
 - [ ] `claude --version` succeeded (if Claude is the active build engine).
 - [ ] `vercel whoami` succeeded.
 - [ ] `gh auth status` succeeded.

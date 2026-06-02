@@ -140,9 +140,30 @@ cloudflared tunnel --url http://localhost:9119 run my-tunnel
 - **Phase 2 (Paid client, no strict compliance):** Use Tailscale Funnel. Encrypted, fixed URL, no ongoing cost.
 - **Phase 3 (Paid client, compliance-heavy):** Use Cloudflare Tunnel with the client's own domain and DNS. Gives them full control and branding.
 
+## Server-Side API Proxy Pattern
+
+When serving a web-based chat UI or dashboard from a remote server (EC2, VPS) that needs to call a local API (Ollama, Hermes, any `localhost`-only service), JavaScript runs in the user's browser. `localhost` in `fetch()` always resolves to the client machine, not the server. The page loads but API calls fail silently.
+
+### The fix: backend proxy
+
+Instead of exposing the API port publicly, serve both the HTML and a proxy endpoint from the same Python server:
+
+```
+Browser ──► :8090 (public) ──► Python server ──► :11434 (localhost, Ollama)
+               │                      │
+               GET / → HTML           POST /api/chat → Ollama API
+```
+
+The JavaScript calls `/api/chat` (same origin, no CORS), and the Python backend proxies to Ollama on localhost. See `references/ec2-api-proxy-server.md` for a complete deployable template.
+
+### Ollama idle-model timeout
+
+Ollama unloads models from GPU when idle. First query after idle can take 10-30 seconds to reload, which exceeds browser timeouts and causes "Connection lost" loops. Fix: pre-warm the model at server startup by sending a short ping through the Ollama API before `serve_forever()`.
+
 ## Common Pitfalls
 
-1. **Vite `allowedHosts` block.** Always add the tunnel hostname to `server.allowedHosts` in vite.config.ts. Restart the dev server after.
+1. **`localhost` in JavaScript on remote servers.** `fetch('http://localhost:11434')` in a page served from EC2 resolves to the user's laptop, not the EC2. Use same-origin proxy endpoints (`/api/chat`) or the server's public IP instead.
+2. **Vite `allowedHosts` block.** Always add the tunnel hostname to `server.allowedHosts` in vite.config.ts. Restart the dev server after.
 2. **ngrok URL changes on restart.** Free ngrok gives a random URL each time. If the client bookmarks it, it will break. Use Tailscale Funnel for stable URLs.
 3. **ngrok authtoken required.** You must run `ngrok config add-authtoken <token>` before the first use. Token is at https://dashboard.ngrok.com/get-started/your-authtoken.
 4. **Dashboard server must be running.** ngrok/tunnel only forwards traffic. If the Vite/dev server is not running on the target port, the tunnel returns connection refused.

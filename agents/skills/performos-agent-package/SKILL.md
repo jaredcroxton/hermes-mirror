@@ -9,6 +9,10 @@ tags: [performos, sales, pricing, agent-package, commercial, zapier]
 ## Trigger
 Use when Jared asks about selling agent packages to businesses, positioning PerformOS to clients, updating proposal PDFs, discussing pricing and margins, or building Zapier-powered automations for clients.
 
+## Sub-agent ecosystem
+
+Polly orchestrates six specialist product sub-agents (OnboardOS, AgentOS, Pocket Customer, PulseCheck360, Performolytics, LearnOS). Each has a comprehensive soul file at `/Users/jc/Desktop/Obsidian/Agents/`. When Jared asks about a specific product, route to the relevant sub-agent or load its soul for context. Full ecosystem map and soul-building pattern in `references/sub-agent-ecosystem.md`.
+
 ## Two Product Variants
 
 PerformOS sells TWO distinct product lines. Do not confuse them or blend details between documents.
@@ -44,6 +48,27 @@ AWS private-cloud and Ollama deployment guidance lives in `references/aws-privat
 - Travel for face-to-face onboarding available (costs additional)
 - Curated upskilling course links included
 - Communication: "your private AI team, running locally"
+
+### Windows hardware path (for Windows-enterprise clients)
+
+When a client says "we are a Windows shop" and rejects Mac hardware:
+
+**The pitch shift:** "Your IT team already manages Dell fleet. This is a Dell. Same support contract. Same management tools. The difference is the GPU — we spec it for AI inference, not CAD."
+
+**Three tiers for Windows (reference only — similar to `references/tier-comparison-deck-language.md` which stays client-facing):**
+
+| Tier | Hardware | GPU | VRAM | Approx AUD |
+|---|---|---|---|---|
+| Entry (8B models) | Custom SFF — Fractal Ridge case | RTX 4060 Ti 16GB | 16 GB | $3,000-3,500 |
+| Standard (8B-14B) | Dell Precision 3680 Tower | RTX A5000 24GB | 24 GB | $5,000-7,000 |
+| Advanced (14B-70B) | Dell Precision 3680 Tower | RTX 5090 32GB or dual GPU | 32+ GB | $8,000+ |
+
+**Key points for Windows conversations:**
+- No Mac Mini-sized Windows PC with enough GPU for AI exists yet — the tiny workstations (Lenovo P3, Dell 3260) max out at 8-12 GB VRAM which is insufficient
+- Mac Mini's unified memory architecture has no Windows equivalent at that size
+- Dell Precision is the safest enterprise recommendation — IT departments already know how to manage them
+- Custom SFF builds from Australian system builders (Scorptec, PCCaseGear, Mwave) work but lack enterprise warranty
+- Always frame the hardware choice as "what your IT team already supports" — not "Mac vs Windows"
 
 ### Key Differentiators for Local Edition
 - Zero data retention: all processing on client hardware, encrypted at rest
@@ -481,6 +506,21 @@ Jared's Vercel project is under `jaredcroxtons-projects`.
 - **Never include internal costs in client-facing documents.** When Jared says "this is the external one" — strip ALL cost data. Only the package price ($4,995/mo) and setup fee ($3,000) belong in the client document.
 - **Never name Obsidian in client documents.** The client does not need to know the specific tools used for local infrastructure. Use generic professional language.
 
+## Product sub-agent ecosystem (added June 2026)
+
+When Jared needs deep product-specific expertise, Polly routes to one of six specialist sub-agents. Their souls live at `/Users/jc/Desktop/Obsidian/Agents/`:
+
+| Agent | Soul file | Product | Status |
+|---|---|---|---|
+| OnboardOS | onboardos-soul.md | $499 12-week AI course | Planned |
+| AgentOS | agenthos-soul.md | Private AI team for business | Product dev |
+| Pocket Customer | pocketcustomer-soul.md | AI voice roleplay coach | Live |
+| PulseCheck360 | pulsecheck360-soul.md | Flight-risk detection | Paused |
+| Performolytics | performolytics-soul.md | AI business intelligence | Build in progress |
+| LearnOS | learnos-soul.md | Custom LMS | Live |
+
+Each soul contains product identity, tagline, visual system, voice principles, technical architecture, competitive positioning, guardrails, and relationship to the PerformOS suite. See `references/sub-agent-ecosystem.md` for the full routing protocol.
+
 ## Pitfalls
 
 - **Two product variants exist.** Cloud (Orgo) edition and Local (Ollama) edition are separate products with different architectures. Always confirm which variant the client needs before pitching. Local is for data sovereignty; Cloud is for fully managed.
@@ -503,6 +543,8 @@ Jared's Vercel project is under `jaredcroxtons-projects`.
 
 - `references/lightsail-ollama-hosting.md` — Amazon Lightsail guidance for Hermes hosting, Ollama testing, $24/$84/$168/$384 tier logic, 19 GB model sizing, and the strategic split between cloud control layer and PerformOS-owned local appliance.
 - `references/managed-local-appliance-remote-support.md` — client-site appliance remote admin, Git-backed agent updates, support escalation, MDM, and the no-home-Wi-Fi positioning rule.
+- `references/aws-ec2-operational-pitfalls.md` — root disk filling, ollama service user permissions, double-nested model directories, models lost during migration, web UI localhost bug, zombie port processes. Captured from the AgentOS EC2 proof session, 02 June 2026.
+- `references/parallel-keyword-research-pattern.md` — two parallel sub-agents researching Google Ads keywords from different angles, then Brock synthesizes. Captured from the AgentOS keyword research, 02 June 2026.
 
 ## Version
 

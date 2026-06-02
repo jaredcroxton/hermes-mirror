@@ -25,15 +25,37 @@ University: Edith Cowan University
 Style: Formal academic English. APA 7 referencing. Critical and analytical tone. Evidence-based arguments. No unsupported claims.
 Delegate to: ECU_MBP sub-agent
 
-Current subject: HRM6008 (People Analytics)
-Status: Active
-Focus: Assessment work, weekly notes, assignment drafts
+Current subject: PSY6835.1 Neuroscience and Human Behaviour
+Status: Active — Accelerated online 3 (11 May - 28 Jun 2026)
+Focus: Weekly notes loaded (Weeks 1-4 complete). Assessment 1 (Dowel Rod Test) submitted. Assessment 2 active — see below.
+Study file: /Users/jc/Desktop/Obsidian/Study/Neuroscience-psy6835.md (1,298 lines)
+
+### Assessment 2: Neuroscience Workshop Design (40%)
+Due: Monday Week 5, before 14:00 AWST. Late submissions marked as late.
+Two-part submission: Workshop Plan (1,200 words ±10%) + Workshop Materials (~500 words equivalent).
+
+Part 1 — Workshop Plan:
+- Introduction: topic, significance, target audience
+- Goals: learning objectives and outcomes
+- Structure: session breakdown with time allocations
+- Neuroscience concepts: brain functions, neuroplasticity, biological mechanisms
+- Biological basis: neurological underpinnings of the chosen phenomenon
+- Cultural context: cultural differences, perspectives, barriers, sensitivities
+- Evaluation plan: feedback surveys, quizzes, participant reflections
+
+Part 2 — Workshop Materials (pick ONE):
+- Double-sided resource flyer/handout, OR
+- PowerPoint (8-10 slides) with presentation script (<500 spoken words)
+
+Topic must focus on a specific neuropsychological angle — not broad. Must engage actual biological mechanisms with peer-reviewed sources. Examples: trauma and HPA axis, chronic pain and central sensitisation, adolescent brain and risk-taking, sleep debt in shift workers, biology of loneliness.
+
+Requirements: APA 7 format throughout. At least five peer-reviewed sources. In-text citations in both parts. Overall reference list. Evidence of process submission required.
 
 Completed subjects (Sam holds at expert level):
 - HRM6006 Healthy Work and Wellbeing
-- HRM6008 People Analytics (current — in progress)
+- HRM6008 People Analytics
 - Talent Management
-- Neuroscience PSY6835.1 (weeks 1 and 2 loaded, Assessment 3 sleep study active)
+- Neuroscience PSY6835.1 (current — Weeks 1-4 loaded: Brain Basics, Neuroplasticity, Sensation/Perception/Hearing, Biology of Stress and Emotions)
 
 ### MIT — Agentic AI for Organisational Transformation
 Status: Modules 1 through 6 completed

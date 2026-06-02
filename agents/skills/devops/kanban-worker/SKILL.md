@@ -157,6 +157,46 @@ If you open the task and `kanban_show` returns `runs: [...]` with one or more cl
 - `outcome: "reclaimed"` + `summary: "task archived..."` — operator archived the task out from under the previous run; you probably shouldn't be running at all, check status carefully.
 - `outcome: "blocked"` — a previous attempt blocked; the unblock comment should be in the thread by now.
 
+## Kanban DB corruption recovery
+
+If `kanban_create`, `kanban_show`, or any `kanban_*` tool fails with `database disk image is malformed` or `sqlite refused to open file`, the SQLite DB at the board path is corrupt. Do NOT attempt to use the board tools until recovery is complete.
+
+**Recovery procedure (orchestrator or user):**
+
+1. **Locate the corrupt board DB.** Default: `~/.hermes/kanban/boards/<board-slug>/kanban.db`.
+
+2. **Check for `kanban.recover.sql`** in the same directory. If present, rebuild:
+   ```bash
+   cd ~/.hermes/kanban/boards/<board-slug>
+   rm -f kanban.db kanban.db-wal kanban.db.shm
+   sqlite3 kanban.db < kanban.recover.sql
+   ```
+   Ignore `Parse error: ... already exists` — the recovery SQL has the full schema and those are harmless if the old tables were partially intact. Verify:
+   ```bash
+   sqlite3 kanban.db "PRAGMA integrity_check;"   # must be "ok"
+   sqlite3 kanban.db "SELECT COUNT(*) FROM tasks;"
+   ```
+
+3. **If `kanban.recovered.db` exists** from a prior recovery, verify and use it:
+   ```bash
+   sqlite3 kanban.recovered.db "PRAGMA integrity_check;"
+   # If ok, then:
+   cp kanban.recovered.db kanban.db
+   # Merge back events/links:
+   sqlite3 kanban.db "ATTACH 'kanban.recovered.db' AS src;
+   INSERT OR IGNORE INTO task_events SELECT * FROM src.task_events;
+   INSERT OR IGNORE INTO task_links SELECT * FROM src.task_links;
+   DETACH src;
+   ```
+
+4. **If no recovery files exist**, try the `kanban.db.corrupt.*.bak` files. Test each:
+   ```bash
+   sqlite3 kanban.db.corrupt.<hash>.bak "PRAGMA integrity_check;"
+   ```
+   Use the most recent one that returns `ok`.
+
+5. **After recovery**, verify integrity and task count before resuming kanban operations. Any `kanban_create` calls that failed during corruption must be re-issued.
+
 ## Notification routing
 
 You can configure the gateway to receive cross-profile Kanban task notifications by adding `notification_sources` to `~/.hermes/config.yaml`.
