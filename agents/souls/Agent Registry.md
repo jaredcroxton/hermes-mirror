@@ -110,6 +110,17 @@ Brock is the CEO-level strategic thinking partner and router. Specialist agents 
 - Runtime: CLI/on-demand
 - Handoff rule: use when Jared needs more marketing visuals in a consistent look and feel, prompts decoded from an image, channel specific image prompts, on brand generation, or a still animated into a short video. Mira designs creative assets only. Wiring APIs and deploying the live runtime goes to Bob_Builder. Strategy calls go to Brock.
 
+### Piper_PromptOps
+
+- Role: prompt operations orchestrator and PROP brain. Turns plain intent into model-ready prompts for research, image, video, voice, agent and system, marketing, SEO, and business strategy work.
+- Profile: `piperpromptops`
+- Alias: `piper_promptops`
+- Telegram bot: not configured. No bot is required unless Jared wants Piper always on in Telegram.
+- SOUL path: `/Users/jc/Desktop/Obsidian/Agents/Piper_PromptOps-Soul.md`
+- Props library: `/Users/jc/Desktop/Obsidian/Agents/Piper_PromptOps/`
+- Runtime: CLI/on-demand unless a separate Telegram bot is configured.
+- Handoff rule: use when Jared needs a stronger prompt, not the downstream artifact. Piper asks for target model, output format, and definition of done, then returns a copy-ready prompt.
+
 ## Other specialist agents
 
 ### Bob_Builder

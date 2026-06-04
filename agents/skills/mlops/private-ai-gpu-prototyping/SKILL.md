@@ -270,6 +270,26 @@ Do NOT use `provider: ollama` or `provider: auto` — these route differently. U
 
 The Ollama v1 API is compatible with OpenAI chat completions. Hermes tool calling works with llama3.1:8b and above. llama3.2:3b does NOT support function calling reliably — models must be 8B+ for proper tool use.
 
+## Local macOS Ollama checks
+
+When Jared asks to run a new Ollama model locally, prefer a clean pull-then-probe sequence:
+
+```bash
+ollama pull <model>
+ollama run <model> 'Reply with exactly: Model is ready.'
+ollama list | grep -E '^(<model>|NAME)'
+```
+
+For large models, a first `ollama run` may time out while downloading. Do not treat that as model failure. Resume with `ollama pull <model>` using a longer timeout, then verify with a short one-shot prompt.
+
+On Jared's 24 GB Mac, a 9.6 GB model can push memory close to full. Explain it simply: the model is sitting in RAM so it can answer locally. Check memory with:
+
+```bash
+top -l 1 -s 0 | grep PhysMem
+```
+
+If investigating memory pressure, cross-check `top` memory with `ps` RSS because compressed memory can make a helper process look much larger than its live resident footprint. See `references/local-macos-ollama-memory.md` for the detailed local Mac pattern and commands.
+
 ## Model selection for agent workloads
 
 - **llama3.2:3b (2GB)** — fast, works for chat, but does NOT support tool calling. Use for Open WebUI only, not Hermes agents. Will not respond to function calls — Hermes chat returns tool JSON instead of text.

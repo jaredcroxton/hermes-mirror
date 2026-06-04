@@ -521,6 +521,14 @@ When Jared needs deep product-specific expertise, Polly routes to one of six spe
 
 Each soul contains product identity, tagline, visual system, voice principles, technical architecture, competitive positioning, guardrails, and relationship to the PerformOS suite. See `references/sub-agent-ecosystem.md` for the full routing protocol.
 
+## Prospecting dashboard patterns
+
+When Jared wants to generate leads for AgentOS or private AI agents, build a signal dashboard around operational pain rather than a generic company list.
+
+For education, training, RTO, college, tutoring, or VET providers, the best lead signals are student enquiry volume, course/admin complexity, compliance burden, policy/documentation load, hiring/growth activity, and a clear private-agent use case. Use the `html-leads-dashboard` reference `references/education-agent-opportunity-dashboard.md` for the dashboard schema, scoring model, source stack, and outreach copy.
+
+Default wedge for smaller local providers: **Private AI Readiness Audit for Education Providers** at $750 to $1,500, then upsell AgentOS by PerformOS where the audit shows enough workflow pain and budget fit. Do not lead every Sunshine Coast business straight into the $4,999/month package unless the dashboard shows size, complexity, and a clear agent use case.
+
 ## Pitfalls
 
 - **Two product variants exist.** Cloud (Orgo) edition and Local (Ollama) edition are separate products with different architectures. Always confirm which variant the client needs before pitching. Local is for data sovereignty; Cloud is for fully managed.
@@ -528,6 +536,7 @@ Each soul contains product identity, tagline, visual system, voice principles, t
 - **"Yes correct" is not confirmation.** Jared often says "yes correct" to acknowledge a framing question without actually answering follow-up inputs. Always verify you have ALL required data before building. Unanswered questions = wait.
 - **Triple-party risk.** The chain is Client → PerformOS → Orgo.ai (cloud edition). Each is a separate security surface. Name the data flow explicitly. Local edition has two main surfaces: Client environment → PerformOS-owned managed appliance. If Lightsail is added as a cloud control layer, name it separately and explain what data does and does not pass through it.
 - **Mac Mini over MacBook:** Always recommend Mac Mini for local deployments. It is cheaper (A$1,599 vs ~$2,100+ for MacBook Air with equivalent RAM), designed for always-on desk use, and the client never needs to carry a server. A laptop is the wrong form factor for a dedicated AI agent machine.
+- **Proactive agent health checks.** When an agent (Bob, Lara, Sam, Polly, Harry, Nelly) stops responding or a task fails, do not assume the code is broken. Check provider health first: run `hermes --profile <profile> chat -q "reply with ok" --quiet`. If it returns 401, the API key is dead — switch providers via config.yaml edit (see specialist-agent-deployment skill). If it times out, the model or provider is overloaded. Always verify the agent brain before debugging the task.
 - **Token costs are deceptively low (cloud edition).** With caching, 56M tokens costs ~$9/mo. This is the margin lever. Do not frame tokens as the cost driver.
 - **Zapier pricing is in GBP.** When converting for Australian clients, apply current exchange rate. Note the currency difference clearly.
 - **Two-document discipline.** Always produce both documents when asked for a proposal. External and internal are never the same file. Do not accidentally leak internal margins to a client.

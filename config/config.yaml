@@ -1,7 +1,7 @@
 model:
-  base_url: https://api.deepseek.com/v1
-  default: openrouter/owl-alpha
-  provider: openrouter
+  base_url: https://chatgpt.com/backend-api/codex
+  default: gpt-5.5
+  provider: openai-codex
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
@@ -24,6 +24,7 @@ agent:
   gateway_auto_continue_freshness: 3600
   image_input_mode: auto
   disabled_toolsets: []
+  reasoning_effort: high
 terminal:
   backend: local
   modal_mode: auto
@@ -214,6 +215,7 @@ display:
   resume_max_assistant_lines: 3
   resume_skip_tool_only: true
   busy_input_mode: interrupt
+  interface: cli
   tui_auto_resume_recent: false
   tui_agents_nudge: true
   bell_on_complete: false
@@ -238,7 +240,11 @@ display:
   tool_progress_overrides: {}
   tool_preview_length: 0
   ephemeral_system_ttl: 0
-  platforms: {}
+  platforms:
+    telegram:
+      streaming: true
+    discord:
+      streaming: false
   runtime_footer:
     enabled: false
     fields:
@@ -265,7 +271,7 @@ tts:
     model_id: eleven_multilingual_v2
   openai:
     model: gpt-4o-mini-tts
-    voice: alloy
+    voice: onyx
   xai:
     voice_id: eve
     language: en
@@ -293,16 +299,16 @@ stt:
     model: voxtral-mini-latest
   elevenlabs:
     model_id: scribe_v2
-    language_code: ''
+    language_code: Australian
     tag_audio_events: false
-    diarize: false
+    diarize: true
 voice:
   record_key: ctrl+b
   max_recording_seconds: 120
-  auto_tts: false
+  auto_tts: true
   beep_enabled: true
   silence_threshold: 200
-  silence_duration: 3.0
+  silence_duration: 3
 human_delay:
   mode: 'off'
   min_ms: 800
@@ -390,21 +396,23 @@ approvals:
   mcp_reload_confirm: true
   destructive_slash_confirm: false
 command_allowlist:
-- delete in root path
-- recursive delete
-- script execution via -e/-c flag
 - kill process via pgrep expansion (self-termination)
+- sudo with combined-flag privilege escalation
+- delete in root path
+- overwrite project env/config via redirection
+- script execution via -e/-c flag
 - stop/restart hermes gateway (kills running agents)
+- overwrite system file via redirection
+- force kill processes
+- shell command via -c/-lc flag
+- overwrite system config
+- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
+- script execution via heredoc
+- git force push (rewrites remote history)
 - stop/restart system service
 - pipe remote content to shell
 - kill hermes/gateway process (self-termination)
-- overwrite system config
-- overwrite system file via redirection
-- sudo with combined-flag privilege escalation
-- script execution via heredoc
-- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
-- overwrite project env/config via redirection
-- git force push (rewrites remote history)
+- recursive delete
 quick_commands: {}
 hooks: {}
 hooks_auto_accept: false
@@ -464,6 +472,13 @@ gateway:
   media_delivery_allow_dirs: []
   trust_recent_files: true
   trust_recent_files_seconds: 600
+streaming:
+  enabled: false
+  transport: auto
+  edit_interval: 0.8
+  buffer_threshold: 24
+  cursor: " \u2589"
+  fresh_final_after_seconds: 60
 sessions:
   auto_prune: false
   retention_days: 90
@@ -480,7 +495,7 @@ updates:
 lsp:
   enabled: true
   wait_mode: document
-  wait_timeout: 5.0
+  wait_timeout: 5
   install_strategy: auto
   servers: {}
 x_search:
@@ -499,7 +514,10 @@ secrets:
 paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
-_config_version: 25
+_config_version: 26
+EMAIL_ADDRESS: jaredcroxton@gmail.com
+EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
+EMAIL_PASSWORD: mfqu sucs sncr ysbh
 known_plugin_toolsets:
   cli:
   - spotify
@@ -539,3 +557,6 @@ session_reset:
   at_hour: 4
   idle_minutes: 1440
   mode: both
+platforms:
+  google_chat:
+    enabled: true

@@ -14,6 +14,18 @@ Lara is a single specialist agent. She does not delegate internally. Brock's del
 
 ## The pattern
 
+### Small academic workshop review mode
+
+When Jared asks for a smaller academic learning-design cross-check, do **not** launch the full two-pass programme build or ask the 10 commercial programme discovery questions. Use this lighter sequence:
+
+1. Read Sam's current assessment context and the relevant study vault file.
+2. Read Lara's soul or use Lara's learning-design lens for activity structure, engagement, Tell-Show-Do-Check, and evaluation.
+3. Cross-check against peer-reviewed sources where neuroscience accuracy matters.
+4. Give concise adjustment notes first. Wait for Jared to say **lock it** or **go** before building the Word document or Part 2 resource.
+5. Keep the output as assessment support, not ghostwriting. Focus on structure, mechanisms, activity quality, rubric alignment, and source choices.
+
+Reference for a worked example: `references/neuroscience-loneliness-remote-workshop-review.md`.
+
 ### Step 0: Discovery (Brock only)
 Before any delegate_task fires, Brock asks Jared the 10 discovery questions from the Programme Build Baseline at `/Users/jc/Desktop/Obsidian/PerformOS/Programme-Build-Baseline.md`. No build starts without these answered.
 

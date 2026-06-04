@@ -479,6 +479,28 @@ Bad motion:
 
 Respect `prefers-reduced-motion` for non-trivial animation.
 
+## HTML-to-Video with HyperFrames
+
+When the user wants a designed artifact turned into an MP4, or asks how HyperFrames compares with HTML dashboards, decks, and design skills, treat HyperFrames as a **motion/rendering layer**, not a replacement design system.
+
+Use this framing:
+
+- HTML dashboards are for **use**: filters, search, notes, CSV export, status tracking, and operational workflow.
+- HTML decks and prototypes are for **review and interaction**: executive browsing, clickable flows, and reusable source-of-truth artifacts.
+- HyperFrames is for **watching and sharing**: MP4 product intros, training explainers, KPI stories, dashboard walkthroughs, and social clips.
+
+Preferred workflow:
+
+1. Define the business story and audience first.
+2. Build or reuse the HTML artifact.
+3. Create a HyperFrames motion version.
+4. Lint, preview, and render the MP4.
+5. Deliver both the source artifact and the rendered video when useful.
+
+For Jared, the strongest mental model is: **design once, publish three ways**: interactive HTML, MP4 walkthrough, and share assets.
+
+Reference: `references/hyperframes-html-to-video.md` contains install checks, first-project commands, Claude Code prompts, Hermes/Bob handoff language, and Studio verification cues.
+
 ## Images and Icons
 
 Use real supplied imagery when available.

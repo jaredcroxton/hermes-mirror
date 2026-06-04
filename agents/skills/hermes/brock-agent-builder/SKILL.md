@@ -246,6 +246,46 @@ Then handoff with a summary:
 
 ---
 
+## Decision-gated build briefs
+
+When Jared provides a build brief that contains explicit open decisions, do not treat the default recommendation as permission to build. Ask the open decisions one at a time before writing any SOUL files, playbooks, setup prompts, profile configs, or startup files.
+
+Use this sequence:
+1. Pressure-test the architecture briefly and name the recommendation.
+2. Ask the first open decision only.
+3. Continue one decision at a time until every decision that changes the file content is resolved.
+4. Only then write the files.
+5. If tool approval blocks the write, report that nothing was written. Do not imply the build landed.
+
+This applies especially to orchestrator-plus-playbook agents, sub-agent vs playbook decisions, optional specialist domains, naming, and overlap with existing agents.
+
+### Design QA task agent under Bob
+
+When Jared asks whether Bob needs a design or themes sub-agent, recommend a **Claude Code style task agent**, not a persistent chat specialist, unless Jared explicitly wants an independently addressable creative specialist.
+
+Default pattern:
+- Bob_Builder owns implementation.
+- The design QA task agent owns the visual standard.
+- Brock reviews only when the artifact affects people, money, reputation, executive alignment, or Jared's time.
+
+The design QA task agent should be a reviewer with teeth, not a second builder. It should return: pass, pass with minor fixes, or fail with required fixes. Bob then implements the fixes.
+
+Suggested role name: `premium-dashboard-design-reviewer`.
+
+Trigger: after Bob builds any HTML dashboard, lead dashboard, landing page, deck, or client-facing interface.
+
+Quality gate:
+1. Bob builds.
+2. Bob opens in Chrome.
+3. Design QA reviews screenshot, DOM, console, brand fit, motion, and task-specific checklist.
+4. Bob fixes any failures.
+5. Design QA passes.
+6. Only then is the artifact returned to Jared.
+
+## Premium design QA gate
+
+When creating or updating build agents for Bob, keep design QA as a reviewer gate, not a competing builder. See `references/premium-design-qa-gate.md` for the pattern. Use this especially when the output is an HTML dashboard, landing page, lead dashboard, deck, or client-facing interface.
+
 ## Cross-agent orchestration (for specialist souls)
 
 When building a specialist that reports to an orchestrator:
@@ -254,6 +294,12 @@ When building a specialist that reports to an orchestrator:
 2. **Then update the orchestrator** — add the specialist to the sub-agent table in the orchestrator's soul
 3. **Define routing rules** — when does the orchestrator handle a question vs route to the specialist?
 4. **Set the escalation path** — what does the specialist do when it needs something outside its domain?
+
+### Playbook-backed orchestrator option
+
+Before creating multiple new specialist agents or Telegram bots, test whether Jared actually needs separately addressable specialists. If the answer is no, build one persistent orchestrator plus markdown playbooks under its agent folder. This keeps one front door, reduces gateway/profile overhead, and still gives specialist-quality output.
+
+Use this for prompt operations, research domains, content systems, and other expert stacks where the sub-specialists are knowledge modules rather than independent actors. See `references/playbook-backed-orchestrators.md` for the file set, gates, and Piper_PromptOps example.
 
 Example from Polly's ecosystem:
 ```
@@ -268,10 +314,14 @@ Polly (PerformOS — product orchestrator)
 
 ## Integration with deployment
 
-After designing a specialist soul, Brock does NOT deploy it. The deployment path is:
+After designing a specialist soul, Brock usually does NOT deploy it. The default deployment path is:
 1. Brock designs the soul → saves to Obsidian
 2. Jared reviews and approves
 3. Bob_Builder deploys using the `specialist-agent-deployment` skill
+
+Exception: if Jared explicitly asks Brock to complete, run, wire, or verify the agent, Brock may execute the deployment steps directly rather than hand off. In that case, treat deployment as unfinished until the profile is wired, gateway status is verified, and a real identity probe path is ready for Jared.
+
+For Telegram specialist bots, follow `references/specialist-telegram-deployment-hygiene.md`: store the token in the target profile only, set allowlists, verify `getMe`, remove inherited platform credentials like email unless explicitly wanted, restart the gateway, and verify the expected platform count before saying the bot is live.
 
 For task agents (Format A), Brock saves the agent file and the user deploys it in their Claude Code plugin.
 

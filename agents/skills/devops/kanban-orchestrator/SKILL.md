@@ -160,6 +160,12 @@ Tell them what you created in plain prose, naming the actual profiles you used:
 
 **Human-in-the-loop:** Any task can `kanban_block()` to wait for input. Dispatcher respawns after `/unblock`. The comment thread carries the full context.
 
+**Build now, enrich later:** If the user explicitly prioritizes speed and the implementer already has enough context, do not over-gate the implementer behind every advisory/research parent. Create an immediate implementer card with the available handoff and mark older parent-gated cards as superseded in comments so duplicate work is avoided. Use later research/package handoffs as version two inputs, not blockers.
+
+**Design-polish handoff with fuzzy artifact name:** When the user asks for a specialist design pass on a named artifact but does not provide an exact path or link, do not stall if the intent is clear. Create the specialist card with a discovery step: search the likely workspace locations, visually review the artifact, polish typography/spacing/hierarchy without rebuilding from scratch, and block only if the artifact remains ambiguous. This keeps momentum while still giving the specialist a clean escape hatch.
+
+**Kanban crash bypass for urgent builds:** If a specialist worker repeatedly crashes with `pid not alive` but the profile brain itself can answer a direct probe, the issue is likely the worker dispatch path rather than the specialist's ability. For urgent user-facing builds, launch the profile directly with `hermes --profile <profile> chat -q ... --quiet` using the same acceptance criteria, then continue separately with Kanban recovery. Do not tell the user the specialist is working from the board if the board lane is blocked.
+
 ## Pitfalls
 
 **Inventing profile names that don't exist.** The dispatcher silently fails to spawn unknown assignees — the card just sits in `ready` forever. Always assign to a profile from your Step 0 discovery; ask the user if you're unsure.
@@ -177,6 +183,16 @@ Tell them what you created in plain prose, naming the actual profiles you used:
 **Don't pre-create the whole graph if the shape depends on intermediate findings.** If T3's structure depends on what T1 and T2 find, let T3 exist as a "synthesize findings" task whose own first step is to read parent handoffs and plan the rest. Orchestrators can spawn orchestrators.
 
 **Tenant inheritance.** If `HERMES_TENANT` is set in your env, pass `tenant=os.environ.get("HERMES_TENANT")` on every `kanban_create` call so child tasks stay in the same namespace.
+
+## Recovering stuck workers
+
+When a worker profile keeps crashing (not DB corruption — see above), hallucinating, or getting blocked by its own mistakes (wrong model, missing skill, broken credential), the kanban dashboard flags the task. Three primary actions:
+
+1. **Reclaim** (or `hermes kanban reclaim <task_id>`) — abort the running worker and reset to `ready`
+2. **Reassign** (or `hermes kanban reassign <task_id> <new-profile> --reclaim`) — switch to a different profile
+3. **Change profile model** — edit profile config, then Reclaim to retry
+
+**DB corruption vs. worker crash distinction:** If 10+ workers crash immediately with `pid not alive`, suspect DB corruption (see above). If isolated tasks fail with content errors or timeouts, it is a worker issue.
 
 ## Goal-mode cards (persistent workers)
 
@@ -202,7 +218,42 @@ When to use it: long, multi-step, or "keep going until X is true" cards. When NO
 
 Write the body as **explicit acceptance criteria** — the judge is only as good as the goal text. "Translate the README" is weaker than "Translate every section of the README to French; no English sentences remain."
 
-## Recovering stuck workers
+## Kanban database corruption
+
+The SQLite kanban database can become corrupted (truncated writes, WAL issues, forced shutdowns during a write). Symptoms are different from worker crashes — the DB file itself refuses to open or returns integrity_check failures.
+
+**Symptoms:**
+- `kanban_create`, `kanban_show`, or any `kanban_*` tool call returns `"database disk image is malformed"`
+- `sqlite3 <path> "PRAGMA integrity_check;"` returns anything other than `ok`
+- `kanban_unblock` or `kanban_complete` silently fails or returns unexpected errors
+- Kanban dashboard at localhost:9119 shows stale data (old task states that no longer update)
+- Profile gateways show `LastExitStatus = 256` in `launchctl list` output — this means the gateway process crashes on startup, often because the kanban notifier tick fails when it cannot find the `kanban_notify_subs` table
+
+**Infinite crash loop pattern (diagnostic):**
+If a dispatched worker profile crashes 10+ times immediately with `pid not alive` errors and the task never progresses past `running`, the cause is almost always a missing or corrupted `kanban_notify_subs` table in the kanban DB. The gateway starts, the dispatcher tries to spawn a worker, the notifier tick hits the missing table and kills the process. The dispatcher retries, gets a new PID, same crash. This produces a rapidly growing `task_runs` table with rows that have `ended_at` within seconds of `started_at`. Check with:
+```bash
+sqlite3 ~/.hermes/kanban/boards/<board>/kanban.db "SELECT COUNT(*) FROM task_runs WHERE ended_at - started_at < 5;"
+```
+If this returns > 5 rows, rebuild the DB per the recovery procedure below. Then restart the affected profile gateway:
+```bash
+launchctl unload ~/Library/LaunchAgents/ai.hermes.gateway-<profile>.plist
+sleep 2
+launchctl load ~/Library/LaunchAgents/ai.hermes.gateway-<profile>.plist
+```
+Note: `hermes gateway restart` from inside the gateway process is blocked to prevent restart loops. Always use `launchctl unload/load` from a separate terminal.
+
+**Recovery procedure:**
+
+See `references/kanban-db-corruption-recovery.md` for the full step-by-step recovery walkthrough. The short version:
+
+1. Check for a recovery SQL file at `<board-dir>/kanban.recover.sql`
+2. Check for a recovered DB at `<board-dir>/kanban.recovered.db`
+3. Remove the corrupt WAL/SHM files, replace the `.db` with a clean build from the recovery SQL
+4. Import events and task_links from the old recovered DB to preserve history
+5. Restart the affected profile gateway via `launchctl unload/load`
+6. Verify with `kanban_show` on an existing task
+
+**Do NOT** attempt to use `sqlite3 .recover` on a corrupted Hermes kanban DB — the recover command creates a `.db.rec` file that drops tables and constraints that Hermes expects. Always use the `kanban.recover.sql` file instead.
 
 When a worker profile keeps crashing, hallucinating, or getting blocked by its own mistakes (usually: wrong model, missing skill, broken credential), the kanban dashboard flags the task with a ⚠ badge and opens a **Recovery** section in the drawer. Three primary actions:
 

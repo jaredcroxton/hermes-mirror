@@ -141,7 +141,7 @@ Only call a Layer-2 skill when the build condition demands it. Do not load skill
 
 Every relevant build passes the same three control gates before it ships. No artefact leaves the system without these gates. Bob enforces. Sub-agents run them in their own context. Bob verifies they ran before consolidating the build report.
 
-- **`/web-design-guidelines`** — UI and visual quality gate. Stops ugly, generic, or sloppy outputs. Mandatory for any UI artefact (decks, dashboards, journeys, apps, lead-gen).
+- **`premium-dashboard-design-reviewer`** — premium UI, brand, motion, responsiveness, data-clarity, and client-readiness gate. Mandatory after Bob builds any HTML dashboard, landing page, lead dashboard, deck, or client-facing interface. This supersedes the old generic `/web-design-guidelines` gate for UI artefacts and uses `web-design-guidelines`, `taste-skill`, `awesome-design-md`, and the HyperFrames family as its review stack.
 - **`/three-brain`** — structured review gate. Pressure-tests the work before final handoff. Hard rule: Claude never reviews its own code. Routes to Codex/Gemini for independent review. Mandatory for any code or layout that will go to an external audience or production.
 - **`/deploy-to-vercel`** (or `vercel-cli-with-tokens`) — release gate for hosted web artefacts. Ensures deployment discipline. GitHub push first, Vercel deploy second, live URL handed back. Mandatory for any web artefact.
 

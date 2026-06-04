@@ -164,12 +164,15 @@ Ollama unloads models from GPU when idle. First query after idle can take 10-30 
 
 1. **`localhost` in JavaScript on remote servers.** `fetch('http://localhost:11434')` in a page served from EC2 resolves to the user's laptop, not the EC2. Use same-origin proxy endpoints (`/api/chat`) or the server's public IP instead.
 2. **Vite `allowedHosts` block.** Always add the tunnel hostname to `server.allowedHosts` in vite.config.ts. Restart the dev server after.
-2. **ngrok URL changes on restart.** Free ngrok gives a random URL each time. If the client bookmarks it, it will break. Use Tailscale Funnel for stable URLs.
-3. **ngrok authtoken required.** You must run `ngrok config add-authtoken <token>` before the first use. Token is at https://dashboard.ngrok.com/get-started/your-authtoken.
-4. **Dashboard server must be running.** ngrok/tunnel only forwards traffic. If the Vite/dev server is not running on the target port, the tunnel returns connection refused.
-5. **ngrok API for URL.** The local ngrok API is at `http://localhost:4040/api/tunnels`. CORS is not enabled; use from server-side or curl only — not from browser JS.
-6. **Cloudflare Pages is NOT for real-time chat.** Cloudflare Pages serves only static files. It cannot proxy to a running Hermes/Ollama backend. Use it only for static dashboards (KPI displays, reports), not chat interfaces.
-7. **WhatsApp API is wrong channel for AI agents.** WhatsApp API charges $0.01-$0.12 per conversation and only allows replies within 24-hour windows. Telegram is free and allows proactive push. Use Telegram for all AI agent communication.
+3. **Open port does not prove target identity.** When several local dashboards or studios are running, do not assume the first responsive port is the requested artifact. Check the page title, visible heading, repo/file path, or specialist handoff first. If the target cannot be identified, say so and ask for the exact path, URL, screenshot, or project name rather than opening a likely wrong dashboard.
+4. **Specialist blocked means not finished.** If a build/polish task is blocked because the artifact was not found, report that status before showing a local URL. Distinguish clearly between “this local app is running” and “this is the confirmed dashboard Jared asked for.”
+5. **Showing in Chrome.** When Jared asks to see a local dashboard in Google Chrome and the URL is known, use `open -a "Google Chrome" <url>` and then state exactly which URL was opened. Do not imply production/live status from opening a local URL.
+6. **ngrok URL changes on restart.** Free ngrok gives a random URL each time. If the client bookmarks it, it will break. Use Tailscale Funnel for stable URLs.
+7. **ngrok authtoken required.** You must run `ngrok config add-authtoken <token>` before the first use. Token is at https://dashboard.ngrok.com/get-started/your-authtoken.
+8. **Dashboard server must be running.** ngrok/tunnel only forwards traffic. If the Vite/dev server is not running on the target port, the tunnel returns connection refused.
+9. **ngrok API for URL.** The local ngrok API is at `http://localhost:4040/api/tunnels`. CORS is not enabled; use from server-side or curl only — not from browser JS.
+10. **Cloudflare Pages is NOT for real-time chat.** Cloudflare Pages serves only static files. It cannot proxy to a running Hermes/Ollama backend. Use it only for static dashboards (KPI displays, reports), not chat interfaces.
+11. **WhatsApp API is wrong channel for AI agents.** WhatsApp API charges $0.01-$0.12 per conversation and only allows replies within 24-hour windows. Telegram is free and allows proactive push. Use Telegram for all AI agent communication.
 
 ## Reference
 

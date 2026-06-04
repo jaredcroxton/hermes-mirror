@@ -100,7 +100,35 @@ Never run the `.env` file directly. If the user tries `/Users/jc/.hermes/.env` a
 
 Use `APOLLO_API_KEY` from the env file, not from chat. Use `x-api-key` in request headers.
 
-Minimal organization enrichment probe:
+**CRITICAL — Correct endpoint format (updated June 2026):**
+The old `GET /v1/organizations?domain=` endpoint returns 404. Use the POST enrich endpoint instead:
+
+```python
+import json, urllib.request
+from pathlib import Path
+
+key = None
+for line in Path('/Users/jc/.hermes/.env').read_text(errors='ignore').splitlines():
+    s = line.strip()
+    if s.startswith('APOLLO_API_KEY='):
+        key = s.split('=', 1)[1].strip().strip('"').strip("'")
+        break
+
+req = urllib.request.Request(
+    'https://api.apollo.io/api/v1/organizations/enrich',
+    data=json.dumps({'domain': 'qantas.com'}).encode(),
+    headers={
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'User-Agent': 'HermesApolloConnector/0.1',
+    },
+    method='POST',
+)
+obj = json.loads(urllib.request.urlopen(req, timeout=30).read())
+print(obj.get('organization', {}).get('name'))
+```
+
+**Do NOT use** `https://api.apollo.io/v1/organizations?domain=...` — this returns 404 with current API versions.
 
 ```python
 import json, urllib.request

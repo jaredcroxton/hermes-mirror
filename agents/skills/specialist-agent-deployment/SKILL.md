@@ -20,6 +20,7 @@ User explicitly prefers the agent to "just make it work" rather than being asked
 - A Telegram bot created via BotFather needs to be attached to a profile
 - A specialist profile's `.env`, gateway, or MCP setup needs to be fixed
 - An existing specialist agent needs to be updated, restarted, or verified after configuration changes
+- Jared wants to switch multiple or all specialist profiles to a local Ollama model for API-cost testing
 
 ## Default deployment pattern
 1. Identify the exact Hermes profile name to use.
@@ -35,6 +36,7 @@ User explicitly prefers the agent to "just make it work" rather than being asked
 - When the user says a specialist SOUL was updated, verify the canonical source file first and confirm any stated backup path exists before treating the update as landed.
 - Do not assume the Hermes profile is implemented as a symlink at a guessed path. Check the actual profile wiring before reporting profile-link state.
 - Separate verification into **soul ready**, **profile brain works**, **gateway loaded**, and **live on Telegram/transport**. See `references/profile-brain-vs-live-transport-verification.md`.
+- When changing a profile's model/provider and Jared reports Telegram still shows the old provider, verify the Telegram runtime path, not just the CLI brain. A CLI probe can pass while the live Telegram gateway/session footer is stale. See `references/telegram-runtime-model-verification.md`.
 - For fresh Telegram bots, verify the BotFather token with `getMe`, restart the profile gateway, then recognise `Bad Request: chat not found` as the normal sign that the user has not pressed **Start** in the new bot chat yet. See `references/profile-telegram-bot-verification.md`.
 - Verify with a live identity or reply test before claiming the specialist is fully ready.
 - Report the concrete profile, source-of-truth SOUL path, gateway state, and verification result.
@@ -67,8 +69,49 @@ Lara defaults to a single-sheet Excel output. When the user wants her complete l
 ### File delivery after specialist production
 After any specialist agent produces a file, deliver it in-chat via MEDIA or send_message. Do not just tell the user the file path. The user expects files to appear in the conversation. Already captured in memory; reinforced here for routing agents.
 
+### Capability install + proof demo for specialist profiles
+When Jared says to make sure a specialist agent "has this skill" or asks for "a demo from Bob", treat it as a profile capability deployment. Installing or testing a tool in the current shell is not enough. Verify the target profile can respond, install or copy the capability into the profile skill library where appropriate, then have the specialist produce a small real artifact and independently verify it before reporting success. For HyperFrames specifically, Bob should prove the chain by rendering an MP4, not by describing the workflow. See `references/hyperframes-profile-capability-demo.md`.
+
 ### General agent routing
 Prefer `hermes --profile <profile> chat -q "..." --quiet` over send_message for agent-to-agent routing. send_message only works when the agent has a registered Telegram bot and the chat is known. The terminal path works for all profiles.
+
+## Gateway stopped — triage before provider debugging
+
+When a specialist agent stops responding on Telegram, the most common failure mode is a **stopped gateway**, not a dead provider or config error. Always check this first.
+
+When **multiple** specialist Telegram bots are silent, use the bulk recovery flow in `references/multi-profile-telegram-outage-recovery.md`: profile list first, gateway status/log scan, token `getMe` mapping, restart stale launchd gateway services, probe each profile brain, then fix any profile-local provider credential drift.
+
+When Jared asks to move a group of profiles from one provider/model to another while leaving selected profiles on a different model, use `references/profile-model-provider-split-refresh.md`: probe the target model first, copy key-based provider credentials into profile-local `.env` files, clear stale base URLs, restart every gateway to drop cached model state, and verify with direct reply probes.
+
+When Jared asks to switch everyone to a local Ollama model for cost testing, run the backup gate first. Back up the sanitized durable profile layer to GitHub before changing providers, then switch profiles, restart gateways, and verify each profile. See `references/global-profile-local-model-trial.md`.
+
+**Quick triage:**
+
+```bash
+hermes profile list | grep <profile>
+```
+
+If the gateway column shows `stopped` while others show `running`:
+
+```bash
+hermes gateway start --profile <profile>
+```
+
+Then verify:
+
+```bash
+hermes profile list | grep <profile>
+```
+
+If the gateway shows `running` and the agent still does not respond, only then move to the provider probe:
+
+```bash
+hermes --profile <profile> chat -q "ok" --quiet
+```
+
+**Why this order matters:** The CLI probe spins up an ad-hoc session and will succeed even when the gateway is down. This creates a false positive — the profile brain works fine, but Telegram messages never reach it because no gateway is listening. Checking `hermes profile list` first reveals the real problem in one command.
+
+See `references/gateway-stopped-triage.md` for the full diagnostic flow, false-positive pitfall, and common causes.
 
 ## Pitfalls to Avoid
 - Never output long step-by-step instructions for the user to follow.
@@ -77,7 +120,8 @@ Prefer `hermes --profile <profile> chat -q "..." --quiet` over send_message for 
 - Do not assume profile names match bot names or Obsidian note names.
 - Do not claim the agent is live until an end-to-end reply or identity probe succeeds.
 - Do not default to custom handlers when the standard profile gateway will work.
-- **execute_code read_file corrupts files on writeback.** `read_file()` in execute_code returns content with line-number prefixes baked in (e.g. `     1|content`). Writing that content back via `write_file()` bakes the prefixes into the file. Every subsequent read compounds the corruption. Fix: strip with `re.sub(r'^ +\d+\|', '', content, flags=re.MULTILINE)` before any write_file. Prefer `patch()` for targeted edits over `write_file()` when the file already exists — it avoids this class of bug entirely. See `references/execute-code-file-corruption-pitfall.md`.
+- **Do not start with the provider probe when an agent goes silent on Telegram.** Check `hermes profile list` first. A stopped gateway is the most common cause and the CLI probe will give a false positive. See Gateway stopped triage above.
+- **execute_code read_file corrupts files on writeback.** `read_file()` in execute_code returns content with line-number prefixes baked in (e.g. `     1|content`). Writing that content back via `write_file()` bakes the prefixes into the file. Every subsequent read compounds the corruption. Fix: strip with `re.sub(r'^ +\\d+\\|', '', content, flags=re.MULTILINE)` before any write_file. Prefer `patch()` for targeted edits over `write_file()` when the file already exists — it avoids this class of bug entirely. See `references/execute-code-file-corruption-pitfall.md`.
 
 ## References
 - `references/atticus-handler-pattern.md` for the handler fallback template when a custom polling path is truly required.
@@ -87,9 +131,15 @@ Prefer `hermes --profile <profile> chat -q "..." --quiet` over send_message for 
 - `references/lara-full-package-pattern.md` for triggering Lara's complete multi-tab learning design output.
 - `references/ollama-ec2-storage.md` for EC2 Ollama model storage management — moving models to data volume, double-nesting fix, ollama user permissions, OLLAMA_MODELS env var, port conflict recovery.
 - `references/self-hosted-chat-ui-pitfall.md` for the browser-localhost-vs-server-localhost pitfall, backend proxy pattern, and model pre-warming when serving chat UIs from EC2.
+- `references/gateway-stopped-triage.md` for the stopped-gateway diagnostic flow: false-positive CLI probe trap, correct triage order, and common causes.
+- `references/multi-profile-telegram-outage-recovery.md` for ecosystem-wide Telegram outages: bulk gateway restart, stale launchd refresh, token `getMe` mapping, profile brain probes, and profile-local provider credential drift fixes.
+- `references/profile-model-provider-split-refresh.md` for model/provider split migrations across profiles: target model probes, profile-local provider keys, stale base URL clearing, gateway cache refresh, and direct reply verification.
+- `references/global-profile-local-model-trial.md` for ecosystem-wide local Ollama model trials: GitHub backup gate, sanitized mirror boundary, local model config, gateway restart, verification, and restore path.
 - `references/execute-code-file-corruption-pitfall.md` for the read_file/write_file line-number corruption bug and fix.
 - `references/profile-brain-vs-live-transport-verification.md` for separating soul readiness, local profile brain, gateway state, and real Telegram/live transport verification.
+- `references/telegram-runtime-model-verification.md` for model/provider changes where CLI probes pass but Telegram still shows the old provider or stale session metadata.
 - `references/profile-telegram-bot-verification.md` for BotFather token `getMe` validation, profile-local `.env` wiring, gateway log checks, and the Telegram **Start** / `chat not found` pitfall.
+- `references/hyperframes-profile-capability-demo.md` for proving a specialist profile, especially Bob, has a newly installed capability by producing and verifying a real HyperFrames MP4 artifact.
 - `references/seo-content-pipeline.md` for the full Serge→Polly→Bob SEO content production pipeline (keyword brief to HTML delivery).
 
 ## Full deployment sequence (Telegram bot)
@@ -163,5 +213,40 @@ hermes --profile <profile> gateway restart
 ```
 
 **Pitfall:** The API key lives in the default `.env`. Profiles do not inherit it. The 401 error (`Your api key: ****ired is invalid`) means the key was not copied. The fix is always the same: copy the key and restart the gateway.
+
+## Provider switch: dead key → new provider via config.yaml edit
+
+When a provider key is invalid or dead (401 authentication_error), switch the profile to a working provider by editing the profile `config.yaml` directly. Do not rely on `.env` key alone — the `model.provider` and `model.base_url` in config.yaml control which API is called.
+
+**Symptoms:** `hermes --profile <profile> chat -q "test" --quiet` returns 401 or "invalid api key". Gateway status shows connected but all chat attempts fail.
+
+**Fix pattern (example: DeepSeek dead → OpenRouter owl-alpha):**
+
+```bash
+# 1. Edit config.yaml — change model provider
+sed -i '' 's/^  default: deepseek-v4-pro/  default: openrouter/owl-alpha/' ~/.hermes/profiles/<profile>/config.yaml
+sed -i '' 's/^  provider: deepseek/  provider: openrouter/' ~/.hermes/profiles/<profile>/config.yaml
+sed -i '' '/^  base_url: https:\/\/api.deepseek.com\/v1/d' ~/.hermes/profiles/<profile>/config.yaml
+
+# 2. Verify the target provider key exists (unmasked) in the profile .env or default .env
+grep "OPENROUTER_API_KEY" ~/.hermes/profiles/<profile>/.env
+# If masked (***), copy the real key from the default profile or have the user provide it.
+
+# 3. Quick probe
+hermes --profile <profile> chat -q "reply with ok" --quiet
+```
+
+**Bob-specific:** Bob's profile is `bobbuilder`. His config.yaml had `model.provider: deepseek` and `model.base_url: https://api.deepseek.com/v1`. After switching to OpenRouter, all three lines (default, provider, base_url) must be updated. The base_url line should be removed entirely — OpenRouter's URL is configured at the system level, not per-profile.
+
+**If OpenRouter key is also masked/placeholder in `.env`:** The user must provide the real key. Do not proceed with a masked key. A masked key (`***`) means the real value is not available to the agent.
+
+**If switching to openai-codex (OAuth):** openai-codex uses OAuth via `hermes auth`, not API keys. The provider value is `openai-codex`. No API key or base_url is needed — remove them from the provider block. The model must be one supported by Codex with a ChatGPT account. **Critical pitfall:** `gpt-4o` returns `"The 'gpt-4o' model is not supported when using Codex with a ChatGPT account"`. Use `gpt-5.5` or another supported model. Always probe with `hermes --profile <profile> chat -q "reply with ok" --quiet` after switching. If the model name is wrong, try the next supported model up.
+
+**Example: Bob switched from DeepSeek to openai-codex (03 June 2026):**
+- provider: `openai-codex`
+- model: `gpt-5.5`
+- base_url: removed (OAuth path, not needed)
+- API key: not needed (OAuth)
+- Verified: `hermes --profile bobbuilder chat -q "reply with one word: working" -m gpt-5.5 --quiet` returned `working`
 
 **DeepSeek silent-stop (separate from openai-codex timeout):** On heavy-context build/orchestration workflows (Bob delegating to Dexter, multi-skill loads), DeepSeek may return empty after a series of tool calls. The agent stalls mid-workflow without an error. The fix is to simplify the prompt — fewer skills loaded, delegate first then stop researching. If the pattern repeats, the build chief (Bob) may be better on gpt-5.4 for reliability. DeepSeek is fine for shorter specialist queries (Polly reviews, Serge briefs).

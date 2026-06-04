@@ -317,6 +317,7 @@ Live: https://<project>.vercel.app
 ## Build Types
 
 - **Dashboard, KPI view, sales report:** `.html`, dark theme, lime accent.
+- **Cinematic dashboard entry screen:** when Jared asks for a first page, scroll-text intro, date, Enter button, high visual, Taste, Awesome Design, or HyperFrames-style dashboard motion, preserve the existing dashboard/data and add a full-screen intro overlay. Verify visually with `browser_vision`, test Enter, then deploy live. See `references/cinematic-dashboard-entry-pattern.md`.
 - **Data-driven dashboard with cron:** `.html`, research agent scrapes external data into JSON, build agent produces dashboard, cron handles weekly refresh. See `references/data-driven-cron-dashboard.md` for the full pattern.
 - **Slide deck, presentation:** `.html`, also load and follow `html-slide-deck`. Premium decks require brand-correct colour, smooth animation, navigation controls, mobile layout at `375 x 812`, and zero overflow or clipping. For reusable animation code (particle canvas, spring easing, gradient borders, count-up stats, parallax orbs, typing effects, alternating slide-ins, pulse dots), see `references/html-animation-patterns.md`.
 - **Training page, onboarding module:** `.html`, use scroll-journey style where relevant.
@@ -324,7 +325,8 @@ Live: https://<project>.vercel.app
 - **Workflow automation form:** `.html`, self-contained form that POSTs to a Zapier catch webhook. Dropdown logic resolves downstream targets (e.g. role + market → manager). Summary panel with Send to Zapier / Copy payload / Close buttons. Loading, success, and error states on send. Always Local artifact mode — no GitHub or Vercel deploy. See `references/workflow-automation-form.md` for the full pattern.
 - **Briefing document:** `.html`, clean layout, printable where useful.
 - **PerformOS website page:** `.html`, match the existing PerformOS design system. Always reference `/Users/jc/Desktop/Website - PerformOS/faq.html` as the visual source of truth. Ivory/ink palette, Instrument Serif + Inter + JetBrains Mono, shared nav/footer. See `references/performos-website-design-system.md` for full tokens, typography, components, and build rules. See `references/performos-website-management.md` for site inventory, deploy workflow, operational patterns, DNS troubleshooting, and competitive teardown methodology.
-- **World-class quality upgrade:** when Jared says "make it world class" or "use the right people" about an existing artifact, use the world-class goal brief pattern: read the artifact, write 10 numbered quality goals, delegate to Bob with Taste bundle. See `references/world-class-goal-brief.md`.
+- **World-class quality upgrade:** when Jared says "make it world class" or "use the right people" about an existing artifact, use the world-class goal brief pattern: read the artifact, write 10 numbered quality goals, delegate to Bob with Taste bundle. See `references/world-class-goal-brief.md` for delegation pattern and trigger conditions.
+- **AgentOS typography and design QA correction:** when Jared points to the AgentOS site or says the page is good but the text size, font, or legibility feels wrong, treat it as a typography-discipline correction, not a minor CSS tweak. Use AgentOS posture without cloning: controlled hero scale, clean sans typography, sparse body copy, mono labels only, generous spacing, and a balanced right-side visual. Re-run `premium-dashboard-design-reviewer` after revision. See `references/agentos-typography-and-design-qa.md`.
 
 ## Local artifact mode
 
@@ -354,7 +356,9 @@ Preferred Local artifact sequence:
 
 ## Common Pitfalls
 
-1. **Skipping the Blueprint.** Always create a complete brief before touching the terminal.
+- **Skipping the premium design gate.** For any HTML dashboard, landing page, lead dashboard, deck, or client-facing interface, Bob must run `premium-dashboard-design-reviewer` before final handoff. A verdict of `pass with minor fixes` means draft-ready only. If Jared wants production-ready, route fixes back to Bob and rerun the reviewer.
+- **Treating typography feedback as a small CSS tweak.** When Jared says text size, font, or readability is wrong, especially against an AgentOS reference, revise the visual system: type scale, line length, font pairing, copy density, spacing, and hero balance. See `references/agentos-typography-and-design-qa.md`.
+- **Skipping the Blueprint.** Always create a complete brief before touching the terminal.
 2. **Proceeding without auth.** Stop if `claude`, `vercel`, or `gh` checks fail.
 3. **Letting Claude ask questions.** The prompt must say not to ask questions and must include enough detail to build.
 4. **Missing output path.** Always specify `~/Desktop/hermes_builds/<filename>` in the Claude prompt.

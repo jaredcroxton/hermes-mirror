@@ -8,7 +8,7 @@ platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [skills, authoring, hermes-agent, conventions, skill-md]
-    related_skills: [writing-plans, requesting-code-review]
+    related_skills: [plan, requesting-code-review]
 ---
 
 # Authoring Hermes-Agent Skills (in-repo)
@@ -138,7 +138,9 @@ Pick the closest existing category. Don't invent new top-level categories casual
 
 ## Common Pitfalls
 
-1. **Using `skill_manage(action='create')` for an in-repo skill.** It writes to `~/.hermes/skills/`, not the repo tree. Use `write_file` for in-repo creation.
+1. **Rewriting a user-approved pasted skill instead of preserving it.** When Jared provides an exact skill that works in Claude Code, preserve the exact body and workflow. If Hermes rejects the frontmatter because `description` exceeds 1024 characters, shorten only the YAML description for the Hermes runtime copy. Keep a separate exact Claude Code copy when relevant, and add a short note in the skill body explaining the frontmatter-only difference.
+
+2. **Using `skill_manage(action='create')` for an in-repo skill.** It writes to `~/.hermes/skills/`, not the repo tree. Use `write_file` for in-repo creation.
 
 2. **Leading whitespace before `---`.** The validator checks `content.startswith("---")`; any leading blank line or BOM fails validation.
 

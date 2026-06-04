@@ -75,6 +75,22 @@ Preferred sequence:
 
 For executive strategy artifacts, the HTML does not need to behave like a click-through slide deck if the brief is better served by a scrolling visual narrative. In those cases, prioritize clear section flow, executive readability, print cleanliness, and a strong story arc over slide navigation chrome.
 
+## HTML + MP4 requests
+
+When Jared wants a deck, dashboard walkthrough, product intro, or training explainer as video, keep the HTML artifact as the design source of truth and use HyperFrames only as the MP4 rendering layer.
+
+Preferred sequence:
+
+1. Build or adapt the HTML/deck first.
+2. Confirm the story, timing, and motion plan.
+3. Convert the motion version into a HyperFrames composition.
+4. Run `npx hyperframes lint` where available.
+5. Preview in HyperFrames Studio.
+6. Render with `npx hyperframes render --output <name>.mp4`.
+7. Deliver the HTML source and MP4 when both are useful.
+
+Do not replace a usable dashboard or deck with a video. Video explains or promotes the artifact. It does not replace interactive workflow features such as filtering, notes, localStorage, CSV export, or navigation.
+
 ## Intake
 
 Extract these details. Ask one question only if a missing item materially changes the build.

@@ -7,15 +7,24 @@ description: How Brock produces PerformOS website builds — research, legal, st
 
 ## The rules that change everything
 
-The rules below are for **PerformOS projects only** (sites that represent the PerformOS brand). For **non-PerformOS builds** (personal projects, gym sites, client demos, etc.), deployment workflow is decided case by case — Jared may ask for direct Vercel deploy or may want files handed to him. Ask if unclear.
+The rules below are for **new PerformOS marketing/strategy website builds** (sites that represent the PerformOS brand and need positioning, page strategy, or Antigravity-ready markdown). For **existing live web tools or dashboards** that Jared explicitly asks to update and redeploy, use the operational update pattern instead. See `references/existing-static-dashboard-update-pattern.md`.
 
-For PerformOS projects:
+For **new PerformOS marketing/strategy projects**:
 
 1. **Brock NEVER pushes to Vercel. Brock NEVER pushes to GitHub. Brock NEVER deploys.**
 2. **Brock hands markdown files directly to Jared.** Not to Bob_Builder. Not to Claude. Not to anti-gravity.
 3. **Brock's job ends when files are on Jared's desktop.**
 
-These rules were locked in after Jared explicitly corrected the workflow multiple times (27 May 2026):
+For **existing deployed PerformOS utilities/dashboards** where Jared asks for a direct update:
+
+1. Find the local repo.
+2. Preserve the current flow and data shape unless Jared asks for redesign.
+3. Update source and embedded data together.
+4. Deploy to the existing Vercel production alias.
+5. Verify live in the browser with a cache-busting URL.
+6. Commit and push only the intended changed files when git access works.
+
+These new-build rules were locked in after Jared explicitly corrected the workflow multiple times (27 May 2026):
 > "Yeah, you totally stuff the website up."
 > "In future, with PerformOS markdown strategy code, you hand them to me, not Claude or Antogravity. You don't push it to Vercel or GitHub. You don't need to do any of that. You just hand the markdown files to me before you've done."
 
@@ -116,7 +125,7 @@ Jared explicitly corrected Brock's operating model during a session where Brock 
 - **Don't suggest when you can execute.** When Jared asks for a capability upgrade (e.g. "build Lara out more"), give the suggestion and then offer to execute. Don't just describe what could be done and wait. Jared's correction: "I'm talking about Lara. What, you just gave suggestions. Don't change subjects." The right response is a concise recommendation followed by "Want me to write it?" — not a long strategy memo followed by a subject change.
 - **External CSS/JS dependencies.** The original page may reference external `styles.css` and `main.js`. When converting to a self-contained deliverable, inline ALL CSS and ALL JS. The final HTML must work as a single file with zero external dependencies beyond Google Fonts and GA4. This surfaced when the Vercel deploy included `course.html` but not `styles.css` — the page served but had no styling.
 - **File overwrite on vercel deploy.** Running `vercel --prod --yes` uploads whatever is on disk at that moment. If the git remote has a different version of `course.html`, and the remote is ahead of local, a prior `vercel deploy` can pull the remote version and overwrite local changes. Always verify the file on disk is the correct version BEFORE running vercel deploy. Use `grep "personal AI tutor\\|hero-eyebrow" course.html` to verify.
-- **Git push blocked in Hermes sandbox.** The sandbox cannot access macOS Keychain for HTTPS git credentials. SSH also fails (host key verification). The only deploy path that works is `vercel --prod --yes` from terminal. But Brock never runs vercel either — hand the files to Jared and let him handle deployment.
+- **Git push can vary by repo/session.** Older sessions saw HTTPS git blocked by macOS Keychain and SSH host-key issues. Do not assume push is impossible. Try `git push origin main` after committing if Jared asked for a deployed source update. If push fails, report it plainly and keep the verified Vercel deployment as the live artifact.
 - **Recovering overwritten files.** If course.html gets overwritten (by git operations, vercel pulls, or accidental edits), recover from the local git commit: `git checkout <commit-hash> -- course.html`. Verify recovery with `grep` for a known-unique string from the correct version. Then redeploy.
 - **cp -r captures .git repos.** When copying the website build package to Obsidian, `cp -r` will copy hidden `.git` directories and balloon the output with thousands of git object files. Always verify the destination after copy and remove any `.git` directories that were accidentally included. Use `find /path -name ".git" -type d` to check.
 - **Browser search blocking.** Google, Bing, and DuckDuckGo all block the headless browser tool. Never use the browser for search tasks. Route research to subagents with `web_fetch`/`web_search` tools, or ask Jared to provide specific URLs.
@@ -136,8 +145,10 @@ Brock writes souls. Bob's sub-agents handle build execution. If the soul update 
 - **Non-PerformOS Vercel deploy pattern (verified 29 May 2026).** When Jared asks for a live URL on a non-PerformOS project (personal sites, gym pages, demos, HTML dashboards): use terminal in the default profile. Steps: `git init` in build dir → `git add .` + `git commit -m "Initial"` → `gh repo create jaredcroxton/<slug> --public --description "<description>" --source=.` (creates repo AND pushes) → `vercel --prod --yes` from the build dir. Vercel auto-links GitHub and returns a live `*.vercel.app` URL plus an aliased clean URL (permanent). Both `vercel --version` and `gh auth status` were confirmed working in default profile as of 29 May 2026. Vercel auth at `~/.vercel/auth.json`, GitHub hosts at `~/.config/gh/hosts.yml`. Example: Jared's Gym site deployed in under 60 seconds to `https://jareds-gym.vercel.app` using this flow.
 
 ## Reference files
+- `references/existing-static-dashboard-update-pattern.md` — Existing deployed static dashboard update pattern: preserve flow/data shape, update source plus embedded data, deploy Vercel production, verify with cache-busted browser checks, and push only intended files.
 - `references/design-language-extraction-before-build.md` — Pre-build pattern for using Bob's Claude Code `design-language` skill to extract a premium reference site's design language before building original PerformOS/AgentOS pages.
 - `references/agentos-page-copy-patterns.md` — AgentOS pricing, security, solution, and hero demo patterns for AntiGravity-ready Markdown files, including the Ask → Review → Deliver → Clarify → Build console loop and Antigravity-inspired motion rules.
+- `references/agentos-landing-typography-reference.md` — AgentOS landing-page typography benchmark: restrained hero scale, clean sans typography, sparse body copy, mono labels only, premium spacing, and mandatory `premium-dashboard-design-reviewer` gate for client-facing pages.
 - `references/claude-code-brand-and-cinematic-briefs.md` — Pattern for creating transferable markdown briefs and brand-style folders for Claude Code, including cinematic scroll driven scene plans and PerformOS dark campaign mode.
 - `references/local-service-exposure-patterns.md` — Local service exposure: ngrok, Tailscale Funnel, cloud relay patterns for making Mac mini dashboards accessible remotely
 
