@@ -29,10 +29,12 @@ These new-build rules were locked in after Jared explicitly corrected the workfl
 > "In future, with PerformOS markdown strategy code, you hand them to me, not Claude or Antogravity. You don't push it to Vercel or GitHub. You don't need to do any of that. You just hand the markdown files to me before you've done."
 
 For non-PerformOS builds where Jared asks for deployment:
-1. Confirm Vercel CLI is authenticated (`vercel --version` + `gh auth status` — both live in the default profile, no need for Bob's profile)
-2. `git init`, `gh repo create`, `vercel --prod --yes` — all run from terminal in the build directory
-3. Vercel auto-links GitHub repo on first deploy
-4. Share the live URL and GitHub URL with Jared
+1. Confirm Vercel CLI is authenticated (`vercel --version`, `npx -y vercel whoami`, and `gh auth status` where GitHub is needed — these live in the default profile, no need for Bob's profile)
+2. `git init`, `gh repo create`, `vercel --prod --yes` — all run from terminal in the build directory when creating a new source-backed site
+3. Vercel auto-links GitHub repo on first deploy where GitHub is used
+4. For existing live static sites, if Vercel creates a new project/deployment, assign the original production alias back to the new deployment with `npx -y vercel alias set <new-production-url> <original-clean-domain>.vercel.app`
+5. Bob_Builder or Bob-level visual QA must check client-facing website/dashboard quality before final handoff
+6. Share the live URL and GitHub URL with Jared only after live viewport and console checks pass
 
 ## Kanban production pattern
 
@@ -141,8 +143,8 @@ Brock owns agent soul design. When Jared asks to build out an agent's capability
 
 Brock writes souls. Bob's sub-agents handle build execution. If the soul update requires craft-specific depth that benefits from a longer generative pass (like Rex_Stack's React patterns or Dexter_Decks' slide architecture), Brock writes a one-page brief and Jared can hand it to Claude Code for the deep generation pass. But for structural additions (Archie's competitive analysis, Lara's thinkers and activity library), Brock writes them directly.
 
-- **Simple HTML builds should not go to Bob.** Jared asked for a gym homepage. Delegating to Bob Builder caused a 600s timeout — Brock ended up writing the HTML directly and deploying via terminal. For single-file HTML sites (under ~100 lines of content), Brock writes the file directly. Delegate to Bob only for complex builds requiring his specialist skills (interactive dashboards, React apps, multi-page sites with builds).
-- **Non-PerformOS Vercel deploy pattern (verified 29 May 2026).** When Jared asks for a live URL on a non-PerformOS project (personal sites, gym pages, demos, HTML dashboards): use terminal in the default profile. Steps: `git init` in build dir → `git add .` + `git commit -m "Initial"` → `gh repo create jaredcroxton/<slug> --public --description "<description>" --source=.` (creates repo AND pushes) → `vercel --prod --yes` from the build dir. Vercel auto-links GitHub and returns a live `*.vercel.app` URL plus an aliased clean URL (permanent). Both `vercel --version` and `gh auth status` were confirmed working in default profile as of 29 May 2026. Vercel auth at `~/.vercel/auth.json`, GitHub hosts at `~/.config/gh/hosts.yml`. Example: Jared's Gym site deployed in under 60 seconds to `https://jareds-gym.vercel.app` using this flow.
+- **Simple HTML builds still need Bob-level QA.** Jared asked for a gym homepage. Delegating the whole build to Bob Builder caused a 600s timeout, so Brock can write or deploy small single-file HTML sites directly when speed matters. But Jared later corrected the quality gate: "Always get Bob to check it out." For client-facing visual artifacts, dashboards, lead builds, websites, and demo pages, Bob_Builder or Bob-level visual QA must inspect phone and desktop before final. Do not hand back a live page with text escaping boxes, mockup chrome, placeholder example images, or console errors.
+- **Non-PerformOS Vercel deploy pattern (verified 29 May 2026, updated 06 June 2026).** When Jared asks for a live URL on a non-PerformOS project (personal sites, gym pages, demos, HTML dashboards): use terminal in the default profile. For new source-backed builds: `git init` in build dir → `git add .` + `git commit -m "Initial"` → `gh repo create jaredcroxton/<slug> --public --description "<description>" --source=.` (creates repo AND pushes) → `vercel --prod --yes` from the build dir. For existing static sites where the fixed artifact is in a workspace, first try local Vercel auth with `npx -y vercel whoami`; a rejected `VERCEL_TOKEN` is not a deployment blocker if local login works. Deploy with `npx -y vercel deploy --prod --yes`, then if Vercel creates a new deployment/project, move the original clean URL with `npx -y vercel alias set <new-production-url> <original-clean-domain>.vercel.app`. Verify the original URL with `curl -I`, cache-busted browser inspection, viewport overflow checks, and console checks. Example: Callum's Gym was updated by deploying a workspace artifact, then aliasing `callums-gym.vercel.app` to the new deployment.
 
 ## Reference files
 - `references/existing-static-dashboard-update-pattern.md` — Existing deployed static dashboard update pattern: preserve flow/data shape, update source plus embedded data, deploy Vercel production, verify with cache-busted browser checks, and push only intended files.
@@ -151,6 +153,7 @@ Brock writes souls. Bob's sub-agents handle build execution. If the soul update 
 - `references/agentos-landing-typography-reference.md` — AgentOS landing-page typography benchmark: restrained hero scale, clean sans typography, sparse body copy, mono labels only, premium spacing, and mandatory `premium-dashboard-design-reviewer` gate for client-facing pages.
 - `references/claude-code-brand-and-cinematic-briefs.md` — Pattern for creating transferable markdown briefs and brand-style folders for Claude Code, including cinematic scroll driven scene plans and PerformOS dark campaign mode.
 - `references/local-service-exposure-patterns.md` — Local service exposure: ngrok, Tailscale Funnel, cloud relay patterns for making Mac mini dashboards accessible remotely
+- `references/non-performos-live-site-qa-and-alias.md` — Non-PerformOS live static site correction pattern: Bob visual QA, remove mockup/example elements, use local Vercel login when token auth fails, move the original production alias, and verify live overflow/console checks before handoff
 
 - `references/competitor-research-ai-courses.md` — Full competitor analysis from the 27 May 2026 session (8 AI course sites, frequency table, 3 key findings). Reference when building education/course pages.
 - `references/agent-thinker-installation-pattern.md` — Reusable pattern for adding named thinkers to agent souls. Format, rules, placement. Used on Archie_Architect (v2.0) and Lara_LearningDesign (v3.0).

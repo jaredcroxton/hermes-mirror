@@ -27,13 +27,18 @@ You are running an end-to-end lead-generation workflow that produces three artif
 
 Even if the user has dropped a brand URL in the message, ask these out loud and confirm before you proceed. Brand intake matters more than any other step. If they only answered some, ask for the rest in a single short turn.
 
+Jared has explicitly called out that lead dashboards drift when intake is inconsistent, especially around LinkedIn inclusion. Treat this intake as a data contract, not a courtesy question. Before any build starts, lock the lead-data fields and inclusion rules so dashboards do not vary from run to run. See `references/lead-data-contract-consistency.md` for the field-consistency rule and verification checklist.
+
 1. Which brand is this for? Get the live website URL.
 2. Product or service business? "Product" unlocks pricing language in the email body. "Service" unlocks the website-qualification step that surfaces a signal per target.
 3. ICP: industry, region(s), decision-maker role, company size band.
 4. Target company list (optional but strongly recommended). Ask: "Do you have a list of specific companies you want to target? If yes, paste them. If not, I will discover matching companies from your ICP." If the user provides companies, skip company discovery in Phase D and go straight to person search. Company-anchored searches produce far higher quality leads.
 5. How many leads? Default 20.
-6. Your name + email sign-off: pulled from list_calendars primary if not provided, but ask to confirm spelling.
-7. Output path: default ~/Desktop/leads/<brand-slug>/. Slug from brand name, lowercase, hyphenated.
+6. Required lead fields for this run. Confirm explicitly: company, contact name, role, region, LinkedIn profile URL, source URL, source date, fit score, email status, outreach note, and qualification signal. If the user wants a field omitted, record that decision in memory/decisions.md.
+7. LinkedIn rule for this run. Default is include individual LinkedIn URLs. Ask only if there is a reason to vary it: "Should every lead include an individual LinkedIn profile URL where available? Default yes." Do not allow some cards to show LinkedIn and others to silently omit it without a visible `not_found` or `not_applicable` status.
+8. Data quality floor. Default: every named lead must have either a verified LinkedIn profile URL or a documented reason it is missing. Dashboard cards must show the status, not hide the field.
+9. Your name + email sign-off: pulled from list_calendars primary if not provided, but ask to confirm spelling.
+10. Output path: default ~/Desktop/leads/<brand-slug>/. Slug from brand name, lowercase, hyphenated.
 
 Run the rest autonomously once intake is locked. Do not pause for confirmation gates between phases.
 
@@ -212,6 +217,7 @@ This skill is Jared's locked-in branded lead-dashboard format. Before changing t
 ## Behavioural rules
 
 - No em dashes anywhere. Use commas, periods, or parentheses.
+- When Jared flags inconsistency in lead-dashboard data, patch this lead-dashboard skill or its references only. Do not make broad permanent changes to unrelated design/build/reviewer skills unless Jared explicitly asks.
 - Always ask which brand it is for. Do not assume from context.
 - Company-first, person-second. Always anchor person search to a specific company. Broad person searches without a company anchor produce low-quality leads.
 - LinkedIn individual profiles only. Only keep URLs containing linkedin.com/in/. Discard all linkedin.com/company/ and linkedin.com/pub/ URLs before passing to HarvestAPI.
@@ -264,6 +270,7 @@ For richer motion (live status widget, week timeline with playhead, pillar bars 
 
 ## Deliverable checklist before declaring done
 
+- [ ] Lead data contract passes: every lead row has the same keys, every card renders LinkedIn URL or visible LinkedIn status, missing LinkedIn values are counted or explained, and no card silently omits a field shown on another card.
 - [ ] dashboard.html renders, opens in browser, all features intact (hero, KPIs, search, region chips, count pill, card grid with stagger fade-in, drawer with copy buttons, focus blocks, footer, toast).
 - [ ] Each card shows a freshness pill next to the name (fresh/aging/stale colouring).
 - [ ] Hero and footer show the user's brand socials (only icons for socials present).

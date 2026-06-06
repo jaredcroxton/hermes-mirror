@@ -90,7 +90,7 @@ mcp_servers:
   server_name:
     url: "https://my-server.example.com/mcp"   # (required) server URL
     headers:                                     # (optional) HTTP headers
-      Authorization: "Bearer sk-..."
+      Authorization: "Bearer REDACTED_API_KEY"
     timeout: 180               # (optional) per-tool-call timeout in seconds, default: 120
     connect_timeout: 60        # (optional) initial connection timeout in seconds, default: 60
 ```
@@ -174,7 +174,7 @@ mcp_servers:
   remote_api:
     url: "https://mcp.example.com/mcp"
     headers:
-      Authorization: "Bearer sk-..."
+      Authorization: "Bearer REDACTED_API_KEY"
 ```
 
 If HTTP support is not available in your installed `mcp` version, the server will fail with an ImportError and other servers will continue normally.
@@ -197,7 +197,7 @@ mcp_servers:
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
       # Only this token is passed to the subprocess
-      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_..."
+      GITHUB_PERSONAL_ACCESS_TOKEN: "REDACTED_GITHUB_TOKEN"
 ```
 
 ### Credential Stripping in Error Messages
@@ -374,7 +374,7 @@ mcp_servers:
   company_api:
     url: "https://mcp.internal.company.com/mcp"
     headers:
-      Authorization: "Bearer REDACTED_OPENAI_STYLE_KEY"
+      Authorization: "Bearer REDACTED_API_KEY"
     timeout: 300
 ```
 

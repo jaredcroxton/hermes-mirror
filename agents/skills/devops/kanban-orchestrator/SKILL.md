@@ -164,6 +164,8 @@ Tell them what you created in plain prose, naming the actual profiles you used:
 
 **Design-polish handoff with fuzzy artifact name:** When the user asks for a specialist design pass on a named artifact but does not provide an exact path or link, do not stall if the intent is clear. Create the specialist card with a discovery step: search the likely workspace locations, visually review the artifact, polish typography/spacing/hierarchy without rebuilding from scratch, and block only if the artifact remains ambiguous. This keeps momentum while still giving the specialist a clean escape hatch.
 
+**Mandatory Bob visual QA for Jared-facing web artifacts:** For Jared's dashboards, websites, lead builds, landing pages, or any client-facing visual artifact, route a Bob_Builder review/fix before handing the work back as final. The Bob card must explicitly require mobile and desktop viewport checks, no sideways overflow, no text clipping/escaping boxes, no card collisions, no console errors, and removal of example-only UI chrome or decorative mockup elements if Jared flags them. Do not rely on your own quick visual pass as the final gate when Bob is available.
+
 **Kanban crash bypass for urgent builds:** If a specialist worker repeatedly crashes with `pid not alive` but the profile brain itself can answer a direct probe, the issue is likely the worker dispatch path rather than the specialist's ability. For urgent user-facing builds, launch the profile directly with `hermes --profile <profile> chat -q ... --quiet` using the same acceptance criteria, then continue separately with Kanban recovery. Do not tell the user the specialist is working from the board if the board lane is blocked.
 
 ## Pitfalls

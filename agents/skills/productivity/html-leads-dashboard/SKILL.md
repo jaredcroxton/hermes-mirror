@@ -46,7 +46,10 @@ The key ingredients to include:
 - **Client or offer** — who this is for
 - **Lead count** — 5 is a good number
 - **Target** — decision-maker role, company type, market
+- **Mandatory fields** — ask what fields must be consistent across every lead before build, especially LinkedIn, phone, email, website, decision-maker role, source note, and `why_contact_now`
 - **Who builds** — "Bob builds it" routes to Bob Builder
+
+Before building, turn ambiguous field expectations into a short intake checklist. If Jared flags inconsistent data across prior dashboards, ask or infer the required fields and make them explicit in the build brief. Missing LinkedIn should never drift silently: either include the verified LinkedIn URL, include an inferred LinkedIn search link, or label it `LinkedIn not found` consistently across every lead.
 
 You do not need a long brief. Brock fills in the research strategy, brand extraction, and feature requirements from this skill. The shorter the ask, the faster the dashboard lands on Desktop.
 
@@ -62,6 +65,26 @@ Fast-start pattern:
 4. Avoid committee-style dependencies that delay a working artifact.
 
 See `references/ad-spend-waste-dashboard-orchestration.md` for the Ad Spend Waste Dashboard pattern and scoring model.
+
+## Mandatory data contract before build
+
+Before Bob builds any lead dashboard, the brief must declare the required fields. These fields are not optional unless Jared explicitly says to leave them out:
+
+- company name
+- segment or category
+- location / market
+- public website
+- phone, or `No phone found`
+- email, or `No email found`
+- LinkedIn company URL, or `No LinkedIn found`
+- likely decision-maker role
+- LinkedIn people-search URL for that role
+- source note for every lead
+- data confidence: high, medium, or low
+- last checked date
+- next best action
+
+If LinkedIn is missing, the dashboard must show it as a visible data gap. Do not silently omit the LinkedIn field, button, or column. The build is incomplete if LinkedIn appears for some leads but the field itself is absent from others.
 
 ## Required dashboard features
 

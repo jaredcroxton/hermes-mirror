@@ -13,8 +13,12 @@ The learning is durable: AgentOS-style pages should lead with typography restrai
 When briefing Bob, include:
 
 ```text
-Use the AgentOS reference page as the typography and spacing benchmark, without cloning it. The page should feel restrained, executive, and premium: near-black surface, ivory text, one accent, controlled hero scale, clean sans headline and body, mono labels only for small system text, sparse supporting copy, and a strong right-side visual balancing the hero. If Jared says the text size or font is wrong, revise the design system, not just individual CSS values.
+Use the AgentOS reference page as the typography and spacing benchmark, without cloning it. The page should feel restrained, executive, and premium: near-black surface, ivory text, one accent, controlled hero scale, clean sans headline and body, mono labels only for small system text, sparse supporting copy, and a strong right-side visual balancing the hero. Stay away from the rejected font treatment from the first build: no chunky generic SaaS fonts, no decorative display fonts, no over-heavy letterforms, no large blocks of dense body copy. If Jared says the text size or font is wrong, revise the design system, not just individual CSS values.
 ```
+
+## Typography pitfall
+
+Do not interpret this as "make the font smaller." Jared's correction was about restraint and taste: font feel, hierarchy, copy density, and spacing. The right fix is a calmer type system with fewer words, not a mechanical size reduction.
 
 ## Review rule
 

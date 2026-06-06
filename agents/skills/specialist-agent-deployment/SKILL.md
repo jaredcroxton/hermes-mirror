@@ -20,7 +20,10 @@ User explicitly prefers the agent to "just make it work" rather than being asked
 - A Telegram bot created via BotFather needs to be attached to a profile
 - A specialist profile's `.env`, gateway, or MCP setup needs to be fixed
 - An existing specialist agent needs to be updated, restarted, or verified after configuration changes
+- Jared wants to move the live Hermes or Claude Code agent ecosystem from one Mac to another, usually to make a Mac mini the always-on host
 - Jared wants to switch multiple or all specialist profiles to a local Ollama model for API-cost testing
+
+Reference: for cross-machine MacBook → Mac mini moves, use `references/cross-machine-agent-host-migration.md`.
 
 ## Default deployment pattern
 1. Identify the exact Hermes profile name to use.
@@ -36,6 +39,8 @@ User explicitly prefers the agent to "just make it work" rather than being asked
 - When the user says a specialist SOUL was updated, verify the canonical source file first and confirm any stated backup path exists before treating the update as landed.
 - Do not assume the Hermes profile is implemented as a symlink at a guessed path. Check the actual profile wiring before reporting profile-link state.
 - Separate verification into **soul ready**, **profile brain works**, **gateway loaded**, and **live on Telegram/transport**. See `references/profile-brain-vs-live-transport-verification.md`.
+- Treat `Gateway: running` as necessary but not sufficient. A stale gateway process can receive Telegram messages and still fail at agent import/runtime. Check profile brain, token `getMe`, gateway logs, and live transport before declaring the agent online.
+- When a specialist gateway is running but Telegram replies fail with an import/runtime error after a Hermes update, restart that profile's gateway process. If `hermes --profile <profile> gateway restart` is blocked because the command is being invoked from inside a gateway session, stop only the target profile's process by matching `hermes_cli.main --profile <profile> gateway run`, then start it again with `hermes --profile <profile> gateway start`. Verify the new log shows `Connected to Telegram (polling mode)` and send or request a live reply test.
 - When changing a profile's model/provider and Jared reports Telegram still shows the old provider, verify the Telegram runtime path, not just the CLI brain. A CLI probe can pass while the live Telegram gateway/session footer is stale. See `references/telegram-runtime-model-verification.md`.
 - For fresh Telegram bots, verify the BotFather token with `getMe`, restart the profile gateway, then recognise `Bad Request: chat not found` as the normal sign that the user has not pressed **Start** in the new bot chat yet. See `references/profile-telegram-bot-verification.md`.
 - Verify with a live identity or reply test before claiming the specialist is fully ready.
@@ -137,6 +142,7 @@ See `references/gateway-stopped-triage.md` for the full diagnostic flow, false-p
 - `references/global-profile-local-model-trial.md` for ecosystem-wide local Ollama model trials: GitHub backup gate, sanitized mirror boundary, local model config, gateway restart, verification, and restore path.
 - `references/execute-code-file-corruption-pitfall.md` for the read_file/write_file line-number corruption bug and fix.
 - `references/profile-brain-vs-live-transport-verification.md` for separating soul readiness, local profile brain, gateway state, and real Telegram/live transport verification.
+- `references/running-gateway-silent-bot.md` for the case where `Gateway: running` is a false positive: profile brain works, token is valid, but inbound Telegram fails due to stale import/runtime errors and needs a target-profile process restart.
 - `references/telegram-runtime-model-verification.md` for model/provider changes where CLI probes pass but Telegram still shows the old provider or stale session metadata.
 - `references/profile-telegram-bot-verification.md` for BotFather token `getMe` validation, profile-local `.env` wiring, gateway log checks, and the Telegram **Start** / `chat not found` pitfall.
 - `references/hyperframes-profile-capability-demo.md` for proving a specialist profile, especially Bob, has a newly installed capability by producing and verifying a real HyperFrames MP4 artifact.

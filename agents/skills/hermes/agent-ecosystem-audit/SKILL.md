@@ -122,9 +122,24 @@ After a full audit, the following must exist:
 - **JavaScript template literals in Python f-strings need escaping.** When embedding JS inside a Python f-string for the dashboard, use string concatenation instead of template literals to avoid Python interpreting `${}`.
 - **The eval suite will score low on first run.** Offline structural checks catch ID mismatches and missing policies. This is expected. Fix the mappings and rerun.
 
+## Framework-driven audit variants
+
+### General agent-system scoring and implementation plans
+
+When the user asks for an audit against a published framework (12-Factor Agents, Anthropic best practices, OpenAI agent guidance, or an internal operating model), use this same audit spine but make the framework explicit at the top of the deliverable:
+
+1. Name the benchmark/framework and source.
+2. Score each agent or lane against the framework dimensions.
+3. Separate **capability gaps** (missing tools, routing, memory, evals) from **governance gaps** (ownership, safety gates, handoff contracts, monitoring).
+4. Produce a phased implementation plan with immediate fixes, medium-term architecture changes, and later maturity improvements.
+5. Preserve user-facing clarity: executives need the scorecard and priorities; builders need the exact remediation tasks.
+
+For jurisdictional or domain-specific audit examples such as Australian site-blocking workflows, keep the narrow domain notes in `references/` and cite them only when the task matches that domain.
+
 ## References
 
 - `references/12-factor-agents-readme.md` — Summary of the framework from the upstream repo
 - `references/anthropic-building-effective-agents.md` — Key patterns from Anthropic's agent guide
 - `references/thread-model-api-reference.md` — Quick API reference for the Thread/Event model
 - `references/cost-tiering-reference.md` — Model tiers, pricing, and agent assignment
+- `references/agent-system-audit-au-site-blocking-patterns.md` — Domain-specific audit example absorbed from the old `agent-system-audit` skill.

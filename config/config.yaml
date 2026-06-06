@@ -517,7 +517,7 @@ paste_collapse_char_threshold: 2000
 _config_version: 26
 EMAIL_ADDRESS: jaredcroxton@gmail.com
 EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
-EMAIL_PASSWORD: mfqu sucs sncr ysbh
+EMAIL_PASSWORD: REDACTED
 known_plugin_toolsets:
   cli:
   - spotify
@@ -529,7 +529,7 @@ mcp_servers:
     command: npx
     enabled: true
     env:
-      FIRECRAWL_API_KEY: fc-9293f5fd8c524a10ade16e671c670a7e
+      FIRECRAWL_API_KEY: REDACTED
 platform_toolsets:
   cli:
   - browser

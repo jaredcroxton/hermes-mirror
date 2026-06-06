@@ -12,6 +12,10 @@ related_skills: [claude-code, github-repo-management]
 
 # Claude Code Builder: Express Protocol
 
+## Jared-specific quality gates
+
+For any HTML dashboard, lead dashboard, landing page, deck, or client-facing interface, route the finished artifact through the `premium-dashboard-design-reviewer` gate before completion. See `references/premium-dashboard-design-qa-gate.md` for the required review stack, typography standard, and AgentOS reference lesson.
+
 ## Overview
 
 Use this skill whenever the user asks Hermes to build, deploy, or ship a finished artifact such as an HTML dashboard, slide deck, tool, calculator, training page, briefing page, or static web page.
