@@ -233,6 +233,19 @@
     "use_count": 0,
     "view_count": 0
   },
+  "domain-dns-debugging": {
+    "archived_at": null,
+    "created_at": "2026-06-06T23:32:14.834623+00:00",
+    "created_by": "agent",
+    "last_patched_at": "2026-06-06T23:32:47.002503+00:00",
+    "last_used_at": null,
+    "last_viewed_at": null,
+    "patch_count": 3,
+    "pinned": false,
+    "state": "active",
+    "use_count": 0,
+    "view_count": 0
+  },
   "ec2-gpu-ollama-stack": {
     "archived_at": null,
     "created_at": "2026-05-31T10:29:42.027934+00:00",
@@ -289,10 +302,10 @@
     "archived_at": null,
     "created_at": "2026-06-06T23:00:32.835381+00:00",
     "created_by": null,
-    "last_patched_at": null,
+    "last_patched_at": "2026-06-06T23:03:21.083485+00:00",
     "last_used_at": "2026-06-06T23:00:32.837071+00:00",
     "last_viewed_at": "2026-06-06T23:00:32.835394+00:00",
-    "patch_count": 0,
+    "patch_count": 1,
     "pinned": false,
     "state": "active",
     "use_count": 1,
@@ -328,14 +341,14 @@
     "archived_at": null,
     "created_at": "2026-06-02T01:14:10.839768+00:00",
     "created_by": null,
-    "last_patched_at": null,
-    "last_used_at": "2026-06-06T22:29:31.255798+00:00",
-    "last_viewed_at": "2026-06-06T22:29:31.253349+00:00",
-    "patch_count": 0,
+    "last_patched_at": "2026-06-07T01:16:53.826167+00:00",
+    "last_used_at": "2026-06-07T01:17:06.819402+00:00",
+    "last_viewed_at": "2026-06-07T01:17:06.817489+00:00",
+    "patch_count": 2,
     "pinned": false,
     "state": "active",
-    "use_count": 21,
-    "view_count": 21
+    "use_count": 25,
+    "view_count": 25
   },
   "hermes-agent-skill-authoring": {
     "archived_at": null,

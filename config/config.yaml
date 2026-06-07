@@ -1,7 +1,7 @@
 model:
-  base_url: https://chatgpt.com/backend-api/codex
-  default: gpt-5.5
-  provider: openai-codex
+  base_url: https://api.deepseek.com/v1
+  default: deepseek-v4-pro
+  provider: deepseek
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
@@ -259,6 +259,12 @@ dashboard:
   oauth:
     client_id: ''
     portal_url: ''
+  basic_auth:
+    username: ''
+    password_hash: ''
+    password: ''
+    secret: ''
+    session_ttl_seconds: 0
   public_url: ''
 privacy:
   redact_pii: false
@@ -375,6 +381,20 @@ discord:
   server_actions: ''
   allow_any_attachment: false
   max_attachment_bytes: 33554432
+  voice_fx:
+    enabled: false
+    ambient_enabled: true
+    ambient_path: ''
+    ambient_gain: 0.18
+    duck_gain: 0.06
+    speech_gain: 1.0
+    ack_enabled: true
+    ack_phrases:
+    - Let me look into that.
+    - One moment.
+    - Checking on that now.
+    - Give me a sec.
+    - On it.
 whatsapp: {}
 telegram:
   reactions: false
@@ -396,23 +416,24 @@ approvals:
   mcp_reload_confirm: true
   destructive_slash_confirm: false
 command_allowlist:
-- kill process via pgrep expansion (self-termination)
-- sudo with combined-flag privilege escalation
-- delete in root path
-- overwrite project env/config via redirection
-- script execution via -e/-c flag
 - stop/restart hermes gateway (kills running agents)
-- overwrite system file via redirection
-- force kill processes
+- sudo with combined-flag privilege escalation
 - shell command via -c/-lc flag
-- overwrite system config
-- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
-- script execution via heredoc
-- git force push (rewrites remote history)
-- stop/restart system service
-- pipe remote content to shell
 - kill hermes/gateway process (self-termination)
+- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
+- git force push (rewrites remote history)
+- pipe remote content to shell
+- script execution via -e/-c flag
+- kill process via pgrep expansion (self-termination)
+- overwrite project env/config via redirection
+- stop/restart system service
+- delete in root path
 - recursive delete
+- execute_code
+- force kill processes
+- script execution via heredoc
+- overwrite system config
+- overwrite system file via redirection
 quick_commands: {}
 hooks: {}
 hooks_auto_accept: false
@@ -492,6 +513,7 @@ onboarding:
 updates:
   pre_update_backup: false
   backup_keep: 5
+  non_interactive_local_changes: stash
 lsp:
   enabled: true
   wait_mode: document
@@ -517,7 +539,7 @@ paste_collapse_char_threshold: 2000
 _config_version: 26
 EMAIL_ADDRESS: jaredcroxton@gmail.com
 EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
-EMAIL_PASSWORD: REDACTED
+EMAIL_PASSWORD: mfqu sucs sncr ysbh
 known_plugin_toolsets:
   cli:
   - spotify
@@ -529,7 +551,7 @@ mcp_servers:
     command: npx
     enabled: true
     env:
-      FIRECRAWL_API_KEY: REDACTED
+      FIRECRAWL_API_KEY: fc-9293f5fd8c524a10ade16e671c670a7e
 platform_toolsets:
   cli:
   - browser
@@ -560,3 +582,25 @@ session_reset:
 platforms:
   google_chat:
     enabled: true
+
+# ── Fallback Model ────────────────────────────────────────────────────
+# Automatic provider failover when primary is unavailable.
+# Uncomment and configure to enable. Triggers on rate limits (429),
+# overload (529), service errors (503), or connection failures.
+#
+# Supported providers:
+#   openrouter   (OPENROUTER_API_KEY)  — routes to any model
+#   openai-codex (OAuth — hermes auth) — OpenAI Codex
+#   nous         (OAuth — hermes auth) — Nous Portal
+#   zai          (ZAI_API_KEY)         — Z.AI / GLM
+#   kimi-coding  (KIMI_API_KEY)        — Kimi / Moonshot
+#   kimi-coding-cn (KIMI_CN_API_KEY)   — Kimi / Moonshot (China)
+#   minimax      (MINIMAX_API_KEY)     — MiniMax
+#   minimax-cn   (MINIMAX_CN_API_KEY)  — MiniMax (China)
+#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
+#
+# For custom OpenAI-compatible endpoints, add base_url and key_env.
+#
+# fallback_model:
+#   provider: openrouter
+#   model: anthropic/claude-sonnet-4

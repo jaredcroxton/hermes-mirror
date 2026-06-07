@@ -267,6 +267,8 @@ For named specialist agents (for example a dedicated build/deploy worker), prefe
 
 When deciding whether the machine can safely support another always-on profile gateway, measure live macOS memory pressure, swap, compression, `hermes profile list`, and per-gateway RSS before advising. Literal `unused` RAM can be low while the system is still healthy if swap is 0 and pressure is acceptable. See `references/profile-gateway-capacity.md`.
 
+When migrating Hermes from one Mac to another (e.g. MacBook Air to Mac mini), use the full prep checklist: snapshot current state, confirm destination specs, decide what transfers vs what gets set up fresh, and verify the two-user privacy guard. See `references/macos-machine-migration-prep.md`.
+
 If Hermes feels slow because too many specialist profile gateways are live, use the quick load-shedding workflow in `references/profile-gateway-load-shedding.md`: inspect `hermes profile list`, stop non-essential profiles with `hermes --profile <name> gateway stop`, and re-enable only the lane currently in use.
 
 If Jared wants each specialist agent to save its SOUL and custom skills to GitHub, start with **mirror-only per-agent repos**, not GitHub as source of truth. Mirror only the durable identity layer: `SOUL.md`, agent-specific custom skills, and light docs. Do not mirror full profile folders, sessions, logs, memories, caches, `.env`, auth, or runtime state. Recommended pattern: one private repo per agent, a manifest-driven sync script that copies only custom skill deltas versus the global skills library, and a silent cron job that commits and pushes only when changes exist. See `references/per-agent-github-mirrors.md`.

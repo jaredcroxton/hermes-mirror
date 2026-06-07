@@ -3,7 +3,7 @@
   "last_run_at": "2026-06-06T22:29:20.375103+00:00",
   "last_run_duration_seconds": 473.205091,
   "last_run_summary": "auto: no changes; llm: Consolidation pass completed.\n\nI processed the obvious prefix/domain clusters and created or patched umbrella skills, then absorbed the narrow siblings into those umbrellas. I also copied each absorbed skill’s `SKILL.md` and support package…\narchived 33 skill(s):\n  • agent-system-audit → agent-ecosystem-audit\n  • apple-notes — pruned (stale)\n  • apple-reminders — pruned (stale)\n  • ascii-art — pruned (stale)\n  • ascii-video — pruned (stale)\n  • audiocraft-audio-generation — pruned (stale)\n  • claude-code — pruned (stale)\n  • codebase-inspection — pruned (stale)\n  • codex — pruned (stale)\n  • evaluating-llms-harness — pruned (stale)\n  … and 23 more\nfull report: hermes curator status\nkeep an umbrella stable: hermes curator pin agent-ecosystem-audit",
-  "last_run_summary_shown_at": "2026-05-30T22:28:18.162538+00:00",
+  "last_run_summary_shown_at": "2026-06-06T22:29:20.375103+00:00",
   "paused": false,
   "run_count": 3
 }
