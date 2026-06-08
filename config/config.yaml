@@ -1,7 +1,7 @@
 model:
-  base_url: https://api.deepseek.com/v1
-  default: deepseek-v4-pro
-  provider: deepseek
+  base_url: https://chatgpt.com/backend-api/codex
+  default: gpt-5.5
+  provider: openai-codex
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
@@ -536,7 +536,7 @@ secrets:
 paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
-_config_version: 26
+_config_version: 27
 EMAIL_ADDRESS: jaredcroxton@gmail.com
 EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
 EMAIL_PASSWORD: mfqu sucs sncr ysbh

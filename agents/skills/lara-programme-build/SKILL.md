@@ -152,4 +152,9 @@ Accor Plus outbound sales teams across 7 APAC markets: Australia, New Zealand, I
 - **Coach the manager, not just inform them.** Coaching scripts for failure modes are FULL conversations the manager adapts, not one-line cues. Session plans include timings for every part. Checklists include pre, during, and post items. Scorecards are printable tables.
 
 ## Bob is not needed
+
 The PDF build script is already on Desktop and works generically. Brock runs it directly. Bob_Builder is for deployment and custom builds, not for this pipeline.
+
+## Creating Word documents on macOS
+
+When a source brief, companion document, or content draft needs to land as a `.docx` file alongside the Excel build, use the `python-docx` library — not AppleScript. Shell interpretation of `&` characters in document text breaks `osascript`. See `references/word-document-creation.md` for the full pattern.

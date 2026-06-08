@@ -95,8 +95,7 @@ def main(argv: list[str] | None = None) -> int:
                    help="Don't suggest restarting the server after node install")
     args = p.parse_args(argv)
 
-    api_key = resolve_api_key(args.api_key)
-
+    api_key = REDACTED
     wf_path = Path(args.workflow).expanduser()
     if not wf_path.exists():
         emit_json({"error": f"Workflow not found: {args.workflow}"})
