@@ -113,7 +113,7 @@ def smoke_test(host: str, headers: dict, ckpt_name: str | None) -> dict:
 
     # Lazy import to avoid circular issues
     from run_workflow import ComfyRunner
-    api_key = headers.get("X-API-Key")
+    api_key = REDACTED
     runner = ComfyRunner(host=host, api_key=api_key)
     sub = runner.submit(wf)
     if "_http_error" in sub:

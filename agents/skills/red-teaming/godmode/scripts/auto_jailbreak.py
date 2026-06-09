@@ -355,7 +355,7 @@ def _test_query(client, model, messages, timeout=45):
         response = client.chat.completions.create(
             model=model,
             messages=messages,
-            max_tokens=2048,
+            max_tokens=REDACTED
             temperature=0.7,
             timeout=timeout,
         )
@@ -430,7 +430,7 @@ def auto_jailbreak(model=None, base_url=None, api_key=None,
     Args:
         model: Model ID (e.g. "anthropic/claude-sonnet-4"). Auto-detected if None.
         base_url: API base URL. Auto-detected if None.
-        api_key: API key. Auto-detected if None.
+        api_key: REDACTED
         canary: Custom canary query to test with. Uses default if None.
         dry_run: If True, don't write config files — just report what would work.
         verbose: Print progress.

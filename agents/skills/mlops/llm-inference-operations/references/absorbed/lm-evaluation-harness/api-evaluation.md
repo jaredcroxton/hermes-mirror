@@ -100,8 +100,8 @@ OpenAI charges per token. Estimate costs before running:
 ```python
 # Rough estimate
 num_samples = 1000
-avg_tokens_per_sample = 500  # input + output
-cost_per_1k_tokens = 0.01  # GPT-3.5 Turbo
+avg_tokens_per_sample = REDACTED
+cost_per_1k_tokens = REDACTED
 
 total_cost = (num_samples * avg_tokens_per_sample / 1000) * cost_per_1k_tokens
 print(f"Estimated cost: ${total_cost:.2f}")
@@ -268,7 +268,7 @@ class MyCustomAPI(TemplateAPI):
 
     def __init__(self, base_url, api_key, **kwargs):
         super().__init__(base_url=base_url, **kwargs)
-        self.api_key = api_key
+        self.api_key = REDACTED
 
     def _create_payload(self, messages, gen_kwargs):
         """Create API request payload."""
@@ -299,7 +299,7 @@ from my_api import MyCustomAPI
 
 model = MyCustomAPI(
     base_url="https://api.example.com/v1",
-    api_key="your-key"
+    api_key=REDACTED
 )
 
 results = evaluator.simple_evaluate(
@@ -477,8 +477,8 @@ lm_eval --model local-completions \
 lm_eval --model openai-chat-completions \
   --model_args \
     model=gpt-4-turbo,\
-    tokenizer=gpt2,\
-    tokenizer_backend=huggingface
+    tokenizer=REDACTED
+    tokenizer_backend=REDACTED
 ```
 
 ## References

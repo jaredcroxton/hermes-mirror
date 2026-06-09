@@ -44,7 +44,7 @@ Add to `~/.hermes/.env`:
 ```bash
 WEBHOOK_ENABLED=true
 WEBHOOK_PORT=8644
-WEBHOOK_SECRET=generate-a-strong-secret-here
+WEBHOOK_SECRET=REDACTED
 ```
 
 After configuration, start (or restart) the gateway:

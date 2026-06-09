@@ -57,7 +57,7 @@ Typical path on this machine:
 The user should add:
 
 ```bash
-APOLLO_API_KEY=their_real_apollo_key_here
+APOLLO_API_KEY=REDACTED
 ```
 
 Rules:

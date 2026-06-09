@@ -8,7 +8,7 @@ auxiliary:
     provider: xai
     model: grok-2-image
     base_url: https://api.x.ai/v1
-    api_key: ''          # falls back to xai-oauth credentials
+    api_key: REDACTED
     timeout: 120
 ```
 

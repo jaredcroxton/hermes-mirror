@@ -230,6 +230,31 @@ When pillar drafts get updated, check all downstream documents for staleness:
 
 The pillar draft is the source of truth for the current catalogue. If an instrument name changes there, every other file in the cluster must follow.
 
+## Homepage and footer governance — avoid over-explaining
+
+When Jared is rebuilding the PerformOS homepage after feedback that a prior site felt too full, treat the homepage as a clean front door, not a full sales page. The homepage should create the next question, not answer every question.
+
+**Homepage rules:**
+- One buyer-level message, one primary CTA, and three solution routes max.
+- Keep the hero concise: one headline, one short subhead, one button where possible.
+- Do not add a second CTA just for visual balance if the next section already routes to solutions.
+- If detail only matters after the buyer shows intent, move it to the relevant deep page.
+- AgentOS is the approved deep-dive page for private AI agents. Do not re-review or reopen AgentOS unless Jared explicitly asks.
+
+**Footer rules:**
+- Use the footer as a quiet navigation layer, not a junk drawer.
+- Recommended columns: PerformOS, Solutions, Resources, Company, Legal.
+- Keep footer body copy to one short positioning sentence.
+- Put SEO depth into subpages such as `/faq.html`, `/privacy.html`, `/terms.html`, `/contact.html`, later `/security.html` and `/pricing.html`.
+- Do not put the full FAQ on the homepage. Add only a small link such as “Have questions? Read the FAQ.”
+
+**Sergio/Serge SEO lane:** route Sergio/Serge to produce FAQ keyword map, footer internal-link structure, page titles, meta descriptions, FAQ schema, and buyer-intent search terms. Do not let SEO rewrite the homepage into a dense explainer.
+
+**Current recommended main-site hero direction:**
+- H1: “Build the AI layer your business actually uses.”
+- Subhead: “PerformOS creates private agents, practical tools, and AI adoption programmes that help teams work smarter.”
+- CTA: “Book a conversation.”
+
 ## Homepage pivot — course-as-front-door (direct edit, no pipeline)
 
 When PerformOS pivots the homepage to a new primary offer while keeping instruments/programmes as ecosystem credibility behind it, use targeted patches on the existing HTML rather than a full Serge→Polly→Bob pipeline rerun. This pattern applies when:

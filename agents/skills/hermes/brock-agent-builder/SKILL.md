@@ -295,6 +295,14 @@ When building a specialist that reports to an orchestrator:
 3. **Define routing rules** — when does the orchestrator handle a question vs route to the specialist?
 4. **Set the escalation path** — what does the specialist do when it needs something outside its domain?
 
+### Leadership-agent design pattern
+
+When Jared asks for a leadership, executive judgement, difficult-conversation, manager-coaching, or team-dynamics agent, do not produce a generic advice bot or a single script generator. Jared expects the agent to take rich team context, apply source-backed leadership lenses, and return multiple strategic stances before recommending one.
+
+Use `references/leadership-agent-research-pattern.md` as the research and output pattern. The leadership specialist should diagnose the situation, present three to five strategic angles, recommend a stance, give exact language, name what not to say, and identify follow-up risk.
+
+Key pitfall: do not over-index on authority. Authority is one lens, not the answer. Pair clarity with curiosity, psychological safety, influence, and accountability. Treat resistance as data before treating it as defiance.
+
 ### Playbook-backed orchestrator option
 
 Before creating multiple new specialist agents or Telegram bots, test whether Jared actually needs separately addressable specialists. If the answer is no, build one persistent orchestrator plus markdown playbooks under its agent folder. This keeps one front door, reduces gateway/profile overhead, and still gives specialist-quality output.

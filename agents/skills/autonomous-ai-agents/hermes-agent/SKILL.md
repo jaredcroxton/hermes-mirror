@@ -196,7 +196,7 @@ Pitfall: DeepSeek models can silently return empty when the context window is ov
 1. Prefer the standard profile gateway. Do **not** build a custom polling handler unless the gateway path is explicitly unavailable. A BotFather token alone only creates the bot identity; Hermes still needs a running profile gateway or handler to answer messages.
 2. Add the token to the profile `.env`:
    ```bash
-   echo 'TELEGRAM_BOT_TOKEN=8361997520:AAGp-8HmgeR2JFP76hqAcZ-QP_RMF1kEeZg' >> ~/.hermes/profiles/atticuscounsel/.env
+   echo 'TELEGRAM_BOT_TOKEN=REDACTED_TELEGRAM_BOT_TOKEN' >> ~/.hermes/profiles/atticuscounsel/.env
    ```
 3. Allowlist your Telegram user ID:
    ```bash

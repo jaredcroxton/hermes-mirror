@@ -40,6 +40,17 @@ Use `search_files` for both filename and content searches. Prefer this over `gre
 
 Use `write_file` with the resolved absolute path and the full markdown content. Prefer this over shell heredocs or `echo` because it avoids shell quoting issues and returns structured results.
 
+## Open or hand off a note
+
+When Jared says a Markdown file will not open, open it directly in Obsidian if possible, then fall back to TextEdit or Finder reveal. Also include the file as `MEDIA:/absolute/path.md` in the final response when he needs to hand it to another tool or agent quickly.
+
+Preferred command pattern:
+
+```bash
+FILE="/absolute/path/to/file.md"
+open -a "Obsidian" "$FILE" 2>/dev/null || open -a "TextEdit" "$FILE" 2>/dev/null || open -R "$FILE"
+```
+
 ## Append to a note
 
 Prefer a native file-tool workflow when it is not awkward:

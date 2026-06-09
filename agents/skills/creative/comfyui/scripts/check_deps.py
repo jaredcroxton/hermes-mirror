@@ -402,6 +402,7 @@ def main(argv: list[str] | None = None) -> int:
         host = urlunparse(parsed._replace(netloc=new_netloc))
 
     api_key = REDACTED
+
     wf_path = Path(args.workflow).expanduser()
     if not wf_path.exists():
         emit_json({"error": f"Workflow file not found: {args.workflow}"})

@@ -55,7 +55,7 @@ mcp_servers:
       - -y
       - <stitch-mcp-package>
     env:
-      STITCH_API_KEY: ${STITCH_API_KEY}
+      STITCH_API_KEY: REDACTED
     timeout: 180
     connect_timeout: 60
 ```
@@ -76,7 +76,7 @@ Store the key in the profile `.env`:
 
 ```text
 /Users/jc/.hermes/profiles/bobbuilder/.env
-STITCH_API_KEY=...
+STITCH_API_KEY=REDACTED
 ```
 
 Restart the profile gateway after config changes:

@@ -9,6 +9,21 @@ description: How Brock produces PerformOS website builds — research, legal, st
 
 The rules below are for **new PerformOS marketing/strategy website builds** (sites that represent the PerformOS brand and need positioning, page strategy, or Antigravity-ready markdown). For **existing live web tools or dashboards** that Jared explicitly asks to update and redeploy, use the operational update pattern instead. See `references/existing-static-dashboard-update-pattern.md`.
 
+## PerformOS homepage anti-bloat rule
+
+When Jared is rebuilding the main PerformOS website after feedback that the previous version was over-explained, protect the homepage from becoming the whole sales deck. The homepage is a **front door**: minimal hero, three solution routes, one primary CTA, and a footer that routes to deeper pages.
+
+Use this operating split:
+- **PerformOS homepage:** clean overview and routing only.
+- **AgentOS:** approved deep-dive page for private AI agents. Do not review or reopen it unless Jared explicitly asks.
+- **Training / AI adoption:** separate detail page.
+- **AI Instruments / practical tools:** separate detail page.
+- **FAQ, privacy, terms, contact, LinkedIn, security, pricing:** footer/subpage layer for trust and SEO depth.
+
+Before adding homepage content, ask: “Has the buyer asked for this detail yet?” If not, move it to the relevant subpage or cut it.
+
+When Jared is rebuilding the PerformOS homepage after feedback that the old site felt too full, apply the homepage governance gate before suggesting or building anything. The homepage is a decision page, not a catalogue: one buyer, one main offer, one CTA, seven sections max, no product sprawl. See `references/homepage-governance-density-gate.md`.
+
 For **new PerformOS marketing/strategy projects**:
 
 1. **Brock NEVER pushes to Vercel. Brock NEVER pushes to GitHub. Brock NEVER deploys.**
@@ -147,7 +162,10 @@ Brock writes souls. Bob's sub-agents handle build execution. If the soul update 
 - **Non-PerformOS Vercel deploy pattern (verified 29 May 2026, updated 06 June 2026).** When Jared asks for a live URL on a non-PerformOS project (personal sites, gym pages, demos, HTML dashboards): use terminal in the default profile. For new source-backed builds: `git init` in build dir → `git add .` + `git commit -m "Initial"` → `gh repo create jaredcroxton/<slug> --public --description "<description>" --source=.` (creates repo AND pushes) → `vercel --prod --yes` from the build dir. For existing static sites where the fixed artifact is in a workspace, first try local Vercel auth with `npx -y vercel whoami`; a rejected `VERCEL_TOKEN` is not a deployment blocker if local login works. Deploy with `npx -y vercel deploy --prod --yes`, then if Vercel creates a new deployment/project, move the original clean URL with `npx -y vercel alias set <new-production-url> <original-clean-domain>.vercel.app`. Verify the original URL with `curl -I`, cache-busted browser inspection, viewport overflow checks, and console checks. Example: Callum's Gym was updated by deploying a workspace artifact, then aliasing `callums-gym.vercel.app` to the new deployment.
 
 ## Reference files
+- `references/performos-about-operator-page.md` — About Jared / founder credibility page pattern: operator-not-theorist positioning, LinkedIn scrape fallback, credential cards, forbidden terms, and Claude Code brief structure.
+- `references/homepage-governance-density-gate.md` — PerformOS homepage density and clarity gate: one buyer, one main offer, one CTA, seven sections max, detail pages for proof, and five-question pre-send review.
 - `references/existing-static-dashboard-update-pattern.md` — Existing deployed static dashboard update pattern: preserve flow/data shape, update source plus embedded data, deploy Vercel production, verify with cache-busted browser checks, and push only intended files.
+- `references/github-trending-static-dashboard-refresh.md` — GitHub repo pulse refresh pattern: use date-bounded `gh api search/repositories`, balance image/video/audio/agent repos, update JSON plus embedded `RAW_DATA`, verify DOM counts/filters, then deploy and push intended tracked files only.
 - `references/design-language-extraction-before-build.md` — Pre-build pattern for using Bob's Claude Code `design-language` skill to extract a premium reference site's design language before building original PerformOS/AgentOS pages.
 - `references/agentos-page-copy-patterns.md` — AgentOS pricing, security, solution, and hero demo patterns for AntiGravity-ready Markdown files, including the Ask → Review → Deliver → Clarify → Build console loop and Antigravity-inspired motion rules.
 - `references/agentos-landing-typography-reference.md` — AgentOS landing-page typography benchmark: restrained hero scale, clean sans typography, sparse body copy, mono labels only, premium spacing, and mandatory `premium-dashboard-design-reviewer` gate for client-facing pages.

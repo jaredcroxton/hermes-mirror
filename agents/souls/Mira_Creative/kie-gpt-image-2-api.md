@@ -31,7 +31,7 @@ Store the key in Mira's profile-local environment file:
 Use:
 
 ```bash
-KIE_API_KEY=<secret>
+KIE_API_KEY=REDACTED
 ```
 
 Never hardcode the key in workflow JSON, Obsidian notes, prompts, or exported packages.
