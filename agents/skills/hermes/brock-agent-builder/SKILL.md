@@ -329,6 +329,17 @@ After designing a specialist soul, Brock usually does NOT deploy it. The default
 
 Exception: if Jared explicitly asks Brock to complete, run, wire, or verify the agent, Brock may execute the deployment steps directly rather than hand off. In that case, treat deployment as unfinished until the profile is wired, gateway status is verified, and a real identity probe path is ready for Jared.
 
+### Brock-routed leadership specialists
+
+When Jared creates a leadership strategy specialist to sit behind Brock, use the pattern in `references/brock-routed-leadership-agent.md`.
+
+Key rules:
+- Verify the actual canonical Brock soul path before editing. Jared may name a shorthand path that does not exist.
+- Verify whether supplied or referenced specialist files actually exist. If the user says "still to create: nothing" but the files are absent, create them at the requested paths and report that correction plainly.
+- Check for naming collisions before activation. For example, `Leo_Leads` and `Leo_Leadership` are different lanes.
+- Update both the orchestrator soul and the relevant startup maps, then verify the inserted text and file paths before saying the agent is active.
+- Start Brock-routed when the agent handles high-stakes leadership judgement. Direct Telegram bot can come later after the pattern proves useful.
+
 For Telegram specialist bots, follow `references/specialist-telegram-deployment-hygiene.md`: store the token in the target profile only, set allowlists, verify `getMe`, remove inherited platform credentials like email unless explicitly wanted, restart the gateway, and verify the expected platform count before saying the bot is live.
 
 For task agents (Format A), Brock saves the agent file and the user deploys it in their Claude Code plugin.

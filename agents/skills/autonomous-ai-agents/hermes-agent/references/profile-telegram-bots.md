@@ -49,7 +49,7 @@ Then edit `~/.hermes/profiles/<profile>/SOUL.md` with the specialist identity/pe
 
 ```text
 ~/.hermes/profiles/<profile>/.env
-TELEGRAM_BOT_TOKEN=REDACTED
+TELEGRAM_BOT_TOKEN=<botfather-token>
 TELEGRAM_ALLOWED_USERS=<user-telegram-id>
 TELEGRAM_HOME_CHANNEL=<user-telegram-id>
 ```
@@ -63,7 +63,7 @@ python - <<'PY'
 import json, urllib.request
 from pathlib import Path
 p = Path.home()/'.hermes/profiles/<profile>/.env'
-token = REDACTED
+token = next(line.split('=', 1)[1].strip() for line in p.read_text().splitlines() if line.startswith('TELEGRAM_BOT_TOKEN='))
 with urllib.request.urlopen(f'https://api.telegram.org/bot{token}/getMe', timeout=20) as r:
     data = json.load(r)
 print({'ok': data.get('ok'), 'username': data.get('result',{}).get('username'), 'first_name': data.get('result',{}).get('first_name')})
@@ -89,7 +89,7 @@ python - <<'PY'
 import json, urllib.parse, urllib.request
 from pathlib import Path
 p = Path.home()/'.hermes/profiles/<profile>/.env'
-token = REDACTED
+token = next(line.split('=', 1)[1].strip() for line in p.read_text().splitlines() if line.startswith('TELEGRAM_BOT_TOKEN='))
 base = f'https://api.telegram.org/bot{token}/'
 
 def post(method, data):

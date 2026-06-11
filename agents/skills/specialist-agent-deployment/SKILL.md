@@ -29,9 +29,10 @@ Reference: for cross-machine MacBook → Mac mini moves, use `references/cross-m
 1. Identify the exact Hermes profile name to use.
 2. Create or clone the profile if needed.
 3. Wire the specialist's canonical `SOUL.md`, preferably by linking the profile SOUL to the Obsidian source of truth.
-4. Put platform-specific secrets in the **profile-local** `.env`, not the default profile.
-5. Start or restart the **profile gateway** and verify the agent with a real end-to-end probe.
-6. Only fall back to a custom handler script when the normal profile gateway path is unavailable or explicitly required.
+4. Run the post-clone hygiene pass before starting the gateway: strip inherited platform credentials the specialist should not own, disable cloned platforms such as Email or Google Chat unless explicitly wanted, and clear cloned cron jobs unless the user asked for them. See `references/profile-clone-hygiene-and-duplicate-souls.md`.
+5. Put platform-specific secrets in the **profile-local** `.env`, not the default profile.
+6. Start or restart the **profile gateway** and verify the agent with a real end-to-end probe.
+7. Only fall back to a custom handler script when the normal profile gateway path is unavailable or explicitly required.
 
 ## Execution standard
 - Do the file edits, environment updates, restarts, and verification directly.
@@ -125,6 +126,8 @@ See `references/gateway-stopped-triage.md` for the full diagnostic flow, false-p
 - Do not assume profile names match bot names or Obsidian note names.
 - Do not claim the agent is live until an end-to-end reply or identity probe succeeds.
 - Do not default to custom handlers when the standard profile gateway will work.
+- **Do not trust cloned profile state.** A `--clone-all` specialist profile can inherit Email, Google Chat, Telegram home channel, cron jobs, and stale session/runtime history. Strip anything the specialist should not own, clear copied cron jobs, and verify the gateway runs with only the intended platform before calling it ready. See `references/profile-clone-hygiene-and-duplicate-souls.md`.
+- **Do not blindly replace duplicate SOUL files.** First check which SOUL the live profile points to. Larger or older files may contain richer logic but stale delivery rules. Merge deliberately into the active canonical SOUL, then restart and probe the profile.
 - **Do not start with the provider probe when an agent goes silent on Telegram.** Check `hermes profile list` first. A stopped gateway is the most common cause and the CLI probe will give a false positive. See Gateway stopped triage above.
 - **execute_code read_file corrupts files on writeback.** `read_file()` in execute_code returns content with line-number prefixes baked in (e.g. `     1|content`). Writing that content back via `write_file()` bakes the prefixes into the file. Every subsequent read compounds the corruption. Fix: strip with `re.sub(r'^ +\\d+\\|', '', content, flags=re.MULTILINE)` before any write_file. Prefer `patch()` for targeted edits over `write_file()` when the file already exists — it avoids this class of bug entirely. See `references/execute-code-file-corruption-pitfall.md`.
 

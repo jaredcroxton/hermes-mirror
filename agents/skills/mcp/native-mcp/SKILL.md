@@ -78,7 +78,7 @@ mcp_servers:
     command: "npx"             # (required) executable to run
     args: ["-y", "pkg-name"]   # (optional) command arguments, default: []
     env:                       # (optional) environment variables for the subprocess
-      SOME_API_KEY: REDACTED
+      SOME_API_KEY: "value"
     timeout: 120               # (optional) per-tool-call timeout in seconds, default: 120
     connect_timeout: 60        # (optional) initial connection timeout in seconds, default: 60
 ```
@@ -197,7 +197,7 @@ mcp_servers:
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
       # Only this token is passed to the subprocess
-      GITHUB_PERSONAL_ACCESS_TOKEN: REDACTED
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_..."
 ```
 
 ### Credential Stripping in Error Messages
@@ -334,7 +334,7 @@ mcp_servers:
     command: "npx"
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
-      GITHUB_PERSONAL_ACCESS_TOKEN: REDACTED
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
     timeout: 60
 ```
 
@@ -369,12 +369,12 @@ mcp_servers:
     command: "npx"
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
-      GITHUB_PERSONAL_ACCESS_TOKEN: REDACTED
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
 
   company_api:
     url: "https://mcp.internal.company.com/mcp"
     headers:
-      Authorization: "Bearer REDACTED_OPENAI_KEY"
+      Authorization: "Bearer sk-xxxxxxxxxxxxxxxxxxxx"
     timeout: 300
 ```
 
@@ -394,7 +394,7 @@ mcp_servers:
     sampling:
       enabled: true           # default: true
       model: "gemini-3-flash" # model override (optional)
-      max_tokens_cap: REDACTED
+      max_tokens_cap: 4096    # max tokens per request
       timeout: 30             # LLM call timeout (seconds)
       max_rpm: 10             # max requests per minute
       allowed_models: []      # model whitelist (empty = all)

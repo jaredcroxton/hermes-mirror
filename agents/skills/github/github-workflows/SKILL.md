@@ -42,9 +42,10 @@ This umbrella covers GitHub work as one operational class. Start by establishing
 
 ### Repository management
 - Clone/fork/create repos, manage remotes, and releases.
-- For backup/mirror repositories, keep secrets, sessions, caches, and auth files out of the mirror.
+- For backup/mirror repositories, keep secrets, sessions, caches, auth files, and runtime databases out of the mirror.
 - For scheduled mirror backups that reuse `/tmp` workspaces, verify `origin`, branch, and working tree before copying. If the workspace has a missing remote, unexplained deletions, or stale untracked cache files, delete and freshly clone rather than pulling into a dirty mirror.
 - Before committing a public mirror backup, run a positive secret scan across the staged workspace for provider token patterns, not only the one token named in the task. Redact examples too when they match real token prefixes such as `ghp_`, `sk-`, `xoxb-`, or Google API-key shapes.
+- When mirroring Hermes skills, check for symlinks after copy. If a skill path points outside `~/.hermes/skills`, resolve and copy the real skill directory rather than committing a repository symlink. See `references/hermes-mirror-backup.md`.
 
 ### Codebase inspection
 - Use tools such as `pygount`/language counters to establish LOC, language mix, and dependency footprint before large plans.

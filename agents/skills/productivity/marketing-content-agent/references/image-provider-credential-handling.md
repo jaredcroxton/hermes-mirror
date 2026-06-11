@@ -16,7 +16,7 @@ Common provider variables:
 
 ```bash
 FAL_KEY=<api_key>
-FAL_API_KEY=REDACTED
+FAL_API_KEY=<api_key>
 ```
 
 Use the variable name expected by the actual generation script/provider. If unsure, store both only when the provider docs or implementation supports both aliases.

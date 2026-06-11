@@ -91,12 +91,12 @@ class ComfyRunner:
     def __init__(
         self,
         host: str = DEFAULT_LOCAL_HOST,
-        api_key: REDACTED
+        api_key: str | None = None,
         client_id: str | None = None,
         partner_key: str | None = None,
     ):
         self.host = host.rstrip("/")
-        self.api_key = REDACTED
+        self.api_key = api_key
         self.partner_key = partner_key
         self.is_cloud = is_cloud_host(self.host)
         self.client_id = client_id or new_client_id()
@@ -634,10 +634,10 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     # ---- Resolve API key ----
-    api_key = REDACTED
+    api_key = resolve_api_key(args.api_key)
     partner_key = args.partner_key or None
     if args.use_partner_key_as_auth and not api_key and partner_key:
-        api_key = REDACTED
+        api_key = partner_key
 
     # ---- Connect ----
     runner = ComfyRunner(

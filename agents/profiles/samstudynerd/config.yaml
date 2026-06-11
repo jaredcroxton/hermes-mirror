@@ -2,7 +2,7 @@ model:
   default: gpt-5.4
   provider: openai-codex
   base_url: http://localhost:11434/v1
-  api_key: REDACTED
+  api_key: ollama
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
@@ -161,7 +161,7 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
     download_timeout: 30
@@ -169,77 +169,77 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 360
     extra_body: {}
   compression:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
   skills_hub:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   approval:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   mcp:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   title_generation:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   triage_specifier:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
   kanban_decomposer:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 180
     extra_body: {}
   profile_describer:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 60
     extra_body: {}
   curator:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 600
     extra_body: {}
   session_search:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
     max_concurrency: 3
@@ -341,7 +341,7 @@ delegation:
   model: ''
   provider: ''
   base_url: ''
-  api_key: REDACTED
+  api_key: ''
   api_mode: ''
   inherit_mcp_toolsets: true
   max_iterations: 50

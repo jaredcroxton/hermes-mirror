@@ -21,6 +21,7 @@ Canonical SOUL:
 - Polly_PerformOS: PerformOS product strategy and brand context.
 - Harry_HR: APAC employment legislation understanding by market.
 - Nelly_Notebook: NotebookLM and source synthesis.
+- Leo_Leadership: leadership strategy sounding board for high-stakes people moments, manager conversations, delegation calls, power dynamics, and exact words.
 - Mira_Creative: brand visuals and visual DNA.
 - Serge_SEO: SEO and AI-search content operations.
 - Piper_PromptOps: prompt operations orchestrator for research, image, video, voice, agent, marketing, SEO, and business strategy prompts.

@@ -40,6 +40,30 @@ dig +short www.<domain> CNAME
 dig +short www.<domain> A
 ```
 
+## Local override check when public DNS looks right
+
+If public DNS is correct but the domain still fails on the user's machine, check the local resolver and hosts file before suggesting more DNS edits:
+
+```bash
+dscacheutil -q host -a name <domain>      # macOS local resolver answer
+grep -n "<domain>" /etc/hosts            # local hosts override
+```
+
+A result like `127.0.0.1 <domain>` in `/etc/hosts` means the Mac is forcing the root domain to localhost. Remove that hosts entry, then flush DNS:
+
+```bash
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+```
+
+Verification pattern:
+
+```bash
+curl -I -L https://<domain>/
+curl -I -L https://www.<domain>/
+```
+
+For Vercel root-to-www setups, the expected root response is usually a `308` redirect to `https://www.<domain>/`.
+
 ## TTL and propagation
 
 Most DNS hosts set TTL to 4 hours by default (Squarespace: 4 hrs, Google: 1 hr). After changing records, public resolvers may serve the old records until TTL expires.

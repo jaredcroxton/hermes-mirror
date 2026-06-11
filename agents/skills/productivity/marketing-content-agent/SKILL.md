@@ -31,6 +31,12 @@ The durable operating loop is:
 
 Do not jump straight from image upload to generation unless Jared explicitly asks for a quick generation test.
 
+## PerformOS real-world content launches
+
+When Jared asks for a world-class content strategy for PerformOS, AgentOS, street interviews, real-life videos, founder videos, or a launch content engine, use `references/performos-ai-real-world-content-launch.md`.
+
+Key strategic rule: do not lead with generic AI hype. Lead with the real-world confusion, risk, workflow pain, and leadership uncertainty around AI. The creative wedge is **AI in the Real World** supported by street interviews, founder field notes, workflow breakdowns, safe-AI trust content, and selective AgentOS scenario demos.
+
 ## Recommended MVP
 
 Start with one strong orchestrator agent, not five live agents.

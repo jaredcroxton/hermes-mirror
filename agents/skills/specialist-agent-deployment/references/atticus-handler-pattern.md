@@ -10,7 +10,7 @@ import subprocess
 import requests
 from datetime import datetime
 
-BOT_TOKEN = REDACTED
+BOT_TOKEN = os.getenv("ATTICUS_BOT_TOKEN")
 ALLOWED_IDS = [int(x) for x in os.getenv("ATTICUS_ALLOWED_IDS", "").split(",") if x.strip()]
 
 if not BOT_TOKEN:

@@ -9,7 +9,7 @@ A BotFather token only proves the Telegram bot identity exists. A specialist age
 1. Put the BotFather token in the specialist profile `.env`, not the default profile:
 
 ```bash
-TELEGRAM_BOT_TOKEN=REDACTED
+TELEGRAM_BOT_TOKEN=<botfather_token>
 TELEGRAM_ALLOWED_USERS=8647481186
 ```
 
