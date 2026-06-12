@@ -82,6 +82,23 @@ Then **restart the dev server** — changes to vite.config.ts are NOT hot-reload
 curl -s http://localhost:4040/api/tunnels | grep public_url
 ```
 
+**Verify the public URL before sending it:**
+```bash
+# Local target must return 200 first
+curl -I -s "http://localhost:<PORT>/<encoded-file-or-path>" | head
+
+# Ngrok free URLs may show a browser trust page, so verify the forwarded content server-side
+curl -I -s -H 'ngrok-skip-browser-warning: true' "https://<ngrok-host>/<encoded-file-or-path>" | head
+```
+
+If the local URL returns `200` but the ngrok URL returns `ERR_NGROK_3007`, `ERR_NGROK_3200`, or an offline page, kill and restart ngrok with an explicit loopback target:
+
+```bash
+ngrok http http://127.0.0.1:<PORT>
+```
+
+Then fetch `http://127.0.0.1:4040/api/tunnels` again and re-test. When using the browser tool against a free ngrok URL, click **Visit Site** once to pass the trust interstitial before checking the dashboard content.
+
 ### Option 2: Tailscale Funnel (Best for Production)
 
 **Best for:** Ongoing client access, encrypted, no third-party traffic.

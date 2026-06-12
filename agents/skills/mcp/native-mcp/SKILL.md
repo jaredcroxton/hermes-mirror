@@ -374,7 +374,7 @@ mcp_servers:
   company_api:
     url: "https://mcp.internal.company.com/mcp"
     headers:
-      Authorization: "Bearer sk-xxxxxxxxxxxxxxxxxxxx"
+      Authorization: "Bearer REDACTED_OPENAI_STYLE_TOKEN"
     timeout: 300
 ```
 

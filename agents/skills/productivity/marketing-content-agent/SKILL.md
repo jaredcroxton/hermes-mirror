@@ -31,6 +31,14 @@ The durable operating loop is:
 
 Do not jump straight from image upload to generation unless Jared explicitly asks for a quick generation test.
 
+## PerformOS content-launch approval workflow
+
+When Jared asks for a full PerformOS content strategy, launch plan, video campaign, or social content system but says not to act until approval, produce an Excel approval workbook rather than a prose-only plan. Use approval statuses such as `Approve`, `Decline`, `Hold`, and `Needs edit`, and make clear that only approved rows become action briefs after Jared re-uploads the workbook.
+
+For PerformOS launch/content work, Brock orchestrates and pressure-tests. Specialist agents produce their lanes: Polly for PerformOS positioning and product-state claims, Mira for visual/video direction, Serge for SEO, Bob for builds, Nelly for source synthesis, Lara for learning-design crossover, and Harry for HR/legal understanding when a specific market/scenario risk exists. If Jared explicitly says to use sub-agents, add a governance tab or routing section to the workbook.
+
+When Jared selects a calendar row such as `CAL-002`, route to Mira first for the production prompt, storyboard, captions, shot list, editing style, CTA, and preview-asset list. Then build only a lightweight preview/animatic unless final production is explicitly approved. See `references/performos-content-launch-approval-and-preview.md`.
+
 ## PerformOS real-world content launches
 
 When Jared asks for a world-class content strategy for PerformOS, AgentOS, street interviews, real-life videos, founder videos, or a launch content engine, use `references/performos-ai-real-world-content-launch.md`.
@@ -198,6 +206,7 @@ The best outputs explain:
 
 ## References
 
+- `references/performos-content-launch-approval-and-preview.md` — PerformOS content strategy approval workbook pattern, sub-agent routing, CAL-row first-preview workflow, and animatic fallback pattern.
 - `references/nano-banana-workflow-pattern.md` — Review and reusable pattern from Jared's Nano Banana n8n blueprint.
 - `references/mira-creative-agent-operating-model.md` — Mira-style brand visual agent operating model: intake menu, Go gate, output standard, and image-to-video sequence.
 - `references/image-provider-credential-handling.md` — Safe handling for fal/Seedream/Nano Banana/API keys in profile-local `.env` files and exported workflow packages.
