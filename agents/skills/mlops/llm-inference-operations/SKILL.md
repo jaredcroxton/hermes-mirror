@@ -48,6 +48,8 @@ This umbrella covers the operational path from model discovery to serving and ev
 
 For private-cloud or client-site prototypes, start with the cheapest reversible test: local Mac/Ollama if sufficient, low-cost EC2 GPU trial if not, and strict spend controls. Surface quota blockers early; new AWS accounts often need GPU quota requests.
 
+For DGX Spark, ASUS Ascent GX10, or similar 128GB NVIDIA GB10 appliances, use `references/dgx-spark-local-model-stack.md` before recommending a local model stack. Default guidance: 70B to 72B quantised models for daily AgentOS operations, 120B class models for premium local reasoning, and 200B class models only as stretch/showcase mode because operational headroom matters more than benchmark size.
+
 ## Verification Checklist
 
 - [ ] Model/license/hardware assumptions are documented.

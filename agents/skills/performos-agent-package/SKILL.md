@@ -355,6 +355,8 @@ Category line: **Private AI team for business leaders.**
 
 When creating AgentOS website copy, pricing pages, security pages, solution pages, or hero/demo sections, use `references/agentos-page-copy-patterns.md`. It captures the current pricing, security, solution architecture, and hero conversation animation pattern.
 
+For the NemoClaw/OpenShell/DGX Spark reference-appliance strategy, use `references/agentos-nemoclaw-dgx-reference-appliance.md`. It captures the split between infrastructure, agent operations, and business outcomes, plus the MacBook cockpit / DGX engine-room operating model.
+
 Key rule: do not sell AgentOS as "10 bots" or another AI subscription. Sell it as a managed private AI team built around the client's roles, workflows, approved sources, infrastructure boundary, and leadership rhythm.
 
 ## Local Deployment Edition (Updated — June 2026)
@@ -424,6 +426,14 @@ When pitching the Local Edition against cloud AI alternatives, use these verifie
 - Need a BSP (Twilio, WATI, Interakt) adding 10-30% markup
 - First 1,000 conversations often free for new accounts (30-90 day window)
 - Compare to Telegram API: $0, unlimited messages, no per-conversation cost
+
+## AgentOS sandbox runtime and NemoClaw positioning
+
+When Jared asks about NVIDIA NemoClaw, OpenShell, sandboxed agents, DGX Spark, or how AgentOS would run safely inside a business, use `references/agentos-nemoclaw-sandbox-runtime.md`.
+
+Key rule: NemoClaw is infrastructure, not the product. AgentOS owns the business agent layer: roles, workflows, approval gates, dashboards, and measured outcomes. Use the client-facing line: "private AI team working inside approved systems, with scoped access, network rules, model routing, audit logs, and human approval gates."
+
+DGX Spark note: treat NVIDIA DGX Spark as a strong candidate for an AgentOS proof appliance, not as the default requirement for Hermes. Hermes alone does not need that much machine. Hermes plus local models plus NemoClaw plus sandboxed AgentOS appliance is the strategic use case.
 
 ## Dashboard and Remote Access Networking
 
@@ -536,6 +546,7 @@ Default wedge for smaller local providers: **Private AI Readiness Audit for Educ
 - **"Yes correct" is not confirmation.** Jared often says "yes correct" to acknowledge a framing question without actually answering follow-up inputs. Always verify you have ALL required data before building. Unanswered questions = wait.
 - **Triple-party risk.** The chain is Client → PerformOS → Orgo.ai (cloud edition). Each is a separate security surface. Name the data flow explicitly. Local edition has two main surfaces: Client environment → PerformOS-owned managed appliance. If Lightsail is added as a cloud control layer, name it separately and explain what data does and does not pass through it.
 - **Mac Mini over MacBook:** Always recommend Mac Mini for local deployments. It is cheaper (A$1,599 vs ~$2,100+ for MacBook Air with equivalent RAM), designed for always-on desk use, and the client never needs to carry a server. A laptop is the wrong form factor for a dedicated AI agent machine.
+- **NemoClaw local MacBook install does not work (June 2026).** Docker Desktop on macOS arm64 cannot pull `ghcr.io/nvidia/nemoclaw/hermes-sandbox-base` — the 1.1GB layer times out at 600 seconds regardless of Docker memory allocation. Do not attempt local install. Use a Brev GPU cloud instance instead. See `references/nemoclaw-local-install-pitfalls.md` for the full pattern, cleanup checklist, and Jupyter terminal workaround.
 - **Proactive agent health checks.** When an agent (Bob, Lara, Sam, Polly, Harry, Nelly) stops responding or a task fails, do not assume the code is broken. Check provider health first: run `hermes --profile <profile> chat -q "reply with ok" --quiet`. If it returns 401, the API key is dead — switch providers via config.yaml edit (see specialist-agent-deployment skill). If it times out, the model or provider is overloaded. Always verify the agent brain before debugging the task.
 - **Token costs are deceptively low (cloud edition).** With caching, 56M tokens costs ~$9/mo. This is the margin lever. Do not frame tokens as the cost driver.
 - **Zapier pricing is in GBP.** When converting for Australian clients, apply current exchange rate. Note the currency difference clearly.
@@ -550,7 +561,9 @@ Default wedge for smaller local providers: **Private AI Readiness Audit for Educ
 - `references/tier-comparison-deck-language.md` — exact plain-language framing for Standard vs Advanced tiers in client-facing decks and one-pagers. Includes deck layout pattern, pricing display rule, and what never appears in client materials. Written June 2026.
 - `references/agentos-pricing-page-pattern.md` — pricing page copy pattern for AgentOS: Standard vs Advanced cards, comparison table language, setup fee explanation, FAQ, and the rule that tiering is reasoning depth, not agent count.
 
-- `references/lightsail-ollama-hosting.md` — Amazon Lightsail guidance for Hermes hosting, Ollama testing, $24/$84/$168/$384 tier logic, 19 GB model sizing, and the strategic split between cloud control layer and PerformOS-owned local appliance.
+- `references/aws-private-cloud-ollama.md` — Amazon Lightsail guidance for Hermes hosting, Ollama testing, $24/$84/$168/$384 tier logic, 19 GB model sizing, and the strategic split between cloud control layer and PerformOS-owned local appliance.
+- `references/dgx-spark-agentos-appliance.md` — DGX Spark as the AgentOS reference appliance: MacBook cockpit/DGX engine-room split, Hermes/NemoClaw migration sequence, Obsidian vault nuance, ASUS GX10 comparison, risks, and client-facing positioning.
+- `references/nemoclaw-local-install-pitfalls.md` — NemoClaw Hermes local MacBook install failure pattern (Docker Desktop arm64 GHCR pull timeout), Brev GPU cloud workaround, Brev CLI dead-end, Jupyter terminal fallback, and full cleanup checklist. Captured 13 June 2026.
 - `references/managed-local-appliance-remote-support.md` — client-site appliance remote admin, Git-backed agent updates, support escalation, MDM, and the no-home-Wi-Fi positioning rule.
 - `references/aws-ec2-operational-pitfalls.md` — root disk filling, ollama service user permissions, double-nested model directories, models lost during migration, web UI localhost bug, zombie port processes. Captured from the AgentOS EC2 proof session, 02 June 2026.
 - `references/parallel-keyword-research-pattern.md` — two parallel sub-agents researching Google Ads keywords from different angles, then Brock synthesizes. Captured from the AgentOS keyword research, 02 June 2026.

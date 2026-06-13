@@ -10,6 +10,16 @@ Use when Jared asks to refresh a live dashboard with new GitHub repositories, es
 - Trending in the last five days.
 - Include image generation, video generation, AI tools, agents, or similar.
 
+## Existing live dashboard identity
+
+When Jared says "the dashboard with the latest GitHub news", "latest GitHub news dashboard", or asks to update/scrape the existing GitHub links, default to the live PerformOS trending dashboard unless he names another project:
+
+- Live URL: `https://performos-trending.vercel.app/`
+- Local repo: `/Users/jc/Desktop/hermes_builds/performos-trending`
+- GitHub repo: `https://github.com/jaredcroxton/performos-trending`
+
+Do not create a local ngrok link or serve a different dashboard when the site is already live on Vercel. First verify the Vercel alias, then update the existing repo and redeploy to the same alias.
+
 ## Source strategy
 
 Prefer GitHub's repository search API through `gh api` for structured freshness checks:
@@ -57,6 +67,11 @@ For static single-file dashboards, update both:
 1. the source data file, for example `data/sample.json`
 2. the embedded HTML data payload, for example `var RAW_DATA = [...]`
 
+Also update the visible date marker and storage key so the browser does not carry stale local ratings into the new batch:
+
+- replace old visible dates, for example `09 June 2026` → current `DD Month YYYY`
+- replace old localStorage keys, for example `performos-trending-github-ratings-YYYYMMDD` → current date key
+
 Also update visible UI language from story/news language to repository language:
 
 - `stories` → `repos`
@@ -82,9 +97,11 @@ Before deployment:
 - Expected item count renders, usually 30.
 - All links start with `https://github.com/`.
 - Old story terms are absent from HTML and data.
+- Previous dashboard links have zero overlap with the refreshed batch when Jared asks for new links.
 - Created dates fall within the requested freshness window.
 - Image/video generation counts are non-trivial if requested.
 - Embedded HTML data matches the source JSON, not stale substituted dates.
+- Visible date marker and localStorage key match the new refresh date.
 - Em dash count is zero.
 
 After deployment:
