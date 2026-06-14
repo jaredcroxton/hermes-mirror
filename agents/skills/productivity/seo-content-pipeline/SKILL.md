@@ -63,6 +63,33 @@ Multi-file SEO asset production for PerformOS. Covers the full content cluster l
 26. **Search Console handoff** — user creates property at search.google.com/search-console, verifies, submits sitemap.
 22. **Search Console handoff** — user creates property at search.google.com/search-console, verifies, submits sitemap. Cannot be agent-done (needs Google login).
 
+## Agent platforms and website-facing language
+
+When writing or reviewing PerformOS website pages for Crew, AgentOS, AI work teams, private AI teams, Claude Code agents, Hermes, NemoClaw, or secure AI agent platforms, do **not** lead with internal product or agent names.
+
+Public readers do not know who Brock, Bob, Lara, Crew, or AgentOS are. Lead with the buyer outcome and searchable terms first, then introduce internal names only after the capability is clear.
+
+**Public-first terms:**
+- private AI team
+- AI agents for business
+- custom AI agents
+- Claude Code agents
+- Hermes AI agents
+- NVIDIA NemoClaw
+- OpenShell sandbox
+- secure AI agent platform
+- AI agent audit trail
+- AI automation for operations teams
+
+**Internal-name rule:**
+- Public copy: "specialist AI agents for strategy, build work, learning design, HR compliance, research, review, testing, and deployment."
+- Internal/demo copy: "Brock routes to Bob, Lara, Harry, Quinn, Trace, and Pace."
+
+**Crew and AgentOS framing:**
+- Crew is the internal name for the fast AI Work Team running through Claude Code.
+- AgentOS is the internal name for the Secure Private AI Team running through Hermes, NVIDIA NemoClaw, and OpenShell.
+- Website pages should explain speed versus control before naming the products.
+
 ## AgentOS SEO research pattern
 
 When Jared asks for SEO research, free AdWords, Google Ads credits, or low-cost acquisition for **AgentOS by PerformOS**, do not produce a quick keyword list yourself. Treat it as a multi-agent SEO workflow.

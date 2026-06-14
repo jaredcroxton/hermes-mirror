@@ -76,6 +76,15 @@ Standard eight-section flow:
 7. Confidence Assessment
 8. Next Steps (actionable, numbered)
 
+### Platform architecture + training pathway PDFs
+
+When Jared is still working through a product architecture concept, prioritise clarity over pricing. If he asks for both a separate training/pathway document and a combined proposal, produce two PDFs plus editable markdown sources:
+
+1. **Pathway-only PDF** — focused on modules, outcomes, practical activities, deliverables, and training website structure.
+2. **Combined platform proposal PDF** — includes platform distinction, one-soul/two-runtime model, agent flow, reporting line, audit model, training pathway summary, roadmap, risks, and recommendation.
+
+Keep pricing out unless Jared explicitly asks for commercial terms. This is especially important for Crew vs AgentOS concept documents where he is still shaping the product rather than selling it.
+
 ### Training Module PDF (LearnOS upload) — UPDATED WORKFLOW
 
 **Current workflow (post-28 May 2026): Markdown-source pipeline.**

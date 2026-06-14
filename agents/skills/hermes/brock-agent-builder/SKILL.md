@@ -329,6 +329,65 @@ After designing a specialist soul, Brock usually does NOT deploy it. The default
 
 Exception: if Jared explicitly asks Brock to complete, run, wire, or verify the agent, Brock may execute the deployment steps directly rather than hand off. In that case, treat deployment as unfinished until the profile is wired, gateway status is verified, and a real identity probe path is ready for Jared.
 
+### Crew and AgentOS dual-runtime pattern
+
+When Jared is discussing gstack, Crew, AgentOS, or whether Claude Code and Hermes/NemoClaw need separate agents, use the **same souls, two runtimes** model. Do not create duplicate agents with different names just because the runtime changes. Crew runs the canonical souls in Claude Code for speed. AgentOS runs the same canonical souls in Hermes + NemoClaw/OpenShell for security, audit, token masking, and sandbox policy.
+
+Use `references/crew-agentos-dual-runtime-pattern.md` for the full product distinction, reporting line, gstack-inspired phase roles, and the four missing souls: Finn, Quinn, Trace, and Pace.
+
+### Delegation locking for specialists
+
+When a specialist agent must never spawn sub-agents or route work to Bob/Lara/Harry/etc., lock delegation permanently in `config.yaml`:
+
+```yaml
+delegation:
+  max_spawn_depth: 0
+  max_concurrent_children: 0
+  orchestrator_enabled: false
+```
+
+This prevents `delegate_task` entirely. Apply this during deployment for any specialist that is knowledge-only, a thinking partner, or a domain expert with no build/execution responsibilities. Neo_NemoClaw uses this pattern — he owns the NemoClaw knowledge domain but must never route work to Bob or other builders.
+
+### Model injection on clone
+
+When cloning from `default` profile, the new specialist inherits the default model. Change it to the specialist's intended model before gateway start:
+
+```bash
+hermes --profile <profile> config set model.default "nvidia/nemotron-3-super-120b-a12b"
+hermes --profile <profile> config set model.provider "nvidia"
+hermes --profile <profile> config set model.base_url "https://integrate.api.nvidia.com/v1"
+```
+
+Then copy the provider's API key into the profile-local `.env`. Verify with a direct probe:
+
+```bash
+hermes --profile <profile> chat -q "What model are you running on? One sentence." --quiet
+```
+
+### Inherited credential stripping on clone
+
+When cloning from `default`, the new profile inherits email config, cron jobs, and platform credentials the specialist should not have. Strip immediately after clone:
+
+```bash
+sed -i '' '/^SMTP_/d' ~/.hermes/profiles/<profile>/.env
+sed -i '' '/^GMAIL_/d' ~/.hermes/profiles/<profile>/.env
+sed -i '' '/^EMAIL_/d' ~/.hermes/profiles/<profile>/.env
+```
+
+Only the platforms the specialist actually needs (e.g., Telegram for a messaging agent) should remain.
+
+### Cron-driven knowledge refresh for specialists
+
+For specialists that need to stay current on external knowledge sources (NVIDIA docs, GitHub releases, YouTube channels), set a daily cron job that refreshes their domain knowledge and saves updates to memory:
+
+```bash
+hermes --profile <profile> cron add "daily-kb-refresh" \
+  --schedule "0 8 * * *" \
+  --prompt "Check [source URLs] for any updates related to [domain]. If there is new information, summarize it and save to memory. If nothing new, reply 'no changes' and exit."
+```
+
+This keeps the specialist's knowledge current without manual intervention. Neo_NemoClaw uses this pattern to monitor NVIDIA's developer page, docs.nvidia.com, and YouTube for NemoClaw/Hermes updates.
+
 ### Brock-routed leadership specialists
 
 When Jared creates a leadership strategy specialist to sit behind Brock, use the pattern in `references/brock-routed-leadership-agent.md`.
@@ -341,6 +400,8 @@ Key rules:
 - Start Brock-routed when the agent handles high-stakes leadership judgement. Direct Telegram bot can come later after the pattern proves useful.
 
 For Telegram specialist bots, follow `references/specialist-telegram-deployment-hygiene.md`: store the token in the target profile only, set allowlists, verify `getMe`, remove inherited platform credentials like email unless explicitly wanted, restart the gateway, and verify the expected platform count before saying the bot is live.
+
+For NemoClaw/Hermes specialists or NVIDIA sandbox setup agents, follow `references/nemoclaw-specialist-and-onboarding.md`: keep the specialist Jared-only by default, lock delegation if it should never route to Bob or other agents, use Nemotron option 1 for NVIDIA Endpoint sandboxes, press `1` to enable Telegram during onboarding, and use Balanced policy for functional demos unless intentionally stress-testing Restricted.
 
 For task agents (Format A), Brock saves the agent file and the user deploys it in their Claude Code plugin.
 

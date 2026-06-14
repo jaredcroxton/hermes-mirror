@@ -429,9 +429,11 @@ When pitching the Local Edition against cloud AI alternatives, use these verifie
 
 ## AgentOS sandbox runtime and NemoClaw positioning
 
-When Jared asks about NVIDIA NemoClaw, OpenShell, sandboxed agents, DGX Spark, or how AgentOS would run safely inside a business, use `references/agentos-nemoclaw-sandbox-runtime.md`.
+When Jared asks about NVIDIA NemoClaw, OpenShell, sandboxed agents, DGX Spark, or how AgentOS would run safely inside a business, use `references/agentos-nemoclaw-client-deployment.md` for the full client-facing architecture, audit model, deployment options, and current limitations.
 
 Key rule: NemoClaw is infrastructure, not the product. AgentOS owns the business agent layer: roles, workflows, approval gates, dashboards, and measured outcomes. Use the client-facing line: "private AI team working inside approved systems, with scoped access, network rules, model routing, audit logs, and human approval gates."
+
+For the raw technical onboarding sequence, cloud instance quirks, wizard answers, and model compatibility (Nemotron vs GPT-OSS), see `references/nemoclaw-hermes-onboarding-expert.md` in the `specialist-agent-deployment` skill.
 
 DGX Spark note: treat NVIDIA DGX Spark as a strong candidate for an AgentOS proof appliance, not as the default requirement for Hermes. Hermes alone does not need that much machine. Hermes plus local models plus NemoClaw plus sandboxed AgentOS appliance is the strategic use case.
 
@@ -516,7 +518,31 @@ Jared's Vercel project is under `jaredcroxtons-projects`.
 - **Never include internal costs in client-facing documents.** When Jared says "this is the external one" — strip ALL cost data. Only the package price ($4,995/mo) and setup fee ($3,000) belong in the client document.
 - **Never name Obsidian in client documents.** The client does not need to know the specific tools used for local infrastructure. Use generic professional language.
 
-## Product sub-agent ecosystem (added June 2026)
+## Crew vs AgentOS — Two Separate Platforms (14 June 2026)
+
+PerformOS sells **two distinct platforms** with the same agent souls, different runtimes:
+
+| | Crew | AgentOS |
+|---|---|---|
+| **Runtime** | Claude Code | Hermes + NemoClaw + OpenShell |
+| **Buyer** | Fast-moving teams, startups, agencies | Regulated enterprises, HR, compliance, government |
+| **Security** | Standard (Claude Code permissions) | Enterprise (OpenShell sandbox, policy gates, audit trail) |
+| **Tagline** | "Your AI crew on Claude" | "Your private AI operating system" |
+| **Deployment** | Claude Code + skill pack loaded | NemoClaw sandbox + agent profiles injected |
+
+**Same agents. Different stadium.** Brock, Lara, Bob, Mira, Harry, Nelly, Sam, Polly, Neo, Leo, Quinn, Trace, Pace, and Finn — one set of souls, two runtimes. Crew adds the pipeline layer (Think→Plan→Build→Review→QA→Ship→Retro→Sign-off). AgentOS adds the security wrapper (OpenShell policy gates, token masking, audit trail).
+
+**Architecture-stage proposal rule:** when Jared is still working through Crew vs AgentOS as a concept, remove price points from PDFs and proposals. Focus on architecture, platform distinction, reporting line, audit model, roadmap, and risks. Add commercial terms only when Jared explicitly asks for pricing or packaging.
+
+**gstack reference architecture:** Garry Tan's gstack (110K stars, YC President's virtual engineering team) validates the multi-agent pipeline model. gstack splits work across 23 specialists — same architecture pattern, applied to software engineering. Crew applies the same pattern to business operations. See `references/gstack-agentos-architecture-mapping.md`.
+
+**Pipeline flow and reporting lines:** See `references/crew-pipeline-flow.md` for the full Think→Plan→Build→Review→QA→Ship→Retro→Sign-off pipeline, agent-to-agent routing, and Brock's single-point reporting line to Jared.
+
+**Modular training pathway:** See `references/crew-agentos-modular-training-pathway.md` for the shift away from 12-week programme framing toward a 10-module capability pathway covering Crew Foundations through Commercial Packaging. Use this when building PDFs, training websites, Crew Academy, or AgentOS Academy materials.
+
+**AgentOS skill injection pattern:** For deploying PerformOS agent profiles, skills, and memory into client NemoClaw sandboxes, see `references/agentos-skill-injection-pattern.md` in the `specialist-agent-deployment` skill.
+
+## Product sub-agent ecosystem (updated 14 June 2026)
 
 When Jared needs deep product-specific expertise, Polly routes to one of six specialist sub-agents. Their souls live at `/Users/jc/Desktop/Obsidian/Agents/`:
 
@@ -530,6 +556,8 @@ When Jared needs deep product-specific expertise, Polly routes to one of six spe
 | LearnOS | learnos-soul.md | Custom LMS | Live |
 
 Each soul contains product identity, tagline, visual system, voice principles, technical architecture, competitive positioning, guardrails, and relationship to the PerformOS suite. See `references/sub-agent-ecosystem.md` for the full routing protocol.
+
+**Neo_NemoClaw (specialist agent, not a product sub-agent):** Neo is the NemoClaw sandbox specialist. He knows the NVIDIA NemoClaw/Hermes stack, Brev cloud quirks, wizard sequence, model compatibility, audit architecture, and enterprise deployment path. He reports to Brock, not Polly. Soul at `/Users/jc/Desktop/Obsidian/Agents/neo-nemoclaw-soul.md`. Telegram bot: `@Nemo_JCbot`. Runs on NVIDIA Nemotron 120B with delegation locked, daily cron refresh from NVIDIA docs/GitHub/YouTube.
 
 ## Prospecting dashboard patterns
 
@@ -554,6 +582,11 @@ Default wedge for smaller local providers: **Private AI Readiness Audit for Educ
 
 ## References
 
+- `references/gstack-agentos-architecture-mapping.md` — gstack-to-AgentOS architecture mapping: the Garry Tan virtual-team model, specialist routing pattern, SKILL.md parallel, Claude Code vs Hermes runtime, and what to clone vs what not to clone. Captured 14 June 2026.
+- `references/crew-pipeline-flow.md` — Crew pipeline flow: Think→Plan→Build→Review→QA→Ship→Retro→Sign-off, agent-to-agent routing, reporting lines, Phase owners, and the four new agent souls to build (Finn, Quinn, Trace, Pace). Captured 14 June 2026.
+- `references/crew-agentos-architecture-proposal-pattern.md` — architecture-stage proposal pattern for Crew vs AgentOS, including one soul/two runtimes, no-pricing PDF rule, reporting line, pipeline, and required new souls.
+- `references/agentos-nemoclaw-client-deployment.md` — client-facing NemoClaw/OpenShell sandbox deployment: audit model, onboarding flow, deployment options, limitations, and product-layer positioning. Captured 14 June 2026.
+- `references/agentos-nemoclaw-sandbox-runtime.md` — earlier runtime reference.
 - `references/pricing-model.md` — detailed financial model with sensitivity analysis, token cost breakdown, setup payback period, and model pricing assumptions (Cloud/Orgo edition)
 - `references/zapier-pricing.md` — current Zapier Platform and Enterprise pricing in GBP
 - `references/local-edition-agents.md` — full agent list, use cases, model selection, hardware tiers, and MCP connections for the Local Edition

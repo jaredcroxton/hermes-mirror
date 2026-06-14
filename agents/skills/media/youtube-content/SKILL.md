@@ -45,7 +45,7 @@ After fetching the transcript, format it based on what the user asks for:
 - **Chapter summaries**: Chapters with a short paragraph summary for each
 - **Thread**: Twitter/X thread format — numbered posts, each under 280 chars
 - **Blog post**: Full article with title, sections, and key takeaways
-- **Quotes**: Notable quotes with timestamps
+- **Domain brief / specialist knowledge bank:** Multi-video synthesis into a concise operational brief for a specialist agent, product plan, or setup guide. Include what was demonstrated, durable commands/workflows, pitfalls, roadmap timing, and how it changes the user's operating model.
 
 ### Example — Chapters Output
 
@@ -63,7 +63,8 @@ After fetching the transcript, format it based on what the user asks for:
 2. **Validate**: confirm the output is non-empty and in the expected language. If empty, retry without `--language` to get any available transcript. If still empty, tell the user the video likely has transcripts disabled.
 3. **Chunk if needed**: if the transcript exceeds ~50K characters, split into overlapping chunks (~40K with 2K overlap) and summarize each chunk before merging.
 4. **Transform** into the requested output format. If the user did not specify a format, default to a summary.
-5. **Verify**: re-read the transformed output to check for coherence, correct timestamps, and completeness before presenting.
+5. **For multi-video expert briefs:** synthesize across videos into a durable operating guide rather than separate summaries. Pull out exact setup steps, decisions, pitfalls, terminology, and roadmap claims. If the output will seed a specialist agent's soul or a monitoring cron, write it as an operational knowledge bank with commands and verification steps.
+6. **Verify**: re-read the transformed output to check for coherence, correct timestamps, and completeness before presenting.
 
 ## Error Handling
 

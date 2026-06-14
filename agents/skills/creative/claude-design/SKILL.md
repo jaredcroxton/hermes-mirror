@@ -367,6 +367,26 @@ Keep it small and unobtrusive. The design should look final when tweaks are hidd
 
 Persist tweak values with localStorage when helpful.
 
+## Curriculum and training page design
+
+When Jared compares a PerformOS training page to a premium modular curriculum reference, do not treat the page as a simple coaching brochure. The target is a curriculum product page that makes the buyer feel there is a complete system.
+
+For AI training, Claude Code training, Crew/AgentOS training, private AI team training, or modular curriculum pages, include enough structure to feel substantial:
+
+- a clear pathway, not just a hero and a few cards
+- 8-10 modules when the offer is meant to feel like a full curriculum
+- lesson-level detail under each module
+- tools covered, such as Claude Code, Hermes, NVIDIA NemoClaw, OpenShell, GitHub, Obsidian, browser, files, and automation
+- "what you will build" outcomes for each module
+- final artifacts, capstone, or proof-of-work sections
+- progression from foundations to advanced secure deployment
+- review, QA, audit, and human approval modules where relevant
+- dense but readable module cards, expandable lesson rows, tool badges, build outcomes, and progress/pathway visuals
+
+Avoid making the training page feel like generic personalised AI coaching. The message should be: learn how to use AI agents to plan, build, automate, review, and ship real business work.
+
+If the page feels visually polished but underbuilt, name that directly: it is a brochure, not a curriculum product page.
+
 ## Content Discipline
 
 Do not add filler content.

@@ -88,58 +88,57 @@ Key env vars:
 
 ## Interactive Onboarding Quick-Skip Guide
 
-When running `nemoclaw onboard` interactively (non-CI), use these defaults to skip unnecessary prompts:
+When running NemoHermes interactively (non-CI), use these defaults. On a fresh machine the official quickstart is still valid:
+
+```bash
+export NEMOCLAW_AGENT=hermes
+curl -fsSL https://www.nvidia.com/nemoclaw.sh | bash
+```
+
+If the installer has already installed `nemohermes` and a retry is needed, do **not** keep rerunning the full curl installer. Use the installed CLI directly:
+
+```bash
+export PATH="/home/shadeform/.local/bin:$PATH"
+export NEMOCLAW_AGENT=hermes
+nemohermes onboard --fresh
+```
 
 | Prompt | Action | Reason |
 |--------|--------|--------|
+| License / third-party notice | Type the full word `yes` | `y` cancels the installer |
+| Resume or fresh | Type `f` | Avoids failed-session state |
 | Inference provider | Type `1` (NVIDIA Endpoints) | Cloud inference, no local model needed |
 | API key | Paste `nvapi-...` | Staged in process memory only, not written to disk |
-| Model | Type `1` (Nemotron 3 Super 120B) | NVIDIA's flagship model |
-| Sandbox name | Type `hermes-sandbox` or similar | Lowercase, hyphens OK |
-| Brave Web Search | Auto-skipped with `--agent hermes` | Not yet supported by Hermes Agent; wizard skips it automatically |
-| Hermes Provider (option 9) | Do not select | Broken — OAuth completes but credential prep fails |
-| Messaging channels | Toggle `1` for Telegram if needed; press Enter for rest | Toggle Telegram only if you want to chat with Hermes through your existing Telegram bot. After entering the bot token, a "Reply only when @mentioned?" prompt appears — accept `Y` to prevent group-chat noise. Then press Enter for remaining channels. |
-| Resource profiles | Type `6` then Enter (no profile) | Sandbox uses cloud inference, doesn't need resource caps. Blank Enter causes an error: `Invalid resource profile selection`. |
-| Policy tier | Press Enter (accept Balanced) | Good default; can tighten later |
-| Policy presets | Press Enter (accept defaults) | PyPI, HuggingFace, Brew, Brave are fine |
+| Model | Type `1` (Nemotron 3 Super 120B) | NVIDIA model with working Hermes tool compatibility |
+| Sandbox name | Type lowercase hyphenated name like `my-assistant` | No spaces or capitals. `My assistant` is invalid |
+| Apply configuration | Type `y` | Messaging prompts come after this |
+| Messaging channels | Press `1`, then Enter | This toggles Telegram on. Pressing Enter first skips Telegram |
+| Telegram bot token | Paste BotFather token | OpenShell masks it; Hermes sees `openshell:resolve:env:TELEGRAM_BOT_TOKEN` |
+| Reply only when @mentioned? | Type `Y` | Good default for business/group-chat use |
+| Telegram User ID | Enter the correct numeric user ID | This controls who can DM the bot |
+| Resource profiles | Type `6` then Enter (no profile) | Sandbox uses cloud inference, doesn't need resource caps. Blank Enter can fail |
+| Policy tier | Balanced for normal use; Restricted for governance stress tests only | Balanced avoids unnecessary friction while preserving useful controls |
+| Policy presets | Ensure Telegram, NVIDIA, nous-code, nous-web, github, npm as needed | Match the agent's required external services |
 
-### `--agent hermes` flag (DO NOT use `NEMOCLAW_AGENT=hermes` alone)
+### Hermes agent selection
 
-**The env var approach is wrong.** `export NEMOCLAW_AGENT=hermes` only names the sandbox but still installs OpenClaw as the runtime. Use the CLI flag instead:
+The current official quickstart uses `NEMOCLAW_AGENT=hermes` with the installer. Use that path first because it matches NVIDIA's docs and the Patrick Moorhead / NVIDIA walkthrough. If using the lower-level CLI directly and an `--agent hermes` flag is available in the installed version, it is also acceptable.
 
-```bash
-nemoclaw onboard --agent hermes
-```
-
-This was confirmed from GitHub issue [#3032](https://github.com/NVIDIA/NemoClaw/issues/3032) (NVIDIA/NemoClaw, May 2026). The `--agent hermes` flag triggers `agents/hermes/Dockerfile` which builds a proper Hermes sandbox — Hermes binary, Hermes config generation, Hermes plugins, and Hermes `.env` wiring — instead of the default OpenClaw runtime.
-
-Evidence of the correct build (from the issue logs):
+Evidence of the correct Hermes build:
 - Dockerfile uses: `COPY agents/hermes/plugin/`, `COPY agents/hermes/generate-config.ts`, `COPY agents/hermes/start.sh`
 - Config generated: `/sandbox/.hermes/config.yaml` with Hermes schema
-- Entrypoint: `["/usr/local/bin/nemoclaw-start"]` (Hermes, not OpenClaw gateway)
+- Entrypoint: `["/usr/local/bin/nemoclaw-start"]`
+- Terminal access shows the `hermes` command inside the sandbox
 
-**If you already onboarded with the wrong command**, destroy and rebuild:
-
-```bash
-nemoclaw <sandbox-name> destroy
-nemoclaw onboard --agent hermes
-```
-
-The onboard wizard flow is identical whether using `--agent hermes` or not — same provider selection, model choice, messaging prompts, and policy screens. The difference is which Docker image gets built.
-
-**Non-interactive CI usage:** Combine the flag with env vars:
+**If you already onboarded with the wrong command or bad Telegram details**, destroy and rebuild:
 
 ```bash
-export NEMOCLAW_NON_INTERACTIVE=1
-export NEMOCLAW_ACCEPT_THIRD_PARTY_SOFTWARE=1
-export NEMOCLAW_PROVIDER=build
-export NEMOCLAW_MODEL='nvidia/nemotron-3-super-120b-a12b'
-export NEMOCLAW_SANDBOX_NAME='hermes-agent'
-export NVIDIA_API_KEY='nvapi-...'
-nemoclaw onboard --agent hermes
+nemohermes <sandbox-name> destroy
+export NEMOCLAW_AGENT=hermes
+nemohermes onboard --fresh
 ```
 
-Note: `NEMOCLAW_AGENT=hermes` env var is NOT set here — the `--agent hermes` flag takes its place.
+For the full Brev clean-retry prompt flow, see `references/brev-nemohermes-clean-onboarding-2026-06-14.md`.
 
 ## Common Pitfalls
 
@@ -246,19 +245,35 @@ Then rerun `nemoclaw onboard`. The firewall rule is idempotent — running it ag
 
 ### 8. Stale gateway process from failed prior onboarding
 
-If a previous `nemoclaw onboard` run failed partway through (e.g. after the firewall block in pitfall 7), a stale openshell process may still be listening on port 8080, blocking the next onboarding attempt.
+If a previous onboarding run failed partway through, a stale openshell process or user service may keep listening on the gateway port and block the next attempt.
 
 **Symptoms:**
-- Onboarding reports: `Port 8080 is not available. Blocked by: openshell (PID NNNNN)`
+- Onboarding reports: `Port 8080 is not available. Blocked by: openshell (PID NNNNN)` or the same on port 8081
 - The previous gateway is marked as stale: `Existing OpenShell Docker-driver gateway is stale`
+- Killing one PID works briefly, then a new PID appears on the same port
 
-**Fix:**
+**Fix sequence:**
 ```bash
-sudo kill <PID>
-sleep 2
-nemoclaw onboard
+systemctl --user stop openclaw-gateway.service 2>/dev/null
+systemctl --user disable openclaw-gateway.service 2>/dev/null
+sudo killall openshell openshell-gateway 2>/dev/null
+sudo lsof -i :8080
 ```
-The `sleep 2` gives the kernel time to fully release port 8080 before the next gateway starts. Without it, a `bind: address already in use` race can occur.
+
+If a PID still appears:
+```bash
+sudo kill -9 <PID>
+```
+
+If port 8080 keeps respawning, switch to 8081 and open the matching firewall rule:
+```bash
+export NEMOCLAW_AGENT=hermes
+export NEMOCLAW_GATEWAY_PORT=8081
+sudo ufw allow from 172.18.0.0/16 to 172.18.0.1 port 8081 proto tcp
+nemohermes onboard --fresh
+```
+
+**Important retry rule:** after `nemohermes` is installed, do not keep rerunning `curl | bash`. The installer's upgrade stage can start the gateway, then onboarding sees that same gateway as a port conflict. Retry with `nemohermes onboard --fresh` directly.
 
 ### 9. Hermes sandbox has NO web dashboard (OpenClaw difference)
 
@@ -483,6 +498,56 @@ The `nemoclaw <sandbox> connect` command does not accept `--` to pass inline com
 
 **Fix:** Use `nemoclaw <sandbox> connect` to drop into an interactive sandbox shell, then run commands directly. Or use `docker exec <sandbox-container> <cmd>` directly if the container name is known.
 
+## Model Compatibility & Switching
+
+Change the model after onboarding:
+
+```bash
+nemohermes inference set --model nvidia/nemotron-3-super-120b-a12b --provider nvidia-prod --sandbox hermes --no-verify
+```
+
+Use `--no-verify` if credential verification fails mid-session (common on cloud instances).
+
+### Model compatibility matrix
+
+| Model | Status | Notes |
+|-------|--------|-------|
+| `nvidia/nemotron-3-super-120b-a12b` | ✅ Recommended | Full tool support, no validation errors |
+| `openai/gpt-oss-120b` | ❌ Avoid | Rejects Hermes tool descriptions: `ToolDescription validation error: Input should be a valid string [type=string_type, input_value=None]` |
+| Other NVIDIA Endpoints models | ⚠️ Test early | Tool compatibility varies; validate before relying |
+
+## Policy Presets Reference
+
+When selecting policies during onboarding:
+
+- **Restricted** — nothing enabled by default. Toggle presets manually. Use for enterprise demos to show governance capability.
+- **Balanced** — sensible defaults pre-selected. Good for normal use.
+- **Open** — broad network access.
+
+Enterprise demos: use Restricted with selective presets (at minimum: `github`, `local-inference`, `nous-code`, `nous-web`).
+
+## Sandbox Isolation Model
+
+The NemoClaw sandbox is a hardened container by design. **Configuration changes must be done from the host.**
+
+**Inside the sandbox you CANNOT:**
+- Use `sudo` (not installed)
+- Install pip packages system-wide (`externally-managed-environment`)
+- Run `hermes doctor` or `hermes setup` (blocked — NemoClaw manages config from host)
+- Access the host filesystem
+- Modify network policies
+
+**Inside the sandbox you CAN:**
+- Run `hermes status` (read-only)
+- Run `hermes pairing list/approve/revoke/clear-pending`
+- Access the API on port 8642
+- Use `pipx` if installed (usually not)
+- Run curl to allowed domains (telegram.org, pypi.org, huggingface.co, etc.)
+
+**Reconfigure from host:** `nemoclaw onboard --resume`
+
+**Agent runtime identity:** The sandbox reports `Agent: OpenClaw v2026.x.x` in status output — this is cosmetic. The actual agent inside is Hermes (v0.14.0+). Use `hermes`, not `openclaw tui`.
+
 ## Brev Instance Selection
 
 For testing NemoClaw Hermes with NVIDIA cloud endpoints, the best value option (as of June 2026):
@@ -519,9 +584,64 @@ NemoClaw sandboxes are designed for machines with fast Docker image access and 1
 
 Do not spend time fighting Docker image pulls on the MacBook. Escalate to Brev early.
 
+## Hardware Decision: MacBook Pro vs DGX Spark
+
+For PerformOS/AgentOS demos:
+
+- **MacBook Pro M5 Max 128GB** — better for client demos. Portable. Hermes runs natively (no Docker bridge). Dashboard at `http://127.0.0.1:9119` works directly. Show agents, models, skills. Use as demo unit.
+- **DGX Spark / ASUS Ascent GX10** — better for dedicated production appliance. Headless. Always-on. NemoClaw sandbox on bare metal.
+
+Recommended first buy: MacBook Pro for demos. DGX Spark later for production.
+
+## What Works Today vs Alpha-Rough
+
+### ✅ Working (June 2026)
+
+- Sandbox builds on cloud GPU
+- Hermes runs inside sandbox (`hermes` command, not `openclaw tui`)
+- NVIDIA GPT-OSS 120B and Nemotron 120B respond via API
+- GPU passthrough (nvidia-smi, CUDA, proc write)
+- Network policies and firewall
+- Terminal chat TUI
+- OpenAI-compatible API at port 8642
+- `nemoclaw hermes connect` → `hermes` chat path
+- `brev port-forward` for port 18789
+
+### ⚠️ Alpha-rough
+
+- `nemohermes hermes dashboard-url` consistently fails — auth token retrieval is unreliable
+- Dashboard at port 18789 may exist but cannot be reliably authenticated
+- `nemoclaw hermes status` reports `Agent: OpenClaw` but the agent is Hermes
+- Telegram pairing needs host-side config workaround
+- The quickstart MUST run in an interactive TTY; piping fails
+- Each failed onboard attempt leaves a stale OpenShell process on port 8080
+- `brev exec` cannot run interactive prompts — use `brev shell` always
+- Gateway restart/stop can take 10+ minutes — do not interrupt
+
+## Cost Context
+
+Brev MASSEDCOMPUTE L40S: **$1.06/hr USD** (~A$1.60/hr). A full test session (2-4 hours) costs A$3-7. Shut down when not in use — some instance types have no stop/start.
+
+## Messaging Guidance for Operators
+
+When communicating state to the user, be direct:
+
+- If port 18789 fails: say the dashboard service is not running yet, not that the URL is wrong.
+- If there is no sandbox: say the install is incomplete.
+- If an NVIDIA key is missing: say the next step is to add `NVIDIA_API_KEY`.
+- Do not bury the user in installation theory. Give current state → cause → next action.
+
 ## References
 
-- `references/hermes-api-telegram-ops.md` — Hermes sandbox operations: API access on port 8642, Telegram pairing (`hermes telegram pair`), `hermes status` diagnostics, port summary (Hermes vs OpenClaw), and quick verification flow.
+- `references/hermes-api-telegram-ops.md` — Hermes sandbox operations: API access on port 8642, Telegram pairing, `hermes status` diagnostics, port summary (Hermes vs OpenClaw), and quick verification flow.
 - `references/session-detail-2026-06-13.md` — Full session transcript: model catalog, Docker daemon check script, Brev escape hatch pattern, provider source code paths.
-- `references/brev-cloud-onboarding-flow.md` — Step-by-step interactive onboarding prompt sequence for Brev cloud instances via Jupyter Terminal. Covers every prompt from inference provider through resource profiles, including firewall and stale-gateway fixes.
-- `references/ssh-tunnel-dashboard-access.md` — Complete SSH tunnel workflow for accessing the NemoClaw dashboard when Brev port sharing is blocked by the cloud provider. Step-by-step: enable password auth, open tunnel, get dashboard URL, open in Chrome.
+- `references/brev-cloud-onboarding-flow.md` — Step-by-step interactive onboarding prompt sequence for Brev cloud instances via Jupyter Terminal.
+- `references/ssh-tunnel-dashboard-access.md` — Complete SSH tunnel workflow for dashboard access when Brev port sharing is blocked.
+- `references/brev-l40s-working-deploy-20260613.md` — Full working transcript from a successful Brev L40S deployment (13 June 2026).
+- `references/hermes-dashboard-manifest.md` — manifest.yaml analysis for dashboard port.
+- `references/nvidia-nous-livestream-insights.md` — NVIDIA Neutron Labs livestream (June 2026) with Nous Research demoing the enterprise deployment pattern.
+- `references/ssh-access.md` — SSH access setup for Brev instances.
+- `references/brev-cloud-instance-pattern.md` — Brev cloud instance provisioning details.
+- `references/nemohermes-macos-nvidia-endpoints.md` — Session-derived troubleshooting pattern for macOS + NVIDIA Endpoints.
+- `references/brev-cloud-ssh-workflow.md` — Brev cloud instance access patterns via SSH.
+- `references/brev-nemohermes-clean-onboarding-2026-06-14.md` — clean retry flow for Brev/cloud onboarding: license `yes`, direct `nemohermes onboard --fresh`, 8081 gateway fallback, Telegram toggle, correct model and user ID prompts.

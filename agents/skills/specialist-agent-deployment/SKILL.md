@@ -43,6 +43,7 @@ Reference: for cross-machine MacBook → Mac mini moves, use `references/cross-m
 - Treat `Gateway: running` as necessary but not sufficient. A stale gateway process can receive Telegram messages and still fail at agent import/runtime. Check profile brain, token `getMe`, gateway logs, and live transport before declaring the agent online.
 - When a specialist gateway is running but Telegram replies fail with an import/runtime error after a Hermes update, restart that profile's gateway process. If `hermes --profile <profile> gateway restart` is blocked because the command is being invoked from inside a gateway session, stop only the target profile's process by matching `hermes_cli.main --profile <profile> gateway run`, then start it again with `hermes --profile <profile> gateway start`. Verify the new log shows `Connected to Telegram (polling mode)` and send or request a live reply test.
 - When changing a profile's model/provider and Jared reports Telegram still shows the old provider, verify the Telegram runtime path, not just the CLI brain. A CLI probe can pass while the live Telegram gateway/session footer is stale. See `references/telegram-runtime-model-verification.md`.
+- When wiring a specialist profile to OpenAI Codex, remember Codex uses OAuth in profile-local `auth.json`, not an API key in `.env`. Set `model.provider=openai-codex`, `model.default=gpt-5.5`, copy verified Codex auth into the profile if needed, restart the live Telegram gateway, then run both CLI and live transport probes. See `references/codex-wiring-for-specialist-profiles.md`.
 - For fresh Telegram bots, verify the BotFather token with `getMe`, restart the profile gateway, then recognise `Bad Request: chat not found` as the normal sign that the user has not pressed **Start** in the new bot chat yet. See `references/profile-telegram-bot-verification.md`.
 - Verify with a live identity or reply test before claiming the specialist is fully ready.
 - Report the concrete profile, source-of-truth SOUL path, gateway state, and verification result.
@@ -131,7 +132,29 @@ See `references/gateway-stopped-triage.md` for the full diagnostic flow, false-p
 - **Do not start with the provider probe when an agent goes silent on Telegram.** Check `hermes profile list` first. A stopped gateway is the most common cause and the CLI probe will give a false positive. See Gateway stopped triage above.
 - **execute_code read_file corrupts files on writeback.** `read_file()` in execute_code returns content with line-number prefixes baked in (e.g. `     1|content`). Writing that content back via `write_file()` bakes the prefixes into the file. Every subsequent read compounds the corruption. Fix: strip with `re.sub(r'^ +\\d+\\|', '', content, flags=re.MULTILINE)` before any write_file. Prefer `patch()` for targeted edits over `write_file()` when the file already exists — it avoids this class of bug entirely. See `references/execute-code-file-corruption-pitfall.md`.
 
+## NemoClaw Hermes sandbox deployment
+
+When deploying Hermes agents inside NVIDIA NemoClaw/OpenShell sandboxes for client or test use, see `references/nemoclaw-hermes-onboarding-expert.md`. That reference covers:
+
+- The correct quickstart command and wizard sequence (model 1 Nemotron, NOT model 6 GPT-OSS)
+- Brev cloud instance quirks (firewall rules, stale process cleanup, port forwarding)
+- Restricted vs Balanced policy for Telegram
+- Dashboard URL limitations (Hermes alpha gap)
+- Three-layer audit architecture
+- Enterprise path vs interactive wizard
+
+Do NOT attempt local macOS NemoClaw install — Docker Desktop arm64 cannot pull the sandbox base image. Use a Brev GPU cloud instance or wait for the DGX/MacBook Pro local path.
+
+When the user says "build an agent" in the context of NemoClaw sandboxes, the deploy sequence is different from standard Telegram bot deployment. Use the quickstart command and wizard answers from the reference, not the default profile creation + gateway install flow.
+
+**Repeated port conflict pitfall:** Once the curl installer has installed `nemohermes`, do not keep rerunning the full `curl | bash` installer to recover onboarding. The installer may start or recreate the gateway during its upgrade step, then onboarding reports that the same gateway is blocking 8080/8081. After install, recover with the installed CLI directly: clear stale processes, export `NEMOCLAW_AGENT=hermes` and any `NEMOCLAW_GATEWAY_PORT`, then run `nemohermes onboard --fresh`. If using a non-default gateway port such as 8081, also add the matching UFW rule: `sudo ufw allow from 172.18.0.0/16 to 172.18.0.1 port 8081 proto tcp`.
+
+**Telegram credential collision pitfall:** If onboarding warns that another sandbox uses the same Telegram credential, stop and destroy the old sandbox first. One bot token can only be polled by one sandbox/gateway at a time. Do not continue through that warning for a clean team bot setup.
+
 ## References
+- `references/codex-wiring-for-specialist-profiles.md` for switching a profile-backed specialist to OpenAI Codex, handling profile-local OAuth auth, restarting stale Telegram gateways, and separating the specialist brain model from the target sandbox model.
+- `references/nemoclaw-hermes-onboarding-expert.md` for NemoClaw Hermes onboarding, cloud instance quirks, model compatibility, audit architecture, enterprise path, and the Neo specialist agent pattern.
+- `references/agentos-skill-injection-pattern.md` for injecting PerformOS agent profiles, skills, and memory into client NemoClaw sandboxes — the AgentOS product architecture.
 - `references/atticus-handler-pattern.md` for the handler fallback template when a custom polling path is truly required.
 - `references/kanban-governance-for-specialist-agents.md` for the Brock-as-Kanban-orchestrator model, specialist SOUL blocks, Telegram `/kanban` start patterns, and first test workflow.
 - `references/brock-agent-to-agent-routing.md` for the Brock-as-router pattern when Jared needs multi-agent pipelines without copy-paste.
@@ -178,17 +201,31 @@ echo 'TELEGRAM_BOT_TOKEN=<botfather_token>' >> ~/.hermes/profiles/<profile>/.env
 echo 'TELEGRAM_ALLOWED_USERS=8647481186' >> ~/.hermes/profiles/<profile>/.env
 ```
 
-5. **Copy API key** if using a key-based provider like DeepSeek (not needed for OAuth providers):
+5. **Copy API key** if using a key-based provider like DeepSeek or NVIDIA (not needed for OAuth providers):
 ```bash
 grep -q 'DEEPSEEK_API_KEY' ~/.hermes/profiles/<profile>/.env || grep 'DEEPSEEK_API_KEY' ~/.hermes/.env >> ~/.hermes/profiles/<profile>/.env
 ```
 
-6. **Verify the bot exists** via Telegram API:
+6. **Change the model** if the specialist should not use the default profile's model:
+```bash
+hermes --profile <profile> config set model.default "nvidia/nemotron-3-super-120b-a12b"
+hermes --profile <profile> config set model.provider "nvidia"
+hermes --profile <profile> config set model.base_url "https://integrate.api.nvidia.com/v1"
+```
+
+7. **Lock delegation** if the specialist must never spawn sub-agents or route to Bob/Lara/etc.:
+```bash
+sed -i '' 's/max_spawn_depth: 1/max_spawn_depth: 0/' ~/.hermes/profiles/<profile>/config.yaml
+sed -i '' 's/max_concurrent_children: 3/max_concurrent_children: 0/' ~/.hermes/profiles/<profile>/config.yaml
+```
+This prevents `delegate_task` entirely. Apply for knowledge-only specialists, thinking partners, and domain experts with no build/execution responsibilities.
+
+8. **Verify the bot exists** via Telegram API:
 ```bash
 curl -s "https://api.telegram.org/bot<token>/getMe" | python3 -m json.tool
 ```
 
-7. **Identity probe** before starting the gateway:
+9. **Identity probe** before starting the gateway:
 ```bash
 hermes --profile <profile> chat -q "Who are you? Reply in two sentences." --quiet
 ```
