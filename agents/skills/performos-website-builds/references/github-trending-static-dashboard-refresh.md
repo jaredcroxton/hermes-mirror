@@ -27,6 +27,10 @@ Use when Jared asks to update an existing live dashboard with "new GitHubs", rep
 10. Deploy with Vercel production from the repo and verify the clean alias with a cache-busting URL.
 11. Commit and push only the intended tracked files after deployment. Leave unrelated untracked files alone.
 
+## Alternative data source: Firecrawl Trending scrape
+
+When `gh api` is unavailable or you want the human-facing GitHub Trending page data (with "stars this week" growth numbers), use Firecrawl MCP to scrape `https://github.com/trending?since=weekly` directly. See `references/firecrawl-github-trending-scrape.md` for the full method, field mapping, and HN/PH cross-reference notes. The Firecrawl approach surfaces growth data that `gh api` cannot provide.
+
 ## Pitfall
 
 Do not use broad text replacements after embedding JSON if the replacement target could appear inside the data payload. If you must replace visible copy after embedding, re-embed the final JSON again before verification.

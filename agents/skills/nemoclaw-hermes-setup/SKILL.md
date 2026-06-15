@@ -251,8 +251,10 @@ If a previous onboarding run failed partway through, a stale openshell process o
 - Onboarding reports: `Port 8080 is not available. Blocked by: openshell (PID NNNNN)` or the same on port 8081
 - The previous gateway is marked as stale: `Existing OpenShell Docker-driver gateway is stale`
 - Killing one PID works briefly, then a new PID appears on the same port
+- `sudo killall openshell openshell-gateway` silently fails because the process runs as root
+- The PID changes every few seconds (the user-level systemd service restarts it)
 
-**Fix sequence:**
+**Fix sequence (in order):**
 ```bash
 systemctl --user stop openclaw-gateway.service 2>/dev/null
 systemctl --user disable openclaw-gateway.service 2>/dev/null
@@ -263,6 +265,7 @@ sudo lsof -i :8080
 If a PID still appears:
 ```bash
 sudo kill -9 <PID>
+sudo lsof -i :8080    # must print nothing
 ```
 
 If port 8080 keeps respawning, switch to 8081 and open the matching firewall rule:
@@ -274,6 +277,24 @@ nemohermes onboard --fresh
 ```
 
 **Important retry rule:** after `nemohermes` is installed, do not keep rerunning `curl | bash`. The installer's upgrade stage can start the gateway, then onboarding sees that same gateway as a port conflict. Retry with `nemohermes onboard --fresh` directly.
+
+### 8b. Wrong chat ID in sandbox config
+
+After onboarding completes, the sandbox may contain an incorrect `TELEGRAM_ALLOWED_USERS` value. This happens when the user enters the wrong numeric ID during the messaging step, or when a prior failed onboarding session's state leaks into the new build.
+
+**Symptoms:**
+- Inside the sandbox: `cat /sandbox/.hermes/.env` shows `TELEGRAM_ALLOWED_USERS=8897822157` instead of the correct ID
+- The bot ignores messages from the correct user
+- `nemoclaw hermes logs --follow` shows messages arriving but being filtered by allowlist
+
+**Fix:** Destroy the sandbox and rebuild with the correct chat ID. Do NOT try to edit the .env file inside the sandbox — the config is managed by the host OpenShell gateway.
+```bash
+nemohermes <sandbox> destroy
+nemohermes onboard --fresh
+# When prompted: "Telegram User ID (for DM access):" → enter correct ID
+```
+
+### 8c. Token masking is normal — not a bug
 
 ### 9. Hermes sandbox has NO web dashboard (OpenClaw difference)
 
@@ -645,3 +666,4 @@ When communicating state to the user, be direct:
 - `references/nemohermes-macos-nvidia-endpoints.md` — Session-derived troubleshooting pattern for macOS + NVIDIA Endpoints.
 - `references/brev-cloud-ssh-workflow.md` — Brev cloud instance access patterns via SSH.
 - `references/brev-nemohermes-clean-onboarding-2026-06-14.md` — clean retry flow for Brev/cloud onboarding: license `yes`, direct `nemohermes onboard --fresh`, 8081 gateway fallback, Telegram toggle, correct model and user ID prompts.
+- `references/brev-port-forwarding-pattern.md` — Brev CLI port forwarding (`brev port-forward -p local:remote`), Jupyter Terminal as SSH alternative, and SSH tunnel fallback when provider blocks port sharing.

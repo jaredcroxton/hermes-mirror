@@ -47,12 +47,26 @@ This umbrella covers running external coding-agent CLIs from Hermes. The class-l
 - Use interactive background sessions for multi-turn implementation or review.
 - Exit or kill cleanly after collecting the result.
 
+## Framework adaptation pattern: standards vs roles
+
+When Jared asks Claude Code or another coding agent to install/adapt external workflow repos such as Superpowers or G-Stack, treat them as **project-local workflow layers first**, not global installs.
+
+Use this split:
+- **Superpowers-style frameworks = standards layer.** Planning, TDD, systematic debugging, git worktrees, code review, verification before completion, and branch finishing.
+- **G-Stack-style frameworks = role workflow layer.** CEO/strategy review, engineering review, design review, QA, ship/release, investigation, retros, context handoff, and safety controls.
+- **PerformOS remains the product/business layer.** Do not let workflow frameworks replace existing agents, public naming, website structure, Hermes profiles, Obsidian souls, Telegram bots, or NemoClaw config.
+
+Default guardrail: ask the coding agent to inspect and propose a safe project-local adaptation plan before writing. Global plugin installs, SessionStart hooks, `CLAUDE.md`/`AGENTS.md` creation or overwrite, and command/hook changes require explicit approval.
+
+Reference: `references/project-local-superpowers-gstack-adaptation.md` contains the prompt patterns, mappings, and pitfalls from the Superpowers/G-Stack adaptation session.
+
 ## Common Pitfalls
 
 1. **Delegating verification.** The parent Hermes session must run tests/read diffs before claiming completion.
 2. **No workspace isolation.** Parallel agents editing the same tree cause conflicts.
 3. **Launching interactive CLIs without PTY.** Use tmux or `terminal(..., pty=true/background=true)` patterns.
 4. **Underspecified prompts.** External agents do worse when repo path, target files, and done criteria are missing.
+5. **Global workflow installs by default.** External workflow repos may ship plugins, hooks, or startup behavior. Start project-local and require an approval gate before global install, hooks, or instruction-file overwrites.
 
 ## Verification Checklist
 

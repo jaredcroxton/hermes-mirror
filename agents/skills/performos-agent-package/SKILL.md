@@ -538,6 +538,10 @@ PerformOS sells **two distinct platforms** with the same agent souls, different 
 
 **Pipeline flow and reporting lines:** See `references/crew-pipeline-flow.md` for the full Think→Plan→Build→Review→QA→Ship→Retro→Sign-off pipeline, agent-to-agent routing, and Brock's single-point reporting line to Jared.
 
+**PerformOS Crew white-label playbook:** See `references/performos-crew-white-label-playbook.md` when Jared asks how Superpowers, PerformOS Crew, named agents, Claude Code, Hermes, and the client business context fit together. Key rule: PerformOS Crew is the portable role/workflow layer. For white-label installs, Layer 3 is the **Business Context Layer**, not "PerformOS is the business layer." PerformOS supplies the AI work team structure; the client supplies brand, workflows, systems, risks, and commercial outcomes.
+
+**PerformOS Crew Skill Pack Catalogue:** See `references/performos-crew-skill-pack-catalogue-architecture.md` when Jared asks to break the Crew system down into a client-facing skill catalogue with individual skill explanations. Covers the four-layer architecture, six default skill packs (Sales, Marketing, Operations, HR, Finance/Admin, Customer Support), catalogue structure (what it does, workflow, example use, example output), white-label rules, and the two identified gaps (Documentation Pack and Training & L&D Pack).
+
 **Modular training pathway:** See `references/crew-agentos-modular-training-pathway.md` for the shift away from 12-week programme framing toward a 10-module capability pathway covering Crew Foundations through Commercial Packaging. Use this when building PDFs, training websites, Crew Academy, or AgentOS Academy materials.
 
 **AgentOS skill injection pattern:** For deploying PerformOS agent profiles, skills, and memory into client NemoClaw sandboxes, see `references/agentos-skill-injection-pattern.md` in the `specialist-agent-deployment` skill.

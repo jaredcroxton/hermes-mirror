@@ -85,6 +85,50 @@ When Jared is still working through a product architecture concept, prioritise c
 
 Keep pricing out unless Jared explicitly asks for commercial terms. This is especially important for Crew vs AgentOS concept documents where he is still shaping the product rather than selling it.
 
+### PerformOS Crew / white-label playbook PDFs
+
+When Jared asks for a playbook PDF about PerformOS Crew, Claude Code workflow, or white-label AI work teams:
+
+1. Update the source markdown first if the conversation corrected the operating model.
+2. Use the white-label framing: Superpowers = standards layer, PerformOS Crew = role/workflow layer, Business Context Layer = the client-specific brand, workflows, risks, systems, access rules, approval rules, and commercial outcomes.
+3. Do not describe Layer 3 as "PerformOS is the business layer" when the goal is white-label client installs. PerformOS Crew supplies the AI work team structure; the client business supplies the context and constraints.
+4. Remove internal shorthand and identity leakage from client-facing playbooks. Do not include "Caveman mode", Jared-specific wording, internal agent names (Brock/Bob/Lara/Neo/etc.), PerformOS business-specific examples, or internal runtime details unless explicitly requested.
+5. Use professional operating-mode names: Fast mode, Controlled mode, and Governed mode.
+6. Use generic specialist-role examples: strategy lead, build lead, learning lead, compliance lead, operations lead, QA lead, release lead.
+7. Render a polished PDF with a cover page, meta table, section headings, callout cards, and readable code blocks.
+8. Deliver with `MEDIA:<absolute path>` and keep the markdown source as the source of truth in Obsidian.
+9. Verify zero em dashes and zero client-facing internal leakage in the source before final response.
+
+See `references/performos-crew-white-label-playbook.md` for the detailed white-label wording rules and verification checklist.
+
+### Crew Skill Pack Catalogue PDF
+
+When Jared asks to break the Crew system down one level further into individual skills:
+
+1. Write the markdown source first. Structure it as a catalogue: one skill per section, each with a plain-English description of what it does, a simple workflow, an example use, and an example output.
+2. Write for a business owner who has never used AI before. No technical language. No Claude Code or Hermes references. No internal agent names. Every skill should answer: "What does this actually do for my business?"
+3. Use the same white-label rules as the playbook: zero em dashes, zero Jared references, zero caveman, zero internal runtime mentions. The name "PerformOS Crew" may appear but no other PerformOS business context.
+4. Render as a reportlab PDF using `layer_box()` for the four-layer architecture diagram, `two_cards()` for skill pack overview cards, and dark-header tables for the skill catalogue rows.
+5. The PDF should include a skill selection guide section so a business can identify which packs apply to them.
+
+See `references/performos-crew-white-label-playbook.md` for the detailed white-label wording rules and verification checklist.
+
+### RPL Statement PDF (academic submission)
+
+When Jared asks for an ECU Recognition of Prior Learning statement:
+
+1. Read the uploaded documents first: certificate, CV, cover letter, and original RPL form. Extract the unit codes, student details, and professional experience narrative.
+2. Source the current unit outlines from ECU's handbook for the correct codes (note: codes change across years — the form may reference old codes; use the current codes in the statement and add a note explaining the code change).
+3. Build the markdown source first. Address every learning outcome individually under its own numbered heading. Each outcome needs a substantial paragraph (200+ words) that maps specific professional experience to the outcome — describe HOW the experience demonstrates the outcome, not just WHAT was done.
+4. Link professional experience to named frameworks (Kotter, ADKAR, GROW, etc.) where relevant, but keep the focus on applied practice, not theory recitation.
+5. Include a verification section naming the verifier (employer who reviewed the statement), a note on unit code changes if applicable, and student details (name, number, course).
+6. Render as a reportlab PDF with a clean academic cover page, dark header bars, callout boxes for verification notes, and clear learning outcome headings.
+7. Verify: 0 em dashes, student number present, verifier named, all learning outcomes individually addressed, unit codes correct.
+
+**Critical RPL pitfall:** Never use the course being applied for as evidence. If Jared is applying through his Master's programme, do not reference ECU study, MIT certificates taken during the programme, or grades from the current course as evidence. Ground every learning outcome in professional experience (Director of Operations and L&D, Accor Plus regional transformation, seven-market rollout, etc.). Academic evidence from the same degree path being assessed is circular — the assessor needs to see professional capability, not study already completed within the programme.
+
+See `references/performos-crew-white-label-playbook.md` for the detailed white-label wording rules and verification checklist.
+
 ### Training Module PDF (LearnOS upload) — UPDATED WORKFLOW
 
 **Current workflow (post-28 May 2026): Markdown-source pipeline.**
@@ -228,6 +272,8 @@ Standard governance pack flow:
 ## Reference files
 
 - **`references/training-module-pdf-notes.md`** — Design decisions, colour scheme, layout specs, and the dual-output rule for LearnOS-ready training module PDFs. Read this when building a Training Module PDF.
+- **`references/performos-crew-white-label-playbook.md`** — White-label rules, verification checklist, catalogue update pattern, methodology slide template, canonical Crew architecture, and the "PDF first, website second" rule.
+- **`references/ecu-rpl-statement-pattern.md`** — RPL statement formatting rules, document structure, critical "no current study as evidence" rule, and evidence sources for ECU Master's applications.
 
 ## Pitfalls
 

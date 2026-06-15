@@ -151,6 +151,10 @@ When the user says "build an agent" in the context of NemoClaw sandboxes, the de
 
 **Telegram credential collision pitfall:** If onboarding warns that another sandbox uses the same Telegram credential, stop and destroy the old sandbox first. One bot token can only be polled by one sandbox/gateway at a time. Do not continue through that warning for a clean team bot setup.
 
+**Telegram masking and allowlist pitfall:** Inside a NemoClaw Hermes sandbox, `TELEGRAM_BOT_TOKEN=openshell:resolve:env:TELEGRAM_BOT_TOKEN` is correct. It means OpenShell is masking the real token and resolving it at egress. Do not try to paste the real bot token into `/sandbox/.hermes/.env`. If Telegram does not reply, check `TELEGRAM_ALLOWED_USERS`. Jared's current Telegram user ID is `8647481186`; if the sandbox shows a different user ID, rebuild or fix the host-layer onboarding config. The token and allowlist are host/NemoHermes configuration, not something to solve from inside the agent TUI.
+
+**Localhost access pitfall:** For NemoHermes, the reliable browser-access path is the OpenAI-compatible API on port 8642. From the local Mac, forward `8642:8642` with Brev, then open `http://127.0.0.1:8642/v1/models`. Do not append an OpenClaw `#token=` fragment to Hermes URLs. The 18789 dashboard path is unreliable for the Hermes alpha path and should not be the primary success criterion.
+
 ## References
 - `references/codex-wiring-for-specialist-profiles.md` for switching a profile-backed specialist to OpenAI Codex, handling profile-local OAuth auth, restarting stale Telegram gateways, and separating the specialist brain model from the target sandbox model.
 - `references/nemoclaw-hermes-onboarding-expert.md` for NemoClaw Hermes onboarding, cloud instance quirks, model compatibility, audit architecture, enterprise path, and the Neo specialist agent pattern.

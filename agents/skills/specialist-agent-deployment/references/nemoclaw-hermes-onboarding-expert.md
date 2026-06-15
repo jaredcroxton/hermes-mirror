@@ -42,8 +42,9 @@ nemohermes onboard --fresh
 - **Firewall rule required:** `sudo ufw allow from 172.18.0.0/16 to 172.18.0.1 port 8080 proto tcp`. If using `NEMOCLAW_GATEWAY_PORT=8081`, open the same rule for port 8081.
 - **Stale processes:** Every interrupted onboard can leave an `openshell` process on the gateway port. First try `sudo killall openshell openshell-gateway`; if it persists, use `sudo lsof -i :8080` or `sudo lsof -i :8081` to identify the PID and `sudo kill -9 <PID>`. If a user service keeps respawning it, run `systemctl --user stop openclaw-gateway.service 2>/dev/null` and `systemctl --user disable openclaw-gateway.service 2>/dev/null`.
 - **`brev exec` is non-interactive.** Use `brev shell` for the wizard. `brev exec` cannot handle the onboarding prompts.
-- **Port forwarding:** `brev port-forward <instance-name> -p 18789:18789` for dashboard. Do not reuse stale test instance names from past sessions; always get the current Brev instance name first.
-- **Dashboard port:** 18789 (not 9119). 9119 is local-only inside sandbox.
+- **Port forwarding:** use `brev port-forward <instance-name> -p 8642:8642` for the reliable Hermes OpenAI-compatible API, then open `http://127.0.0.1:8642/v1/models` locally. Use `brev port-forward <instance-name> -p 18789:18789` only if you specifically need to test the dashboard path.
+- **Dashboard port:** 18789 (not 9119). 9119 is local-only inside sandbox. Do not append an OpenClaw `#token=` fragment to Hermes URLs. Hermes API clients authenticate with the bearer token from the generated Hermes environment instead of an OpenClaw dashboard URL token.
+- **Instance names:** do not reuse stale test instance names from past sessions; always get the current Brev instance name first.
 
 ## Wizard answers — correct sequence
 
@@ -57,7 +58,7 @@ nemohermes onboard --fresh
 | Apply config | `[Y/n]:` | **y** |
 | Messaging | `Press 1-5 to toggle` | **Press 1** (toggles Telegram ON), then Enter |
 | Bot token | Paste | Your BotFather token |
-| Chat ID | Enter | Your Telegram chat ID |
+| Chat/User ID | Enter | Jared's Telegram user ID is `8647481186`. If the sandbox later shows a different `TELEGRAM_ALLOWED_USERS`, Telegram will not work for Jared. |
 | Resource profile | `Choose [6]:` | **6** (no profile / OpenShell defaults) |
 | Policy tier | Select | **Balanced** (NOT Restricted — Restricted blocks Telegram) |
 | Presets | Toggle | github, nous-web, nous-code, npm, telegram, local-inference |
@@ -86,7 +87,21 @@ The `NEMOCLAW_AGENT=hermes` env var builds an OpenClaw sandbox base with Hermes 
 
 - `hermes` command inside sandbox = Hermes TUI (with all tools and skills)
 - `openclaw tui` inside sandbox = OpenClaw TUI (for dashboard + pairing flow)
-- Dashboard URL command only works reliably for OpenClaw path (known Hermes alpha gap)
+## Telegram configuration traps
+
+Inside the sandbox, a masked `TELEGRAM_BOT_TOKEN` value is expected. That is OpenShell token masking. Do not replace it with the real BotFather token inside `/sandbox/.hermes/.env`. The agent should not see the raw token. OpenShell resolves it at egress.
+
+Check the allowlist instead. Jared's expected value is `TELEGRAM_ALLOWED_USERS=8647481186`.
+
+If the value is not Jared's Telegram user ID (`8647481186`), Telegram direct messages will be ignored or fail. Fix at the NemoHermes/OpenShell host layer, or rebuild the sandbox and enter the correct Telegram user ID during onboarding.
+
+If onboarding warns that another sandbox uses the same Telegram credential, stop and destroy the old sandbox first. One Telegram bot token can only be polled by one sandbox/gateway at a time.
+
+## Enterprise path vs wizardnstead. Jared's expected value is `TELEGRAM_ALLOWED_USERS=8647481186`.
+
+If the value is not Jared's Telegram user ID (`8647481186`), Telegram direct messages will be ignored or fail. Fix at the NemoHermes/OpenShell host layer, or rebuild the sandbox and enter the correct Telegram user ID during onboarding.
+
+If onboarding warns that another sandbox uses the same Telegram credential, stop and destroy the old sandbox first. One Telegram bot token can only be polled by one sandbox/gateway at a time.
 
 ## Enterprise path vs wizard
 

@@ -34,6 +34,14 @@ This umbrella covers three related editing jobs: explain technical concepts to n
 - Convert theory into actions, examples, practice prompts, and checklists.
 - Preserve required facts while removing academic scaffolding.
 
+### Productized internal playbooks
+- Use when turning technical setup, agent workflows, repo adaptations, or operating models into a source-of-truth playbook.
+- Replace external-tool framing with the user's own product taxonomy when asked. Example pattern: "external repo method" becomes "PerformOS Crew" or another approved internal label.
+- Explain the operating model in layers: what sets standards, what provides roles/rhythm, and what remains the business/product layer.
+- Include practical usage modes, example prompts, when-not-to-use guidance, red flags, and verification checks.
+- If the user wants old labels removed, verify the final file has zero old-label mentions and zero em dashes.
+- Prefer saving durable playbooks into the user's Obsidian vault and returning the file as `MEDIA:/absolute/path`.
+
 ### Humanize prose
 - Remove AI tells: empty intensifiers, symmetrical lists, generic transitions, and over-formal conclusions.
 - Add a natural point of view, specific examples, and uneven but readable cadence.

@@ -20,9 +20,13 @@ Use this operating split:
 - **AI Instruments / practical tools:** separate detail page.
 - **FAQ, privacy, terms, contact, LinkedIn, security, pricing:** footer/subpage layer for trust and SEO depth.
 
-Before adding homepage content, ask: “Has the buyer asked for this detail yet?” If not, move it to the relevant subpage or cut it.
+Before adding homepage content, ask: "Has the buyer asked for this detail yet?" If not, move it to the relevant subpage or cut it.
 
 When Jared is rebuilding the PerformOS homepage after feedback that the old site felt too full, apply the homepage governance gate before suggesting or building anything. The homepage is a decision page, not a catalogue: one buyer, one main offer, one CTA, seven sections max, no product sprawl. See `references/homepage-governance-density-gate.md`.
+
+## Public naming rule (locked 15 June 2026)
+
+Jared corrected Brock for using internal agent names (Brock, Bob, Lara) on public-facing training and platform pages. Public website content must use public labels (Strategy agent, Build agent, Learning design agent, etc.), not internal agent names. Internal names are for internal docs, demos, ops, and soul files only. Product names (Crew, AgentOS) may only appear as small parentheticals after the public label is understood. Full mapping and SEO terms in `references/public-vs-internal-naming-rules.md`.
 
 For **new PerformOS marketing/strategy projects**:
 
@@ -140,6 +144,7 @@ Jared explicitly corrected Brock's operating model during a session where Brock 
 ## Pitfalls
 
 - **Don't suggest when you can execute.** When Jared asks for a capability upgrade (e.g. "build Lara out more"), give the suggestion and then offer to execute. Don't just describe what could be done and wait. Jared's correction: "I'm talking about Lara. What, you just gave suggestions. Don't change subjects." The right response is a concise recommendation followed by "Want me to write it?" — not a long strategy memo followed by a subject change.
+- **The "just go in there and make the change" signal (locked 15 June 2026).** When Jared says "just go in there and make the change if you understand completely" or "you can just go in there and make the change," he gives explicit permission to act without confirmation. Do not reply with a plan. Do not ask "want me to do it?" Do not recap what you will do. Open the file, make the change, report what was done. This is distinct from "don't suggest when you can execute" — this is "don't confirm when you have been told to act." Jared's words: "Yep, or you can just go in there and make the change if you understand completely." Brock's correct response: act immediately, then report the result.
 - **External CSS/JS dependencies.** The original page may reference external `styles.css` and `main.js`. When converting to a self-contained deliverable, inline ALL CSS and ALL JS. The final HTML must work as a single file with zero external dependencies beyond Google Fonts and GA4. This surfaced when the Vercel deploy included `course.html` but not `styles.css` — the page served but had no styling.
 - **File overwrite on vercel deploy.** Running `vercel --prod --yes` uploads whatever is on disk at that moment. If the git remote has a different version of `course.html`, and the remote is ahead of local, a prior `vercel deploy` can pull the remote version and overwrite local changes. Always verify the file on disk is the correct version BEFORE running vercel deploy. Use `grep "personal AI tutor\\|hero-eyebrow" course.html` to verify.
 - **Git push can vary by repo/session.** Older sessions saw HTTPS git blocked by macOS Keychain and SSH host-key issues. Do not assume push is impossible. Try `git push origin main` after committing if Jared asked for a deployed source update. If push fails, report it plainly and keep the verified Vercel deployment as the live artifact.
@@ -176,4 +181,7 @@ Brock writes souls. Bob's sub-agents handle build execution. If the soul update 
 - `references/competitor-research-ai-courses.md` — Full competitor analysis from the 27 May 2026 session (8 AI course sites, frequency table, 3 key findings). Reference when building education/course pages.
 - `references/agent-thinker-installation-pattern.md` — Reusable pattern for adding named thinkers to agent souls. Format, rules, placement. Used on Archie_Architect (v2.0) and Lara_LearningDesign (v3.0).
 - `references/agent-operating-skeleton-pattern.md` — The seven structural sections every principal agent soul needs: output contract, scorecard, decision rights, escalation triggers, routing rules, cadence, hard lines. Applied to Lara_LearningDesign.
+- `references/public-vs-internal-naming-rules.md` — Public vs internal naming rules for PerformOS website content: public labels only on website pages, internal agent names for demos and ops only, three-tier training model (Build Yourself / Build for Small Business / Build for Enterprise), product naming rule (Crew/AgentOS as parentheticals only), SEO keywords to weave.
+- `references/training-page-segmentation-model.md` — Training page segmentation evolution: single-track → two-track → three-tier. Design principles, buyer profiles, module fork map, anti-patterns. Captured 15 June 2026 after Jared's correction that two tracks split the sole-operator buyer in half.
+- `references/claude-training-australia-conversion-research.md` — Australian Claude/AI training competitor notes and conversion implications for the PerformOS training page: buyer-outcome dropdown, path cards above the fold, build-outcome positioning, homepage three-card copy guardrails, and Bob implementation brief.
 - `references/agent-sub-agent-structure-pattern.md` — Reusable pattern for adding sub-agents to a principal agent. Naming convention, delegation contract, soul structure, profile config, registry update. Applied to Lara_LearningDesign (Rory_Research, Ava_Activities, Eva_Evaluation).

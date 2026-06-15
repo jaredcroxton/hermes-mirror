@@ -90,7 +90,18 @@ Public readers do not know who Brock, Bob, Lara, Crew, or AgentOS are. Lead with
 - AgentOS is the internal name for the Secure Private AI Team running through Hermes, NVIDIA NemoClaw, and OpenShell.
 - Website pages should explain speed versus control before naming the products.
 
-## AgentOS SEO research pattern
+## AgentOS / private AI team website and SEO pattern
+
+When Jared is shaping public website copy for Crew, AgentOS, private AI teams, Claude Code agents, Hermes, NemoClaw, OpenShell, or AI agent training, do not lead with internal product names or agent names. Public readers do not know who Brock, Bob, Lara, Crew, or AgentOS are. Lead with buyer-understandable outcomes and searchable terms first, then introduce internal names later.
+
+**Public-first naming rule:**
+- Crew = internal name for the AI Work Team. Public copy should first say "AI work team", "AI agents for business", "Claude Code agents", or "AI workflow automation".
+- AgentOS = internal name for the Secure Private AI Team. Public copy should first say "secure private AI team", "secure AI agents", "Hermes AI agents", "NVIDIA NemoClaw", "OpenShell sandbox", "AI agent governance", or "AI agent audit trail".
+- Named agents such as Brock, Bob, Lara, Harry, Quinn, Trace, Pace, Neo, etc. belong in internal plans, demos, onboarding, or product tours. Public website copy should use functional labels first: strategy agent, sales agent, build agent, HR compliance agent, research agent, review agent, testing agent, secure deployment specialist.
+
+**Business-coverage rule:** when building AI agent training or private AI team pages, show coverage across the full operating surface of a traditional business so buyers feel the basics are covered: strategy, sales, sales coaching, marketing, customer support, operations, HR, learning, reporting, review, testing, automation, secure deployment, and audit. Include a section such as "AI agents for the work your business already does" with cards by function and concrete example outputs.
+
+**Technical keyword rule:** include Claude Code, Hermes, NVIDIA NemoClaw, and OpenShell naturally where relevant. These are not just internal tools; they are search and trust terms that make the offer easier to understand, transfer, and sell.
 
 When Jared asks for SEO research, free AdWords, Google Ads credits, or low-cost acquisition for **AgentOS by PerformOS**, do not produce a quick keyword list yourself. Treat it as a multi-agent SEO workflow.
 
