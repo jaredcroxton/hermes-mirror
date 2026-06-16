@@ -335,6 +335,8 @@ When Jared is discussing gstack, Crew, AgentOS, or whether Claude Code and Herme
 
 Use `references/crew-agentos-dual-runtime-pattern.md` for the full product distinction, reporting line, gstack-inspired phase roles, and the four missing souls: Finn, Quinn, Trace, and Pace.
 
+When Claude Code returns a build plan for a new Crew skill pack, use the 7-Gate Review Framework in `references/crew-skill-review-framework.md` before approving any construction. Every gate must pass before skills are written.
+
 ### Delegation locking for specialists
 
 When a specialist agent must never spawn sub-agents or route work to Bob/Lara/Harry/etc., lock delegation permanently in `config.yaml`:
@@ -422,6 +424,8 @@ For task agents (Format A), Brock saves the agent file and the user deploys it i
 - **Generic voice sections.** "Be helpful and professional" is not voice design. Specific voice principles with actual language examples are.
 - **Forgetting the status.** Product agents that don't declare their status create confusion. Live? Paused? Planned? Say it.
 - **Brain without hands.** A raw model behind a chat UI (Ollama + system prompt + web page) is NOT an agent. It can only talk about doing things — it produces ChatGPT-style non-answers ("Here is how you could...") instead of executing. A real agent has tools (terminal, browser, files, web) and a runtime that dispatches them. The AP agent on EC2 was phi4:14b behind a Python HTTP proxy with no Hermes runtime — it explained what to do but could not do anything. When someone asks why their agent cannot act, the diagnostic is: model alone = chatbot; model + runtime + tools = agent. A Hermes agent is the latter.
+- **White-label leaking.** When building business skills that will be sold or given to clients, never embed a specific business's context (brand name, contact details, domain, product names, internal workflows) into the skill body. G-Stack skills are portable across any software project — they never mention a specific company. Crew skills must be equally portable. If you are building a skill while thinking about a specific client (e.g., "Accor Plus review replies"), the client context WILL leak into examples, guardrails, and output blocks. After authoring, grep the skill for any business-specific noun and replace it with a generic placeholder. White-label is a verification step, not an intention.
+- **Context Loop is mandatory, not optional.** Every Crew skill must include Step 0 (Context Recovery: read the prior handoff file or state "No prior context, first run") and a Final Step (Handoff Save: write output, decisions, unfinished work, and next-skill needs to the handoff file). This is what makes the Crew a system that remembers across sessions rather than a folder of stateless prompts. The handoff path is `.claude/crew-state/<pack>/<skill>-handoff.md`. Always write it, even when the run produced no output. This is not an optional State section — it is a mandatory Step 0 and Final Step in every Workflow.
 
 ## Version
 

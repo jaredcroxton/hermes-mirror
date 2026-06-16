@@ -113,6 +113,8 @@ When Jared asks to break the Crew system down one level further into individual 
 
 See `references/performos-crew-white-label-playbook.md` for the detailed white-label wording rules and verification checklist.
 
+See `references/crew-catalogue-white-label-rules.md` for the critical distinction between installed flow skills and catalogue skills, the white-label language checklist, and the catalogue build pattern (build.py → index.html → headless Chrome PDF).
+
 ### RPL Statement PDF (academic submission)
 
 When Jared asks for an ECU Recognition of Prior Learning statement:
