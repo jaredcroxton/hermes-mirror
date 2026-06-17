@@ -37,26 +37,29 @@ description: One-line description of what this skill does and when to invoke it.
 
 Never include: `hooks`, `triggers`, `allowed-tools`, `gbrain`, `telemetry`, `preamble-tier`, or any G-Stack frontmatter fields.
 
-### Depth standard (mandatory)
+### Locked skill template (approved gold standard)
 
-Every PerformOS Crew skill must match G-Stack depth. A skill that is 15-30 lines with four bullet workflow steps is REJECTED. The minimum bar is a skill that can survive a real business session.
+Every PerformOS Crew skill must match G-Stack role-depth. A skill that is 15-30 lines with four bullet workflow steps is REJECTED. The approved gold standard was proven across 58 skills (9 packs, all smoke-tested green). Reference implementations: `crew-sales-lead-research` (gold standard), `crew-training-module-outline-builder` (118 lines, full Bloom/Kirkpatrick depth), `crew-docs-sop-builder` (92 lines, five step-type taxonomy with rejection paths).
 
-All 14 sections are mandatory unless explicitly marked optional:
+The locked template has 7 mandatory sections (~85-120 lines):
 
-1. **Preamble** — bash script that records session start, detects project root and branch, checks for prior context saves, initialises state directories, and reports the operating environment.
-2. **When to invoke** — trigger rules, anti-trigger rules, and mode selection (Fast, Careful, Governed).
-3. **Cognitive framework** — named principles (3-5), a structured rubric or taxonomy, and forcing questions the skill must answer before producing output.
-4. **Step-by-step workflow** — numbered phases. Each phase has a clear input, action, and output gate. Minimum 4 phases, typical 5-7.
-5. **Guardrails** — safety constraints (minimum 6), escalation triggers, and boundary enforcement rules.
-6. **Decision briefs** — a structured format for handling ambiguity. Must include ELI10, stakes, recommendation, completeness scoring, pros/cons, and net line.
-7. **Output format** — fenced code block showing the exact output template the skill produces.
-8. **Context bridge** — on-exit bash script that saves a context snapshot to `.claude/flow-state/contexts/`, and on-entry recovery that surfaces the most recent context.
-9. **Learnings capture** — bash logging to `.claude/flow-state/learnings/learnings.jsonl` for pattern, pitfall, preference, architecture, and operational discoveries.
-10. **Completion protocol** — DONE, DONE_WITH_CONCERNS, BLOCKED, NEEDS_CONTEXT with reason, attempted, and recommendation fields.
-11. **Cross-skill integration** — which skills call this one, which skills this one calls, and the handoff protocol describing what runs next.
-12. **Plan mode behaviour** — what the skill can and cannot do in plan mode without executing code or writing files.
-13. **Verification checklist** — minimum 10 checkboxes the agent must confirm before marking the skill DONE.
-14. **Brand/domain context** (optional) — if the skill operates on behalf of a specific brand voice, embed the full voice specification, banned phrases, and complaint-specific handling rules directly in the skill body so no external playbook is required.
+1. **Frontmatter** — `name` and `description` only. name matches the folder. description has natural-language triggers, 120-400 chars.
+2. **Title + role-opening paragraph** — `# Crew: Name`, then name a specific expert role, the cognitive instinct ("you work from evidence, not vibes"), who the output is for, and what the skill does NOT do.
+3. **Inputs** — what the skill needs. The missing-input fork: ask once, then proceed with gaps marked. Never invent domain facts, prices, dates, or quantities.
+4. **Workflow** — opens with **Step 0: Context Recovery** (read the prior handoff file or state first run), then 6-7 numbered phases expanding the catalogue bullets into a deterministic process: taxonomies/enums, decision forks, forcing questions asked one at a time, an anti-generic instruction ("name the mechanism, not the category"), and a verification penultimate step that re-reads inputs and confirms coverage before emitting. Closes with **Final Step: Handoff Save** (write the handoff file always, even with no output).
+5. **Output format** — exactly ONE fenced block: the structured artifact template plus a short filled example so output looks finished.
+6. **Guardrails** — "Never..." lines in three families: business risk (skill-specific fabrication bans), evidence/honesty (label inferences, name sources), house style (no em dashes, no AI-slop, specific nouns). Plus "if a project playbook exists, it wins."
+7. **Handoffs** — to sibling crew skills by name and to Core standards by name (`crew-core-quality-checker`, `crew-core-context-save`, `crew-core-context-restore`). References `crew-method.md` as the methodological parent.
+
+**Key design decisions that were proven in the 58-skill build:**
+
+- **Context Loop over bash bridge.** The mandatory Step 0 + Final Step pair replaces bash-level context save/restore scripts. The handoff file (`.claude/crew-state/<pack>/<skill>-handoff.md`) is the bridge. It is simpler, dependency-free, and was proven functional across all 58 smoke tests.
+- **Guardrails over decision briefs.** The three-family guardrail format (business risk / evidence / house style) replaces the longer decision-brief format. Every skill carries "Never invent a [price/date/threshold/role]" specific to its domain plus "label inferences" and "no em dashes."
+- **Forcing questions inline.** Rather than a separate Cognitive Framework section, forcing questions live inside the numbered workflow steps where they actually gate progress.
+- **Mode selection is implicit.** Fast/Careful/Governed modes are not in the skill body. They are in the buyer's project playbook or the Crew Method doc. The skill's guardrails and escalation rules enforce the right behaviour regardless of mode.
+- **Completion protocol is implicit.** The Final Step Handoff Save serves as the completion marker. If the handoff file exists, the skill ran. If it does not, the skill did not complete.
+- **Test fixtures are mandatory.** Every skill ships with a 3-case fixture (clean, messy, missing-input) in a `tests/` directory per pack. The `qa-check.sh` harness runs structural and functional smoke passes against these fixtures.
+- **Handoff state dir is `crew-state`, not `flow-state`.** The handoff files live at `.claude/crew-state/<pack>/<skill>-handoff.md`. This separates Crew product state from internal flow development state.
 
 ### Naming convention
 
@@ -158,11 +161,12 @@ When Jared asks to continue building Crew skills, do not rely on memory counts a
 ## Pitfalls
 
 - **Superpowers is methodology, not a skill pack.** Do not count Superpowers as a pack or a set of skills. Treat it as the standards layer underneath all Crew skills: brainstorm, plan, build with tests, debug root cause, verify, review, finish, and save or restore context.
-- **Crew counts must be reconciled before quoting.** Current sources can disagree: catalogue deck source, executable build folder, installed `.claude/skills` folder, and architecture model. Always say which source is being counted before reporting totals.
-- **Missing build spec files may need recreation.** A previous response referenced `/Users/jc/Desktop/sales-pack-gstack-build.md`, but it was not found during review. If Jared asks for it, recreate it from the catalogue source, the depth standard, and the full-depth Customer Support reference skills.
-- **Lightweight stubs are REJECTED.** A skill that is 15-30 lines with a role statement, four bullet workflow steps, and an output format is product marketing, not an executable skill. It will not survive one real business session. Every skill must include all 14 sections from the Depth Standard. The user will reject skills that do not match G-Stack depth.
-- **Product catalogue is not executable.** The 57 skills described in the PerformOS Crew catalogue are marketing material. Only skills built to the Depth Standard are executable. Do not confuse the catalogue with installed skills.
-- **Do not include hooks, triggers, or allowed-tools in frontmatter.** These skills must be dependency-free and project-local. They are discovered by Claude Code automatically.
+- **Crew counts must be reconciled before quoting.** The product is complete at 58 skills across 9 packs. If building additional packs, update the current-state reference afterwards so counts stay synced.
+- **The locked template, not the old 14-section standard, is the build target.** The approved gold standard across all 58 skills uses 7 sections: frontmatter, role, inputs, workflow (with Step 0 + Final Step), output format, guardrails, handoffs. Do not require bash preamble, bash context bridge, or bash learnings capture. The Context Loop achieves the same result without shell dependencies.
+- **Handoff state lives at `.claude/crew-state/`, not `.claude/flow-state/`.** Crew product state is separate from internal flow development state.
+- **Product catalogue is not executable.** The skills described in the PerformOS Crew catalogue are marketing material. Only skills built to the locked template are executable. Do not confuse the catalogue with installed skills.
+- **Install paths must be the simplest thing that works.** Three options exist: shell installer, plugin wrapper, or Claude Code file copy. When giving install instructions to a non-technical buyer, default to Claude Code file copy: "Copy every folder from ~/Desktop/Crew-Skills/01-core/ into .claude/skills/." Do not lead with terminal commands, Finder hidden-folder hunting, or drag-and-drop. The user corrected this in session: overcomplicated install paths frustrate buyers. Give the simplest path first.
+- **Lightweight stubs are REJECTED.** A skill that is 15-30 lines with a role statement, four bullet workflow steps, and an output format is product marketing, not an executable skill. Every skill must include all 7 sections from the Locked Skill Template. The user will reject skills that do not match G-Stack role-depth.
 - **Do not reference G-Stack, Superpowers, or any external project in the skill bodies.** These are white-label skills for client installs.
 - **Do not use em dashes anywhere.** Check with Unicode codepoint U+2014, not just grep for `---`.
 - **Do not collapse multiple skills into one file.** Each skill gets its own directory with a single SKILL.md.

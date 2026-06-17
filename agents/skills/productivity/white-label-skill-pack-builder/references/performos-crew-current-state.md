@@ -1,135 +1,111 @@
 # PerformOS Crew current state reference
 
-Captured from the Crew skills context review on 17 June 2026.
+Captured from the completed Crew Skill Packs product build, 17 June 2026. Updated after final verification.
 
 ## Purpose
 
-Use this reference when Jared asks to continue building, auditing, or reconciling PerformOS Crew skills. It captures the current source-of-truth issue so future sessions do not rely on stale counts or missing files.
+Use this reference when Jared asks to continue building, auditing, or reconciling PerformOS Crew skills. It captures the current completed state so future sessions do not rely on stale counts.
 
-## Current strategic model
+## Product state: 10 packs (58+ currently building)
 
-PerformOS Crew is the portable AI work team layer.
+**58 skills across the original 9 packs (complete). Pack 10 (Web Design) is under active construction.**
 
-Clean internal line:
+| Pack | Skills | Status |
+|---|---|---|
+| 01 Core | 7 (incl. using-crew dispatcher) | Done |
+| 02 Sales | 7 | Done |
+| 03 Marketing | 7 | Done |
+| 04 Operations | 5 | Done |
+| 05 HR & People | 5 | Done |
+| 06 Finance & Admin | 6 | Done |
+| 07 Customer Support | 6 (crew-support-*) | Done |
+| 08 Documentation | 7 | Done |
+| 09 Training & L&D | 8 | Done |
+| 10 Web Design | 1 built (fly-through-builder), 7 planned | Building |
+| **Total** | **59+** | In progress |
 
-- Agents are who does the work.
-- Skills are how the work gets done.
-- Context is what keeps the work specific to the business.
+Pack 10 is unique: its skills carry bundled reference builds, pipeline scripts, and `.env.example` files alongside their SKILL.md. Unlike the text-only packs (01-09), Web Design skills are code-producing and their verification steps include opening a browser, inspecting rendered output, and taking screenshots at multiple viewports.
 
-Superpowers is not a skill pack. It is the methodology layer underneath the skills.
+## Primary build location
 
-## Methodology standards
+`/Users/jc/Desktop/cluade/crew-skill-packs/`
 
-Every Crew skill should inherit these eight standards:
+- `packs/` — all 9 pack folders with SKILL.md files
+- `shared/` — crew-method.md, SKILL-TEMPLATE.md, qa-check.sh
+- `dist/` — 9 per-pack zips + crew-full-bundle.zip
+- `install.sh` / `uninstall.sh` / `package.sh`
+- Plugin marketplace wrapper for `/plugin install`
 
-1. Brainstorm before building
-2. Plan in bite-sized tasks
-3. Build with testing built in
-4. Debug from root cause
-5. Verify before claiming done
-6. Review before shipping
-7. Finish cleanly
-8. Save and restore context
+## Locked skill template
 
-## Current catalogue source
+Every skill follows this structure (~85-120 lines):
 
-Primary catalogue source found during review:
+1. Frontmatter — name + description only
+2. Title + role-opening paragraph — named expert role, cognitive instinct, what it does and does NOT do
+3. Inputs — what it needs, missing-input fork
+4. Workflow — Step 0: Context Recovery, 6-7 numbered phases with taxonomies, decision forks, forcing questions, verification penultimate step, Final Step: Handoff Save
+5. Output format — fenced block with filled example
+6. Guardrails — three families: business risk, evidence/honesty, house style
+7. Handoffs — to sibling skills and Core by name
 
-`/Users/jc/Desktop/cluade/performos-crew-catalogue/build.py`
+## Methodology layer
 
-Generated PDF:
+`shared/crew-method.md` documents the 8 standards and 5 loops every skill uses:
 
-`/Users/jc/Desktop/cluade/performos-crew-catalogue/PerformOS Crew Skill Pack Catalogue.pdf`
+**8 standards:** brainstorm, plan, build with tests, debug root cause, verify, review, finish, save context.
 
-The deck source currently defines 9 packs and 57 catalogue skills:
+**5 loops:** missing input, quality failure, escalation, context change, learning capture.
 
-1. Core Crew Skills, 6
-2. Sales Pack, 7
-3. Marketing Pack, 7
-4. Operations Pack, 5
-5. HR and People Pack, 5
-6. Finance and Admin Pack, 6
-7. Customer Support Pack, 6
-8. Documentation Pack, 7
-9. Training and L&D Pack, 8
+Every skill's workflow references the loops by name.
 
-## Existing executable skill folders
+## White-label state
 
-Project-local installed flow layer:
+- Brand is "Crew" only.
+- Zero banned-name leaks (Brock, Bob, Lara, Neo, Hermes, NemoClaw, gstack, gbrain, PerformOS).
+- Zero em dashes.
+- CREDITS.md acknowledges Superpowers and gstack as method influences only. All text is authored fresh.
 
-`/Users/jc/Desktop/cluade/.claude/skills/`
+## PDF catalogue
 
-Observed state:
+`/Users/jc/Desktop/cluade/performos-crew-catalogue/PerformOS-Crew-Skill-Pack-Catalogue.pdf`
 
-- 45 SKILL.md files total in that folder
-- 16 are `flow-*` skills
-- 29 are other local project or dev/design skills
+Currently shows 9 packs, 58 skills, Core (7), 42 pages. The just-built Pack 10 (Web Design) is not yet represented. Regenerate after completing the Web Design pack to show 10 packs.
 
-Crew build folder:
+## Install paths
 
-`/Users/jc/Desktop/performos-crew-skills/`
+Three methods a buyer can use:
 
-Observed state:
+1. **install.sh** — POSIX shell script. `./install.sh --pack sales` copies 14 skill folders (7 Sales + 7 Core). Supports --all, --pack, --target, --global, --dry-run, --list. Idempotent no-clobber.
+2. **Plugin** — `/plugin install` or `/crew:install sales`. `/crew:list` shows installed. `/crew:uninstall sales` removes.
+3. **Claude Code file copy** — tell Claude Code: `Copy every folder from ~/Desktop/Crew-Skills-Core-and-Sales/01-core/ into .claude/skills/`
 
-- 50 SKILL.md files total
-- Three Customer Support skills are full-depth reference implementations
-- Most other pack files are lightweight stubs and should not be treated as shippable
+None touch settings, hooks, or CLAUDE.md. All are project-local.
 
-## Full-depth reference implementations
+## Old build folder (deprecated)
 
-Approved benchmark folder:
+`/Users/jc/Desktop/performos-crew-skills/` contains the original lightweight stubs. Do not use this folder for builds or counts. Use `crew-skill-packs/` as the source of truth.
 
-`/Users/jc/Desktop/performos-crew-skills/customer-support/`
+## Old reference implementations (deprecated)
 
-Full-depth reference files:
+The `flow-support-*` skills in the old build folder were replaced by `crew-support-*` in the completed product. The new skills use the locked template with Step 0 + Final Step.
 
-- `flow-support-triage/SKILL.md`, about 15.7 KB, 435 lines
-- `flow-support-reply/SKILL.md`, about 16.0 KB, 483 lines
-- `flow-support-feedback/SKILL.md`, about 14.1 KB, 367 lines
+## Count reconciliation
 
-Use these as the quality benchmark for future pack builds.
+- PDF catalogue: 9 packs, 58 skills (Core = 7). Needs regeneration after pack 10 completes.
+- Built packs: 10 packs, 59+ skills (pack 10 building: 1 done, 7 planned)
+- Structural QA: 58/58 PASS (original 9 packs). Pack 10 fly-through-builder: verified separately against Crew template.
+- Functional smoke: 58/58 PASS (original 9 packs). Pack 10: smoke pending on full pack.
+- Known mismatch: PDF shows 9 packs, product has 10. Regenerate PDF after pack 10 is complete.
 
-## Important count mismatch
+## Recommended rebuild sequence (if expanding)
 
-Do not quote one total without reconciling it first.
+If Jared wants to add more skills or packs in the future:
 
-Observed counts:
+1. Define the skill in the catalogue source first (`performos-crew-catalogue/build.py`).
+2. Regenerate the PDF to match.
+3. Build the skill to the locked template in `crew-skill-packs/packs/`.
+4. Add a 3-case test fixture.
+5. Run structural QA + functional smoke.
+6. Rebuild zip + update plugin.
 
-- Catalogue deck source: 57 skills across 9 packs
-- Earlier clean architecture note: 16 flow engine plus 47 crew pack skills equals 63 total
-- Actual Crew build folder: 50 SKILL.md files
-- Installed `.claude/skills` folder: 45 SKILL.md files, only 16 are flow
-
-Recommended operating rule:
-
-Before building or reporting totals, state which source is being used: catalogue source, executable folder, installed folder, or architecture model.
-
-## Missing file warning
-
-A previous response referenced:
-
-`/Users/jc/Desktop/sales-pack-gstack-build.md`
-
-That file was not found during the review. Do not rely on it existing. If Jared asks for it, recreate it from the catalogue source, depth standard, and Customer Support reference skills.
-
-## Build recommendation
-
-The next sensible build sequence is:
-
-1. Lock the master catalogue source of truth.
-2. Rebuild Sales Pack to full depth, because it is the clearest commercial wedge.
-3. Rebuild Marketing Pack.
-4. Rebuild Operations Pack.
-5. Rebuild Training and L&D Pack once the commercial packs are clean.
-
-## White-label rules
-
-For client-facing Crew materials and skills:
-
-- No internal agent names
-- No runtime references
-- No external project references
-- No em dashes
-- Frontmatter must only include `name` and `description`
-- White-label business language only
-- A skill under 5 KB is rejected as a stub unless Jared explicitly asks for a catalogue-only description
+**Web Design pack (10) special handling:** This pack is the first where skills carry bundled reference builds, pipeline scripts, and `.env.example` files alongside SKILL.md. Unlike text-only packs (01-09), Web Design skills produce code artifacts. Their verification steps include browser inspection, console checks, and multi-viewport screenshots. When building new Web Design skills, follow the `crew-web-fly-through-builder` pattern: restructure first to the Crew template (Step 0 + Final Step), preserve all locked engineering and reference builds, then add guardrails, handoffs, and fixtures. The `crew-web-slide-deck-builder` brief is ready at `~/Desktop/crew-web-slide-deck-builder-brief.md`.
