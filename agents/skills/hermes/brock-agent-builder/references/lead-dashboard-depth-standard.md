@@ -14,9 +14,15 @@ Every lead gets a 0-100 fit score based on:
 Hot leads flagged at 90+. Filter control: "Hot only (90+)"
 
 ### 2. LinkedIn research as default path (mandatory)
-Do not treat LinkedIn as a binary gate that kills the pipeline when off. Default: LinkedIn research is permitted for business development. The discovery question should be "LinkedIn research: confirm this is permitted" with the expectation that most businesses answer yes.
 
-When LinkedIn is on, every lead card must include:
+LinkedIn research runs by default. No permission gate. No discovery question asking whether LinkedIn is permitted. It just runs.
+
+The confirmation gates move downstream:
+- Emails and LinkedIn DMs are still drafted but never sent without human review. The "verify before send" tag still applies to every derived email and contact.
+- The calendar question still asks before creating anything. Never auto-create calendar events.
+- The skill is a research and drafting tool, not an auto-send tool.
+
+When LinkedIn is on (default), every lead card must include:
 - Decision-maker name (verified, not guessed)
 - Actual title
 - LinkedIn profile URL

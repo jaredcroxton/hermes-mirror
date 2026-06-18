@@ -8,7 +8,23 @@ When copying `~/.hermes/skills` with `rsync -a`, external symlinks can be mirror
 
 ## Safer pattern
 
-1. Copy skills with normal excludes for state and secrets.
+0. **Detect symlinks in the source skills tree BEFORE copying.** `rsync -a` will fail if a symlink-to-directory replaces a previously-copied real directory — `unlinkat: Directory not empty`. Pre-flight detection avoids this:
+   ```bash
+   python3 - <<'PY'
+from pathlib import Path
+root = Path('/Users/jc/.hermes/skills')
+for p in root.rglob('*'):
+    if p.is_symlink():
+        print(f'{p.relative_to(root)} -> {p.resolve()} exists={p.resolve().exists()}')
+PY
+   ```
+1. If symlinks found, resolve them individually before the main copy. For each symlinked skill dir, copy the real target with `cp -r -L`, then rsync the rest excluding the already-resolved dir:
+   ```bash
+   rm -rf /tmp/hermes-mirror-backup/agents/skills/zapier-sdk
+   cp -r -L /Users/jc/.hermes/skills/zapier-sdk /tmp/hermes-mirror-backup/agents/skills/zapier-sdk
+   rsync -a --exclude='zapier-sdk' /Users/jc/.hermes/skills/ /tmp/hermes-mirror-backup/agents/skills/
+   ```
+   If no symlinks exist, a straight `rsync -a` is safe.
 2. Detect symlinks under the copied skill tree before committing:
    ```bash
    cd /tmp/hermes-mirror-backup
