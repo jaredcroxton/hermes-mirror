@@ -432,3 +432,8 @@ For task agents (Format A), Brock saves the agent file and the user deploys it i
 ## Version
 
 Locked 02 June 2026. Synthesised from Claude Code agent-creator, agent-development, Hermes specialist-agent-deployment, and the six PerformOS souls built earlier this session.
+
+## Reference files
+
+- `references/photon-imessage-setup.md` — Photon Spectrum iMessage setup (Hermes v0.17.0+). One command: `hermes photon setup`. Replaces BlueBubbles entirely.
+- `references/agent-reach-research-layer.md` — Agent Reach internet research layer: 13 platforms, installation, current status, and Crew skill integration.

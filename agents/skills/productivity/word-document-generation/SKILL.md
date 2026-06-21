@@ -112,6 +112,33 @@ For Calibri 11pt with 2.54cm margins and the spacing above:
 - Section headers add ~2-3 lines each
 - A two-page document is roughly 1,000-1,300 words with 5-7 sections
 
+## PDF Text Editing (nano-pdf)
+
+For quick text edits to existing PDFs without full regeneration, use `nano-pdf` CLI.
+
+### Install
+```bash
+uv pip install nano-pdf
+# or: pip install nano-pdf
+```
+
+### Usage
+```bash
+nano-pdf edit <file.pdf> <page_number> "<instruction>"
+```
+
+Examples:
+```bash
+nano-pdf edit deck.pdf 1 "Change the title to 'Q3 Results' and fix the typo in the subtitle"
+nano-pdf edit report.pdf 3 "Update the date from January to February 2026"
+nano-pdf edit contract.pdf 2 "Change the client name from 'Acme Corp' to 'Acme Industries'"
+```
+
+**Notes:**
+- Page numbers may be 0-based or 1-based — retry with ±1 if wrong page
+- Uses an LLM under the hood — requires API key (check `nano-pdf --help`)
+- Works well for text changes; complex layout modifications may need a different approach
+
 ## Pitfalls
 
 1. **Do not use AppleScript for document content.** Shell interpretation of `&`, quotes, and special characters causes fragile scripts. Use python-docx instead.

@@ -155,8 +155,8 @@ When the user says "build an agent" in the context of NemoClaw sandboxes, the de
 **Telegram masking and allowlist pitfall:** Inside a NemoClaw Hermes sandbox, `TELEGRAM_BOT_TOKEN=openshell:resolve:env:TELEGRAM_BOT_TOKEN` is correct. It means OpenShell is masking the real token and resolving it at egress. Do not try to paste the real bot token into `/sandbox/.hermes/.env`. If Telegram does not reply, check `TELEGRAM_ALLOWED_USERS`. Jared's current Telegram user ID is `8647481186`; if the sandbox shows a different user ID, rebuild or fix the host-layer onboarding config. The token and allowlist are host/NemoHermes configuration, not something to solve from inside the agent TUI.
 
 **Localhost access pitfall:** For NemoHermes, the reliable browser-access path is the OpenAI-compatible API on port 8642. From the local Mac, forward `8642:8642` with Brev, then open `http://127.0.0.1:8642/v1/models`. Do not append an OpenClaw `#token=` fragment to Hermes URLs. The 18789 dashboard path is unreliable for the Hermes alpha path and should not be the primary success criterion.
-
 ## References
+
 - `references/codex-wiring-for-specialist-profiles.md` for switching a profile-backed specialist to OpenAI Codex, handling profile-local OAuth auth, restarting stale Telegram gateways, and separating the specialist brain model from the target sandbox model.
 - `references/nemoclaw-hermes-onboarding-expert.md` for NemoClaw Hermes onboarding, cloud instance quirks, model compatibility, audit architecture, enterprise path, and the Neo specialist agent pattern.
 - `references/agentos-skill-injection-pattern.md` for injecting PerformOS agent profiles, skills, and memory into client NemoClaw sandboxes — the AgentOS product architecture.
@@ -165,7 +165,6 @@ When the user says "build an agent" in the context of NemoClaw sandboxes, the de
 - `references/brock-agent-to-agent-routing.md` for the Brock-as-router pattern when Jared needs multi-agent pipelines without copy-paste.
 - `references/agentos-ec2-governance.md` for the Obsidian↔EC2 governance model (source-of-truth vs runtime, sync pipeline, client deliverables, session export).
 - `references/lara-full-package-pattern.md` for triggering Lara's complete multi-tab learning design output.
-- `references/ollama-ec2-storage.md` for EC2 Ollama model storage management — moving models to data volume, double-nesting fix, ollama user permissions, OLLAMA_MODELS env var, port conflict recovery.
 - `references/self-hosted-chat-ui-pitfall.md` for the browser-localhost-vs-server-localhost pitfall, backend proxy pattern, and model pre-warming when serving chat UIs from EC2.
 - `references/gateway-stopped-triage.md` for the stopped-gateway diagnostic flow: false-positive CLI probe trap, correct triage order, and common causes.
 - `references/multi-profile-telegram-outage-recovery.md` for ecosystem-wide Telegram outages: bulk gateway restart, stale launchd refresh, token `getMe` mapping, profile brain probes, and profile-local provider credential drift fixes.
@@ -179,6 +178,25 @@ When the user says "build an agent" in the context of NemoClaw sandboxes, the de
 - `references/profile-telegram-bot-verification.md` for BotFather token `getMe` validation, profile-local `.env` wiring, gateway log checks, and the Telegram **Start** / `chat not found` pitfall.
 - `references/hyperframes-profile-capability-demo.md` for proving a specialist profile, especially Bob, has a newly installed capability by producing and verifying a real HyperFrames MP4 artifact.
 - `references/seo-content-pipeline.md` for the full Serge→Polly→Bob SEO content production pipeline (keyword brief to HTML delivery).
+
+## EC2 GPU Ollama Stack (absorbed from ec2-gpu-ollama-stack)
+
+For deploying agent profiles on AWS EC2 GPU instances with local Ollama inference:
+
+- `references/ec2-gpu-ollama/aws-ec2-gpu-ollama-trial-notes.md` — session-specific pricing, screenshots, launch decisions
+- `references/ec2-gpu-ollama/ec2-proxy-server-template.py` — deployable Python proxy server template for agent chat HTML pages
+- `references/ec2-gpu-ollama/agent-soul-template-ap.md` — agent soul template for EC2 deployments
+
+**Quick EC2 GPU reference:**
+- Preferred instance: `g6.2xlarge` with Deep Learning AMI (Ubuntu)
+- Mount the secondary LVM volume to `/data` before installing anything
+- Move Ollama models to `/data/ollama-models` via systemd drop-in
+- Move Docker + containerd data roots to `/data`
+- Her mes connects to Ollama at `http://127.0.0.1:11434/v1`
+- Profile creation: `hermes profile create <agent> --clone`, wire SOUL, configure for local model
+- Agent chat HTML pages need a backend proxy — browser JS can't call `localhost:11434` directly
+- Always stop instances between tests; terminate only when done
+- Check GPU quota before launch: need 8 vCPUs for `g6.2xlarge`
 
 ## Full deployment sequence (Telegram bot)
 

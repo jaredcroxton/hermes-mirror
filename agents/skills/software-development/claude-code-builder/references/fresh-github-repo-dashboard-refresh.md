@@ -22,7 +22,24 @@ Do not create a local ngrok link or serve a different dashboard when the site is
 
 ## Source strategy
 
-Prefer GitHub's repository search API through `gh api` for structured freshness checks:
+Prefer GitHub's repository search API through `gh api` for structured freshness checks. Two patterns are available — prefer `--jq` for dashboards that need compact curated data, and `-f q=` for broad exploratory scraping.
+
+### Pattern A: Structured extraction with `--jq` (preferred for curated dashboards)
+
+```bash
+gh api "search/repositories?q=ai+agent+created:>2026-06-01&sort=stars&order=desc&per_page=8" \
+  --jq '.items[] | {name: .full_name, stars: .stargazers_count, desc: .description, url: .html_url, lang: .language, pushed: .pushed_at}'
+```
+
+This returns clean JSON objects directly — no need to parse the full API response. Use for targeted searches:
+
+- `ai+agent+created:>YYYY-MM-DD` — AI agent repos
+- `llm+agent+mcp+created:>YYYY-MM-DD` — LLM/agent/MCP crossover
+- `claude+code+skill+OR+codex+skill+created:>YYYY-MM-DD` — agent skill repos
+
+Run two or three targeted queries, review the output, and hand-curate the final 15. Use `&sort=stars&order=desc&per_page=10` to get the top results with meaningful activity.
+
+### Pattern B: Broad API scraping (for 30-repo full refreshes)
 
 ```bash
 gh api -X GET search/repositories \
@@ -45,6 +62,22 @@ Run multiple targeted queries, then deduplicate by `full_name`:
 - `created:>=YYYY-MM-DD local ai stars:>3`
 
 Use the current date to calculate the five-day window. For example, on 09 June 2026, use `created:>=2026-06-04`.
+
+### Supplemental: GitHub Trending extraction via browser_console
+
+When you need what's actually trending right now (not just high stars), use `browser_navigate` to `https://github.com/trending?since=weekly` and extract with:
+
+```javascript
+JSON.stringify(Array.from(document.querySelectorAll('article.Box-row')).map(article => {
+  const h2 = article.querySelector('h2');
+  const name = h2 ? h2.textContent.trim().replace(/\s+/g, ' ').replace(/ \/ /g, '/') : '';
+  const desc = article.querySelector('p') ? article.querySelector('p').textContent.trim() : '';
+  const starsThisWeek = article.textContent.match(/([\d,]+)\s+stars?\s+this\s+week/i);
+  return { name, description: desc, starsThisWeek: starsThisWeek ? starsThisWeek[1] : '', url: 'https://github.com/' + name };
+}))
+```
+
+This returns structured data in a single call. Combine with `gh api` for the final curated set.
 
 ## Curation rules
 
@@ -94,7 +127,7 @@ Add or update topic filters to match the new category set:
 Before deployment:
 
 - JSON parses.
-- Expected item count renders, usually 30.
+- Expected item count renders, usually 15 (curated) or 30 (bulk).
 - All links start with `https://github.com/`.
 - Old story terms are absent from HTML and data.
 - Previous dashboard links have zero overlap with the refreshed batch when Jared asks for new links.

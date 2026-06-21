@@ -95,3 +95,58 @@ Every AI video campaign must have real-content companion pieces. Seedance carrie
 
 - `references/seedance-2.0-capabilities.md` — Full capability map, prompt engineering rules, cinematography vocabulary bank, platform comparison
 - `references/performos-brand-for-video.md` — PerformOS brand applied to video: colours, fonts, voice, master lines, what carries into every prompt
+- `references/seedance-research-sources.md` — Full research bibliography from the 18 June 2026 deep dive
+
+## Seedance 2.0 Prompt Engineering Rules (absorbed from seedance-video-generation)
+
+When writing prompts for Seedance 2.0 (ByteDance), follow these hard rules:
+
+### Non-Negotiable Rules
+| Rule | Why |
+|---|---|
+| **Under 80 words** | Beyond ~80 words the model cherry-picks random details |
+| **Subject → Action → Scene → Camera → Style** | Fixed order. Early tokens weighted heavier |
+| **One camera move per shot** | Multiple moves = jittery garbage |
+| **Max 2 characters** | 3+ = faces drift, bodies warp |
+| **No on-screen text** | 90% garbled. One large centered word max |
+| **No fast hand gestures** | Slow movements only |
+| **Start at 5 seconds** | Lock the look first. Scale up once it holds |
+| **Fast for drafts, Standard for keepers** | Never generate first attempts in Standard |
+
+### Universal Prompt Template
+```
+[Specific subject with age, clothing, expression] + [One concrete physical action] +
+[Environment with objects, textures, time of day] + [One camera movement with framing] +
+[Lighting source, direction, quality] + [Style anchor and finish]
+```
+
+### Camera Language
+Pick ONE: wide shot, medium shot, medium close-up, close-up, over-the-shoulder, top-down.
+Pick ONE movement: slow dolly in/out, locked tripod with micro push-in, tracking shot, slow pan.
+
+### Lighting Language
+Name source, direction, quality. Never say "cinematic lighting."
+Example: "Soft key light from the left, warm rim light, shallow depth of field."
+
+### Style Anchors
+Pick one primary + one reinforcement. Examples: `cinematic, soft contrast, warm grade, 50mm` or `iPhone handheld, slightly overexposed, harsh midday sun`.
+
+### Reference Image System
+- Tag every reference explicitly: `@image1 as the main character, preserve face and outfit exactly`
+- Without explicit role assignment, the model guesses — often using a character reference as background texture.
+
+### Hybrid Workflow (Critical for product demos)
+1. Generate the human element in Seedance (person at desk, screen glow visible, content NOT)
+2. Record the real product via QuickTime screen recording
+3. Edit together in CapCut/DaVinci Resolve with text overlays and voiceover
+4. Export at 1080p minimum
+
+### What Seedance Cannot Do
+| Limitation | Workaround |
+|---|---|
+| Cannot render realistic software UI | Use real screen recordings, edit together |
+| Cannot produce readable on-screen text | One large centered word max. Text overlays in post |
+| Cannot hold 3+ consistent characters | Max 2. Crowds stay blurry background |
+| Cannot handle prompts over ~100 words | Stay under 80 |
+
+**Pitfall:** Abstract brand metaphors fail. "Ink drops resolving into a logo" and "light emerging from darkness" produce weird unusable outputs. Use physical scenes with real objects and clear action.

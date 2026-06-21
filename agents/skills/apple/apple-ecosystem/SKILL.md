@@ -36,10 +36,13 @@ Use this umbrella when the task touches Apple-native personal productivity or de
 - Confirm the target list exists before adding important reminders.
 - For completion, list matching reminders first to avoid closing the wrong task.
 
-### iMessage/SMS (`imsg`)
-- Prefer chat IDs or exact recipient identifiers.
-- Avoid Markdown/format assumptions; SMS/iMessage sends plain user-visible text.
-- For attachments, verify the file path exists before sending.
+### iMessage/SMS (`imsg` and Photon)
+
+Two paths exist for iMessage from Hermes:
+
+**Photon Spectrum (recommended, Hermes v0.17.0+):** Built-in platform adapter. No BlueBubbles, no Messages.app relay, no Apple malware flag. `hermes photon setup` → `hermes gateway start`. See `references/photon-imessage-setup.md` for full setup.
+
+**imsg CLI (legacy):** Local Messages.app bridge. Prefer chat IDs or exact recipient identifiers. Avoid Markdown/format assumptions; SMS/iMessage sends plain user-visible text. For attachments, verify the file path exists before sending.
 
 ### Find My
 - There is no stable public CLI. Use AppleScript/UI automation and screenshots.

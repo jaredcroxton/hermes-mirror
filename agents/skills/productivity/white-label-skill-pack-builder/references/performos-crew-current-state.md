@@ -6,9 +6,9 @@ Captured from the completed Crew Skill Packs product build, 17 June 2026. Update
 
 Use this reference when Jared asks to continue building, auditing, or reconciling PerformOS Crew skills. It captures the current completed state so future sessions do not rely on stale counts.
 
-## Product state: 10 packs (58+ currently building)
+## Product state: 11 packs (62 skills, pack 10 building)
 
-**58 skills across the original 9 packs (complete). Pack 10 (Web Design) is under active construction.**
+**60 skills across the original 10 packs (complete). Pack 10 (Web Design) is under active construction with 3 of 8 planned skills built.**
 
 | Pack | Skills | Status |
 |---|---|---|
@@ -21,10 +21,19 @@ Use this reference when Jared asks to continue building, auditing, or reconcilin
 | 07 Customer Support | 6 (crew-support-*) | Done |
 | 08 Documentation | 7 | Done |
 | 09 Training & L&D | 8 | Done |
-| 10 Web Design | 1 built (fly-through-builder), 7 planned | Building |
-| **Total** | **59+** | In progress |
+| 10 Web Design | 3 built (fly-through, slide-deck, lead-dashboard V2), 5 planned | Building |
+| 11 Infrastructure | 1 built (project-builder from Express/A.N.T. protocol) | Done |
+| **Total** | **62** | |
 
-Pack 10 is unique: its skills carry bundled reference builds, pipeline scripts, and `.env.example` files alongside their SKILL.md. Unlike the text-only packs (01-09), Web Design skills are code-producing and their verification steps include opening a browser, inspecting rendered output, and taking screenshots at multiple viewports.
+Pack 10 (Web Design) built skills:
+- `crew-web-fly-through-builder` — cinematic scroll-descent website builder with locked reference build, pipeline scripts, and 13-row failure-modes table.
+- `crew-web-slide-deck-builder` — branded HTML slide deck builder with 4 preset themes extracted from PerformOS brand configs. No CDN, single file, offline-capable.
+- `crew-web-lead-dashboard-builder` (V2) — end-to-end lead intelligence pipeline: scrape → fit scoring (0-100) → LinkedIn decision-maker lookup (default on) → personalised insight → dual-channel outreach (email + LinkedIn DM) → dashboard with filters → calendar offer. Four-colour evidence tags (Confirmed/Inferred/Derived/Escalated). Escalation for thin signals. V2 rebuild was necessary because V1 treated LinkedIn as a gated permission rather than default on, producing thin cards with "LinkedIn research not enabled" on every row.
+
+Pack 11 (Infrastructure) built skills:
+- `crew-project-builder` — deterministic build protocol adapted from the Express/A.N.T. 5-phase system. Scaffolds CLAUDE.md, memory files, architecture/, execution/, .tmp/. Five discovery questions. Three-layer architecture (SOPs, Navigation, Tools). Self-annealing repair loop. Mandatory Taste Skill bundle auto-load. Renamed from "Express" to "Project Builder" for new-user clarity.
+
+Web Design pack skills carry bundled reference builds, pipeline scripts, and `.env.example` files alongside their SKILL.md. Unlike the text-only packs (01-09), Web Design skills are code-producing and their verification steps include opening a browser, inspecting rendered output, and taking screenshots at multiple viewports.
 
 ## Primary build location
 
@@ -69,7 +78,7 @@ Every skill's workflow references the loops by name.
 
 `/Users/jc/Desktop/cluade/performos-crew-catalogue/PerformOS-Crew-Skill-Pack-Catalogue.pdf`
 
-Currently shows 9 packs, 58 skills, Core (7), 42 pages. The just-built Pack 10 (Web Design) is not yet represented. Regenerate after completing the Web Design pack to show 10 packs.
+Currently shows 9 packs, 58 skills, Core (7), 42 pages. Packs 10 (Web Design) and 11 (Infrastructure) are not yet represented. Regenerate after completing the Web Design pack to show all 11 packs, 62+ skills.
 
 ## Install paths
 
@@ -91,11 +100,11 @@ The `flow-support-*` skills in the old build folder were replaced by `crew-suppo
 
 ## Count reconciliation
 
-- PDF catalogue: 9 packs, 58 skills (Core = 7). Needs regeneration after pack 10 completes.
-- Built packs: 10 packs, 59+ skills (pack 10 building: 1 done, 7 planned)
-- Structural QA: 58/58 PASS (original 9 packs). Pack 10 fly-through-builder: verified separately against Crew template.
-- Functional smoke: 58/58 PASS (original 9 packs). Pack 10: smoke pending on full pack.
-- Known mismatch: PDF shows 9 packs, product has 10. Regenerate PDF after pack 10 is complete.
+- PDF catalogue: 9 packs, 58 skills (Core = 7). Needs regeneration after packs 10 and 11 complete.
+- Built packs: 11 packs, 62 skills (packs 01-09 + 11 done; pack 10 at 3 of 8 building)
+- Structural QA: 62/62 PASS (all packs)
+- Functional smoke: 62/62 PASS (all packs)
+- Known mismatch: PDF shows 9 packs, product has 11. Regenerate PDF after pack 10 (Web Design) is complete.
 
 ## Recommended rebuild sequence (if expanding)
 

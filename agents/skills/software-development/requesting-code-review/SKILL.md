@@ -258,6 +258,45 @@ element.innerHTML = userInput;
 element.textContent = userInput;
 ```
 
+## Post-Change Cleanup Review (simplify-code pattern)
+
+For a deeper cleanup pass after changes are committed (or in the working tree), use the
+parallel 3-reviewer pattern. Three narrow reviewers beat one broad reviewer — each one
+deeply searches the codebase for a single class of problem.
+
+**Trigger:** user says \"simplify my changes\", \"review my code\", \"clean up my changes\",
+or \"/simplify\".
+
+**Process:**
+
+1. Capture the diff: `git diff` (working tree), `git diff HEAD` (incl. staged), or scoped variants (`git diff --staged`, `git diff HEAD~1`, `git diff main...HEAD`).
+
+2. Launch three reviewers in parallel via `delegate_task` batch mode. Give each the COMPLETE diff + repo path. Each gets `terminal`, `file`, and `search` toolsets.
+
+   **Reviewer 1 — Code Reuse:** Find duplication of existing functionality. Search utility modules, shared helpers, adjacent files for existing functions/constants/patterns the new code could call instead of reimplementing. Flag with `file:line → existing thing to use`.
+
+   **Reviewer 2 — Code Quality:** Find redundant state, parameter sprawl, copy-paste-with-variation, leaky abstractions, stringly-typed code, AI-generated slop patterns (redundant comments, unnecessary defensive null-checks, `as any` casts). For each, give the concrete refactor.
+
+   **Reviewer 3 — Efficiency:** Find unnecessary work, missed concurrency, hot-path bloat, TOCTOU anti-patterns, memory issues, overly broad reads, silent failures (empty catch blocks, ignored errors). For each, give the concrete fix.
+
+   Each reviewer must apply Chesterton's Fence: run `git blame` before flagging anything for removal. Tag findings with `confidence: high/medium/low` and `risk: SAFE/CAREFUL/RISKY`.
+
+3. Aggregate findings: merge lists, discard false positives, resolve conflicts (correctness > readability > micro-perf).
+
+4. Apply in risk-tier order:
+   - **SAFE** (auto-apply): unused imports, commented-out code, pass-through wrappers
+   - **CAREFUL** (apply with verification, one file at a time): rename locals, extract helpers
+   - **RISKY** (flag for review — do NOT auto-apply): N+1 restructuring, public API changes
+
+5. Verify: run targeted tests for touched files, re-run linter/type check. Revert any fix that breaks a test.
+
+**Pitfalls:**
+- Don't fan out wider than 3 reviewers — more cost, not better coverage
+- Give the WHOLE diff to each reviewer — splitting defeats cross-file analysis
+- Reviewers must provide `file:line` evidence, not guesses
+- This is cleanup of recent changes, not a license to refactor the whole module
+- Large diffs (>2000 lines) blow context — scope down before delegating
+
 ## Integration with Other Skills
 
 **subagent-driven-development:** Run this after EACH task as the quality gate.

@@ -168,6 +168,71 @@ Tell them what you created in plain prose, naming the actual profiles you used:
 
 **Kanban crash bypass for urgent builds:** If a specialist worker repeatedly crashes with `pid not alive` but the profile brain itself can answer a direct probe, the issue is likely the worker dispatch path rather than the specialist's ability. For urgent user-facing builds, launch the profile directly with `hermes --profile <profile> chat -q ... --quiet` using the same acceptance criteria, then continue separately with Kanban recovery. Do not tell the user the specialist is working from the board if the board lane is blocked.
 
+## Worker Guidance (absorbed from kanban-worker)
+
+The following is the deeper worker-side reference — pitfalls, handoff shapes, retry diagnostics.
+The basic lifecycle (orient → work → heartbeat → block/complete) is auto-injected into every
+worker's system prompt via `KANBAN_GUIDANCE`.
+
+### Good handoff shapes
+
+**Coding task:**
+```python
+kanban_complete(
+    summary="shipped rate limiter — token bucket, keys on user_id with IP fallback, 14 tests pass",
+    metadata={
+        "changed_files": ["rate_limiter.py", "tests/test_rate_limiter.py"],
+        "tests_run": 14, "tests_passed": 14,
+        "decisions": ["user_id primary, IP fallback for unauthenticated requests"],
+    },
+)
+```
+
+**Coding task needing human review (review-required):** Drop structured metadata into a comment, then block:
+```python
+kanban_comment(body="review-required handoff:\n" + json.dumps({...}))
+kanban_block(reason="review-required: rate limiter shipped, 14/14 tests pass — needs eyes on fallback choice")
+```
+
+**Research task:**
+```python
+kanban_complete(
+    summary="3 libraries reviewed; vLLM wins on throughput, SGLang on latency",
+    metadata={"sources_read": 12, "recommendation": "vLLM", "benchmarks": {...}},
+)
+```
+
+### Workspace handling
+
+| Kind | Behavior |
+|---|---|
+| `scratch` | Fresh tmp dir, yours alone, GC'd on archive |
+| `dir:<path>` | Shared persistent directory, absolute path guaranteed |
+| `worktree` | Git worktree; commit work here |
+
+### Retry diagnostics
+
+If `kanban_show` returns prior runs:
+- `timed_out` → chunk the work or shorten it
+- `crashed` → OOM/segfault, reduce memory
+- `spawn_failed` → profile config issue; block for human
+- `reclaimed` → operator archived out from under; check status
+- `blocked` → prior block; unblock comment should be in thread
+
+### Worker Do NOT
+
+- Do NOT call `delegate_task` as substitute for `kanban_create`
+- Do NOT call `clarify` — you're headless, use `kanban_comment` + `kanban_block`
+- Do NOT modify files outside `$HERMES_KANBAN_WORKSPACE`
+- Do NOT create follow-up tasks assigned to yourself
+- Do NOT complete a task you didn't finish — block it
+
+### Notification routing
+
+Configure `notification_sources` in `~/.hermes/config.yaml` to receive cross-profile Kanban notifications.
+
+---
+
 ## Pitfalls
 
 **Inventing profile names that don't exist.** The dispatcher silently fails to spawn unknown assignees — the card just sits in `ready` forever. Always assign to a profile from your Step 0 discovery; ask the user if you're unsure.
