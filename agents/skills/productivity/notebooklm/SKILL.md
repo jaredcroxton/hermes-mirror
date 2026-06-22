@@ -205,7 +205,7 @@ Before starting workflows, verify the CLI is ready:
 | Download quiz (markdown) | `notebooklm download quiz --format markdown quiz.md` |
 | Download flashcards | `notebooklm download flashcards cards.json` |
 | Download flashcards (markdown) | `notebooklm download flashcards --format markdown cards.md` |
-| Delete notebook | `notebooklm notebook delete <id>` |
+| Delete notebook | `notebooklm delete <id>` |
 | List languages | `notebooklm language list` |
 | Get language | `notebooklm language get` |
 | Set language | `notebooklm language set zh_Hans` |
@@ -483,7 +483,17 @@ notebooklm artifact list --json
 
 ## Pitfalls
 
-- **Video generation rate limits are aggressive.** NotebookLM allows very few video generations per day per account (estimated 2-4). Videos can also fail mid-generation with "artifact was removed from the server" which means the daily quota was hit. When this happens, do NOT retry immediately — the quota will not reset for hours or until the next day. Tell the user and offer the NotebookLM web UI as an alternative (separate quota pool).
+- **Video generation pitfall (22 June 2026):** `notebooklm artifact wait` with a long timeout (e.g. `--timeout 2700`) fails in foreground mode because the terminal max is 600s. Use `background=true` and poll manually:
+```bash
+# Start the wait in background
+notebooklm artifact wait <artifact_id> -n <notebook_id> --timeout 2700
+# Then poll with:
+notebooklm artifact list -n <notebook_id> --json
+# Until status changes from "in_progress" to "completed"
+```
+Or use the subagent pattern documented above.
+
+**Video generation rate limits are aggressive.** NotebookLM allows very few video generations per day per account (estimated 2-4). Videos can also fail mid-generation with "artifact was removed from the server" which means the daily quota was hit. When this happens, do NOT retry immediately — the quota will not reset for hours or until the next day. Tell the user and offer the NotebookLM web UI as an alternative (separate quota pool).
 
 - **Audio generation is more reliable** than video but can still hit rate limits in bulk sessions. Generate audio first if both are needed.
 
@@ -544,6 +554,7 @@ All commands use consistent exit codes:
 **Video generation pitfall (30 May 2026):** Generating videos for multiple notebooks in one session can exhaust the daily quota. When the quota is hit, the artifact is removed from the server list before completion. The CLI reports "artifact was removed from the list by the server." This is not a transient error — it will not resolve by retrying in the same session.
 - **Workaround:** Generate one video per session, or spread across multiple sessions separated by several hours, or use the NotebookLM web UI (separate quota from API).
 - **Do not:** Attempt to generate more than 2 videos from the same account in a single session. The second one will likely fail.
+- **Important:** A failed video generation (artifact removed from server) still counts against the daily quota. If the first attempt fails, do NOT retry in the same session — even with a fresh notebook. The quota is account-level, not notebook-level. Wait until the next day or use the NotebookLM web UI (separate quota pool).
 
 **Workaround for unreliable operations:**
 1. Check status: `notebooklm artifact list`
@@ -551,6 +562,7 @@ All commands use consistent exit codes:
 3. Use the NotebookLM web UI as fallback for video
 4. Use the NotebookLM web UI as fallback (separate quota)
 5. See `references/session-notes.md` for video rate limit and Telegram delivery pitfalls
+6. See `references/video-rate-limit-observations.md` for detailed rate limit behavior and the correct delete command syntax
 
 **Processing times vary significantly.** Use the subagent pattern for long operations:
 

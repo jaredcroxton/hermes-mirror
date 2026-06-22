@@ -326,6 +326,7 @@ Live: https://<project>.vercel.app
 - **Cinematic dashboard entry screen:** when Jared asks for a first page, scroll-text intro, date, Enter button, high visual, Taste, Awesome Design, or HyperFrames-style dashboard motion, preserve the existing dashboard/data and add a full-screen intro overlay. Verify visually with `browser_vision`, test Enter, then deploy live. See `references/cinematic-dashboard-entry-pattern.md`.
 - **Data-driven dashboard with cron:** `.html`, research agent scrapes external data into JSON, build agent produces dashboard, cron handles weekly refresh. See `references/data-driven-cron-dashboard.md` for the full pattern.
 - **Fresh GitHub repo dashboard refresh:** when Jared asks to refresh a deployed dashboard with new GitHub repos from the last five days and says nothing should be copied from before, use GitHub repository search via `gh api`, dedupe results, exclude spam/NSFW bait, update both the JSON source and embedded `RAW_DATA`, and verify old story terms are absent. See `references/fresh-github-repo-dashboard-refresh.md`.
+- **GitHub AI Dashboard weekly refresh:** cron-triggered weekly task. Scrape GitHub Trending (daily + weekly) and GitHub Search (AI sorted by stars) for 15 top AI repos across 3 categories (Trending Today, Fastest Growing, Most Starred). Archive previous repos.json, write fresh repos.json, rebuild tabbed dashboard.html with PerformOS dark theme. Local-only artifact. See `references/github-ai-dashboard-weekly-refresh.md`.
 - **Slide deck, presentation:** `.html`, also load and follow `html-slide-deck`. Premium decks require brand-correct colour, smooth animation, navigation controls, mobile layout at `375 x 812`, and zero overflow or clipping. For reusable animation code (particle canvas, spring easing, gradient borders, count-up stats, parallax orbs, typing effects, alternating slide-ins, pulse dots), see `references/html-animation-patterns.md`.
 - **Training page, onboarding module:** `.html`, use scroll-journey style where relevant.
 - **Tool, calculator, form:** `.html`, all logic inline.
@@ -374,18 +375,16 @@ Preferred Local artifact sequence:
 2. **Proceeding without auth.** Stop if `claude`, `vercel`, or `gh` checks fail.
 3. **Letting Claude ask questions.** The prompt must say not to ask questions and must include enough detail to build.
 4. **Missing output path.** Always specify `~/Desktop/hermes_builds/<filename>` in the Claude prompt.
-5. **Em dashes in generated copy.** Explicitly ban em dashes in every build brief. After every build, run the automatic strip command — do not rely on visual scanning. The build brief ban alone is regularly insufficient; generated labels, footers, and placeholder text frequently still carry them. **This is a hard gate, not a manual check.**
+5. **Em dashes in generated copy.** Explicitly ban em dashes in every build brief. After every build, run the automatic strip command — do not rely on visual scanning. The build brief ban alone is regularly insufficient; generated labels, footers, and placeholder text frequently still carry them. **This is a hard gate, not a manual check.** Use a standalone `python3 -c` via terminal (NOT piped heredoc, NOT execute_code — both are blocked in cron mode):
 
    ```bash
-   python3 - <<'PY'
-from pathlib import Path
-p = Path('<output filepath>')
-c = p.read_text()
-c = c.replace('\u2014', '-').replace('&mdash;', '-')
-p.write_text(c)
-print('Em dashes remaining:', c.count('\u2014') + c.count('&mdash;'))
-PY
-6. **External dependencies.** The artifact must be a single file with inline CSS, JS, and content. Avoid imports from local files.
+   python3 -c "
+   content = Path('<output filepath>').read_text()
+   content = content.replace('\u2014', '-').replace('&mdash;', '-')
+   Path('<output filepath>').write_text(content)
+   print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;'))
+   "
+   ```
 7. **Vercel URL missing.** Use `vercel ls` to find the most recent production deploy URL.
 8. **Pushing secrets.** Never include `.env`, tokens, OAuth files, private emails, or sensitive PII in GitHub or Vercel deploys.
 9. **Drifting Forge's identity.** The local profile name remains `bobbuilder` and alias remains `bob_builder`; the agent identity shown to the user is Forge. Keep public mirror paths stable unless Jared asks for a rename.
@@ -429,7 +428,7 @@ PY
 - [ ] Output directory exists.
 - [ ] Build engine wrote the requested file.
 - [ ] File exists at `~/Desktop/hermes_builds/<filename>` (or repo path for existing site edits).
-- [ ] **Em dash gate:** auto-strip `\u2014` and `&mdash;` from the output file. Confirm count is zero before continuing.
+- [ ] **Em dash gate:** auto-strip `\u2014` and `&mdash;` from the output file using standalone `python3 -c` (not piped heredoc). Confirm count is zero before continuing.
 - [ ] For existing website repos: file content verified with `grep` for expected text before deploying.
 - [ ] For HTML decks, `html-slide-deck` has been followed and mobile was checked at `375 x 812` before delivery.
 - [ ] For HTML decks, navigation arrows, dots, counter, keyboard, and swipe controls work.
