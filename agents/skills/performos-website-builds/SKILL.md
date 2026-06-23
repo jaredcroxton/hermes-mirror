@@ -9,6 +9,10 @@ description: How Brock produces PerformOS website builds — research, legal, st
 
 The rules below are for **new PerformOS marketing/strategy website builds** (sites that represent the PerformOS brand and need positioning, page strategy, or Antigravity-ready markdown). For **existing live web tools or dashboards** that Jared explicitly asks to update and redeploy, use the operational update pattern instead. See `references/existing-static-dashboard-update-pattern.md`.
 
+## Cinematic motion diagnostic (load this first when reviewing site quality)
+
+When Jared shares a live URL and says it does not feel as good as a reference site, or asks why his build lacks "epic flow," load `references/cinematic-motion-diagnostic.md` before responding. The three gaps are: no scroll-driven motion, no transition choreography, no micro-motion. Diagnose which gap is the biggest issue and recommend the single highest-impact fix. Do not recommend "add more animations" — the fix is always making scroll position drive the experience.
+
 ## PerformOS homepage anti-bloat rule
 
 When Jared is rebuilding the main PerformOS website after feedback that the previous version was over-explained, protect the homepage from becoming the whole sales deck. The homepage is a **front door**: minimal hero, three solution routes, one primary CTA, and a footer that routes to deeper pages.
@@ -70,7 +74,22 @@ When Jared asks for a PerformOS website to be built by the agent ecosystem, use 
 
 A folder of markdown files:
 
-```\nperformos-{project}/\n├── README.md                         ← Overview and quick start\n├── research/\n│   ├── 01-competitor-analysis.md     ← Sites analysed, frequency tables\n│   └── 02-key-findings.md            ← 3-5 findings that shaped the build\n├── legal/\n│   ├── 01-option-b-rules.md          ← Safe vs prohibited, legal anchor\n│   ├── 02-safe-claims.md             ← Exact approved wording\n│   └── 03-certificate-rules.md       ← Certificate design + wording\n├── build/\n│   ├── 01-page-structure.md          ← Beat-by-beat explained\n│   ├── 02-{page}-code.md             ← ★ THE DELIVERABLE: full HTML in ```html block\n│   └── 03-css-notes.md               ← CSS dependencies and inline style notes\n└── deploy/\n    └── 01-deploy-instructions.md     ← How to get it live (for Jared, not Brock)\n```
+```\nperformos-{project}/
+├── README.md                         ← Overview and quick start
+├── research/
+│   ├── 01-competitor-analysis.md     ← Sites analysed, frequency tables
+│   └── 02-key-findings.md            ← 3-5 findings that shaped the build
+├── legal/
+│   ├── 01-option-b-rules.md          ← Safe vs prohibited, legal anchor
+│   ├── 02-safe-claims.md             ← Exact approved wording
+│   └── 03-certificate-rules.md       ← Certificate design + wording
+├── build/
+│   ├── 01-page-structure.md          ← Beat-by-beat explained
+│   ├── 02-{page}-code.md             ← ★ THE DELIVERABLE: full HTML in ```html block
+│   └── 03-css-notes.md               ← CSS dependencies and inline style notes
+└── deploy/
+    └── 01-deploy-instructions.md     ← How to get it live (for Jared, not Brock)
+```
 
 ## The code delivery format
 
@@ -169,6 +188,7 @@ Brock writes souls. Bob's sub-agents handle build execution. If the soul update 
 - **Non-PerformOS Vercel deploy pattern (verified 29 May 2026, updated 06 June 2026).** When Jared asks for a live URL on a non-PerformOS project (personal sites, gym pages, demos, HTML dashboards): use terminal in the default profile. For new source-backed builds: `git init` in build dir → `git add .` + `git commit -m "Initial"` → `gh repo create jaredcroxton/<slug> --public --description "<description>" --source=.` (creates repo AND pushes) → `vercel --prod --yes` from the build dir. For existing static sites where the fixed artifact is in a workspace, first try local Vercel auth with `npx -y vercel whoami`; a rejected `VERCEL_TOKEN` is not a deployment blocker if local login works. Deploy with `npx -y vercel deploy --prod --yes`, then if Vercel creates a new deployment/project, move the original clean URL with `npx -y vercel alias set <new-production-url> <original-clean-domain>.vercel.app`. Verify the original URL with `curl -I`, cache-busted browser inspection, viewport overflow checks, and console checks. Example: Callum's Gym was updated by deploying a workspace artifact, then aliasing `callums-gym.vercel.app` to the new deployment.
 
 ## Reference files
+- `references/cinematic-motion-diagnostic.md` — Why a site does not "flow": the three gaps (scroll-driven motion, transition choreography, micro-motion), the Higgsfield pattern, how to communicate to Jared, and what to recommend. Use when Jared shares a live URL and says it lacks epic flow.
 - `references/excel-operational-plan-delivery.md` — Excel operational plan delivery pattern: two-artifact rule (markdown + Excel), brand colour constants, sheet architecture, openpyxl patterns, phase colour coding, and pitfall checklist. Captured 18 June 2026.
 - `references/performos-about-operator-page.md` — About Jared / founder credibility page pattern: operator-not-theorist positioning, LinkedIn scrape fallback, credential cards, forbidden terms, and Claude Code brief structure.
 - `references/homepage-governance-density-gate.md` — PerformOS homepage density and clarity gate: one buyer, one main offer, one CTA, seven sections max, detail pages for proof, and five-question pre-send review.
@@ -180,11 +200,10 @@ Brock writes souls. Bob's sub-agents handle build execution. If the soul update 
 - `references/claude-code-brand-and-cinematic-briefs.md` — Pattern for creating transferable markdown briefs and brand-style folders for Claude Code, including cinematic scroll driven scene plans and PerformOS dark campaign mode.
 - `references/local-service-exposure-patterns.md` — Local service exposure: ngrok, Tailscale Funnel, cloud relay patterns for making Mac mini dashboards accessible remotely
 - `references/non-performos-live-site-qa-and-alias.md` — Non-PerformOS live static site correction pattern: Bob visual QA, remove mockup/example elements, use local Vercel login when token auth fails, move the original production alias, and verify live overflow/console checks before handoff
-
 - `references/competitor-research-ai-courses.md` — Full competitor analysis from the 27 May 2026 session (8 AI course sites, frequency table, 3 key findings). Reference when building education/course pages.
 - `references/agent-thinker-installation-pattern.md` — Reusable pattern for adding named thinkers to agent souls. Format, rules, placement. Used on Archie_Architect (v2.0) and Lara_LearningDesign (v3.0).
 - `references/agent-operating-skeleton-pattern.md` — The seven structural sections every principal agent soul needs: output contract, scorecard, decision rights, escalation triggers, routing rules, cadence, hard lines. Applied to Lara_LearningDesign.
 - `references/public-vs-internal-naming-rules.md` — Public vs internal naming rules for PerformOS website content: public labels only on website pages, internal agent names for demos and ops only, three-tier training model (Build Yourself / Build for Small Business / Build for Enterprise), product naming rule (Crew/AgentOS as parentheticals only), SEO keywords to weave.
 - `references/training-page-segmentation-model.md` — Training page segmentation evolution: single-track → two-track → three-tier. Design principles, buyer profiles, module fork map, anti-patterns. Captured 15 June 2026 after Jared's correction that two tracks split the sole-operator buyer in half.
-- `references/claude-training-australia-conversion-research.md` — Australian Claude/AI training competitor notes and conversion implications for the PerformOS training page: buyer-outcome dropdown, path cards above the fold, build-outcome positioning, homepage three-card copy guardrails, and Bob implementation brief.
+- `references/claude-training-australia-conversion-research.md` — Australian Claude/AI training competitor notes and conversion implications for the PerformOS training page: buyer-outcome dropdown, path cards above the fold, build-outcome positioning, homepage three-card copy copy guardrails, and Bob implementation brief.
 - `references/agent-sub-agent-structure-pattern.md` — Reusable pattern for adding sub-agents to a principal agent. Naming convention, delegation contract, soul structure, profile config, registry update. Applied to Lara_LearningDesign (Rory_Research, Ava_Activities, Eva_Evaluation).

@@ -73,6 +73,8 @@ grep -rI "apify_api_\|sk-\|ghp_\|github_pat_\|xox[baprs]-\|AIza" . --exclude-dir
 
 Matches in documentation files (showing the redaction regex itself) are harmless. Matches in `.yaml` config files are a problem — re-check the redaction step.
 
+**Expected harmless matches in skills directory:** The `.curator_backups/` and `.archive/` subdirectories under `agents/skills/` contain old cron job prompts and reference docs that include literal `apify_api_` and other token-pattern strings as examples. These are not live secrets. When scanning, either exclude these directories or manually verify that matches are only in `.json` backup files and `.md` reference/docs — never in `.yaml` config files.
+
 ## Verification checks
 
 ```bash
