@@ -46,6 +46,31 @@
 - **Physics-aware:** Realistic collisions, fabric, character motion
 - **Upscaling:** 720p → 4K inside Higgsfield
 
+## Critical Limitations (updated 24 June 2026)
+
+| Limitation | Detail | Workaround |
+|---|---|---|
+| **No realistic human faces** | Identifiable faces blocked entirely. Use Seedance 1.5 Pro, Kling, or Veo 3.1 for people. | Product-only spectacle. Layer real human footage in post. |
+| **Best for scenes/architecture/environments** | Excels at products, spaces, abstract visuals. Struggles with realistic people. | Lean into the strength. Build worlds, not characters. |
+| **720p native** | Upscale to 4K post-generation inside Higgsfield. | Factor upscale step into production timeline. |
+
+## Updated Prompt Structure (Newly.app guide, April 2026)
+
+The most reliable Seedance 2.0 prompt follows a strict 4-part order:
+
+```
+Subject and action (verb-first) → Camera movement → Sound direction → Transition or ending beat
+```
+
+| Position | What goes there | Example |
+|---|---|---|
+| 1. Subject + Action | Verb-first. One primary action. | "A hand swipes through a budgeting app." |
+| 2. Camera | Real cinematography terms. One move. | "The camera pushes in slowly from a three-quarter angle." |
+| 3. Sound | Audio cues: UI taps, crowd swell, synth bed. | "Soft UI taps and a subtle warm synth hit." |
+| 4. Transition/End | Cut label or final frame spec. | "End on the completed goal ring with logo appearing." |
+
+The old formula (Subject → Action → Camera → Scene → Style → Audio hints) still works but the 4-part structure is more reliable for product and launch content.
+
 ## Prompt Engineering Rules
 
 ### The Director Mindset

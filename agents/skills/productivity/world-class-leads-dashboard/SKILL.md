@@ -165,6 +165,8 @@ Every lead MUST have LinkedIn data. This is non-negotiable.
    `https://www.linkedin.com/search/results/people/?keywords={role}%20{company}%20{location}`
 5. Set source field: `Apollo verified`, `Apollo inferred`, or `Constructed from company data`
 
+**Scraping tool limitations:** LinkedIn blocks direct profile scraping on Firecrawl, ScrapeGraphAI, and most scraping tools. Firecrawl's autonomous agent (`firecrawl_agent`) is the best current workaround — it finds real names, titles, companies, and locations via indirect search. For detailed tool comparison and what works for LinkedIn executive prospecting, see `references/scraping-tool-comparison-linkedin.md`.
+
 ### Step 6: Optional signal enrichment
 
 Add if relevant to the offer:

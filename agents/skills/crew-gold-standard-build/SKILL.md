@@ -1,6 +1,6 @@
 ---
 name: crew-gold-standard-build
-description: Use when Jared and Brock are migrating or upgrading Crew skills to gold-standard depth. Covers the migration workflow from old performos-crew-skills into the canonical crew-skill-packs tree, the prompt template for Claude Code, Brock's review checklist, and the two-agent build pattern.
+description: Use when Jared and Brock are upgrading Crew skills to gold-standard depth. Covers shallow upgrades, migration from .claude/skills, merged-source skills, and commodity pack upgrades. Includes prompt templates, Brock review checklist, and architectural conventions.
 category: performos
 ---
 
@@ -8,145 +8,163 @@ category: performos
 
 ## When to use
 
-Jared wants to bring a Crew skill (or an entire pack) to gold-standard depth. This covers two scenarios:
+Jared wants to bring a Crew skill to gold-standard depth. Four scenarios:
 
-1. **Migration:** An old full-depth skill exists in `/Users/jc/Desktop/performos-crew-skills/` and needs porting into the canonical tree at `/Users/jc/Desktop/cluade/crew-skill-packs/packs/`
-2. **Upgrade:** A canonical skill exists but is shallow (5 sections, ~8-10KB) and needs the full 15-section treatment
+1. **Shallow upgrade:** A canonical skill exists at 5 sections. Needs the full 15+ section treatment.
+2. **Migration:** A skill in /Users/jc/.claude/skills/ needs porting into the crew pack tree.
+3. **Merged-source:** Two .claude/skills/ files cover the same library. Merge into one crew skill.
+4. **Commodity pack upgrade:** Shallow skills in packs 01-09, 11 need gold-standard treatment.
 
-## Two-agent build pattern
+## Execution cadence
 
-Brock does not build skills directly. The pattern is:
+One skill at a time. Same Claude Code chat. The context carries pack conventions across builds. Splitting loses that.
 
-1. **Brock writes the prompt** — a self-contained Claude Code brief with source path, target path, reference benchmarks, numbered steps, and a report format
-2. **Jared pastes the prompt into Claude Code** — Claude Code executes the build
-3. **Brock reviews the output** — structural verification (size, sections, banned terms, fixture), then reports pass/fail to Jared
+For anchor skills and design packs: "Run in ultracode." After building, run the 3-lens adversarial review before the smoke QA.
 
-Brock never writes the SKILL.md content. Claude Code is the builder. Brock is the QA gate.
+Brock writes prompts. Jared pastes into Claude Code. Brock reviews output before writing the next prompt.
 
 ## Gold standard definition
 
 A gold-standard Crew skill has:
 
-- 15 `##` sections minimum (matching the benchmark: Inputs, Modes and when to use them, cognitive framework, domain-specific taxonomies, Workflow with Step 0 context recovery and Final Step handoff save, Output format, Decision briefs, Guardrails, Handoffs, Plan mode, Verification, Completion)
-- Context Loop: Step 0 reads from `.claude/crew-state/<pack>/<skill>-handoff.md`, Final Step writes back
-- White-label: no Accor examples, no flow-state, no internal agent names (Brock, Bob, Lara, Hermes, Claude Code), no Sarah
+- 15 ## sections minimum: Inputs, Modes and when to use them, cognitive framework, domain-specific reference sections, Workflow (Step 0 + 6+ numbered steps + Final Step), Output format, Decision briefs, Guardrails, Handoffs, Plan mode, Verification, Completion
+- Context Loop: Step 0 reads from .claude/crew-state/<pack>/<skill>-handoff.md, Final Step writes back
+- Brand context: Step 0 reads .claude/crew-state/brand-context.md BEFORE the per-skill handoff
+- White-label: no Accor examples, no internal agent names, no Sarah
 - No em dashes
-- Fixture file in the pack's `tests/` directory with at least 2 cases
-- QA smoke passes: `bash /Users/jc/Desktop/cluade/crew-skill-packs/shared/qa-check.sh --smoke --pack <pack>`
+- Fixture: Cases A, B, and C all required
+- Discovery section: after role paragraph, before Inputs
+- QA PASS on --smoke --pack <pack>
 
-## No arbitrary size ceiling
+No arbitrary size ceiling. Skills go as deep as content demands.
 
-Jared's rule: skills can go as deep as the content demands. Do not cap at 14KB, 15KB, or any other number. "If it has to go a bit over, it goes a bit over. It can go way over if it needs to." The 14KB figure is a floor for structural completeness, never a ceiling.
+## Prompt format
 
-## Migration prompt template
+Clean, copyable plain text. No markdown code fences wrapping the prompt body. Bold headers. Paths and commands inline.
 
-Copy this structure for each migration prompt:
+**Correct format:**
 
 ```
-**Task:** Migrate `flow-support-<name>` from the old build folder into the canonical Crew pack tree as an upgraded `crew-support-<name>`.
+**Task:** Upgrade X to gold-standard depth. Run in ultracode.
 
-**Source file:** `/Users/jc/Desktop/performos-crew-skills/customer-support/flow-support-<name>/SKILL.md`
-
-**Target file:** `/Users/jc/Desktop/cluade/crew-skill-packs/packs/<NN-pack>/crew-<domain>-<name>/SKILL.md`
-
-**Reference gold standards:** [list 1-2 already-migrated benchmarks]
+**Source file:** /path/to/source
+**Target file:** /path/to/target
+**Reference benchmarks:**
+- /path/to/benchmark-1
+- /path/to/benchmark-2
+**Current state:** size, sections, description.
 
 **What to do:**
-1. Read the source file completely
-2. Read the target file completely
-3. Read the reference gold standard(s) as structural benchmarks
-4. Merge the depth and structure from the source into the target
-5. Preserve all sections from the source, adapt to canonical naming
-6. Strip all Accor-specific examples, flow-state bash, internal agent names, flow-* cross-references (remap to canonical crew-* names)
-7. White-label business language throughout. No em dashes.
-8. Update or create the fixture at `<pack>/tests/crew-<domain>-<name>.fixture.md` — at least 2 cases
-9. Run QA: `bash /Users/jc/Desktop/cluade/crew-skill-packs/shared/qa-check.sh --smoke --pack <pack>`
-10. Report: old size, new size, sections added, QA result
+1. Read source completely. Preserve ALL existing depth.
+2. Read benchmarks for structure.
+3. Add Discovery section + 6 gold-standard sections.
+4. Promote buried Workflow content into ## reference sections.
+5. Context Loop, fixture A/B/C, adversarial review, QA.
+6. Report.
 ```
 
-## Upgrade prompt template (no source migration)
-
-When upgrading a shallow canonical skill with no old source:
+## Shallow upgrade prompt template
 
 ```
-**Task:** Upgrade `crew-<domain>-<name>` to gold-standard depth.
+**Task:** Upgrade crew-<pack>-<skill> from 5 sections to full gold-standard depth. Run in ultracode.
 
-**Target file:** [path]
-
-**Reference gold standards:** [list benchmarks]
+**Source file:** [path]
+**Reference benchmarks:**
+- [same-pack sibling at gold standard]
+- [cross-pack benchmark for structure]
+**Current state:** ~X bytes, 5 sections.
 
 **What to do:**
-1. Read the target file completely
-2. Read reference gold standards for structure
-3. Preserve all existing implementation depth
-4. Add missing gold-standard sections: Modes, cognitive framework, decision briefs, plan mode, verification, completion
-5. Add Context Loop
-6. No em dashes. White-label. No internal agent names.
-7. Upgrade fixture — at least 2 cases
-8. Run QA
-9. Report: old size, new size, sections added, QA result
+1. Read source completely. Preserve ALL existing depth.
+2. Read benchmarks.
+3. Add Discovery section after role paragraph.
+4. Add 6 gold-standard sections: Modes, How the [skill] thinks, Decision briefs, Plan mode, Verification, Completion.
+5. Promote buried Workflow blocks to ## reference sections. Name candidates in the prompt.
+6. Context Loop, fixture A/B/C, adversarial review (3 lenses), QA.
+7. Report: old size, new size, sections added/promoted, QA result.
 ```
+
+## Two extraction patterns
+
+### Pattern A: Promote ### to ##
+
+Skill has ### headings with real depth. Promote to ##.
+
+### Pattern B: Extract from monolith Workflow (most common)
+
+Skill has ZERO ### headings. Extract and consolidate buried detail into ## reference sections. Thin Workflow steps to one-line pointers. Net new content is structural only.
+
+Proven across: escalation-review (5 extracted), faq-builder (4 extracted), lead-dashboard-builder (6 extracted), fly-through-builder (4 extracted), lead-research (5 extracted).
+
+## Discovery sections
+
+Every skill needs a Discovery section after the role paragraph, before Inputs. Build skills use the 7-question design discovery. Support skills use the 5-question pattern. Commodity pack skills use domain-specific discovery.
+
+## Brand context architecture
+
+Every Crew skill reads .claude/crew-state/brand-context.md in Step 0 before its own handoff. If the file exists: "Working with [brand]." If not: route to crew-core-brand-context for the 11-question onboarding. 93 skills have this wired.
+
+The brand-context file captures who the business is. Design specifics are gathered by design skills at build time. A florist can onboard without thinking about fonts.
+
+## Design review gates (pack 10)
+
+Every build skill must have a ## Design review gate referencing packs 12-14 with pass/fail conditions.
+
+## Dual failure mode (style skills)
+
+Style skills must fail in two opposite directions with named verdict axes. The "right lens" off-ramp fires before dimensional scoring.
+
+## Adversarial review
+
+After every ultracode build, run 3 independent lenses: harness-compliance, leak/ban audit, senior-domain-engineer content critique. Apply sharp refinements before smoke QA.
+
+## Live testing protocol
+
+After structural QA, test against a real input designed to trigger one specific failure mode or boundary decision. For build skills: build and inspect on localhost. For style skills: review a deliberately-wrong design. For animation skills: route to siblings at correct boundaries.
+
+## Asset manifest (pack 10)
+
+Every build skill outputs a prompt manifest alongside the HTML. Series consistency lock enforces same product, same light, same temperature across all images.
+
+## Design pack naming
+
+After market research (24 June 2026): "taste" rejected. Enterprise buyers understand "standards."
+
+| Pack | Name |
+|------|------|
+| 12 | design-standards |
+| 13 | design-styles |
+| 14 | animation |
 
 ## Brock review checklist
 
-After Claude Code reports completion, Brock verifies:
-
-1. **Size:** run `wc -c` on the target SKILL.md. Compare to old size. Confirm growth.
-2. **Sections:** run `grep "^##"` and count `##` headings. Confirm 15 minimum.
-3. **Banned terms:** run `grep -in "flow-state\|Accor\|Sarah\|PerformOS\|Brock\|Bob\|Lara\|Hermes\|gstack\|free night\|ACA\|ACCC"` on the target. Must be clean except for em-dash prohibition rules.
-4. **Fixture:** confirm the fixture file exists and has content.
-5. **Report back to Jared:** one line per skill. Size, sections, clean/dirty, pass/fail.
-
-## Canonical paths
-
-- **Source of truth:** `/Users/jc/Desktop/cluade/crew-skill-packs/packs/`
-- **Old full-depth skills (migration sources):** `/Users/jc/Desktop/performos-crew-skills/`
-- **Shared QA:** `/Users/jc/Desktop/cluade/crew-skill-packs/shared/qa-check.sh`
-- **Dist zips:** `/Users/jc/Desktop/cluade/crew-skill-packs/dist/` (only packs 01-09 built; 10-11 pending)
-- **Plugin tree:** `/Users/jc/Desktop/cluade/crew-skill-packs/plugins/` (regenerate with `build-plugins.sh`)
-
-## Crew pack structure (24 June 2026)
-
-| Pack | Skills | Gold | Upgraded | Shallow |
-|------|--------|------|----------|---------|
-| 01-core | 7 | 0 | 0 | 7 |
-| 02-sales | 7 | 0 | 0 | 7 |
-| 03-marketing | 7 | 0 | 0 | 7 |
-| 04-ops | 5 | 0 | 0 | 5 |
-| 05-hr | 5 | 0 | 0 | 5 |
-| 06-finance | 6 | 0 | 0 | 6 |
-| 07-support | 6 | 3 (ticket-triage, reply-builder, feedback-summary) | 0 | 3 |
-| 08-docs | 7 | 0 | 0 | 7 |
-| 09-training | 8 | 0 | 0 | 8 |
-| 10-web-design | 3 | 1 (slide-deck-builder) | 1 (fly-through-builder) | 1 (lead-dashboard-builder) |
-| 11-infrastructure | 1 | 0 | 1 (project-builder, 7 sections) | 0 |
-
-**Key:** Gold = 15+ sections, clean. Upgraded = above baseline but under 15 sections. Shallow = 5-7 sections, ~8-11KB baseline.
-
-## Upgrade prompt template: the "promote ### to ##" technique
-
-When upgrading a skill with deep implementation content already present under `###` headings, identify every `###` heading that contains substantive build instructions (not one-liners) and promote it to `##`. This is how slide-deck-builder reached 17 sections — spec blocks like Slide types, Brand variables, Navigation, and Code highlighting earned `##` status because they contained real implementation depth. The Claude Code prompt must explicitly instruct: "Identify every `###` heading with substantive implementation depth. These are candidates for `##` promotion. Only promote if the content warrants it — no filler sections."
-
-## Brock review checklist
-
-After Claude Code reports completion, Brock verifies:
-
-1. **Size:** run `wc -c` on the target SKILL.md. Compare to old size. Confirm growth.
-2. **Sections:** run `grep "^##"` and count `##` headings. Confirm 15 minimum.
-3. **Banned terms:** run `grep -in "flow-state\|Accor\|Sarah\|PerformOS\|Brock\|Bob\|Lara\|Hermes\|gstack\|free night\|ACA\|ACCC"` on the target. Must be clean except for em-dash prohibition rules.
-4. **Fixture:** confirm the fixture file exists and has content.
-5. **Report back to Jared:** one line per skill. Size, sections, clean/dirty, pass/fail.
+1. **Size:** wc -c on target. Confirm growth or legitimate decrease.
+2. **Sections:** grep -c '^## ' — 15 minimum.
+3. **Banned terms:** grep -in for Accor, Sarah, PerformOS, Brock, Bob, Lara, Hermes[^s], gstack, APOGEE, apogee, jaredcroxton, aether-genesis, Lila.
+4. **Em dashes:** grep -c '—' — must be 0.
+5. **Harness:** Step 0, Final Step, handoff path, output header, Guardrails contains "em dash", frontmatter exactly two keys.
+6. **Fixture:** Cases A, B, C all present.
+7. **Off-ramps:** register skills must have "when this is the WRONG lens" guards.
+8. **Report:** table format.
 
 ## Never trust memory over disk
 
-Memory entries about CREW pack state can be stale. The entry "lead-dashboard gold" in memory was wrong — disk showed 5 sections. Before reporting any skill as gold, always verify with `wc -c` and `grep -c '^## '` directly on the SKILL.md file. Memory is a hint. Disk is truth.
+Always verify with wc -c and grep -c '^## ' directly on disk.
 
 ## Pitfalls
 
-- The old `performos-crew-skills/` folder uses `flow-` prefix naming. Always remap to `crew-` prefix in the canonical tree.
-- The `build-plugins.sh` script hardcodes "58 skills" — stale. Actual count is 62.
-- The `README.md` in crew-skill-packs lists only 9 packs. Packs 10 and 11 are missing from the table.
-- Dist zips and plugin tree only cover packs 01-09. Do not rebuild them until Jared says the pack is done.
-- Some canonical skills in `crew-skill-packs/packs/` are structurally shallow (5 sections) despite the same pack having gold-standard neighbours. Always check before assuming a pack is complete.
-- The `flow-` grep in banned-term checks matches CSS properties like `overflow-x`. These are false positives, not skill-name leaks. When Claude Code reports a `flow-` match, verify it's not a CSS property before flagging it.
-- Internal references (APOGEE, jaredcroxton, aether-genesis, premium-dashboard-design-reviewer, "Update memory") can live in three places: the SKILL.md, bundled reference files (HTML, JSON), and fixtures. A scrub must check all three. The Claude Code prompt should explicitly list each file type that needs cleaning.
+- **QA workflow step count failure.** Split longest combined step if below 6.
+- **Substring traps.** "Bob" in "sine bob on y", "Lara" in "gallery". Verify standalone words.
+- **Coincidental source names.** Read source completely. Frame around task intent.
+- **Size decrease can be legitimate.** Framework code stripped + section count increased = clean extraction.
+- **FAQ Builder testing trap.** Give raw ticket dumps, not pre-written questions.
+- **Support skills missing discovery.** All skills need discovery questions.
+- **crew-web-design-reviewer phantom.** Never existed. Route gates to real pack-12 skills.
+- **Headless Claude Code fails.** Builds must run interactively.
+- **Series consistency trap.** Asset manifest must enforce consistency lock.
+
+## Canonical paths
+
+- Pack tree: /Users/jc/Desktop/cluade/crew-skill-packs/packs/
+- Migration source: /Users/jc/.claude/skills/
+- QA harness: /Users/jc/Desktop/cluade/crew-skill-packs/shared/qa-check.sh
