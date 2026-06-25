@@ -186,13 +186,13 @@
     "created_at": "2026-06-02T08:30:22.126788+00:00",
     "created_by": null,
     "last_patched_at": "2026-06-21T06:57:51.728367+00:00",
-    "last_used_at": "2026-06-21T07:20:48.205633+00:00",
-    "last_viewed_at": "2026-06-21T07:20:48.202930+00:00",
+    "last_used_at": "2026-06-25T21:17:29.532313+00:00",
+    "last_viewed_at": "2026-06-25T21:17:29.530398+00:00",
     "patch_count": 33,
     "pinned": false,
     "state": "active",
-    "use_count": 41,
-    "view_count": 41
+    "use_count": 43,
+    "view_count": 43
   },
   "browser-use": {
     "archived_at": null,
@@ -263,14 +263,14 @@
     "archived_at": null,
     "created_at": "2026-06-23T12:11:22.406478+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-06-24T22:39:29.350232+00:00",
-    "last_used_at": "2026-06-24T22:38:44.942918+00:00",
-    "last_viewed_at": "2026-06-24T22:38:44.941164+00:00",
-    "patch_count": 87,
+    "last_patched_at": "2026-06-25T22:11:24.874802+00:00",
+    "last_used_at": "2026-06-25T22:11:04.896130+00:00",
+    "last_viewed_at": "2026-06-25T22:11:04.893779+00:00",
+    "patch_count": 110,
     "pinned": false,
     "state": "active",
-    "use_count": 36,
-    "view_count": 36
+    "use_count": 48,
+    "view_count": 48
   },
   "dashboard-batch-update": {
     "archived_at": null,
@@ -471,14 +471,14 @@
     "archived_at": null,
     "created_at": "2026-05-17T23:48:00.551782+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-06-03T22:44:15.673971+00:00",
-    "last_used_at": "2026-06-21T04:30:56.299369+00:00",
-    "last_viewed_at": "2026-06-21T04:30:56.294550+00:00",
-    "patch_count": 15,
+    "last_patched_at": "2026-06-25T13:35:54.641035+00:00",
+    "last_used_at": "2026-06-25T13:35:47.411660+00:00",
+    "last_viewed_at": "2026-06-25T13:35:47.410081+00:00",
+    "patch_count": 18,
     "pinned": false,
     "state": "active",
-    "use_count": 15,
-    "view_count": 15
+    "use_count": 19,
+    "view_count": 19
   },
   "jupyter-live-kernel": {
     "archived_at": null,
@@ -771,13 +771,13 @@
     "created_at": "2026-05-27T12:31:20.587869+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-23T06:49:48.541461+00:00",
-    "last_used_at": "2026-06-23T06:45:29.948888+00:00",
-    "last_viewed_at": "2026-06-23T06:45:29.946903+00:00",
+    "last_used_at": "2026-06-25T13:36:02.648870+00:00",
+    "last_viewed_at": "2026-06-25T13:36:02.647173+00:00",
     "patch_count": 84,
     "pinned": false,
     "state": "active",
-    "use_count": 89,
-    "view_count": 89
+    "use_count": 90,
+    "view_count": 90
   },
   "personas": {
     "archived_at": null,

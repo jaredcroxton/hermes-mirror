@@ -27,6 +27,14 @@ For the **Performlytics** brand specifically: floating orbs (blur 80px, opacity 
 
 ## Brand Config Quick Reference
 
+### PerformOS (parent brand, light-first with dark variant)
+
+Full system in `references/performos-brand.md`.
+- Light: BG `#f2efe8` (Ivory) | Text `#0a0a0a` (Ink) | Accent `#d4ff3b` (Lime)
+- Dark: BG `#0a0a0a` (Ink) | Text `#f2efe8` (Ivory) | Accent `#d4ff3b` (Lime)
+- Display: Instrument Serif | Body: Inter | Mono: JetBrains Mono
+- Buttons: pill only (100px radius). No em dashes. Australian spelling.
+
 ### Performlytics (dark, data-aesthetic)
 - BG: #0A0A0A | Surface: #111111 | Text: #F0F0F5
 - Accent: #3B82F6 | Secondary: #8B5CF6 | Cyan: #22D3EE

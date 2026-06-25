@@ -346,14 +346,28 @@ Open the deck with `?verify` to capture clean, settled screenshots of every slid
 
 ## Brand configs
 
-### PerformOS suite default
+### PerformOS (parent brand)
 
-- Display: Archivo, fallback Calibri Bold
-- Body: Calibri, fallback Inter
-- Mono: JetBrains Mono, fallback Courier New
-- Display style: uppercase, bold, tight letter spacing
-- Body: 14 to 16px, 1.55 line height
-- Labels: mono, 10 to 11px, uppercase, 1.5px letter spacing
+Full brand system in `references/performos-brand.md`. Quick reference:
+
+**Light mode (default)**
+- Background: `#f2efe8` (Ivory) | Cards: `#e8e4da` (Ivory Soft)
+- Primary text: `#0a0a0a` (Ink) | Secondary: `rgba(10,10,10,0.6)` | Labels: `rgba(10,10,10,0.4)`
+- Accent: `#d4ff3b` (Electric Lime) | Borders: `rgba(10,10,10,0.12)`
+- Display/Headings: Instrument Serif (weight 400, italic for emphasis)
+- Body/UI: Inter (weights 400, 500, 600)
+- Labels/Meta: JetBrains Mono (weights 400-500, always uppercase, 1.5-2px letter-spacing)
+- Buttons: pill only (border-radius 100px), never rounded rectangles
+
+**Dark variant**
+- Background: `#0a0a0a` (Ink) | Cards: `#141414` or `#1a1a1a`
+- Primary text: `#f2efe8` (Ivory) | Secondary: `rgba(242,239,232,0.6)` | Labels: `rgba(242,239,232,0.4)`
+- Accent: `#d4ff3b` (Electric Lime, unchanged) | Borders: `rgba(242,239,232,0.12)`
+- Same fonts as light mode. Logo outer ring shifts to ivory at 15% opacity on dark.
+- Used for: Pocket Customer, dark dashboards, dark slide decks, lead dashboards
+
+**Retired identity (do not use)**
+- Navy/teal/green colour system, Montserrat typeface, stylised "P" wing-arc mark — all 2025 identity, retired.
 
 ### LearnOS
 
