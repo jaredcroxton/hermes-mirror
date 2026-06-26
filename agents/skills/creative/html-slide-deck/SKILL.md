@@ -1,7 +1,7 @@
 ---
 name: html-slide-deck
 description: Build premium, self-contained, branded HTML slide decks with smooth animations, navigation controls, responsive layouts, and zero overflow. Use whenever Jared asks for a deck, slides, presentation, HTML presentation, pitch deck, product demo, or branded multi-slide visual output.
-version: 1.1.0
+version: 1.2.0
 author: PerformOS / Jared Croxton
 platforms: [macos]
 metadata:
@@ -274,7 +274,7 @@ When a slide uses a photograph:
 
 Always include all five:
 
-1. Left and right arrow buttons.
+1. Left and right arrow buttons, **visible by default** at minimum 0.6 opacity. Do not gate arrow visibility behind a `:hover` on the presentation container. Hover can enhance (0.6 to 1.0 opacity, glow ring, scale) but must not be the only way to see the arrows.
 2. Dot indicators, one per slide.
 3. Slide counter, for example `3 / 8`.
 4. Keyboard support: left arrow, right arrow, spacebar.
@@ -282,26 +282,44 @@ Always include all five:
 
 Navigation must not cover content.
 
+**Arrow visibility pitfall:** `#presentation:hover .nav-arrow { opacity: 1; }` makes arrows invisible until the user hovers the deck area. The arrows exist in the DOM and JS but are visually absent. This is the single most common navigation bug in Crew-built decks. The fix is a one-line CSS change: set `.nav-arrow { opacity: 0.6; }` as the base state, and let `:hover` raise it to 1.0.
+
+**Arrow visibility pitfall:** `#presentation:hover .nav-arrow { opacity: 1; }` makes arrows invisible until the user hovers the deck area. This is wrong. Arrows start visible. Hover enhances, it does not reveal.
+
 ## Motion and animation
 
-Default to standard animation unless Jared asks otherwise.
+Default to standard animation unless Jared asks otherwise. **Standard animation is not minimal.** The animation patterns reference (`references/animation-patterns.md`) defines the polished baseline. Apply these as the default set:
 
-Use:
-
-- Slide transition with opacity and transform.
-- Staggered content reveal per active slide.
-- Subtle background motion where it adds polish.
-- Hover effects for cards and buttons.
+- Slide transition with opacity and transform (crossfade or 3D perspective).
+- Staggered content reveal per active slide with spring easing (`--ease-spring`).
+- Hover lift + glow on all interactive surfaces: cards, buttons, stat numbers. translateY(-2px) + box-shadow glow in the brand accent colour.
+- Animated gradient borders on hover for feature cards, stat cards, and comparison cards (conic-gradient spin via `::before` pseudo-element, using `@property --angle` for smooth CSS rotation).
+- Pulse glow on the active navigation dot (box-shadow keyframe animation).
+- Gradient float: a slow ambient background gradient animation (CSS keyframe on `background-position`, 30s cycle, 220% background-size) so the deck feels alive even when static.
 - Count-up animation for key metrics when relevant.
 - Progress bar if auto-advance is enabled.
+- Hover enhancement on nav arrows: opacity lift (0.6 → 1.0), spring scale, glow ring in accent colour.
 
 Do not over-animate paragraphs. Motion should support hierarchy, not distract.
 
 Use easing:
 
 ```css
-cubic-bezier(0.4, 0, 0.2, 1)
+--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+--ease: cubic-bezier(0.4, 0, 0.2, 1);
 ```
+
+Always include a `prefers-reduced-motion` block that drops ambient loops while keeping essential transitions:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  [class*="bg-float"] { animation: none !important; }
+}
+```
+
+See `references/animation-patterns.md` for the full implementation of each pattern (particle canvas, 3D perspective transitions, count-up, mouse parallax, typing effect, etc.).
+
+See `references/animation-patterns.md` for the full implementation of each pattern (particle canvas, 3D perspective transitions, count-up, mouse parallax, typing effect, etc.).
 
 ## Responsive targets
 

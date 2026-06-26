@@ -19,9 +19,12 @@ Jared wants to bring a Crew skill to gold-standard depth. Four scenarios:
 
 One skill at a time by default. Same Claude Code chat. The context carries pack conventions across builds. Splitting loses that.
 
-**Exception — batch related pairs.** When two skills are two halves of the same workflow (context-save + context-restore), batch them in one prompt. The adversarial review can then verify they interoperate — that save's output format is exactly what restore expects. Do NOT batch unrelated skills (guard-boundary + using-crew have nothing in common). The reviewer splits attention and errors slip through.
+**Ultracode for everything.** Jared (27 June 2026): "okay, don't change anything. Let's keep everything the same. It's only limited by tokens. It's no extra cost. It's just taking a little bit longer." Run every upgrade in ultracode. Every skill gets the 3-lens adversarial review. The token cost is worth the quality — the review catches real domain errors on every skill.
 
-For anchor skills and design packs: "Run in ultracode." After building, run the 3-lens adversarial review before the smoke QA.
+**Exception — batch related skills.** Three batching patterns are proven:
+- **Pairs:** Two halves of the same workflow (context-save + context-restore). The adversarial review verifies they interoperate.
+- **Triples:** Three skills sharing the same structural pattern (idea-pressure-tester + plan-reviewer + quality-checker). All review/gate skills, same family, same shape.
+- **Do NOT batch unrelated skills.** The reviewer splits attention and errors slip through.
 
 Brock writes prompts. Jared pastes into Claude Code. Brock reviews output before writing the next prompt.
 
@@ -195,8 +198,41 @@ The outreach-draft skill correctly splits these. Lead-research and prospect-brie
 
 ScrapeGraphAI (https://github.com/ScrapeGraphAI/Scrapegraph-ai) is a Python library that uses LLMs to extract structured data from websites. For lead research, it can automate the "visit company website, extract products, pricing, news, growth signals" step. One prompt, one URL, structured JSON back. Requires pip install + playwright install + LLM API key. Useful addition to the lead-research `## Research sources` section as an automated extraction option.
 
+## Output format delivery (28 June 2026)
+
+Build skills produce beautiful HTML. But businesses need PowerPoint, Word, and PDF. Three things surfaced from the fresh-install Mac Mini test:
+
+1. **PDF output breaks.** HTML is stunning on screen but "Save as PDF" strips backgrounds, breaks page layouts, and leaves animation artefacts. Fix: add `@media print` block to every build skill output template: page breaks at section boundaries, `print-color-adjust: exact`, animations disabled, margins 0.5in, no navigation UI.
+
+2. **No delivery format choice.** The skill assumes HTML. Add Question 8 to every build skill Discovery: "How should this be delivered? HTML (screen, animations), PDF (clean print), or Both (HTML with print stylesheet)."
+
+3. **No PowerPoint or Word export.** Businesses share .pptx and .docx. The PowerPoint and Word document generation skills handle formatting — build skills should route output to them when those formats are chosen.
+
+4. **Navigation arrows invisible on dark backgrounds.** The slide-deck-builder output has left/right navigation arrows that vanish against dark backgrounds. Contrast check needed in the design review gate for interactive elements.
+
+5. **Animation never fires in output.** The design review gate references `crew-animation-gsap` and `crew-animation-motion` as reviewers, but no actual `<script>` block with animation code gets injected into the HTML. The gate confirms quality but the skill doesn't produce the motion. Fix: add an `## Animation injection` step after HTML generation, before the gate.
+
+## Brand-context hard rule (27 June 2026)
+
+Crew-core-brand-context Discovery section now has a hard rule: "Do not scan the repo, README, or any other file for business clues. Do not guess. The only source of brand truth is brand-context.md or the answers the user gives you. The repo you are installed in is not evidence of who the business is."
+
+This was added because Claude Code auto-loads the repo README into every session. On a fresh install, the brand-context skill saw "Built by PerformOS" in the README and offered it as the business. Two fixes applied:
+
+- **README stripped of brand identification.** "Built by PerformOS" section removed. Brand story lives nowhere in the repo — not README, not ABOUT.md. Repo is technically clean.
+- **Skill hard rule added.** Even if Claude reads something, the skill refuses to use it. Only brand-context.md or user answers establish the business.
+
+## Fresh-install directory gap (27 June 2026)
+
+The `.claude/crew-state/` directory does not exist on a brand new machine. Skills' Step 0 tries to read from it and fails with a path error. The skill then tries to route to `crew-core-brand-context` which isn't installed as a plugin. Two issues:
+
+1. **No directory scaffolding.** Nothing creates `.claude/crew-state/` before skills try to read from it. Fix: Step 0 should `mkdir -p` the directory, or the install script should scaffold it.
+
+2. **Cross-skill routing on fresh install.** Step 0 says "run crew-core-brand-context" but that skill isn't registered yet. The FAQ-builder failed on the Mac Mini because it couldn't route. The test bypass was: "Do not route to brand-context. Ask me the 11 onboarding questions yourself."
+
 ## Pitfalls
 
+- **README brand leak trap.** Claude Code auto-loads repo README into session context before any skill runs. If the README names a brand or founder, Claude offers it as context to the user. Fix: strip all brand identification from README. Keep it technical.
+- **Em dashes in README.** Public-facing repo docs must have zero em dashes. 22 were found and fixed (27 June 2026). Standard is now total.
 - **QA workflow step count failure.** Harness requires 6+ numbered Workflow steps between ## Workflow and the next ## heading. If a combined step puts you at 5, split the longest step into two. Proven fix on webcam-website.
 - **Substring traps.** "Bob" in "sine bob on y", "Lara" in "gallery". Verify standalone words, not substrings.
 - **Coincidental source names.** Read source completely. power-design was an HTML-deck generator, not an authority skill. composition-patterns was React component architecture, not visual composition. Frame around task intent, not source filename.
@@ -222,11 +258,13 @@ When a long build session hits Claude Code token limits (ultracode chews through
 
 Brock stays in the original chat. Claude Code resumes in the fresh chat. No context lost. No re-teaching.
 
+**Fresh chat handover trap (critical pitfall).** When continuing work in a new chat, always verify every skill claimed as gold is actually upgraded on disk. coaching-conversation-guide (27 June 2026) was claimed gold by the fresh chat but was still at 5 sections/10KB — only Step 0 brand-context was added, not the full upgrade. Always verify with wc -c and grep -c '^## ' before marking done. Never trust a fresh chat claim without disk verification.
+
 ## Throughput and stats
 
-**Complete packs (11 of 14, as of 27 June 2026):** 07-support (6), 02-sales (7), 03-marketing (7), 04-ops (5), 05-hr (5), 08-docs (7), 09-training (8), 10-web-design (9), 12-design-standards (7), 13-design-styles (5), 14-animation (12). **78 of 93 gold. 84%.** Remaining: finance (6), core (7 — brand-context at 13s), infra (1). 15 skills.
+**Complete packs (27 June 2026):** All 14 packs — 01-core (8), 02-sales (7), 03-marketing (7), 04-ops (5), 05-hr (5), 06-finance (6), 07-support (6), 08-docs (7), 09-training (8), 10-web-design (9), 11-infrastructure (1), 12-design-standards (7), 13-design-styles (5), 14-animation (12). **93 of 93 gold. 100%.** ~3.5MB of skill content. **All sweeps complete:** count-agnostic boilerplate, AU-law generalisation (24 replacements, 8 files), 30-skill Discovery sweep, FAQ builder em dash. **Distribution complete:** 15 zips, 16 plugins, GitHub repo live. **Remaining:** fresh-install test, hooks architecture.
 
-Pack throughput: 7-skill packs (sales, marketing, docs, training) take roughly one session each at ultracode depth with adversarial review. 5-skill packs (ops, hr) take half a session. Finance (6), core (7), infra (1) will take one more session.
+Pack throughput: 7-skill packs (sales, marketing, docs, training) take roughly one session each at ultracode depth. 5-skill packs (ops, hr) take half a session. Core utility skills can be batched in pairs (context-save + context-restore) or triples (idea-pressure-tester + plan-reviewer + quality-checker) because they share the same structural pattern and domain.
 
 ## Gap analysis methodology
 
@@ -245,11 +283,31 @@ After all packs are gold, add three hook skills: pre-flight (validates inputs, c
 
 ## Post-build plan
 
-After all commodity packs are gold:
+After all commodity packs are gold, four sweeps and distribution:
 
-1. **Archive old skills.** Move /Users/jc/.claude/skills/ to /Users/jc/.claude/skills-archive/. All content migrated. Reference only.
-2. **Build distribution.** Plugin installers for all completed packs. Update build-plugins.sh. Rebuild zips.
-3. **Fresh install test.** Wipe Claude skill registry. Install CREW packs clean. Run full onboarding flow as a brand new company. Test every layer: brand-context → discovery → build → design review gate → output.
+### Sweep 1: Count-agnostic boilerplate
+Replace hardcoded "twelve questions" → "a few quick questions" across all shipped SKILL.md files. One prompt, idempotent script, verified with grep. Never breaks on a count change again.
+
+### Sweep 2: AU-law generalisation (27 June 2026)
+Replace every hardcoded AU statute (Disability Discrimination Act, Privacy Act, ACL ss 18/29, Fair Work Act, WHS) → "local law (jurisdiction from brand-context.md)." 24 replacements across 8 files. Leave dialect defaults (Australian English) untouched — those are language, not statute. One prompt. Verified with grep for zero statute residuals. All 14 packs QA PASS.
+
+### Sweep 3: Discovery sweep (27 June 2026)
+Add Discovery sections to 30 gold skills across 4 packs (07, 12, 13, 14) that were upgraded before the Discovery pattern existed. Identical ## Discovery block after role paragraph, before ## Inputs. +9 lines per file, nothing else touched. One prompt. Verified with placement check + QA all 4 packs.
+
+### Sweep 4: Em dash fix
+FAQ builder line 43. One character. 30 seconds.
+
+### Distribution (DONE — 27 June 2026)
+package.sh and build-plugins.sh updated for all 14 packs. 15 zips built (14 per-pack + 1 full bundle at 2.0MB). 16 plugins built (14 pack plugins + crew-full + crew-installer). Marketplace manifest regenerated.
+
+### GitHub repo (DONE — 27 June 2026)
+Private repo at github.com/jaredcroxton/crew-skill-packs. 216 files, 34,622 lines. Professional README with header image, badges, architecture, pack table, quality standards, brand story. MIT LICENSE. .gitignore. Pushed on main. Full presentation standards: references/github-repo-presentation.md
+
+### Fresh install test (NOT YET DONE)
+Wipe Claude skill registry. Install CREW packs clean. Run full onboarding flow as a brand new company. Test every layer.
+
+### Hooks architecture (NOT YET DONE, post-gold)
+Three hook skills: pre-flight, post-flight, error-recovery. Wire into all skills' Step 0 and Final Step.
 
 ## QA crew-state scope fix
 
@@ -257,6 +315,7 @@ the white-label guard for shipped content stays fully intact.
 
 - **Fresh chat handover trap.** When continuing work in a new Claude Code chat to save tokens, verify every skill claimed as gold is actually upgraded on disk. coaching-conversation-guide (27 June 2026) was claimed gold but was still at 5 sections/10KB — the fresh chat only added Step 0 brand-context. Always verify with wc -c and grep -c '^## ' before marking done.
 - **Silent default trap.** Numerical floors/thresholds used at output time that were never gathered in discovery silently default to zero and defeat the floor discipline. The finance cashflow-brief minimum-cash-buffer was used in output but never solicited. If a number gates a decision (minimum cash, maximum budget, target threshold), it MUST be gathered in Discovery or Inputs, never defaulted.
+- **AU-law dialect trap.** When generalising hardcoded AU statutes, leave dialect defaults (Australian English, AU workplace) untouched. Those are language preferences, not legal references. Every gold skill can default to its local dialect. The statute replacement targets only legal acts and regulations.
 
 ## Canonical paths
 

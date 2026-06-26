@@ -1,5 +1,51 @@
 # CREW Gap Analysis — 27 June 2026
 
+Sweep run at 90/93 gold. Remaining: admin-automation, project-builder, brand-context (13→15).
+
+## Structural gaps (fixable — batch sweeps)
+
+1. **30 skills missing Discovery sections.** Packs 07 (6), 12 (7), 13 (5), 14 (12) built before Discovery pattern existed. Batch prompt adds Discovery to all.
+
+2. **Em dash in FAQ builder line 43.** One character: "rules apply — capture" → "rules apply: capture"
+
+3. **AU-law hardcoding.** 4 training skills (facilitator-guide, learner-workbook, onboarding, skill-gap-mapper) mention specific AU acts. Generalise to "local law (jurisdiction from brand-context)."
+
+## Integration gaps
+
+4. **Cross-pack references without guarantees.** FAQ builder → help-document-generator. CRM-cleanup → pipeline-review. If business buys one pack but not the other, references break. No graceful fallback.
+
+5. **No full-chain test.** Brand-context → discovery → build → design review gate → output. Never tested end-to-end.
+
+## Quality gaps
+
+6. **No smoke tests have passed.** CLI 401 blocked since day one. Structural QA green. Functional unconfirmed.
+
+7. **Design review gates only in pack 10.** Support/sales/marketing/docs have Verification checklists but no automated gate.
+
+8. **Image MCP not connected.** Build skills produce prompt manifests. Can't auto-generate.
+
+## Runtime gaps
+
+9. **No error recovery.** Step 4 failure = restart from Step 0. No handoff from failure state.
+
+10. **No fresh-install test.** Never wiped and installed from zero.
+
+11. **Plugins not built.** No distribution.
+
+## Fix sequence
+
+1. Finish remaining 3 skills
+2. Fresh-install test (highest risk)
+3. 30-skill Discovery sweep
+4. Brand-context 13→15
+5. FAQ em dash
+6. Image MCP integration
+7. Smoke test actual output
+8. Error recovery hooks (post-gold)
+9. AU-law generalisation
+10. Cross-pack reference hardening
+11. Distribution (plugins, zips, PDF)
+
 ## State at analysis
 82 of 93 gold skills. 11 complete packs. 11 remaining.
 
