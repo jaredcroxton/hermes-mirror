@@ -432,6 +432,7 @@ Preferred Local artifact sequence:
 - [ ] For existing website repos: file content verified with `grep` for expected text before deploying.
 - [ ] For HTML decks, `html-slide-deck` has been followed and mobile was checked at `375 x 812` before delivery.
 - [ ] For HTML decks, navigation arrows, dots, counter, keyboard, and swipe controls work.
+- [ ] For dark-theme HTML decks, navigation arrows are visibly confirmed (see `references/dark-theme-deck-arrows.md`).
 - [ ] For HTML decks, no text overflow, clipping, logo overlap, or mobile nav crowding remains.
 - [ ] If using Local artifact mode, export the PDF from the final HTML and verify both local files exist.
 - [ ] If deploying via Vercel CLI, `vercel --prod --yes` succeeded and aliased correctly.

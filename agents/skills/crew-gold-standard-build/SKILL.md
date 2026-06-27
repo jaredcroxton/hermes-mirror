@@ -135,6 +135,8 @@ After structural QA, test against a real input designed to trigger one specific 
 
 **Lead Research specific:** Give a real website URL or company name. Let the skill scrape, research, and produce the brief. Don't pre-write the brief and test from there.
 
+**A/B testing Crew vs base model (28 June 2026):** When Jared wants to know whether Crew skills or Claude's base model produces the quality, use the clean A/B protocol in `references/crew-skill-ab-test-protocol.md`. Control (Crew skills) vs experimental (no Crew skills, stripped-down prompts), same hardware, same Claude Code version. Use skill fixture Case A inputs as canonical test prompts. Stripped prompts describe the same output without naming any Crew conventions.
+
 ## Asset manifest (pack 10)
 
 Every build skill outputs a prompt manifest alongside the HTML. Series consistency lock enforces same product, same light, same temperature across all images.
