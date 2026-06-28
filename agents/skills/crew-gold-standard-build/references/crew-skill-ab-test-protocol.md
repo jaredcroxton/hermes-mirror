@@ -91,7 +91,20 @@ Build a single-page HTML website for "Verdant"...
 [Same visual brief, same effects, zero Crew language]
 ```
 
-Full prompt pairs for spotlight-hero, fly-through-builder, and webcam-website are in the session that produced this protocol (28 June 2026).
+Full prompt pairs for spotlight-hero, fly-through-builder, and webcam-website are saved at `/Users/jc/Desktop/crew-ab-test-draft-email.md` (28 June 2026). This file contains all six prompts (three originals, three stripped-down), the full testing protocol, and the comparison matrix.
+
+## Training pack A/B test (28 June 2026)
+
+The same protocol applies to Pack 09 (Training) skills. Test: `crew-training-module-outline-builder` vs bare Claude Code.
+
+**Original prompt (Crew):** 
+> Design a strategic leadership training module for senior middle managers who need to think and act more strategically. They haven't been following policy and process. Two one-hour virtual sessions with takeaways and learning outcomes. Should have practical applications, draw on latest leadership studies, link to real data, reference best books from the last three to five years, and review LinkedIn Learning content.
+
+**Stripped prompt:** Same text. No Crew-specific directives to remove since the prompt is natural language — the difference is only whether the skill is loaded.
+
+**Key finding:** The Crew skill produced a 108-line multi-sheet Excel with Bloom's taxonomy objectives, Tell-Show-Do-Check architecture (58% Do+Check), constructive alignment, Kirkpatrick Level 3 assessment, 8-week reinforcement plan, resource pack with real sources, and eight open items before launch. Even with a blank brand context template, the architecture was complete. The skill file itself carries the instructional design framework — brand context is the polish layer, not the engine.
+
+**Blank-template principle:** When testing Crew skills that don't need brand context for their core function (training skills, ops skills, finance skills), the control run can start with an empty or generic brand-context.md. The skill's domain expertise lives in the skill file. Brand context customises voice and role titles — it does not determine whether the output is structurally sound.
 
 ## What the results tell you
 

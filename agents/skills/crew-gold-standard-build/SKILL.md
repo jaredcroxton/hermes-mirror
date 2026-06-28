@@ -103,7 +103,7 @@ Every skill needs discovery — the user should never have to guess what to prov
 
 ## Brand context architecture
 
-Every Crew skill reads .claude/crew-state/brand-context.md in Step 0 before its own handoff. If the file exists: "Working with [brand]." If not: route to crew-core-brand-context for the 11-question onboarding. 93 skills have this wired.
+Every Crew skill reads .claude/crew-state/brand-context.md in Step 0. For building a brand-context.md from multiple scattered sources (website, Obsidian, Desktop, agent souls, memory) with explicit pre-launch gap marking, see `references/building-brand-context-from-multiple-sources.md`. The skill reads it before its own per-skill handoff. If the file exists: "Working with [brand]." If not: route to crew-core-brand-context for the 11-question onboarding. 93 skills have this wired.
 
 The brand-context file captures who the business is. Design specifics are gathered by design skills at build time. A florist can onboard without thinking about fonts.
 
@@ -214,6 +214,8 @@ Build skills produce beautiful HTML. But businesses need PowerPoint, Word, and P
 
 5. **Animation never fires in output.** The design review gate references `crew-animation-gsap` and `crew-animation-motion` as reviewers, but no actual `<script>` block with animation code gets injected into the HTML. The gate confirms quality but the skill doesn't produce the motion. Fix: add an `## Animation injection` step after HTML generation, before the gate.
 
+6. **Slide-deck multi-viewport overflow not caught.** Vertical centering (`justify-content: center`) pushes dense slides past the header on short viewports (~640px tall). Claude Code tried three fixes and none held because the skill verification only checks mobile at 375×812 but doesn't sweep multiple heights. Fix: add a multi-viewport sweep to the slide-deck-builder verification — test at 1180×640, 1440×900, 375×812, and 1920×1080. Also add `safe center` alignment and reserved top padding so content clears the logo at any height.
+
 ## Brand-context hard rule (27 June 2026)
 
 Crew-core-brand-context Discovery section now has a hard rule: "Do not scan the repo, README, or any other file for business clues. Do not guess. The only source of brand truth is brand-context.md or the answers the user gives you. The repo you are installed in is not evidence of who the business is."
@@ -222,6 +224,22 @@ This was added because Claude Code auto-loads the repo README into every session
 
 - **README stripped of brand identification.** "Built by PerformOS" section removed. Brand story lives nowhere in the repo — not README, not ABOUT.md. Repo is technically clean.
 - **Skill hard rule added.** Even if Claude reads something, the skill refuses to use it. Only brand-context.md or user answers establish the business.
+
+## Crew-state split-brain (28 June 2026)
+
+When brand-context.md is created in `~/.claude/crew-state/` (home root) instead of the project directory's `.claude/crew-state/`, two separate crew-state directories diverge. Skills using the relative path read from the project dir and see no brand context. Skills or sessions that follow the absolute home path save there. Result: per-skill handoffs exist in both places, brand context is stranded, and context-save finds nothing on restore.
+
+**Root cause:** brand-context.md was created in the wrong root during onboarding. Later saves followed that location because the first file was already there.
+
+**Fix:** Consolidate everything into the project crew-state (the canonical one skills actually read). Merge, don't clobber. Then remove the redundant home copy. Verify by running `crew-core-context-save` and confirming the handoff lands in the project dir.
+
+**Prevention:** Always run Crew skills from the project directory so the relative `.claude/crew-state/` path stays consistent.
+
+## Hermes Agent deployment (28 June 2026)
+
+CREW skills can run on Hermes Agent with profile-backed pack agents and Kanban orchestration. The full deployment pattern — 14 pack agents, Brock orchestrator, Obsidian SOUL source of truth, Kanban cross-pack chains — is documented in `references/crew-hermes-deployment-pattern.md`.
+
+Key architectural difference: on Claude Code, Step 0 auto-executes when a skill is invoked. On Hermes, skills are loaded as reference documents. The fix is profile SOULs that instruct the agent to always read brand-context and load relevant skills before working. The context loop (file-based handoffs) is replaced by Kanban card handoffs (`kanban_complete` with summary and metadata).
 
 ## Fresh-install directory gap (27 June 2026)
 
@@ -305,8 +323,11 @@ package.sh and build-plugins.sh updated for all 14 packs. 15 zips built (14 per-
 ### GitHub repo (DONE — 27 June 2026)
 Private repo at github.com/jaredcroxton/crew-skill-packs. 216 files, 34,622 lines. Professional README with header image, badges, architecture, pack table, quality standards, brand story. MIT LICENSE. .gitignore. Pushed on main. Full presentation standards: references/github-repo-presentation.md
 
-### Fresh install test (NOT YET DONE)
+### Fresh install test (NOT YET DONE — Hermes migration tested 28 June 2026)
+
 Wipe Claude skill registry. Install CREW packs clean. Run full onboarding flow as a brand new company. Test every layer.
+
+**Hermes Agent migration:** A partial fresh-install test was completed on a Mac Mini with Hermes Agent (28 June 2026). Pack 01-core (8 skills) installed successfully, brand-context pre-loaded, path references fixed from `.claude/crew-state/` to `~/.hermes/crew-state/`. The CREW repo is already Hermes-compatible (directory-per-skill format). Full migration recipe, path map, batch profile creation, and Kanban orchestration in `references/crew-hermes-migration.md`. Pack agent SOUL templates in `references/crew-pack-agent-soul-templates.md`. Brand context synthesis from scattered sources in `references/building-brand-context-from-multiple-sources.md`.
 
 ### Hooks architecture (NOT YET DONE, post-gold)
 Three hook skills: pre-flight, post-flight, error-recovery. Wire into all skills' Step 0 and Final Step.

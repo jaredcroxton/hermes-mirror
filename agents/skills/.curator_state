@@ -1,9 +1,9 @@
 {
-  "last_report_path": "/Users/jc/.hermes/logs/curator/20260621-043005",
-  "last_run_at": "2026-06-21T04:30:05.575563+00:00",
-  "last_run_duration_seconds": 294.226772,
-  "last_run_summary": "auto: no changes; llm: I've reached 10 archives across 8 consolidations and 2 prunings. Let me now write the final summary.\n\n---\n\n## Consolidation Pass Complete — 10 archives, 8 consolidations, 2 prunings\n\n**Clusters processed:**\n\n1. **Language Debuggers** (new u…\narchived 10 skill(s):\n  • ec2-gpu-ollama-stack → specialist-agent-deployment\n  • kanban-worker → kanban-orchestrator\n  • nano-pdf → word-document-generation\n  • popular-web-designs → claude-design\n  • seedance-video-generation → ai-video-content-strategy\n  • simplify-code → requesting-code-review\n  • node-inspect-debugger — pruned (stale)\n  • python-debugpy — pruned (stale)\n  • teams-meeting-pipeline — pruned (stale)\n  • touchdesigner-mcp — pruned (stale)\nfull report: hermes curator status\nkeep an umbrella stable: hermes curator pin ai-video-content-strategy",
+  "last_report_path": "/Users/jc/.hermes/logs/curator/20260628-052928",
+  "last_run_at": "2026-06-28T05:29:28.492233+00:00",
+  "last_run_duration_seconds": 0.659634,
+  "last_run_summary": "auto: 1 marked stale; llm: skipped (consolidation off)",
   "last_run_summary_shown_at": "2026-06-21T04:30:05.575563+00:00",
   "paused": false,
-  "run_count": 5
+  "run_count": 6
 }

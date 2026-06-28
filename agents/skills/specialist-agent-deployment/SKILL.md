@@ -166,6 +166,7 @@ When the user says "build an agent" in the context of NemoClaw sandboxes, the de
 - `references/agentos-ec2-governance.md` for the Obsidian↔EC2 governance model (source-of-truth vs runtime, sync pipeline, client deliverables, session export).
 - `references/lara-full-package-pattern.md` for triggering Lara's complete multi-tab learning design output.
 - `references/self-hosted-chat-ui-pitfall.md` for the browser-localhost-vs-server-localhost pitfall, backend proxy pattern, and model pre-warming when serving chat UIs from EC2.
+- `references/batch-pack-agent-deployment.md` for the CREW pack-agent fleet pattern (14 profiles, per-profile skills, delegation locking, batch credential stripping).
 - `references/gateway-stopped-triage.md` for the stopped-gateway diagnostic flow: false-positive CLI probe trap, correct triage order, and common causes.
 - `references/multi-profile-telegram-outage-recovery.md` for ecosystem-wide Telegram outages: bulk gateway restart, stale launchd refresh, token `getMe` mapping, profile brain probes, and profile-local provider credential drift fixes.
 - `references/profile-model-provider-split-refresh.md` for model/provider split migrations across profiles: target model probes, profile-local provider keys, stale base URL clearing, gateway cache refresh, and direct reply verification.
