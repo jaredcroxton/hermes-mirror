@@ -18,13 +18,54 @@ Use when the cron job or Jared asks to refresh the GitHub AI Dashboard (top 15 A
 
 ## Source strategy
 
-Scrape three sources for comprehensive coverage:
+Scrape three sources for comprehensive coverage. Use `browser_navigate` + `browser_console` for all extraction (not firecrawl_scrape — browser_console with querySelectorAll is faster and more reliable for GitHub pages).
 
-1. **GitHub Trending (daily):** `https://github.com/trending?since=daily` — extract with firecrawl_scrape JSON
-2. **GitHub Trending (weekly):** `https://github.com/trending?since=weekly` — includes growth metrics
-3. **GitHub Search (AI sorted by stars):** `https://github.com/search?q=AI+OR+LLM+OR+GPT+OR+machine+learning+OR+artificial+intelligence&type=repositories&s=stars&o=desc`
+### Source 1: GitHub Trending (daily)
+URL: `https://github.com/trending?since=daily`
 
-Select 15 repos across the three categories. Every repo must have a real GitHub URL and real star count. Do NOT fabricate data.
+Extraction expression (browser_console):
+```js
+JSON.stringify(Array.from(document.querySelectorAll('article.Box-row')).map(article => {
+  const h2 = article.querySelector('h2');
+  const link = h2 ? h2.querySelector('a') : null;
+  const href = link ? link.getAttribute('href') : '';
+  const name = href.replace(/^\//, '');
+  const desc = article.querySelector('p') ? article.querySelector('p').textContent.trim() : '';
+  const starLink = article.querySelector('a[href*="/stargazers"]');
+  const starsText = starLink ? starLink.textContent.trim().replace(/[^0-9]/g, '') : '0';
+  const text = article.textContent;
+  const todayMatch = text.match(/(\d[\d,]*)\s*stars?\s*today/);
+  const todayGrowth = todayMatch ? parseInt(todayMatch[1].replace(/,/g, '')) : 0;
+  return {name, description: desc, stars: parseInt(starsText) || 0, todayGrowth, url: 'https://github.com/' + name};
+}))
+```
+
+### Source 2: GitHub Trending (weekly)
+URL: `https://github.com/trending?since=weekly`
+
+Same extraction expression as daily, but match `stars this week` instead of `stars today`:
+```js
+const weekMatch = text.match(/(\d[\d,]*)\s*stars?\s*(this week)/i);
+const weeklyGrowth = weekMatch ? parseInt(weekMatch[1].replace(/,/g, '')) : 0;
+```
+
+### Source 3: GitHub Search (most-starred AI repos)
+URL: `https://github.com/search?q=ai+agent+stars%3A%3E10000&type=repositories&s=stars&o=desc`
+
+**Star count quirk on search pages:** The star link text on search results is abbreviated (e.g., "241k" instead of "240,873"). The full count IS in the page text content. Use the textContent regex pattern: `(\d[\d,]+)\s*stars` to extract the actual number, not the abbreviated link text.
+
+Extraction approach — get raw text per result card:
+```js
+Array.from(document.querySelectorAll('[data-testid="results-list"] > div')).map((div, i) => ({
+  text: div.textContent.substring(0, 300)  // parse name/stars/desc from text
+}))
+```
+
+Then parse each card's text for: repo name (first line), description, and star count via regex `/(\d[\d,]+)\s*stars/`.
+
+### Selection rules
+
+Select 15 repos total (5 per tab). Every repo must have a real GitHub URL and real star count. Do NOT fabricate data. Avoid duplicating repos across tabs. Prefer fresh picks not featured in the previous 2 weeks when possible.
 
 ## Data format (repos.json entry)
 

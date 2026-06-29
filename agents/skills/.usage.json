@@ -185,14 +185,14 @@
     "archived_at": null,
     "created_at": "2026-06-02T08:30:22.126788+00:00",
     "created_by": null,
-    "last_patched_at": "2026-06-27T02:59:57.703985+00:00",
-    "last_used_at": "2026-06-28T08:16:55.051024+00:00",
-    "last_viewed_at": "2026-06-28T08:16:55.048971+00:00",
-    "patch_count": 54,
+    "last_patched_at": "2026-06-29T21:34:18.180459+00:00",
+    "last_used_at": "2026-06-29T21:34:39.572368+00:00",
+    "last_viewed_at": "2026-06-29T21:34:39.570481+00:00",
+    "patch_count": 56,
     "pinned": false,
     "state": "active",
-    "use_count": 60,
-    "view_count": 60
+    "use_count": 65,
+    "view_count": 65
   },
   "browser-use": {
     "archived_at": null,
@@ -211,14 +211,14 @@
     "archived_at": null,
     "created_at": "2026-05-16T23:48:47.210556+00:00",
     "created_by": null,
-    "last_patched_at": "2026-06-27T05:22:12.712674+00:00",
-    "last_used_at": "2026-06-27T05:21:53.944116+00:00",
-    "last_viewed_at": "2026-06-27T05:21:53.942353+00:00",
-    "patch_count": 136,
+    "last_patched_at": "2026-06-29T06:09:07.378137+00:00",
+    "last_used_at": "2026-06-29T06:08:54.417673+00:00",
+    "last_viewed_at": "2026-06-29T06:08:54.416042+00:00",
+    "patch_count": 138,
     "pinned": false,
     "state": "active",
-    "use_count": 124,
-    "view_count": 120
+    "use_count": 128,
+    "view_count": 123
   },
   "claude-design": {
     "archived_at": null,
@@ -276,14 +276,27 @@
     "archived_at": null,
     "created_at": "2026-06-23T12:11:22.406478+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-06-28T12:47:25.967928+00:00",
-    "last_used_at": "2026-06-28T10:58:10.003296+00:00",
-    "last_viewed_at": "2026-06-28T10:58:10.001200+00:00",
-    "patch_count": 140,
+    "last_patched_at": "2026-06-29T12:14:32.784533+00:00",
+    "last_used_at": "2026-06-29T21:30:16.760852+00:00",
+    "last_viewed_at": "2026-06-29T21:30:16.758344+00:00",
+    "patch_count": 150,
     "pinned": false,
     "state": "active",
-    "use_count": 65,
-    "view_count": 65
+    "use_count": 73,
+    "view_count": 73
+  },
+  "crew-training-session-design": {
+    "archived_at": null,
+    "created_at": "2026-06-29T05:59:09.796464+00:00",
+    "created_by": "agent",
+    "last_patched_at": "2026-06-29T05:59:28.267207+00:00",
+    "last_used_at": "2026-06-29T21:30:16.759509+00:00",
+    "last_viewed_at": "2026-06-29T21:30:16.756790+00:00",
+    "patch_count": 1,
+    "pinned": false,
+    "state": "active",
+    "use_count": 1,
+    "view_count": 1
   },
   "dashboard-batch-update": {
     "archived_at": null,
@@ -758,13 +771,13 @@
     "created_at": "2026-05-26T21:17:31.224684+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-16T21:22:54.861148+00:00",
-    "last_used_at": "2026-06-27T02:59:57.091701+00:00",
-    "last_viewed_at": "2026-06-27T02:59:57.090018+00:00",
+    "last_used_at": "2026-06-29T21:31:28.344227+00:00",
+    "last_viewed_at": "2026-06-29T21:31:28.342522+00:00",
     "patch_count": 40,
     "pinned": false,
     "state": "active",
-    "use_count": 42,
-    "view_count": 42
+    "use_count": 44,
+    "view_count": 44
   },
   "performos-agent-package": {
     "archived_at": null,
@@ -783,14 +796,14 @@
     "archived_at": null,
     "created_at": "2026-05-27T12:31:20.587869+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-06-23T06:49:48.541461+00:00",
-    "last_used_at": "2026-06-27T21:48:56.744527+00:00",
-    "last_viewed_at": "2026-06-27T21:48:56.741506+00:00",
-    "patch_count": 84,
+    "last_patched_at": "2026-06-29T09:52:29.169329+00:00",
+    "last_used_at": "2026-06-29T09:52:12.332413+00:00",
+    "last_viewed_at": "2026-06-29T09:52:12.330527+00:00",
+    "patch_count": 88,
     "pinned": false,
     "state": "active",
-    "use_count": 92,
-    "view_count": 92
+    "use_count": 95,
+    "view_count": 95
   },
   "personas": {
     "archived_at": null,
@@ -1083,13 +1096,13 @@
     "created_at": "2026-06-08T11:09:43.485989+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-21T04:32:51.713718+00:00",
-    "last_used_at": "2026-06-21T04:30:38.626487+00:00",
-    "last_viewed_at": "2026-06-21T04:30:38.623489+00:00",
+    "last_used_at": "2026-06-29T21:30:23.636074+00:00",
+    "last_viewed_at": "2026-06-29T21:30:23.633600+00:00",
     "patch_count": 3,
     "pinned": false,
     "state": "active",
-    "use_count": 4,
-    "view_count": 4
+    "use_count": 5,
+    "view_count": 5
   },
   "world-class-leads-dashboard": {
     "archived_at": null,

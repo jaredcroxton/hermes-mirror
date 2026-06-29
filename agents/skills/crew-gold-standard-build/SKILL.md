@@ -107,6 +107,8 @@ Every Crew skill reads .claude/crew-state/brand-context.md in Step 0. For buildi
 
 The brand-context file captures who the business is. Design specifics are gathered by design skills at build time. A florist can onboard without thinking about fonts.
 
+**Brand-context depth spectrum:** Conversational depth (from the 11 questions) is sufficient for FAQs, proposals, and support. Token depth (hex values, CSS custom properties, font imports, type scale, button specs) is required for build skills to produce premium output that reads as that specific business. When a business has a brand guide or website, extract token-depth brand into a companion brand-context-assets.md file. Full analysis and implementation in `references/brand-context-depth-spectrum.md`.
+
 ## Design review gates (pack 10)
 
 Every build skill must have a ## Design review gate referencing packs 12-14 with pass/fail conditions.
@@ -118,6 +120,53 @@ Style skills must fail in two opposite directions with named verdict axes. The "
 ## Adversarial review
 
 After every ultracode build, run 3 independent lenses: harness-compliance, leak/ban audit, senior-domain-engineer content critique. Apply sharp refinements before smoke QA.
+
+## Engine-over-mass-patch principle (30 June 2026)
+
+When a fix affects 3+ skills in the same pack, fix the engine first. Do not patch each skill individually.
+
+Proven: animation injection across 9 build skills. The initial proposal patched each skill's output template. Jared redirected to fix `crew-design-quality` (the shared design review gate) instead. One change to the gate. All 9 build skills inherit it automatically. No mass patch required.
+
+The engine is the shared gate, the shared template, or the shared section that multiple skills route through. Fix it once. The fleet inherits.
+
+---
+
+## Silent mode — default agent communication standard
+
+All Crew skills MUST run silent by default. The user asks, the skill builds, the user gets output. No commentary. No status updates. No "Step 3 complete."
+
+**What Silent suppresses:**
+- Workflow step confirmations ("Step 2 complete, moving to Step 3")
+- Verification commentary ("Verified 12 inputs, all confirmed")
+- Handoff write confirmations ("Writing handoff now...")
+- Output summaries before delivering ("Here is what I built...")
+- Mode confirmations ("Running in Careful mode...")
+- Any line that does not carry a deliverable, a blocker, or a loop-triggered question
+
+**What always speaks — the 5 Core Loops:**
+- Missing Input: "I need X before I can proceed. What should I use?"
+- Quality Failure: "This output failed [specific gate]. [What failed and why.]"
+- Escalation: "This needs your sign-off before I proceed. [What and why.]"
+- Context Change: Step 0 recovery statement ("Working with [brand]. Recovered: [prior state].")
+- Learning Capture: "Noted. [What was corrected or learned.]"
+
+**Activating verbose mode:**
+The user can say "show your thinking" or "run in verbose mode" to see full commentary. Fast/Careful/Governed control workflow depth. Silent/Verbose control communication verbosity. Different dimensions.
+
+**Why this matters (28 June 2026):**
+Jared tested CREW skills extensively and found token consumption was the single biggest barrier to adoption. "It's absolutely burning tokens like crazy. People won't use it." Silent mode reduces token output by approximately 80% per skill invocation. It is not optional — it is the default operating mode for all Crew skills.
+
+**How to implement:**
+Add to every skill's Modes section:
+```
+- **Silent (default):** workflow commentary suppressed. Only output and loop-triggered blockers reach the user.
+- **Verbose:** full commentary. Say "run in verbose mode" to see every step.
+```
+
+And in the How-it-thinks section:
+```
+You run silent by default. You do not narrate your own steps. You deliver the output and stop. You speak only when genuinely blocked, when a Core Loop fires, or when the user explicitly asks to see your thinking.
+```
 
 ## Live testing protocol
 
@@ -249,8 +298,18 @@ The `.claude/crew-state/` directory does not exist on a brand new machine. Skill
 
 2. **Cross-skill routing on fresh install.** Step 0 says "run crew-core-brand-context" but that skill isn't registered yet. The FAQ-builder failed on the Mac Mini because it couldn't route. The test bypass was: "Do not route to brand-context. Ask me the 11 onboarding questions yourself."
 
+## Page-builder template discipline (30 June 2026)
+
+The page-builder's reference template is deliberately placeholder-heavy. The adversarial review caught fabricated stats and headlines and replaced them with `REPLACE:` markers. This is correct anti-fabrication discipline for the REFERENCE TEMPLATE.
+
+When the skill is invoked with real business context (brand-context.md + discovery answers), it must produce REAL copy. Not placeholders. Not REPLACE markers. Actual headlines, body copy, stats, CTAs. The template is the fallback when no brand is on file. The build mode fills every slot.
+
+**Distinction for all build skills:** Template mode (no brand) = placeholders. Build mode (brand supplied) = real output. The skill must detect which mode it's in and produce accordingly.
+
 ## Pitfalls
 
+- **Page-builder REPLACE trap.** The reference template uses REPLACE markers to prevent fabrication. When invoked with real brand context, the skill must fill every slot with real copy. If it produces a template full of REPLACE markers to a business that just answered discovery, it's refusing to do its job. The anti-fabrication discipline applies to INVENTED facts, not to known facts from brand-context and discovery.
+- **Battle-tested skill porting.** When migrating a skill from the old `.claude/skills-backup/` that is already proven in production (like design-language), preserve the DNA. Keep the scrape fallback chain, the workflow steps, the framing voice, and the artistic-decision framework exactly. Add CREW gold-standard structure around the preserved core. Do not rewrite a working skill from scratch. Frame the prompt as "port and upgrade," not "create from zero." After the port, verify with two layers: the standard Brock review (size, sections, em dashes, banned terms, harness, fixture) plus protocol-preservation checks (grep for the signature phases, architecture layers, rules, and discovery questions — confirm every signature element survived). Full pattern: `references/port-verification-pattern.md`.
 - **README brand leak trap.** Claude Code auto-loads repo README into session context before any skill runs. If the README names a brand or founder, Claude offers it as context to the user. Fix: strip all brand identification from README. Keep it technical.
 - **Em dashes in README.** Public-facing repo docs must have zero em dashes. 22 were found and fixed (27 June 2026). Standard is now total.
 - **QA workflow step count failure.** Harness requires 6+ numbered Workflow steps between ## Workflow and the next ## heading. If a combined step puts you at 5, split the longest step into two. Proven fix on webcam-website.
@@ -282,7 +341,7 @@ Brock stays in the original chat. Claude Code resumes in the fresh chat. No cont
 
 ## Throughput and stats
 
-**Complete packs (27 June 2026):** All 14 packs — 01-core (8), 02-sales (7), 03-marketing (7), 04-ops (5), 05-hr (5), 06-finance (6), 07-support (6), 08-docs (7), 09-training (8), 10-web-design (9), 11-infrastructure (1), 12-design-standards (7), 13-design-styles (5), 14-animation (12). **93 of 93 gold. 100%.** ~3.5MB of skill content. **All sweeps complete:** count-agnostic boilerplate, AU-law generalisation (24 replacements, 8 files), 30-skill Discovery sweep, FAQ builder em dash. **Distribution complete:** 15 zips, 16 plugins, GitHub repo live. **Remaining:** fresh-install test, hooks architecture.
+**Complete packs (30 June 2026):** All 14 packs — 01-core (8), 02-sales (7), 03-marketing (7), 04-ops (5), 05-hr (5), 06-finance (6), 07-support (6), 08-docs (7), 09-training (8), 10-web-design (10 — crew-web-page-builder added 30 June 2026), 11-infrastructure (1), 12-design-standards (7), 13-design-styles (5), 14-animation (12). **94 of 94 gold. 100%.** ~3.5MB of skill content. **All sweeps complete:** count-agnostic boilerplate, AU-law generalisation (24 replacements, 8 files), 30-skill Discovery sweep, FAQ builder em dash. **Distribution complete:** 15 zips, 16 plugins, GitHub repo live. **Remaining:** fresh-install test, hooks architecture.
 
 Pack throughput: 7-skill packs (sales, marketing, docs, training) take roughly one session each at ultracode depth. 5-skill packs (ops, hr) take half a session. Core utility skills can be batched in pairs (context-save + context-restore) or triples (idea-pressure-tester + plan-reviewer + quality-checker) because they share the same structural pattern and domain.
 
@@ -336,6 +395,7 @@ Three hook skills: pre-flight, post-flight, error-recovery. Wire into all skills
 
 the white-label guard for shipped content stays fully intact.
 
+- **Engine-over-mass-patch.** When a fix affects 3+ skills, do not patch each skill. Fix the shared engine (the gate, the template, the injected section) that all the skills route through. Jared will redirect you if you propose mass patches. Proposing a 9-skill patch when one gate change solves it is the wrong reflex.
 - **Fresh chat handover trap.** When continuing work in a new Claude Code chat to save tokens, verify every skill claimed as gold is actually upgraded on disk. coaching-conversation-guide (27 June 2026) was claimed gold but was still at 5 sections/10KB — the fresh chat only added Step 0 brand-context. Always verify with wc -c and grep -c '^## ' before marking done.
 - **Silent default trap.** Numerical floors/thresholds used at output time that were never gathered in discovery silently default to zero and defeat the floor discipline. The finance cashflow-brief minimum-cash-buffer was used in output but never solicited. If a number gates a decision (minimum cash, maximum budget, target threshold), it MUST be gathered in Discovery or Inputs, never defaulted.
 - **AU-law dialect trap.** When generalising hardcoded AU statutes, leave dialect defaults (Australian English, AU workplace) untouched. Those are language preferences, not legal references. Every gold skill can default to its local dialect. The statute replacement targets only legal acts and regulations.

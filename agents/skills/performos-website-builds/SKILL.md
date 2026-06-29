@@ -126,6 +126,10 @@ When building a course/landing page:
 5. Use the gaps to differentiate
 6. Every beat in the structure traces to either a frequency finding or a differentiation finding
 
+## Research methodology (Training website competitive analysis)
+
+When the page being built is a training/workshop landing page, use the extended methodology in `references/training-website-competitive-research.md`. This covers: marketplace platforms, enterprise training, bootcamps, creative courses, and direct competitors. Extracts page structure, traffic patterns, conversion architecture, video strategy, and ad approaches. Produces a build-ready markdown file with recommended page structure, ad keywords, and copy patterns.
+
 ## Option B compliance (always embedded)
 
 For any PerformOS page referencing Microsoft/Azure/OpenAI certifications:
@@ -173,7 +177,9 @@ Jared explicitly corrected Brock's operating model during a session where Brock 
 - **cp -r captures .git repos.** When copying the website build package to Obsidian, `cp -r` will copy hidden `.git` directories and balloon the output with thousands of git object files. Always verify the destination after copy and remove any `.git` directories that were accidentally included. Use `find /path -name ".git" -type d` to check.
 - **Browser search blocking.** Google, Bing, and DuckDuckGo all block the headless browser tool. Never use the browser for search tasks. Route research to subagents with `web_fetch`/`web_search` tools, or ask Jared to provide specific URLs.
 
-## Agent soul updates (Brock's lane)
+- **Racing to build during strategic discussion (locked 29 June 2026).** Jared uses \"let's build this out\" to mean \"let's think it through together\" — not necessarily \"start coding now.\" When Jared is in idea-exploration mode (discussing a new concept, shaping a product, pressure-testing an idea), stay in strategy. Ask clarifying questions. Pressure-test. Propose architecture. Do not jump to building code, writing files, or spawning subagents unless he explicitly says \"go build it\" or \"start building.\" His correction: \"just slow down. You don't have to build anything. I'm just discussing the idea with you.\" Read the conversational mode before shifting to execution.
+
+- **Build spec review is NOT build execution (locked 29 June 2026).** When Jared hands you a build specification, design brief, or detailed build plan for review, your job is to REVIEW it — pressure-test the strategy, flag risks, identify gaps, and hand observations back. Do NOT open files and start patching. Do NOT treat a review request as a build signal. Jared will explicitly say \"go build it\" or hand it to Bob/Claude Code when he wants execution. His correction: \"dont build anything this is for you to review stop building you are the ceo and help me make decesions.\" If you catch yourself opening a file or writing code during a review, stop and return to CEO mode.\n\n- **Agent soul updates (Brock's lane)**
 
 Brock owns agent soul design. When Jared asks to build out an agent's capability:
 
