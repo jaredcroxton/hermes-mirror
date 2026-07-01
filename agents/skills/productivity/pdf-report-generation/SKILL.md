@@ -289,4 +289,5 @@ Standard governance pack flow:
 - **Show headings must include colon** — render as `"SHOW:"` or `"Show:"` not bare `"Show"`. The importer extracts the word without format cues; the colon is the signal.
 - **Quiz callouts need a header label** — render `"QUIZ"` at the top of every quiz callout box. Without this the importer has no anchor.
 - **Key Takeaways must be wrapped in a callout** heading + bullets together in a single callout box, not a bare H3 followed by a separate bullet list.
+- **Callout icon column width must exceed padding sum. When building callout_box() or big_callout() tables with an icon column, the column width must be greater than leftPadding + rightPadding. Example: colWidths=[22, 442] with leftPadding=12, rightPadding=12 = 22 minus 24 = minus 2, causing ValueError: flowable given negative availWidth. Fix: ensure icon column width exceeds padding sum (use 30px minimum for 12px padding).
 - **Blockquotes need a "Quote:" prefix** rendered as visible text inside the callout. The `>` character alone is stripped during text extraction.

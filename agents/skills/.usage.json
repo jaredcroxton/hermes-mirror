@@ -185,14 +185,14 @@
     "archived_at": null,
     "created_at": "2026-06-02T08:30:22.126788+00:00",
     "created_by": null,
-    "last_patched_at": "2026-06-29T21:34:18.180459+00:00",
-    "last_used_at": "2026-06-29T21:34:39.572368+00:00",
-    "last_viewed_at": "2026-06-29T21:34:39.570481+00:00",
-    "patch_count": 56,
+    "last_patched_at": "2026-06-30T03:48:12.655946+00:00",
+    "last_used_at": "2026-06-30T05:04:32.563510+00:00",
+    "last_viewed_at": "2026-06-30T05:04:32.561836+00:00",
+    "patch_count": 64,
     "pinned": false,
     "state": "active",
-    "use_count": 65,
-    "view_count": 65
+    "use_count": 68,
+    "view_count": 68
   },
   "browser-use": {
     "archived_at": null,
@@ -415,6 +415,19 @@
     "use_count": 1,
     "view_count": 1
   },
+  "google-ads-search-campaign": {
+    "archived_at": null,
+    "created_at": "2026-06-30T12:24:10.260551+00:00",
+    "created_by": "agent",
+    "last_patched_at": "2026-06-30T12:24:26.624129+00:00",
+    "last_used_at": "2026-06-30T12:24:28.889940+00:00",
+    "last_viewed_at": "2026-06-30T12:24:28.888015+00:00",
+    "patch_count": 1,
+    "pinned": false,
+    "state": "active",
+    "use_count": 1,
+    "view_count": 1
+  },
   "google-workspace": {
     "archived_at": null,
     "created_at": "2026-06-04T10:00:12.563479+00:00",
@@ -449,6 +462,19 @@
     "last_used_at": null,
     "last_viewed_at": null,
     "patch_count": 1,
+    "pinned": false,
+    "state": "active",
+    "use_count": 0,
+    "view_count": 0
+  },
+  "hermes-mirror-backup": {
+    "archived_at": null,
+    "created_at": "2026-06-29T23:04:53.672946+00:00",
+    "created_by": "agent",
+    "last_patched_at": null,
+    "last_used_at": null,
+    "last_viewed_at": null,
+    "patch_count": 0,
     "pinned": false,
     "state": "active",
     "use_count": 0,
@@ -770,14 +796,14 @@
     "archived_at": null,
     "created_at": "2026-05-26T21:17:31.224684+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-06-16T21:22:54.861148+00:00",
-    "last_used_at": "2026-06-29T21:31:28.344227+00:00",
-    "last_viewed_at": "2026-06-29T21:31:28.342522+00:00",
-    "patch_count": 40,
+    "last_patched_at": "2026-06-29T23:12:17.991277+00:00",
+    "last_used_at": "2026-06-29T23:12:22.027186+00:00",
+    "last_viewed_at": "2026-06-29T23:12:22.025114+00:00",
+    "patch_count": 41,
     "pinned": false,
     "state": "active",
-    "use_count": 44,
-    "view_count": 44
+    "use_count": 45,
+    "view_count": 45
   },
   "performos-agent-package": {
     "archived_at": null,
@@ -796,14 +822,14 @@
     "archived_at": null,
     "created_at": "2026-05-27T12:31:20.587869+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-06-29T09:52:29.169329+00:00",
-    "last_used_at": "2026-06-29T09:52:12.332413+00:00",
-    "last_viewed_at": "2026-06-29T09:52:12.330527+00:00",
-    "patch_count": 88,
+    "last_patched_at": "2026-06-30T05:04:58.218847+00:00",
+    "last_used_at": "2026-06-30T05:04:23.351835+00:00",
+    "last_viewed_at": "2026-06-30T05:04:23.349105+00:00",
+    "patch_count": 92,
     "pinned": false,
     "state": "active",
-    "use_count": 95,
-    "view_count": 95
+    "use_count": 98,
+    "view_count": 98
   },
   "personas": {
     "archived_at": null,

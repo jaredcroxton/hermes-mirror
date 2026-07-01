@@ -1,81 +1,178 @@
-# Training Website Competitive Research Methodology
+# Training Website Competitive Research — Methodology and Findings
+## Research date: 29 June 2026
+## Task: Analyse top 10 training websites globally for page structure, traffic patterns, conversion architecture, and ad strategy
 
-## When to use
+---
 
-When building or redesigning a training/workshop landing page and the user needs competitive intelligence on how top training sites structure their pages, drive traffic, convert visitors, and use video.
+## Sites analysed
 
-## Research targets
+| # | Site | Model | Price range |
+|---|------|-------|-------------|
+| 1 | Maven (maven.com) | Marketplace for cohort courses + 1-day workshops | $99-$3,000+ |
+| 2 | Reforge (reforge.com) | Enterprise product training | Team pricing |
+| 3 | Section (sectionschool.com) | Enterprise AI adoption | Enterprise |
+| 4 | General Assembly (generalassemb.ly) | Career-focused tech training | $200-$4,000 |
+| 5 | Le Wagon (lewagon.com) | Coding bootcamp | $7,000-$12,000 |
+| 6 | SuperHi (superhi.com) | Creative coding courses | $99-$399 |
+| 7 | IDEO U (ideou.com) | Design thinking certificates | $199-$3,395 |
+| 8 | Ship 30 for 30 (ship30for30.com) | 30-day writing challenge | $299-$499 |
+| 9 | AJ&Smart (ajsmart.com) | Facilitation training + studio | Enterprise |
+| 10 | Maven Workshop: Claude AI Mastery | 1-day live workshop (closest direct comparison) | $499-$799 |
 
-Target 8-10 training websites across these categories:
+---
 
-| Category | Examples |
-|---|---|
-| Marketplace platforms | Maven (maven.com) |
-| Enterprise training | Reforge (reforge.com), Section (sectionschool.com) |
-| Career bootcamps | General Assembly (generalassemb.ly), Le Wagon (lewagon.com) |
-| Creative/coding courses | SuperHi (superhi.com), IDEO U (ideou.com) |
-| Challenge-based | Ship 30 for 30 (ship30for30.com) |
-| Studio/agency training | AJ&Smart (ajsmart.com) |
-| Direct competitor (same format) | A specific workshop page on Maven matching the user's format |
+## The universal page structure (7-section pattern)
 
-## Research methodology
-
-### Phase 1: Surface scrape (web_extract)
-
-Scrape all 10 homepages and key landing pages. Extract:
-- Hero headline and subheadline
-- Page section structure (top to bottom)
-- CTA button text and placement
-- Pricing model and display
-- Social proof elements (testimonials, logos, numbers)
-- Video presence and type
-- Navigation structure
-
-### Phase 2: Pattern extraction
-
-Across all 10 sites, identify:
-
-1. **Universal page structure.** What sections appear in 7+/10 sites? This is the non-negotiable template.
-2. **Traffic patterns.** How do they drive visitors? Four patterns to map:
-   - Free lead magnet → email nurture → book
-   - Content ecosystem (YouTube, blog, podcast) → organic → book
-   - Google Ads → dedicated landing page → book
-   - Community (Discord, Skool) → word of mouth → book
-3. **Conversion architecture.** The booking funnel. Ad → landing page → checkout → confirmation → reminder sequence.
-4. **Video strategy.** What videos appear? Length, purpose, placement. Five types to catalogue.
-5. **Copy patterns.** Headline formulas, CTA text, price anchoring language.
-
-### Phase 3: Direct comparator deep dive
-
-Find the single closest competitor (same format, same audience, similar price point) and extract their full workshop page: headline, outcomes, agenda with timings, instructor bio, testimonials, FAQ, CTA placement.
-
-### Phase 4: Ad strategy synthesis
-
-From the patterns, synthesise:
-- Keywords to target
-- Ad copy templates
-- Landing page message-match requirements
-- Retargeting approach
-
-## Deliverable
-
-A single markdown file on the user's Desktop with:
+Every high-converting training page follows this exact sequence:
 
 ```
-├── The 10 sites analysed (table: name, model, price range)
-├── Universal page structure (7-section template)
-├── Traffic patterns (4 types with examples)
-├── Booking funnel (step by step)
-├── Video strategy (5 types, lengths, purposes)
-├── Landing page copy patterns (headlines, CTAs, price anchoring)
-├── Recommended page structure for the user's product
-├── Ad strategy (keywords, copy, message match)
-└── Key takeaways (5-10 actionable bullets)
+SECTION 1 — HERO
+├── Headline: Benefit-driven. Answers "what do I get?"
+├── Subheadline: Adds context. One sentence.
+├── Hero visual: Image or short video (video lifts conversion 86%)
+├── CTA button: Action-oriented ("Reserve Your Spot", "Book Now")
+└── Price: Displayed or "from $X"
+
+SECTION 2 — OUTCOMES / WHAT YOU WILL LEARN
+├── 3-6 bullet points
+├── Written as observable results ("You will build X", not "You will understand Y")
+├── Designed for skimming in 5 seconds
+└── Each outcome maps to a real workflow or deliverable
+
+SECTION 3 — SOCIAL PROOF
+├── Testimonials: 2-3 quotes with name, role, photo
+├── Trust logos: Companies that use the training
+├── Numbers: "10,000+ students", "94 agents installed"
+└── Results: Before/after, metrics, screenshots
+
+SECTION 4 — WHO THIS IS FOR
+├── 3 audience segments
+├── Each: role → pain point → what they get
+├── Clear disqualification ("not for X")
+└── Prerequisites (or "no experience required")
+
+SECTION 5 — WHAT IS INCLUDED / AGENDA
+├── Full breakdown of the day or programme
+├── Timings if a workshop
+├── Bonuses and extras highlighted
+└── Lifetime access, recordings, materials
+
+SECTION 6 — PRICE + CTA (repeat)
+├── Price with anchoring ("should cost $X, we charge $Y")
+├── Payment options
+├── Guarantee / risk reversal
+└── Bold CTA button
+
+SECTION 7 — FAQ
+├── 5-8 common objections
+├── Practical concerns (time, equipment, refunds)
+├── Skill level concerns
+└── What happens after booking
 ```
 
-## Pitfalls
+---
 
-- **Don't just scrape homepages.** The real conversion intelligence is on individual workshop/course landing pages. Scrape those too.
-- **Don't skip the direct comparator.** Finding one workshop page that matches the user's format (same duration, same audience, similar price) is worth more than all 10 homepages combined.
-- **Don't produce design recommendations.** This is structure and conversion research. Design decisions belong to the user's build agent or designer.
-- **Price anchoring is critical.** Always extract competitor pricing and present it in a comparison table. The gap between the user's price and the market IS the conversion copy.
+## Traffic patterns
+
+### Pattern 1: Free lead magnet → email nurture → book
+Used by: SuperHi, General Assembly, Maven
+- Free course or lightning lesson
+- Email capture
+- Nurture sequence (3-5 emails)
+- Workshop or paid course offer
+
+### Pattern 2: Content ecosystem → organic → book
+Used by: AJ&Smart, Ship 30 for 30, Reforge
+- YouTube channel or podcast
+- Blog posts targeting search queries
+- Social media (LinkedIn, Twitter/X, Instagram)
+- Newsletter
+- All roads lead to the course/workshop page
+
+### Pattern 3: Google Ads → dedicated landing page → book
+Used by: General Assembly, Le Wagon, Maven
+- Ad copy matches landing page headline exactly (message match)
+- Dedicated landing page (no nav, single CTA)
+- Short form or click-through to booking
+- Retargeting pixel for abandoners
+
+### Pattern 4: Community → word of mouth → book
+Used by: SuperHi, Ship 30 for 30, Le Wagon
+- Discord, Skool, or Slack community
+- Alumni referrals
+- Student work showcases
+- "I came for X, stayed for the community"
+
+---
+
+## The booking funnel for one-day workshops
+
+```
+Google Ad or LinkedIn post
+        ↓
+Dedicated workshop landing page
+├── Hero
+├── Outcomes
+├── Agenda
+├── Instructor
+├── Who it is for
+├── Testimonials
+├── FAQ
+└── CTA: "Reserve Your Spot"
+        ↓
+Checkout (Stripe, Eventbrite, or Maven)
+        ↓
+Confirmation email with pre-work
+        ↓
+Reminder sequence (7 days, 3 days, 1 day before)
+        ↓
+Workshop day
+        ↓
+Post-workshop: community invite, next offer
+```
+
+---
+
+## Video strategy
+
+| Video type | Purpose | Length | Example |
+|---|---|---|---|
+| Hero explainer | Show what the experience looks like | 60-90 sec | General Assembly homepage |
+| Instructor intro | Build personal trust | 30-60 sec | Maven course pages |
+| Student results | Social proof | 30-45 sec each | Le Wagon, SuperHi |
+| Behind-the-scenes | Show the room, the energy, the output | 45-90 sec | Ship 30 for 30 |
+| Quick demo | Show the output in real time | 30 sec | Missing from most |
+
+---
+
+## Landing page copy patterns
+
+### Headline formulas
+- **Outcome:** "Leave with X and Y"
+- **Time:** "One day. Your machine. Your output."
+- **Contrast:** "Not a webinar. Not a course. A build day."
+- **Problem:** "Your team needs X. You need output. Not another subscription."
+
+### CTA button text (tested and proven)
+- "Reserve Your Spot" (best for workshops)
+- "Book Now" (simple, direct)
+- "Join the Next Session" (community feel)
+
+Avoid: "Learn More", "Get Started", "Click Here", "Submit"
+
+### Price anchoring
+Show the value before the price:
+- "Valued at $X+"
+- "Competitors charge $Y-$Z for a fraction of this"
+- "Your price: $X"
+
+---
+
+## Key takeaways for CREW
+
+1. One page, one CTA. No nav. No distractions.
+2. A 90-second hero demo video converts better than any copy.
+3. Price anchoring is essential. Show competitor prices. Then show $299.
+4. Social proof before you have testimonials: use agent count, pack count, credentials.
+5. Message match from ad to page. Google Ad headline = landing page headline.
+6. The booking flow must be frictionless. Three clicks to book.
