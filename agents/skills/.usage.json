@@ -472,13 +472,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": null,
-    "last_used_at": null,
-    "last_viewed_at": null,
+    "last_used_at": "2026-07-01T23:11:10.229706+00:00",
+    "last_viewed_at": "2026-07-01T23:11:10.227835+00:00",
     "patch_count": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 0,
-    "view_count": 0
+    "use_count": 1,
+    "view_count": 1
   },
   "himalaya": {
     "archived_at": null,
@@ -992,13 +992,13 @@
     "created_at": "2026-05-25T22:18:20.560446+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-14T23:02:02.118309+00:00",
-    "last_used_at": "2026-06-21T04:30:56.308387+00:00",
-    "last_viewed_at": "2026-06-21T04:30:56.301919+00:00",
+    "last_used_at": "2026-07-01T23:14:22.071589+00:00",
+    "last_viewed_at": "2026-07-01T23:14:22.070102+00:00",
     "patch_count": 37,
     "pinned": false,
     "state": "active",
-    "use_count": 26,
-    "view_count": 26
+    "use_count": 27,
+    "view_count": 27
   },
   "serving-llms-vllm": {
     "archived_at": null,
