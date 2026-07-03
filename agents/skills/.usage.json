@@ -472,13 +472,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": null,
-    "last_used_at": "2026-07-01T23:11:10.229706+00:00",
-    "last_viewed_at": "2026-07-01T23:11:10.227835+00:00",
+    "last_used_at": "2026-07-02T23:08:02.313975+00:00",
+    "last_viewed_at": "2026-07-02T23:08:02.312172+00:00",
     "patch_count": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 1,
-    "view_count": 1
+    "use_count": 2,
+    "view_count": 2
   },
   "himalaya": {
     "archived_at": null,
