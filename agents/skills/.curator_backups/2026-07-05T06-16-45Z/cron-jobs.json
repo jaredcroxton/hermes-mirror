@@ -1,0 +1,280 @@
+{
+  "jobs": [
+    {
+      "id": "c6faf0485418",
+      "name": "agent-mirror-sync",
+      "prompt": "",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": "sync_agent_mirrors.py",
+      "no_agent": true,
+      "context_from": null,
+      "schedule": {
+        "kind": "interval",
+        "minutes": 60,
+        "display": "every 60m"
+      },
+      "schedule_display": "every 60m",
+      "repeat": {
+        "times": null,
+        "completed": 715
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-20T08:28:31.772858+10:00",
+      "next_run_at": "2026-07-05T17:07:51.975141+10:00",
+      "last_run_at": "2026-07-05T16:07:51.975141+10:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "local",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "8647481186",
+        "chat_name": "J C",
+        "thread_id": null
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "fire_claim": null
+    },
+    {
+      "id": "ce9af94676a2",
+      "name": "brock-morning-ceo-check-in",
+      "prompt": "You are Brock, Jared Croxton's CEO-level strategic thinking partner. Write a short, direct morning executive check-in for Jared. Keep it punchy. Active voice. No em dashes. Spell out one to nine, numerals for 10 and above. Dates in DD Month YYYY format. Do not use tables.\n\nPurpose: this is Jared's first-load morning check-in. Each run, review the current situation and send a brief CEO update that helps him decide what matters today.\n\nWhat to review before writing:\n1. Use session_search to recall the most relevant recent work from the last few sessions, with strong preference for newest context.\n2. Use cronjob list to inspect scheduled jobs and spot anything stale, duplicated, paused, or missing.\n3. Use terminal to check current date/time and any obvious machine-level issues only if materially useful.\n4. Note any agent-stack, workflow, or operating improvements worth Jared's attention.\n\nOutput structure:\n1. Heading: Morning CEO Check-In\n2. Today in one line: the single most important focus for today.\n3. What matters now: 3 bullets max covering priorities, risks, deadlines, blockers, or follow-ups inferred from recent sessions and current setup.\n4. Agent and system watchlist: 3 bullets max on agents, automations, cron jobs, or workflows that look weak, stale, duplicated, underused, or worth improving.\n5. Decision for Jared: name the one decision or action that would move the needle most today.\n6. Close with exactly this question on its own line: What do you need from me today?\n\nRules:\n- Do not recap everything mechanically.\n- Be specific to Jared's real context.\n- If there is little hard evidence from recent sessions, say what is missing and give the best judgement anyway.\n- Stay concise. Executive tone. No fluff.",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 7 * * *",
+        "display": "30 7 * * *"
+      },
+      "schedule_display": "30 7 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 44
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-22T07:08:05.592622+10:00",
+      "next_run_at": "2026-07-06T07:30:00+10:00",
+      "last_run_at": "2026-07-05T07:32:00.109696+10:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "origin",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "8647481186",
+        "chat_name": "J C",
+        "thread_id": null
+      },
+      "enabled_toolsets": [
+        "session_search",
+        "cronjob",
+        "terminal",
+        "file",
+        "web",
+        "search"
+      ],
+      "workdir": null,
+      "fire_claim": null
+    },
+    {
+      "id": "289ec1dba5a8",
+      "name": "hermes-mirror-daily-backup",
+      "prompt": "Daily backup of the Hermes agent ecosystem to GitHub mirror. Clone the repo, copy latest files, redact secrets, commit and push.\n\nWORKFLOW:\n\n1. Clone the mirror repo:\n```\ncd /tmp && git clone https://github.com/jaredcroxton/hermes-mirror.git hermes-mirror-backup 2>/dev/null || (cd /tmp/hermes-mirror-backup && git pull origin main)\n```\n\n2. Ensure directories exist:\n```\nmkdir -p /tmp/hermes-mirror-backup/agents/souls /tmp/hermes-mirror-backup/agents/profiles /tmp/hermes-mirror-backup/agents/skills /tmp/hermes-mirror-backup/config /tmp/hermes-mirror-backup/memory\n```\n\n3. Copy agent souls:\n```\ncp /Users/jc/Desktop/Obsidian/Agents/*.md /tmp/hermes-mirror-backup/agents/souls/\n```\n\n4. Copy agent profile configs (one at a time, no state.db):\n```\nfor profile in bobbuilder laralearning samstudynerd pollyperformos harryhr atticuscounsel nellynotebook; do\n  mkdir -p /tmp/hermes-mirror-backup/agents/profiles/$profile\n  cp /Users/jc/.hermes/profiles/$profile/config.yaml /tmp/hermes-mirror-backup/agents/profiles/$profile/ 2>/dev/null\ndone\n```\n\n5. Copy skills directory:\n```\ncp -r /Users/jc/.hermes/skills/. /tmp/hermes-mirror-backup/agents/skills/\n```\n\n6. Copy Hermes config files:\n```\ncp /Users/jc/.hermes/config.yaml /tmp/hermes-mirror-backup/config/ 2>/dev/null\ncp /Users/jc/.hermes/hermes-agent/CLAUDE.md /tmp/hermes-mirror-backup/config/ 2>/dev/null\ncp /Users/jc/Desktop/Obsidian/agent-startup.md /tmp/hermes-mirror-backup/config/ 2>/dev/null\n```\n\n7. Redact secrets in config files:\n```\ncd /tmp/hermes-mirror-backup\nfind . -name \"*.yaml\" -exec sed -i '' 's/apify_api_[a-zA-Z0-9]\\{30,\\}/REDACTED_APIFY_TOKEN/g' {} \\;\n```\n\n8. Update memory export with current timestamp:\n```\necho \"Last automated backup: $(date '+%d %B %Y %H:%M')\" >> /tmp/hermes-mirror-backup/memory/memory-export.md\n```\n\n9. Commit and push if changes exist:\n```\ncd /tmp/hermes-mirror-backup\nif [ -n \"$(git status --porcelain)\" ]; then\n  git add -A\n  git commit -m \"Daily backup \u2014 $(date '+%d %B %Y')\"\n  git push origin main\nfi\n```\n\nIMPORTANT: Never include state.db, .env, or any file with API keys. The repo .gitignore already blocks these. Verify no apify_api_ strings remain before committing.",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * *",
+        "display": "0 9 * * *"
+      },
+      "schedule_display": "0 9 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 38
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-05-27T23:22:55.431164+10:00",
+      "next_run_at": "2026-07-06T09:00:00+10:00",
+      "last_run_at": "2026-07-05T09:01:29.368410+10:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "origin",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "8647481186",
+        "chat_name": "J C",
+        "thread_id": null
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "profile": null,
+      "fire_claim": null
+    },
+    {
+      "id": "f02f4a756e4f",
+      "name": "GitHub AI Dashboard Weekly Refresh",
+      "prompt": "# GitHub AI Dashboard Weekly Refresh\n\n## Task\nScrape GitHub for the top 15 AI repos and update the dashboard.\n\n## Steps\n\n### Step 1: Scrape fresh data\nNavigate to GitHub Trending (https://github.com/trending) and GitHub search for top AI repos.\nCollect 15 repos across three categories (5 each):\n1. Trending AI repos today\n2. Most starred AI repos (highest absolute count)\n3. Fastest growing AI repos (highest star velocity in past week)\n\nFor each repo, collect:\n- owner/repo name\n- one-sentence description\n- star count (real number)\n- growth indicator\n- category (AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics)\n- GitHub URL\n- personalised \"why this matters\" line tied to Jared's context (PerformOS, AgentOS, private AI teams, business AI deployment)\n\n### Step 2: Write repos.json\nOverwrite `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/repos.json` with the 15 fresh repos.\n\n### Step 3: Archive last week\nIf `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/repos.json` already has data, copy it to `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/archive/repos_YYYY-MM-DD.json` before overwriting.\n\n### Step 4: Rebuild dashboard\nIf `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/dashboard.html` exists, rebuild it with fresh data + archive section showing previous weeks.\nIf it does not exist yet, build it from scratch.\n\n### Rules\n- No em dashes anywhere\n- Spell out one to nine, numerals for 10 and above\n- Every repo must have a real GitHub URL and real star count\n- Do NOT fabricate data\n- The dashboard is PerformOS dark themed: #0A0A0A background, #F5EADB cream text, #D4FF3B lime accent\n- All data is local. No GitHub push. No Vercel deploy.\n\nVerify repos.json is valid JSON with exactly 15 entries before finishing.",
+      "skills": [
+        "claude-code-builder"
+      ],
+      "skill": "claude-code-builder",
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 16 * * 1",
+        "display": "0 16 * * 1"
+      },
+      "schedule_display": "0 16 * * 1",
+      "repeat": {
+        "times": null,
+        "completed": 5
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-06-01T15:54:10.732647+10:00",
+      "next_run_at": "2026-07-06T16:00:00+10:00",
+      "last_run_at": "2026-06-29T16:08:08.691807+10:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "origin",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "8647481186",
+        "chat_name": "J C",
+        "thread_id": null
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "profile": null,
+      "fire_claim": null
+    },
+    {
+      "id": "9f97aaf3972b",
+      "name": "GitHub Trending Dashboard \u2014 Weekly",
+      "prompt": "Scrape GitHub trending repositories (https://github.com/trending?since=weekly) using Firecrawl MCP. Extract the top 15 repos with: name, description, stars, growth (stars this week), URL, and a 1-2 sentence \"why_this_matters\" connecting each repo to PerformOS, Accor Plus, AgentOS, or Jared's work. Also try Hacker News front page (https://news.ycombinator.com) and Product Hunt (https://www.producthunt.com) for any of the same repos and note their HN ranking or PH upvotes as signal badges.\n\nThen:\n1. Save the batch as /Users/jc/Desktop/hermes_builds/github-ai-dashboard/batch_{YYYYMMDD}.json\n2. Read /Users/jc/Desktop/hermes_builds/github-ai-dashboard/dashboard.html to get the current HTML template\n3. Insert the new batch into the BATCHES object in the HTML as the newest batch tab\n4. Write the updated dashboard.html\n5. Send Jared a Telegram message with: \"New GitHub trending batch live. Top 3: [repo1] (+[growth] stars), [repo2] (+[growth] stars), [repo3] (+[growth] stars). Dashboard: /Users/jc/Desktop/hermes_builds/github-ai-dashboard/dashboard.html\"\n",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 16 * * 1",
+        "display": "0 16 * * 1"
+      },
+      "schedule_display": "0 16 * * 1",
+      "repeat": {
+        "times": null,
+        "completed": 4
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-06-01T21:59:02.470829+10:00",
+      "next_run_at": "2026-07-06T16:00:00+10:00",
+      "last_run_at": "2026-06-29T16:12:25.409324+10:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "telegram",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "8647481186",
+        "chat_name": "J C",
+        "thread_id": null
+      },
+      "enabled_toolsets": null,
+      "workdir": null,
+      "profile": null,
+      "fire_claim": null
+    },
+    {
+      "id": "01fa38038268",
+      "name": "Neo NemoClaw Daily Refresh",
+      "prompt": "You are Neo, the NemoClaw specialist. Run your daily refresh check.\n\nPull these sources and compare against the last known state stored at ~/.hermes/profiles/neo-nemoclaw/nvidia-state.json:\n\n1. NemoClaw docs index \u2014 `curl -s https://docs.nvidia.com/nemoclaw/latest/llms.txt` \u2014 note any new or changed pages\n2. NemoClaw GitHub commits \u2014 `curl -s https://api.github.com/repos/NVIDIA/NemoClaw/commits?per_page=5` \u2014 note any new commits since last check\n3. Hermes release notes \u2014 `curl -s https://docs.nvidia.com/nemoclaw/user-guide/hermes/about/release-notes.md` \u2014 note any version bumps\n4. NVIDIA Developer YouTube \u2014 `curl -s \"https://www.youtube.com/feeds/videos.xml?channel_id=UCvE_e2qZtRB5TgL9I_GjRg\"` \u2014 scan for NemoClaw, Hermes, or OpenShell in titles\n\nIf nothing changed, reply with \"Neo refresh: no changes\" and store nothing.\nIf something changed, store the new state in ~/.hermes/profiles/neo-nemoclaw/nvidia-state.json and send a concise summary of what changed \u2014 new commits, new docs pages, version bumps, new videos \u2014 to Brock via telegram with the prefix \"\ud83d\udd04 Neo NemoClaw Daily Refresh\". Include the actual links and specific changes. Do not summarise the changes \u2014 report them exactly.",
+      "skills": [],
+      "skill": null,
+      "model": null,
+      "provider": null,
+      "base_url": null,
+      "script": null,
+      "no_agent": false,
+      "context_from": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 8 * * *",
+        "display": "0 8 * * *"
+      },
+      "schedule_display": "0 8 * * *",
+      "repeat": {
+        "times": null,
+        "completed": 21
+      },
+      "enabled": true,
+      "state": "scheduled",
+      "paused_at": null,
+      "paused_reason": null,
+      "created_at": "2026-06-14T09:38:12.053812+10:00",
+      "next_run_at": "2026-07-06T08:00:00+10:00",
+      "last_run_at": "2026-07-05T08:05:34.533865+10:00",
+      "last_status": "ok",
+      "last_error": null,
+      "last_delivery_error": null,
+      "deliver": "telegram:8647481186",
+      "origin": {
+        "platform": "telegram",
+        "chat_id": "8647481186",
+        "chat_name": "J C",
+        "thread_id": null
+      },
+      "enabled_toolsets": [
+        "terminal",
+        "web",
+        "file"
+      ],
+      "workdir": null,
+      "profile": null,
+      "fire_claim": null
+    }
+  ],
+  "updated_at": "2026-07-05T16:07:51.975321+10:00"
+}

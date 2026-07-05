@@ -73,7 +73,7 @@
     "last_viewed_at": "2026-06-04T21:07:04.361464+00:00",
     "patch_count": 2,
     "pinned": false,
-    "state": "active",
+    "state": "stale",
     "use_count": 8,
     "view_count": 8
   },
@@ -212,13 +212,13 @@
     "created_at": "2026-05-16T23:48:47.210556+00:00",
     "created_by": null,
     "last_patched_at": "2026-06-29T06:09:07.378137+00:00",
-    "last_used_at": "2026-06-29T06:08:54.417673+00:00",
-    "last_viewed_at": "2026-06-29T06:08:54.416042+00:00",
+    "last_used_at": "2026-07-05T06:59:07.009030+00:00",
+    "last_viewed_at": "2026-07-05T06:59:07.006033+00:00",
     "patch_count": 138,
     "pinned": false,
     "state": "active",
-    "use_count": 128,
-    "view_count": 123
+    "use_count": 129,
+    "view_count": 124
   },
   "claude-design": {
     "archived_at": null,
@@ -450,7 +450,7 @@
     "last_viewed_at": "2026-06-04T10:36:42.935626+00:00",
     "patch_count": 0,
     "pinned": false,
-    "state": "active",
+    "state": "stale",
     "use_count": 2,
     "view_count": 2
   },
@@ -485,13 +485,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": null,
-    "last_used_at": "2026-07-03T23:07:16.633322+00:00",
-    "last_viewed_at": "2026-07-03T23:07:16.631234+00:00",
+    "last_used_at": "2026-07-04T23:01:34.053939+00:00",
+    "last_viewed_at": "2026-07-04T23:01:34.051865+00:00",
     "patch_count": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 3,
-    "view_count": 3
+    "use_count": 4,
+    "view_count": 4
   },
   "himalaya": {
     "archived_at": null,
@@ -667,13 +667,13 @@
     "created_at": "2026-06-01T03:26:27.496844+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-11T23:08:06.723346+00:00",
-    "last_used_at": "2026-06-21T04:30:38.615304+00:00",
-    "last_viewed_at": "2026-06-21T04:30:38.609973+00:00",
+    "last_used_at": "2026-07-05T06:59:07.007478+00:00",
+    "last_viewed_at": "2026-07-05T06:59:07.002779+00:00",
     "patch_count": 25,
     "pinned": false,
     "state": "active",
-    "use_count": 8,
-    "view_count": 8
+    "use_count": 9,
+    "view_count": 9
   },
   "nemoclaw-hermes-setup": {
     "archived_at": null,
@@ -1109,13 +1109,13 @@
     "created_at": "2026-06-21T09:38:19.058179+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-21T09:38:35.445915+00:00",
-    "last_used_at": "2026-07-04T07:52:57.476793+00:00",
-    "last_viewed_at": "2026-07-04T07:52:57.470767+00:00",
+    "last_used_at": "2026-07-05T06:59:07.004221+00:00",
+    "last_viewed_at": "2026-07-05T06:59:06.999274+00:00",
     "patch_count": 1,
     "pinned": false,
     "state": "active",
-    "use_count": 1,
-    "view_count": 1
+    "use_count": 2,
+    "view_count": 2
   },
   "white-label-skill-pack-builder": {
     "archived_at": null,
@@ -1230,7 +1230,7 @@
     "last_viewed_at": "2026-06-02T07:35:08.352113+00:00",
     "patch_count": 8,
     "pinned": false,
-    "state": "active",
+    "state": "stale",
     "use_count": 8,
     "view_count": 8
   },
