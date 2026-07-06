@@ -50,22 +50,41 @@ const weeklyGrowth = weekMatch ? parseInt(weekMatch[1].replace(/,/g, '')) : 0;
 ```
 
 ### Source 3: GitHub Search (most-starred AI repos)
-URL: `https://github.com/search?q=ai+agent+stars%3A%3E10000&type=repositories&s=stars&o=desc`
 
-**Star count quirk on search pages:** The star link text on search results is abbreviated (e.g., "241k" instead of "240,873"). The full count IS in the page text content. Use the textContent regex pattern: `(\d[\d,]+)\s*stars` to extract the actual number, not the abbreviated link text.
+**Preferred URL:** `https://github.com/search?q=llm+OR+gpt+OR+%22ai+agent%22+OR+%22large+language+model%22&type=repositories&s=stars&o=desc`
 
-Extraction approach — get raw text per result card:
+This OR-based query returns 1M+ results with top repos sorted by stars. Broader and more predictable than topic-filtered queries (which return too few results) or `stars:>10000` (which misses emerging repos).
+
+**Search page DOM is DIFFERENT from Trending pages.** `article.Box-row` selectors do NOT work on search result pages. Search results use a different layout with h3 headings and list-items for metadata. The data IS there but extraction requires more iteration than trending pages.
+
+**Star count quirk on search pages:** The star link text on search results is abbreviated (e.g., "226k" instead of "226,393"). The full count IS visible in the `browser_snapshot` accessibility labels like `link "226393 stars" [ref=e95]` -- the text in the `link` label is the full number. However, `browser_console` extraction via `a[href*="/stargazers"]` returns the abbreviated link text ("226k"), NOT the full number.
+
+**Reliable extraction approach for search pages -- two-stage:**
+
+Stage 1: Use `browser_console` to get repo names (from h3 > a links):
 ```js
-Array.from(document.querySelectorAll('[data-testid="results-list"] > div')).map((div, i) => ({
-  text: div.textContent.substring(0, 300)  // parse name/stars/desc from text
-}))
+JSON.stringify(Array.from(document.querySelectorAll('h3 a')).slice(0, 15).map(a => {
+  const fullName = a.textContent.trim().replace(/\s+/g, '');
+  return { fullName, url: 'https://github.com/' + fullName };
+}).filter(r => r.fullName.includes('/')))
 ```
 
-Then parse each card's text for: repo name (first line), description, and star count via regex `/(\d[\d,]+)\s*stars/`.
+Stage 2: Use `browser_snapshot` with `full=true` to read the full star counts. The snapshot labels include unabbreviated counts like `link "226393 stars"`. Manually transcribe these into the repos.json entries.
+
+**If multiple extraction attempts fail (common on search pages),** do not give up. The `browser_console` approach with different selectors (`h3 a`, `a[href*="/stargazers"]`, parent-tree traversal) needs iteration. After 2-3 failed attempts, fall back to the snapshot method: `browser_snapshot(full=true)` and manually extract repo names and full star counts from the accessibility tree.
 
 ### Selection rules
 
 Select 15 repos total (5 per tab). Every repo must have a real GitHub URL and real star count. Do NOT fabricate data. Avoid duplicating repos across tabs. Prefer fresh picks not featured in the previous 2 weeks when possible.
+
+**Deduplication across sources:** Repos often appear in both daily and weekly trending (e.g., strix appeared as #3 trending today AND #2 fastest growing this week). Assign each repo to ONE tab only. Priority order for assignment:
+1. If a repo has both daily and weekly growth, put it in Trending Today (daily signal is fresher)
+2. If a repo only has weekly growth (not in daily), put it in Fastest Growing
+3. If a repo only has absolute star count (from search), put it in Most Starred
+
+**Repos appearing in previous week's archive:** Check the archived `repos_YYYY-MM-DD.json` from last week. If a repo appears there with the same signal, prefer a different repo for this week unless it genuinely improved its position (e.g., moved from #5 to #1 in the same category).
+
+**Category diversity target:** Across all 15 repos, aim for representation from 3+ categories. If one category dominates (e.g., 10 of 15 are "AI Agents"), swap 1-2 repos for strong alternatives in underrepresented categories.
 
 ## Data format (repos.json entry)
 

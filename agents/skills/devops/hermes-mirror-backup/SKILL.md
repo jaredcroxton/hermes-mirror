@@ -73,8 +73,9 @@ Strip Apify API tokens from all YAML files. Verify no tokens remain before commi
 
 ```bash
 cd /tmp/hermes-mirror-backup
-find . -name "*.yaml" -exec sed -i '' 's/apify_api_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
-find . -name "*.yaml" -exec grep -l "apify_api_" {} \; 2>/dev/null
+find . \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i '' 's/apify_api_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
+# Verify no live tokens remain in config files only (ignore .md/.json doc examples)
+find . \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "apify_api_" {} \; 2>/dev/null | grep -v REDACTED
 # Should produce no output — if it does, stop and investigate
 ```
 
@@ -100,6 +101,7 @@ fi
 - **Stale non-git directory:** The pattern `git clone X || (cd X && git pull)` fails when the directory exists but is not a git repo. Always `rm -rf` first for cron safety.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
 - **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
+- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files (`.md` reference docs, `.curator_backups/` JSON archives, the skill's own SKILL.md) as literal examples, not live secrets. When scanning, scope the verification grep to `.yaml` and `.yml` files only. Matches in `.md`, `.json`, or `.tar.gz` files under `agents/skills/` are expected and harmless.
 
 ## What NOT to include
 
