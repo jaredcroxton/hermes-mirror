@@ -18,9 +18,64 @@ Use when the cron job or Jared asks to refresh the GitHub AI Dashboard (top 15 A
 
 ## Source strategy
 
-Scrape three sources for comprehensive coverage. Use `browser_navigate` + `browser_console` for all extraction (not firecrawl_scrape — browser_console with querySelectorAll is faster and more reliable for GitHub pages).
+Scrape four sources for comprehensive coverage. Use `browser_navigate` + `browser_console` for all extraction (not firecrawl_scrape -- browser_console with querySelectorAll is faster and more reliable for GitHub pages). The preferred combination is: **Topics page** (top AI repos + approximate stars) → **GitHub API** (exact stars + descriptions) → **Trending pages** (velocity data) → curate 15.
 
-### Source 1: GitHub Trending (daily)
+### Source 1: GitHub Topics (AI-tagged, sorted by stars) — BEST FIRST SOURCE
+
+URL: `https://github.com/topics/ai?o=desc&s=stars`
+
+This page lists AI-tagged repos sorted by stars. It has a clean `article` DOM structure and returns the top AI repos in one page. Star counts are abbreviated (e.g., "383k", "253k") so supplement with API for exact numbers.
+
+Extraction expression (browser_console):
+```js
+(() => {
+    const articles = document.querySelectorAll('article');
+    const results = [];
+    articles.forEach(article => {
+        const h3 = article.querySelector('h3');
+        if (!h3) return;
+        const links = h3.querySelectorAll('a');
+        const nameParts = [];
+        links.forEach(l => nameParts.push(l.textContent.trim()));
+        const fullName = nameParts.join('/');
+        const href = links.length >= 2 ? links[1].getAttribute('href') : '';
+        const desc = article.querySelector('p') ? article.querySelector('p').textContent.trim() : '';
+        const starText = article.textContent.match(/Star\s+([\d.]+k?)/);
+        const starsRaw = starText ? starText[1] : '';
+        let stars = 0;
+        if (starsRaw.endsWith('k')) stars = Math.round(parseFloat(starsRaw) * 1000);
+        else stars = parseInt(starsRaw.replace(/,/g, '')) || 0;
+        const topics = Array.from(article.querySelectorAll('a[href*="/topics/"]')).map(a => a.textContent.trim());
+        results.push({fullName, desc: desc.substring(0, 200), stars, starsRaw, href, topics});
+    });
+    return JSON.stringify(results.slice(0, 20));
+})()
+```
+
+### Source 2: GitHub API — exact star counts and descriptions
+
+After identifying candidate repos from the Topics page (or other sources), download exact data via GitHub's public API. This gives real star counts, full descriptions, topics, and language data.
+
+**Cron-safe download pattern (no piped interpreters):**
+```bash
+# Download to temp files (never pipe to python3 in cron mode)
+for repo in "openclaw/openclaw" "obra/superpowers" "NousResearch/hermes-agent"; do
+  name=$(echo "$repo" | tr '/' '_')
+  curl -s -o "/tmp/gh_${name}.json" "https://api.github.com/repos/${repo}"
+done
+
+# Process with standalone script (not piped)
+python3 -c "
+import json, glob
+for f in glob.glob('/tmp/gh_*.json'):
+    d = json.load(open(f))
+    print(d.get('full_name'), d.get('stargazers_count'), (d.get('description') or '')[:200])
+"
+```
+
+Key fields from API response: `stargazers_count` (exact integer), `description`, `topics`, `language`, `html_url`, `forks_count`, `updated_at`.
+
+### Source 3: GitHub Trending (daily)
 URL: `https://github.com/trending?since=daily`
 
 Extraction expression (browser_console):
@@ -40,8 +95,7 @@ JSON.stringify(Array.from(document.querySelectorAll('article.Box-row')).map(arti
 }))
 ```
 
-### Source 2: GitHub Trending (weekly)
-URL: `https://github.com/trending?since=weekly`
+### Source 4: GitHub Trending (weekly)
 
 Same extraction expression as daily, but match `stars this week` instead of `stars today`:
 ```js
@@ -49,7 +103,7 @@ const weekMatch = text.match(/(\d[\d,]*)\s*stars?\s*(this week)/i);
 const weeklyGrowth = weekMatch ? parseInt(weekMatch[1].replace(/,/g, '')) : 0;
 ```
 
-### Source 3: GitHub Search (most-starred AI repos)
+### Source 5: GitHub Search (most-starred AI repos)
 
 **Preferred URL:** `https://github.com/search?q=llm+OR+gpt+OR+%22ai+agent%22+OR+%22large+language+model%22&type=repositories&s=stars&o=desc`
 
@@ -86,20 +140,40 @@ Select 15 repos total (5 per tab). Every repo must have a real GitHub URL and re
 
 **Category diversity target:** Across all 15 repos, aim for representation from 3+ categories. If one category dominates (e.g., 10 of 15 are "AI Agents"), swap 1-2 repos for strong alternatives in underrepresented categories.
 
+**Tab allocation pattern (proven in 13 July 2026 session):** After collecting ~20 candidate repos with exact API data, sort all candidates by growth (weekly stars). Allocate the top 5 by growth to "Trending Today", the next 5 to "Fastest Growing", and pick the 5 with highest absolute stars from the remaining pool for "Most Starred". This guarantees no overlaps and clean 5-per-tab distribution. Signal labels follow the pattern: "Trending today #N", "Fastest growing #N", "Most starred #N".
+
+## Dual-file update workflow
+
+This is a two-file update, not a single-file build:
+
+1. **Write repos.json first** — use `write_file` with the full 15-entry JSON array. Verify with standalone `python3 -c` that it's valid JSON and has exactly 15 entries.
+2. **Patch dashboard.html second** — use `patch` tool to replace the `const REPOS = [...]` array with the dashboard-format version (using `name`, `why`, `growth` as string, `signal` fields). The dashboard's CSS/HTML/JS structure stays unchanged; only the data array is replaced.
+3. **Run em dash gate** on dashboard.html after patching.
+
 ## Data format (repos.json entry)
 
 ```json
 {
-  "name": "owner/repo",
+  "owner": "openclaw",
+  "repo": "openclaw",
+  "fullName": "openclaw/openclaw",
   "description": "One sentence description",
-  "stars": 12345,
-  "growth": "+1,234 stars this week",
+  "stars": 382737,
+  "growth": 2800,
+  "growthLabel": "2,800 stars this week",
   "category": "AI Agents",
-  "url": "https://github.com/owner/repo",
-  "why": "Personalized line tied to Jared's context (PerformOS, AgentOS, private AI, business AI, APAC markets)",
-  "signal": "Trending today"
+  "url": "https://github.com/openclaw/openclaw",
+  "whyThisMatters": "Personalized line tied to Jared's context"
 }
 ```
+
+**IMPORTANT — repos.json and dashboard.html use different field names for the same data:**
+- repos.json: `fullName`, `whyThisMatters`, `growth` (number), `growthLabel` (string), `owner`, `repo`
+- dashboard.html inline REPOS: `name`, `why`, `growth` (string like "+2,800 stars this week"), `signal`
+- The `signal` field ONLY exists in the dashboard embedded array — it determines tab allocation
+- repos.json has NO `signal` field; the dashboard doesn't read from repos.json at runtime
+
+When updating the weekly refresh, BOTH files need updating with their respective formats. The repos.json is the canonical data store. The dashboard.html has its own embedded REPOS array that must be updated separately using targeted `patch` edits (the dashboard is ~200 lines and patches are safer than full rewrites).
 
 Categories: AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics
 
