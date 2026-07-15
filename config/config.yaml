@@ -1,6 +1,6 @@
-EMAIL_ADDRESS: jaredcroxton@gmail.com
-EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
-EMAIL_PASSWORD: mfqu sucs sncr ysbh
+EMAIL_ADDRESS: REDACTED
+EMAIL_ALLOWED_USERS: REDACTED
+EMAIL_PASSWORD: REDACTED
 _config_version: 30
 agent:
   api_max_retries: 3
