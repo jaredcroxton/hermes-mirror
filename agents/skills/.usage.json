@@ -484,14 +484,14 @@
     "archived_at": null,
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-07-05T23:04:32.647003+00:00",
-    "last_used_at": "2026-07-13T23:08:25.279730+00:00",
-    "last_viewed_at": "2026-07-13T23:08:25.277356+00:00",
-    "patch_count": 2,
+    "last_patched_at": "2026-07-15T23:07:18.713101+00:00",
+    "last_used_at": "2026-07-16T23:01:43.342618+00:00",
+    "last_viewed_at": "2026-07-16T23:01:43.340672+00:00",
+    "patch_count": 4,
     "pinned": false,
     "state": "active",
-    "use_count": 12,
-    "view_count": 12
+    "use_count": 15,
+    "view_count": 15
   },
   "himalaya": {
     "archived_at": null,
