@@ -57,6 +57,10 @@ After fetching the transcript, format it based on what the user asks for:
 31:55 Q&A — audience questions on scalability and next steps
 ```
 
+## Non-YouTube Videos
+
+If the URL is NOT a YouTube link (HBR, Vimeo, Brightcove, etc.), the helper script won't work. See `references/non-youtube-extraction.md` for the browser-based extraction pattern — navigate, play, enable captions, then extract text tracks via `browser_console` JavaScript.
+
 ## Workflow
 
 1. **Fetch** the transcript using the helper script with `--text-only --timestamps`.
