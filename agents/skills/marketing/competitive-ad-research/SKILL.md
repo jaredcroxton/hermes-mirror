@@ -15,6 +15,9 @@ Load this skill when Jared asks to:
 - "who's advertising [X] in Australia..."
 - "find top performing ads for..."
 - Research competitor advertising strategy
+- "what does [competitor product] cost..." or "how does [competitor] pricing work..."
+- "what's [competitor's] data compliance / privacy policy..."
+- Research a competitor AI tool, SaaS product, or platform for pricing, features, or compliance
 
 ## Research workflow
 
@@ -78,7 +81,9 @@ Jared wants structured competitive reports with:
 - The Facebook Ad Library sort-by-impressions is useful but actual impression counts aren't shown — only relative ordering.
 - Internal products (CREW) won't appear in Ad Library. That's expected — you're researching the competitive landscape, not verifying your own ads.
 - Be thorough on competitor pricing and positioning — this is what feeds Jared's strategic decisions.
+- **Firecrawl/web_search outage fallback**: When Firecrawl or web_search return credit-exhausted errors, pivot to browser tools (browser_navigate → browser_snapshot → browser_console). For SPAs that redirect or hide content behind login, look for the API/platform documentation site (e.g., platform.kimi.ai instead of kimi.com) — these often have public pricing and policy pages. Use browser_console with `document.querySelector('main')?.innerText` to extract full page text when snapshots are truncated. The `execute_code` tool with `web_search` from `hermes_tools` can also work when the direct `web_search` tool fails.
 
 ## Reference files
 
 - `references/crew-competitive-landscape-2026-07.md` — Current competitive snapshot for CREW workshop positioning: Spruik, Team 400, Brisbane Claude Masterclass, Net101, Get AI Ready, Claude Code Community Australia, and adjacent competitors. July 2026.
+- `references/kimi-k3-pricing-compliance-2026-07.md` — Kimi K3 API pricing, consumer subscription tiers, data compliance analysis (Singapore-based, model training clause), and competitive positioning vs Claude/DeepSeek. July 2026.
