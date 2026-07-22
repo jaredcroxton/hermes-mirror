@@ -16,12 +16,20 @@ Do not collapse these layers:
 ```bash
 hermes --profile <profile> config set model.provider openai-codex
 hermes --profile <profile> config set model.default gpt-5.5
-hermes --profile <profile> config set model.base_url https://chatgpt.com/backend-api/codex
+# Clear any stale provider endpoint inherited from DeepSeek, OpenRouter, Ollama, or local experiments.
+# OpenAI Codex uses the provider's OAuth route, not a profile-specific base_url.
+hermes --profile <profile> config set model.base_url "" || true
+```
+
+For an all-agent rollout, probe the exact provider/model on the default profile before touching specialist profiles:
+
+```bash
+hermes chat -q "Reply exactly OK" --provider openai-codex -m "gpt-5.5" --quiet
 ```
 
 ## Auth handling
 
-OpenAI Codex uses OAuth credentials in `auth.json`, not an API key in `.env`. Profiles are isolated. If a direct profile probe fails because Codex auth is missing, copy the verified default auth file into the profile after backing up the old one:
+OpenAI Codex uses OAuth credentials in `auth.json`, not an API key in `.env`. Profiles are isolated. For a broad rollout, copy the verified default `auth.json` into each affected profile after backing up the old one, then set file mode `0600`. If a direct profile probe fails because Codex auth is missing, do the same targeted copy:
 
 ```bash
 cp ~/.hermes/profiles/<profile>/auth.json ~/.hermes/profiles/<profile>/auth.json.bak 2>/dev/null || true
@@ -70,6 +78,8 @@ Run both probes:
 hermes chat -q "Reply exactly BROCK_CODEX_OK" --quiet
 hermes --profile <profile> chat -q "Reply exactly <PROFILE>_CODEX_OK" --quiet
 ```
+
+For bulk rollouts, verify every profile with a bounded direct probe and record pass/fail by profile. Do not let one slow profile hide the result for the rest of the fleet. A small Python wrapper with `subprocess.run(..., timeout=75)` is a portable way to bound each probe while still continuing through the profile list.
 
 For a Telegram bot, also send a real message to the bot after restart. The profile brain probe is necessary but not sufficient for live transport.
 
