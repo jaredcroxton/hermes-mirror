@@ -57,7 +57,7 @@ If password contains special characters (`@`, `#`, `/`, `%`), either:
 - URL-encode them in the connection string, or
 - Change the database password to alphanumeric only for dev/test
 
-Example clean password: `TrainrTech2026` (no symbols, no encoding needed).
+Example clean password: REDACTED
 
 ## No-cost Render setup
 

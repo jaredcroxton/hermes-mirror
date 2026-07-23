@@ -265,11 +265,11 @@ def suggest_git_url(node_class: str) -> str | None:
 
 
 def check_deps(
-    workflow: dict, host: str, *, api_key: str | None = None,
+    workflow: dict, host: str, *, api_key: REDACTED
 ) -> dict:
     headers: dict[str, str] = {}
     if api_key:
-        headers["X-API-Key"] = api_key
+    REDACTED"X-API-Key"] = api_key
 
     is_cloud = is_cloud_host(host)
     base = host.rstrip("/")
@@ -401,7 +401,7 @@ def main(argv: list[str] | None = None) -> int:
         new_netloc = f"{parsed.hostname}:{args.port}"
         host = urlunparse(parsed._replace(netloc=new_netloc))
 
-    api_key = resolve_api_key(args.api_key)
+    api_key = REDACTED
 
     wf_path = Path(args.workflow).expanduser()
     if not wf_path.exists():

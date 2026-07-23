@@ -26,7 +26,7 @@ Usage:
         --output-dir ./outputs
 
     # Cloud server (API key from env var)
-    export COMFY_CLOUD_API_KEY="comfyui-xxxxxxx"
+    export COMFY_CLOUD_API_KEY=REDACTED
     python3 run_workflow.py --workflow workflow_api.json \
         --args '{"prompt": "a cat"}' \
         --host https://cloud.comfy.org \
@@ -91,7 +91,7 @@ class ComfyRunner:
     def __init__(
         self,
         host: str = DEFAULT_LOCAL_HOST,
-        api_key: str | None = None,
+        api_key: REDACTED
         client_id: str | None = None,
         partner_key: str | None = None,
     ):
@@ -105,7 +105,7 @@ class ComfyRunner:
     def headers(self) -> dict[str, str]:
         h: dict[str, str] = {}
         if self.api_key:
-            h["X-API-Key"] = self.api_key
+  REDACTED"X-API-Key"] = self.api_key
         return h
 
     def _url(self, path: str) -> str:
@@ -264,7 +264,7 @@ class ComfyRunner:
         base_path = parsed.path.rstrip("/")
         ws_url = f"{scheme}://{netloc}{base_path}/ws?clientId={self.client_id}"
         if self.is_cloud and self.api_key:
-            ws_url += f"&token={self.api_key}"
+           REDACTED"&token={self.api_key}"
 
         outputs: dict[str, Any] = {}
         error_payload: dict[str, Any] | None = None
@@ -634,14 +634,14 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     # ---- Resolve API key ----
-    api_key = resolve_api_key(args.api_key)
+    api_key = REDACTED
     partner_key = args.partner_key or None
     if args.use_partner_key_as_auth and not api_key and partner_key:
-        api_key = partner_key
+        api_key =REDACTED
 
     # ---- Connect ----
     runner = ComfyRunner(
-        host=args.host, api_key=api_key, partner_key=partner_key,
+        host=args.host, api_key=REDACTED
         client_id=args.client_id,
     )
 

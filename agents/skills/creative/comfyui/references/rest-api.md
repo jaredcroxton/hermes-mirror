@@ -58,7 +58,7 @@ curl -X POST "http://127.0.0.1:8188/prompt" \
 
 # Cloud
 curl -X POST "https://cloud.comfy.org/api/prompt" \
-  -H "X-API-Key: $COMFY_CLOUD_API_KEY" \
+  -H "X-API-Key: REDACTED" \
   -H "Content-Type: application/json" \
   -d '{"prompt": '"$(cat workflow_api.json)"'}'
 ```
@@ -75,7 +75,7 @@ nodes, bad inputs).
 
 ```bash
 curl -X GET "https://cloud.comfy.org/api/job/{prompt_id}/status" \
-  -H "X-API-Key: $COMFY_CLOUD_API_KEY"
+  -H "X-API-Key: REDACTED"
 ```
 
 | Status        | Description                        |
@@ -90,7 +90,7 @@ curl -X GET "https://cloud.comfy.org/api/job/{prompt_id}/status" \
 
 ```bash
 curl -X GET "https://cloud.comfy.org/api/jobs/{prompt_id}" \
-  -H "X-API-Key: $COMFY_CLOUD_API_KEY"
+  -H "X-API-Key: REDACTED"
 ```
 
 Response includes `outputs` keyed by node ID. Cloud uses `video` (singular)
@@ -131,7 +131,7 @@ curl -s "http://127.0.0.1:8188/view?filename=ComfyUI_00001_.png&subfolder=&type=
 
 # Cloud (302 → signed URL; -L follows; STRIP X-API-Key for the second hop)
 curl -L "https://cloud.comfy.org/api/view?filename=...&type=output" \
-  -H "X-API-Key: $COMFY_CLOUD_API_KEY" \
+  -H "X-API-Key: REDACTED" \
   -o output.png
 ```
 
@@ -194,7 +194,7 @@ curl -X POST "http://127.0.0.1:8188/upload/mask" \
   -F 'original_ref={"filename":"photo.png","subfolder":"","type":"input"}'
 ```
 
-Cloud equivalent: prepend `https://cloud.comfy.org/api` and add `-H "X-API-Key: $COMFY_CLOUD_API_KEY"`.
+Cloud equivalent: prepend `https://cloud.comfy.org/api` and add `-H "X-API-Key: REDACTED"`.
 
 ## Node & Model Discovery
 
@@ -211,7 +211,7 @@ curl -s "http://127.0.0.1:8188/models/loras"
 
 # Models per folder (cloud — note the experimental prefix)
 curl -s "https://cloud.comfy.org/api/experiment/models/checkpoints" \
-  -H "X-API-Key: $COMFY_CLOUD_API_KEY"
+  -H "X-API-Key: REDACTED"
 ```
 
 ## Queue Management

@@ -47,7 +47,7 @@ key = None
 with open('/Users/jc/.hermes/.env') as f:
     for line in f:
         s = line.strip()
-        if s.startswith('GOOGLE_API_KEY=*** and not line.lstrip().startswith('#'):
+        if s.startswith('GOOGLE_API_KEY=REDACTED'#'):
             key = s.split('=',1)[1].strip()
             break
 

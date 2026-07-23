@@ -60,13 +60,13 @@ Redact before scanning:
 
 ```bash
 find . -name '*.yaml' -type f -not -path './.git/*' -print0 |
-  xargs -0 perl -pi -e 's/REDACTED_APIFY_PREFIX_[A-Za-z0-9]{30,}/REDACTED_APIFY_TOKEN/g'
+  xargs -0 perl -pi -e 's/REDACTED_APIFY_TOKEN[A-Za-z0-9]{30,}/REDACTED_APIFY_TOKEN/g'
 ```
 
 Run a broader no-values scan before commit. Print only file paths, not matching secret values:
 
 ```bash
-grep -RIlE '(^|[^A-Za-z0-9_])(REDACTED_APIFY_PREFIX_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{20,})' . --exclude-dir=.git || true
+grep -RIlE '(^|[^A-Za-z0-9_])(REDACTED_APIFY_TOKEN[A-Za-z0-9]{30,}|sk-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{20,})' . --exclude-dir=.git || true
 ```
 
 If the scan flags documentation placeholders like `sk-...` or `ghp_...`, redact them too before commit. Public mirrors should not contain realistic-looking credential examples.

@@ -71,13 +71,13 @@ These are the patterns that have appeared in real config files. Run all of them 
 cd /tmp/hermes-mirror-backup
 
 # Apify tokens
-find . -name "*.yaml" -exec sed -i '' 's/REDACTED_APIFY_PREFIX_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
+find . -name "*.yaml" -exec sed -i '' 's/REDACTED_APIFY_TOKEN[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
 
 # Firecrawl keys (fc- prefix, 10+ chars)
 find . -name "*.yaml" -exec sed -i '' 's/fc-[a-zA-Z0-9_-]\{10,\}/REDACTED_FIRECRAWL_KEY/g' {} \;
 
 # Email passwords (any non-REDACTED value)
-find . -name "*.yaml" -exec sed -i '' 's/EMAIL_PASSWORD: .*/EMAIL_PASSWORD: REDACTED/g' {} \;
+find . -name "*.yaml" -exec sed -i '' 's/EMAIL_PASSWORD: REDACTED' {} \;
 ```
 
 ## Secret scan after redaction
@@ -85,18 +85,18 @@ find . -name "*.yaml" -exec sed -i '' 's/EMAIL_PASSWORD: .*/EMAIL_PASSWORD: REDA
 After running sed-based redaction, always verify with a positive scan before committing:
 
 ```bash
-grep -rI "REDACTED_APIFY_PREFIX_\|sk-\|ghp_\|github_pat_\|xox[baprs]-\|AIza\|fc-[a-z0-9_-]\{10,\}" . --exclude-dir=.git 2>/dev/null || true
+grep -rI "REDACTED_APIFY_TOKEN\|sk-\|ghp_\|github_pat_\|xox[baprs]-\|AIza\|fc-[a-z0-9_-]\{10,\}" . --exclude-dir=.git 2>/dev/null || true
 ```
 
 Also check EMAIL_PASSWORD separately since it's a label match not a token-pattern match:
 
 ```bash
-grep -r "EMAIL_PASSWORD:" . --include="*.yaml" 2>/dev/null | grep -v REDACTED || echo "All clean"
+grep -r "EMAIL_PASSWORD:REDACTED*.yaml" 2>/dev/null | grep -v REDACTED || echo "All clean"
 ```
 
 Matches in documentation files (showing the redaction regex itself) are harmless. Matches in `.yaml` config files are a problem — re-check the redaction step.
 
-**Expected harmless matches in skills directory:** The `.curator_backups/` and `.archive/` subdirectories under `agents/skills/` contain old cron job prompts and reference docs that include literal `REDACTED_APIFY_PREFIX_` and other token-pattern strings as examples. These are not live secrets. When scanning, either exclude these directories or manually verify that matches are only in `.json` backup files and `.md` reference/docs — never in `.yaml` config files.
+**Expected harmless matches in skills directory:** The `.curator_backups/` and `.archive/` subdirectories under `agents/skills/` contain old cron job prompts and reference docs that include literal `REDACTED_APIFY_TOKEN` and other token-pattern strings as examples. These are not live secrets. When scanning, either exclude these directories or manually verify that matches are only in `.json` backup files and `.md` reference/docs — never in `.yaml` config files.
 
 ## Verification checks
 

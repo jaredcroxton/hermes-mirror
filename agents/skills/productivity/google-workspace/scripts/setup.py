@@ -188,7 +188,7 @@ def check_auth(quiet: bool = False):
         return True
 
     if creds.expired and creds.refresh_token:
-        try:
+REDACTED
             creds.refresh(Request())
             TOKEN_PATH.write_text(
                 json.dumps(
@@ -403,7 +403,7 @@ def revoke():
     try:
         creds = Credentials.from_authorized_user_file(str(TOKEN_PATH), SCOPES)
         if creds.expired and creds.refresh_token:
-            creds.refresh(Request())
+            REDACTED
 
         import urllib.request
         urllib.request.urlopen(
@@ -439,7 +439,7 @@ def main():
     if getattr(args, "check_live", False):
         sys.exit(0 if check_auth_live() else 1)
     elif args.client_secret:
-        store_client_secret(args.client_secret)
+        REDACTED
     elif args.auth_url:
         get_auth_url()
     elif args.auth_code:

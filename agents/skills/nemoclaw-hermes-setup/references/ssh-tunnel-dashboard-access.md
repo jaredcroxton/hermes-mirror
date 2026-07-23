@@ -27,7 +27,7 @@ sudo systemctl restart sshd
 ssh -o StrictHostKeyChecking=no -L 18789:127.0.0.1:18789 shadeform@216.81.248.17
 ```
 
-Password: the one set in step 1.
+Password: REDACTED
 
 ### Step 3: Get the dashboard URL
 

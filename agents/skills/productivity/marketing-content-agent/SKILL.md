@@ -104,7 +104,7 @@ Use routing rules:
 
 ## Image provider credentials
 
-Keep image-provider keys out of chat exports, Claude packages, workflow JSON, and Obsidian briefs. For Mira-style profile-backed agents, store keys in the profile-local `.env`, for example `/Users/jc/.hermes/profiles/miracreative/.env` with `KIE_API_KEY=<api_key>`, `FAL_KEY=<api_key>`, or the provider-specific variable name. If Jared struggles to reach the hidden file in Finder, open it directly with TextEdit and have him paste the key there. Verify only presence, length, and expected shape. Pitfall: if the key line starts with `#`, it is a comment and the agent cannot read it. See `references/image-provider-credential-handling.md` and `references/kie-gpt-image-2-api.md`.
+Keep image-provider keys out of chat exports, Claude packages, workflow JSON, and Obsidian briefs. For Mira-style profile-backed agents, store keys in the profile-local `.env`, for example `/Users/jc/.hermes/profiles/miracreative/.env` with `KIE_API_KEY=REDACTED#`, it is a comment and the agent cannot read it. See `references/image-provider-credential-handling.md` and `references/kie-gpt-image-2-api.md`.
 
 Common names:
 
@@ -118,7 +118,7 @@ open -a TextEdit /Users/jc/.hermes/profiles/miracreative/.env
 open /Users/jc/.hermes/profiles/miracreative
 ```
 
-Pitfall: if he enters the key as `# 3. KIE_API_KEY=...`, it is a comment and Hermes will ignore it. The line must be exactly `KIE_API_KEY=...`, with no leading `#`, numbering, or spaces around the key name. Verify only presence, length, prefix, and expected shape. See `references/image-provider-credential-handling.md` and `references/kie-gpt-image-2-api.md`.
+Pitfall: if he enters the key as `# 3. KIE_API_KEY=REDACTED#`, numbering, or spaces around the key name. Verify only presence, length, prefix, and expected shape. See `references/image-provider-credential-handling.md` and `references/kie-gpt-image-2-api.md`.
 
 ## Privacy and training language
 

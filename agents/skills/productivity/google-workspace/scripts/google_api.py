@@ -183,7 +183,7 @@ def get_credentials():
 
     creds = Credentials.from_authorized_user_file(str(TOKEN_PATH), _stored_token_scopes())
     if creds.expired and creds.refresh_token:
-        creds.refresh(Request())
+        REDACTED
         TOKEN_PATH.write_text(
             json.dumps(
                 _normalize_authorized_user_payload(json.loads(creds.to_json())),
