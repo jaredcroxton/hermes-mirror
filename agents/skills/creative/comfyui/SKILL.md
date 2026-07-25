@@ -324,7 +324,7 @@ For users without a capable GPU or who want zero setup. Hosted on RTX 6000 Pro.
 2. Generate an API key at https://platform.comfy.org/login
 3. Set the key:
    ```bash
-   export COMFY_CLOUD_API_KEY=REDACTED
+   export COMFY_CLOUD_API_KEY="comfyui-xxxxxxxxxxxx"
    ```
 4. Run workflows:
    ```bash
@@ -507,7 +507,7 @@ curl -X POST "http://127.0.0.1:8188/upload/image" \
 
 # Cloud equivalent:
 curl -X POST "https://cloud.comfy.org/api/upload/image" \
-  -H "X-API-Key: REDACTED" \
+  -H "X-API-Key: $COMFY_CLOUD_API_KEY" \
   -F "image=@photo.png" -F "type=input" -F "overwrite=true"
 ```
 

@@ -82,7 +82,7 @@ When moving a single profile to DeepSeek (or any API-key provider), the API key 
 grep DEEPSEEK_API_KEY ~/.hermes/.env
 
 # Copy it into the target profile
-echo "DEEPSEEK_API_KEY=REDACTED" >> ~/.hermes/profiles/<profile>/.env
+echo "DEEPSEEK_API_KEY=$(grep DEEPSEEK_API_KEY ~/.hermes/.env | cut -d= -f2-)" >> ~/.hermes/profiles/<profile>/.env
 ```
 
 Symptom of missing key: HTTP 401 with `'Your api key: ****ired is invalid'`. The gateway may still show as running but direct profile queries will fail. The fix is always the same: copy the key into the profile `.env` and restart the gateway.

@@ -297,7 +297,7 @@ def _query_model(client, model, messages, timeout=60):
         return (model, None, time.time() - start, str(e))
 
 
-def race_models(query, tier="standard", api_key=REDACTED
+def race_models(query, tier="standard", api_key=None, system_prompt=None,
                 max_workers=10, timeout=60, append_directive=True,
                 jailbreak_system=None, prefill=None):
     """Race multiple models against a query, return the best unfiltered response.
@@ -305,7 +305,7 @@ def race_models(query, tier="standard", api_key=REDACTED
     Args:
         query: The user's query
         tier: 'fast' (10), 'standard' (24), 'smart' (38), 'power' (49), 'ultra' (55)
-        api_key: REDACTED
+        api_key: OpenRouter API key (defaults to OPENROUTER_API_KEY env var)
         system_prompt: Optional system prompt (overrides jailbreak_system)
         max_workers: Max parallel requests (default: 10)
         timeout: Per-request timeout in seconds (default: 60)
@@ -320,11 +320,11 @@ def race_models(query, tier="standard", api_key=REDACTED
     if OpenAI is None:
         raise ImportError("openai package required. Install with: pip install openai")
     
-    api_key = REDACTED"OPENROUTER_API_KEY")
+    api_key = api_key or os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        REDACTED"No API key. Set OPENROUTER_API_KEY or pass api_key=")
+        raise ValueError("No API key. Set OPENROUTER_API_KEY or pass api_key=")
     
-    client = OpenAI(api_key=REDACTED"https://openrouter.ai/api/v1")
+    client = OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1")
     
     # Select models for tier
     model_count = TIER_SIZES.get(tier, TIER_SIZES['standard'])
@@ -397,7 +397,7 @@ def race_models(query, tier="standard", api_key=REDACTED
     }
 
 
-def race_godmode_classic(query, api_key=REDACTED
+def race_godmode_classic(query, api_key=None, timeout=60):
     """Race the 5 GODMODE CLASSIC combos — each with its own model + jailbreak template.
     
     Each combo uses a different model paired with its best-performing jailbreak prompt.
@@ -445,11 +445,11 @@ def race_godmode_classic(query, api_key=REDACTED
     if OpenAI is None:
         raise ImportError("openai package required. Install with: pip install openai")
     
-    api_key = REDACTED"OPENROUTER_API_KEY")
+    api_key = api_key or os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        REDACTED"No API key. Set OPENROUTER_API_KEY or pass api_key=")
+        raise ValueError("No API key. Set OPENROUTER_API_KEY or pass api_key=")
     
-    client = OpenAI(api_key=REDACTED"https://openrouter.ai/api/v1")
+    client = OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1")
     
     def _run_combo(combo):
         system = combo['system']  # {QUERY} stays literal in system prompt

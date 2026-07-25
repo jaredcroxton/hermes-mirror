@@ -131,7 +131,7 @@ def main(argv: list[str] | None = None) -> int:
         }))
         return 1
 
-    api_key = REDACTED
+    api_key = resolve_api_key(args.api_key)
     cloud = is_cloud_host(args.host)
     client_id = args.client_id or new_client_id()
 
@@ -142,7 +142,7 @@ def main(argv: list[str] | None = None) -> int:
     base_path = parsed.path.rstrip("/")
     ws_url = f"{scheme}://{netloc}{base_path}/ws?clientId={client_id}"
     if cloud and api_key:
-       REDACTED"&token={api_key}"
+        ws_url += f"&token={api_key}"
 
     color_on = not args.no_color and sys.stdout.isatty()
 

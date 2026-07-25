@@ -130,7 +130,7 @@ See `references/gateway-stopped-triage.md` for the full diagnostic flow, false-p
 - **Do not trust cloned profile state.** A `--clone-all` specialist profile can inherit Email, Google Chat, Telegram home channel, cron jobs, and stale session/runtime history. Strip anything the specialist should not own, clear copied cron jobs, and verify the gateway runs with only the intended platform before calling it ready. See `references/profile-clone-hygiene-and-duplicate-souls.md`.
 - **Do not blindly replace duplicate SOUL files.** First check which SOUL the live profile points to. Larger or older files may contain richer logic but stale delivery rules. Merge deliberately into the active canonical SOUL, then restart and probe the profile.
 - **Do not start with the provider probe when an agent goes silent on Telegram.** Check `hermes profile list` first. A stopped gateway is the most common cause and the CLI probe will give a false positive. See Gateway stopped triage above.
-- **Do not trust `grep -q` for API key presence during model migrations.** A profile `.env` can have a `DEEPSEEK_API_KEY=REDACTED
+- **Do not trust `grep -q` for API key presence during model migrations.** A profile `.env` can have a `DEEPSEEK_API_KEY=*** entry with a different, stale, or expired value from a prior experiment. The key EXISTS but is WRONG. Always compare the actual key VALUE against the working default key before declaring it present. See `references/bulk-profile-model-migration.md` for the audit pattern.
 - **execute_code read_file corrupts files on writeback.** `read_file()` in execute_code returns content with line-number prefixes baked in (e.g. `     1|content`). Writing that content back via `write_file()` bakes the prefixes into the file. Every subsequent read compounds the corruption. Fix: strip with `re.sub(r'^ +\\d+\\|', '', content, flags=re.MULTILINE)` before any write_file. Prefer `patch()` for targeted edits over `write_file()` when the file already exists — it avoids this class of bug entirely. See `references/execute-code-file-corruption-pitfall.md`.
 
 ## NemoClaw Hermes sandbox deployment
@@ -285,7 +285,7 @@ hermes --profile <profile> gateway restart
 
 **Pitfall:** The API key lives in the default `.env`. Profiles do not inherit it. The 401 error (`Your api key: ****ired is invalid`) means the key was not copied.
 
-**Pitfall — stale key vs missing key:** `grep -q 'DEEPSEEK_API_KEY' || grep ... >>` only checks whether the variable EXISTS in the profile `.env`. It does NOT check whether the value matches the working default key. Six profiles in the 17 June 2026 bulk migration already had `DEEPSEEK_API_KEY=REDACTED
+**Pitfall — stale key vs missing key:** `grep -q 'DEEPSEEK_API_KEY' || grep ... >>` only checks whether the variable EXISTS in the profile `.env`. It does NOT check whether the value matches the working default key. Six profiles in the 17 June 2026 bulk migration already had `DEEPSEEK_API_KEY=...` entries from prior provider experiments — but the keys were different, stale, or expired. The profiles passed the `grep -q` existence check, then failed with 401 at runtime. **Always audit key VALUES across all profiles, not just key presence.** See `references/bulk-profile-model-migration.md` for the full audit pattern.
 
 ## Provider switch: dead key → new provider via config.yaml edit
 
@@ -332,7 +332,7 @@ When Jared asks to update every profile to the same model (e.g. \"all models to 
 
 1. Probe the target model first: `hermes --profile default chat -q \"Reply exactly PROBE_OK\" -m <model> --provider <provider> --quiet 2>&1`
 2. Verify the provider API key is live in the default `.env` and note its exact last-4 characters.
-3. **Audit every profile `.env` for the key.** Do not just check `grep -q` for key presence — compare the key VALUE against the working default. Six profiles in the 17 June 2026 migration had `DEEPSEEK_API_KEY=REDACTED
+3. **Audit every profile `.env` for the key.** Do not just check `grep -q` for key presence — compare the key VALUE against the working default. Six profiles in the 17 June 2026 migration had `DEEPSEEK_API_KEY=*** entries with different/stale values from prior experiments. They passed a presence check but failed at runtime with 401.
 4. Update `model.default`, `model.provider`, and `model.base_url` in every profile `config.yaml`. Skip local-model profiles (e.g. `localgemma` on `gemma4:e4b`).
 5. Fix any key mismatches by copying the working key into the profile `.env`.
 6. Restart all running gateways. `hermes gateway restart` can fail on launchd-managed services — fall back to `hermes gateway stop` then `hermes gateway start`.

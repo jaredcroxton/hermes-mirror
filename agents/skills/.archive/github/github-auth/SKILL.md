@@ -69,7 +69,7 @@ git config --global credential.helper store
 
 # Now do a test operation that triggers auth — git will prompt for credentials
 # Username: <their-github-username>
-# Password: REDACTED
+# Password: <paste the personal access token, NOT their GitHub password>
 git ls-remote https://github.com/<their-username>/<any-repo>.git
 ```
 

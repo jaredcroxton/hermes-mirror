@@ -430,7 +430,7 @@ def auto_jailbreak(model=None, base_url=None, api_key=None,
     Args:
         model: Model ID (e.g. "anthropic/claude-sonnet-4"). Auto-detected if None.
         base_url: API base URL. Auto-detected if None.
-        api_key: REDACTED
+        api_key: API key. Auto-detected if None.
         canary: Custom canary query to test with. Uses default if None.
         dry_run: If True, don't write config files — just report what would work.
         verbose: Print progress.
@@ -452,9 +452,9 @@ def auto_jailbreak(model=None, base_url=None, api_key=None,
     if not base_url:
         base_url = "https://openrouter.ai/api/v1"
     if not api_key:
-        REDACTED
+        api_key = _get_api_key(base_url)
     if not api_key:
-    REDACTED"success": False, "error": "No API key found"}
+        return {"success": False, "error": "No API key found"}
 
     canary_query = canary or QUICK_CANARY
     family = _detect_model_family(model)
@@ -467,7 +467,7 @@ def auto_jailbreak(model=None, base_url=None, api_key=None,
         print(f"[AUTO-JAILBREAK] Canary: {canary_query[:60]}...")
         print()
 
-    client = OpenAI(api_key=REDACTED
+    client = OpenAI(api_key=api_key, base_url=base_url)
     attempts = []
 
     # 2. First, test baseline (no jailbreak) to confirm the model actually refuses

@@ -65,7 +65,7 @@ The active config file is `AGENTS.md`, not `CLAUDE.md`. The filename `CLAUDE.md`
 
 ```bash
 # Use cat > (not cp) for config.yaml to avoid the security-approval gate:
-cat /Users/jc/.hermes/config.yaml | sed 's/^EMAIL_ADDRESS:.*/EMAIL_ADDRESS: REDACTED/' | sed 's/^EMAIL_PASSWORD:REDACTED' | sed 's/^EMAIL_ALLOWED_USERS:.*/EMAIL_ALLOWED_USERS: REDACTED/' > /tmp/hermes-mirror-backup/config/config.yaml
+cat /Users/jc/.hermes/config.yaml | sed 's/^EMAIL_ADDRESS:.*/EMAIL_ADDRESS: REDACTED/' | sed 's/^EMAIL_PASSWORD:.*/EMAIL_PASSWORD: REDACTED/' | sed 's/^EMAIL_ALLOWED_USERS:.*/EMAIL_ALLOWED_USERS: REDACTED/' > /tmp/hermes-mirror-backup/config/config.yaml
 # cp is safe for these:
 cp /Users/jc/.hermes/hermes-agent/AGENTS.md /tmp/hermes-mirror-backup/config/
 cp /Users/jc/Desktop/Obsidian/agent-startup.md /tmp/hermes-mirror-backup/config/
@@ -77,9 +77,9 @@ Strip Apify API tokens from all YAML files. Verify no tokens remain before commi
 
 ```bash
 cd /tmp/hermes-mirror-backup
-find . \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i '' 's/REDACTED_APIFY_TOKEN[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
+find . \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i '' 's/apify_api_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
 # Verify no live tokens remain in config files only (ignore .md/.json doc examples)
-find . \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "REDACTED_APIFY_TOKEN" {} \; 2>/dev/null | grep -v REDACTED
+find . \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "apify_api_" {} \; 2>/dev/null | grep -v REDACTED
 # Should produce no output — if it does, stop and investigate
 ```
 
@@ -105,8 +105,8 @@ fi
 - **Stale non-git directory:** The pattern `git clone X || (cd X && git pull)` fails when the directory exists but is not a git repo. Always `rm -rf` first for cron safety.
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
-- **Leaked tokens:** The Apify token regex `REDACTED_APIFY_TOKEN[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
-- **False-positive grep matches:** The `REDACTED_APIFY_TOKEN` pattern appears in documentation files (`.md` reference docs, `.curator_backups/` JSON archives, the skill's own SKILL.md) as literal examples, not live secrets. When scanning, scope the verification grep to `.yaml` and `.yml` files only. Matches in `.md`, `.json`, or `.tar.gz` files under `agents/skills/` are expected and harmless.
+- **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
+- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files (`.md` reference docs, `.curator_backups/` JSON archives, the skill's own SKILL.md) as literal examples, not live secrets. When scanning, scope the verification grep to `.yaml` and `.yml` files only. Matches in `.md`, `.json`, or `.tar.gz` files under `agents/skills/` are expected and harmless.
 
 ## What NOT to include
 

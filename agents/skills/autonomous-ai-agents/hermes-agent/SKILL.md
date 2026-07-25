@@ -178,7 +178,7 @@ When only one agent needs a different model (not a full-stack migration):
    ```
 3. **Critical pitfall: API keys do not inherit from the default profile.** Each profile's `.env` is isolated. If the target provider's key exists only in `~/.hermes/.env` (default), you must copy it into the profile's own `.env`:
    ```bash
-   echo "DEEPSEEK_API_KEY=REDACTED" >> ~/.hermes/profiles/<name>/.env
+   echo "DEEPSEEK_API_KEY=$(grep DEEPSEEK_API_KEY ~/.hermes/.env | cut -d= -f2-)" >> ~/.hermes/profiles/<name>/.env
    ```
    Skip this step and the profile will fail with 401 authentication errors.
 4. Restart the profile gateway so the cached config is dropped:

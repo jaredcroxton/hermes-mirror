@@ -207,7 +207,7 @@ If an MCP tool call fails, any credential-like patterns in the error message are
 - GitHub PATs (`ghp_...`)
 - OpenAI-style keys (`sk-...`)
 - Bearer tokens
-- Generic `token=`, `key=`, `API_KEY=REDACTED
+- Generic `token=`, `key=`, `API_KEY=`, `password=`, `secret=` patterns
 
 ## Troubleshooting
 
@@ -334,7 +334,7 @@ mcp_servers:
     command: "npx"
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
-      GITHUB_PERSONAL_ACCESS_TOKEN: REDACTED
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
     timeout: 60
 ```
 
@@ -369,7 +369,7 @@ mcp_servers:
     command: "npx"
     args: ["-y", "@modelcontextprotocol/server-github"]
     env:
-      GITHUB_PERSONAL_ACCESS_TOKEN: REDACTED
+      GITHUB_PERSONAL_ACCESS_TOKEN: "ghp_xxxxxxxxxxxxxxxxxxxx"
 
   company_api:
     url: "https://mcp.internal.company.com/mcp"

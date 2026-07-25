@@ -24,7 +24,7 @@ import os
 env_path = os.path.expanduser('~/.hermes/.env')
 with open(env_path) as f:
     for line in f:
-        if 'DEEPSEEK_API_KEY=REDACTED
+        if 'DEEPSEEK_API_KEY=*** in line:
             val = line.strip().split('=',1)[1]
             print(f'Key length: {len(val)}, ends: ...{val[-4:]}')
             break
@@ -78,7 +78,7 @@ Copy the working key from the default `.env` into any profile `.env` that had a 
 
 ```bash
 DEFAULT_KEY=$(grep 'DEEPSEEK_API_KEY' ~/.hermes/.env | cut -d= -f2)
-sed -i '' "s|DEEPSEEK_API_KEY=REDACTED
+sed -i '' "s|DEEPSEEK_API_KEY=*** ~/.hermes/profiles/<name>/.env
 ```
 
 ### 6. Restart all running gateways
@@ -116,7 +116,7 @@ List: profiles updated, skipped (and why), key mismatches found and fixed, verif
 
 ## Pitfalls
 
-- **Key presence ≠ key correctness.** Six profiles in the 17 June 2026 migration already had `DEEPSEEK_API_KEY=REDACTED
+- **Key presence ≠ key correctness.** Six profiles in the 17 June 2026 migration already had `DEEPSEEK_API_KEY=*** entries with different/stale keys. They passed `grep -q` but failed at runtime with 401.
 - **Launchd `restart` can silently fail.** If `hermes gateway restart` returns "Stop it with: hermes gateway stop" instead of "✓ Service restarted," the gateway did not restart. Do a manual stop/start cycle.
 - **`hermes profile list` may show `stopped` briefly after start.** Wait 5 seconds and check again before treating it as a failure.
 - **CLI probes work even when Telegram is broken.** A passing CLI probe does not prove the Telegram gateway loaded the new config. Verify with `hermes profile list` that the gateway column shows `running`.
