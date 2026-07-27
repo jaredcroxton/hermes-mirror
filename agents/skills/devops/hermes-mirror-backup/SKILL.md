@@ -53,8 +53,10 @@ done
 
 ### 5. Copy skills directory
 
+Use `rsync -a`, not `cp -r`. The mirror may contain stale plain files where the source now has directories (e.g., a skill upgraded from a single SKILL.md file to a directory with `references/`). `cp -r` chokes on this; `rsync -a` replaces files with directories cleanly.
+
 ```bash
-cp -r /Users/jc/.hermes/skills/. /tmp/hermes-mirror-backup/agents/skills/
+rsync -a /Users/jc/.hermes/skills/ /tmp/hermes-mirror-backup/agents/skills/
 ```
 
 ### 6. Copy Hermes config files
@@ -106,7 +108,8 @@ fi
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
 - **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
-- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files (`.md` reference docs, `.curator_backups/` JSON archives, the skill's own SKILL.md) as literal examples, not live secrets. When scanning, scope the verification grep to `.yaml` and `.yml` files only. Matches in `.md`, `.json`, or `.tar.gz` files under `agents/skills/` are expected and harmless.
+- **`cp -r` fails when source has directories, target has files:** Skills can be upgraded from a single `SKILL.md` file to a directory with `references/`, `templates/`, etc. If the mirror already has the flat-file version, `cp -r` fails with "Not a directory". Use `rsync -a` instead — it replaces files with directories cleanly.
+- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files
 
 ## What NOT to include
 
