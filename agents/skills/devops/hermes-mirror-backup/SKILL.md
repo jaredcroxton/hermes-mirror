@@ -36,8 +36,21 @@ mkdir -p /tmp/hermes-mirror-backup/memory
 
 ### 3. Copy agent souls
 
+The Obsidian vault may be at a nested path (e.g., `Desktop/Desktop/Obsidian`). Verify the primary path first; fall back to `find` if it's missing.
+
 ```bash
-cp /Users/jc/Desktop/Obsidian/Agents/*.md /tmp/hermes-mirror-backup/agents/souls/
+# Primary path — try first
+if ls /Users/jc/Desktop/Obsidian/Agents/*.md >/dev/null 2>&1; then
+  cp /Users/jc/Desktop/Obsidian/Agents/*.md /tmp/hermes-mirror-backup/agents/souls/
+# Fallback: locate the Agents directory under Desktop and copy from there
+else
+  AGENTS_DIR=$(find /Users/jc/Desktop -maxdepth 4 -path "*/Obsidian/Agents" -type d 2>/dev/null | head -1)
+  if [ -n "$AGENTS_DIR" ]; then
+    cp "$AGENTS_DIR"/*.md /tmp/hermes-mirror-backup/agents/souls/
+  else
+    echo "ERROR: Cannot find Obsidian Agents directory" >&2
+  fi
+fi
 ```
 
 ### 4. Copy agent profile configs
@@ -68,9 +81,21 @@ The active config file is `AGENTS.md`, not `CLAUDE.md`. The filename `CLAUDE.md`
 ```bash
 # Use cat > (not cp) for config.yaml to avoid the security-approval gate:
 cat /Users/jc/.hermes/config.yaml | sed 's/^EMAIL_ADDRESS:.*/EMAIL_ADDRESS: REDACTED/' | sed 's/^EMAIL_PASSWORD:.*/EMAIL_PASSWORD: REDACTED/' | sed 's/^EMAIL_ALLOWED_USERS:.*/EMAIL_ALLOWED_USERS: REDACTED/' > /tmp/hermes-mirror-backup/config/config.yaml
-# cp is safe for these:
-cp /Users/jc/.hermes/hermes-agent/AGENTS.md /tmp/hermes-mirror-backup/config/
-cp /Users/jc/Desktop/Obsidian/agent-startup.md /tmp/hermes-mirror-backup/config/
+
+# AGENTS.md — always at this path
+cp /Users/jc/.hermes/hermes-agent/AGENTS.md /tmp/hermes-mirror-backup/config/AGENTS.md
+
+# agent-startup.md — may be at a nested Obsidian path; try primary first, then fall back
+if cp /Users/jc/Desktop/Obsidian/agent-startup.md /tmp/hermes-mirror-backup/config/agent-startup.md 2>/dev/null; then
+  :
+else
+  STARTUP_PATH=$(find /Users/jc/Desktop -maxdepth 4 -name "agent-startup.md" -path "*/Obsidian/*" 2>/dev/null | head -1)
+  if [ -n "$STARTUP_PATH" ]; then
+    cp "$STARTUP_PATH" /tmp/hermes-mirror-backup/config/agent-startup.md
+  else
+    echo "WARNING: agent-startup.md not found — skipping" >&2
+  fi
+fi
 ```
 
 ### 7. Redact secrets
@@ -109,6 +134,7 @@ fi
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
 - **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
 - **`cp -r` fails when source has directories, target has files:** Skills can be upgraded from a single `SKILL.md` file to a directory with `references/`, `templates/`, etc. If the mirror already has the flat-file version, `cp -r` fails with "Not a directory". Use `rsync -a` instead — it replaces files with directories cleanly.
+- **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
 - **False-positive grep matches:** The `apify_api_` pattern appears in documentation files
 
 ## What NOT to include

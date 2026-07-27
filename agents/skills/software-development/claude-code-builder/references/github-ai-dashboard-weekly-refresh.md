@@ -5,7 +5,7 @@ Use when the cron job or Jared asks to refresh the GitHub AI Dashboard (top 15 A
 ## Dashboard identity
 
 - Local directory: `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/`
-- Source data: `repos.json` (15 repos, each with name, description, stars, growth, category, url, why, signal)
+- Source data: `repos.json` (15 repos, each with name, description, stars, growth, growthLabel, category, url, whyMatters)
 - Archive: `archive/repos_YYYY-MM-DD.json` (previous week's data, copied before overwrite)
 - Dashboard HTML: `dashboard.html` (PerformOS dark theme, tabbed layout)
 - This is a LOCAL-ONLY artifact. No GitHub push. No Vercel deploy.
@@ -147,33 +147,37 @@ Select 15 repos total (5 per tab). Every repo must have a real GitHub URL and re
 This is a two-file update, not a single-file build:
 
 1. **Write repos.json first** — use `write_file` with the full 15-entry JSON array. Verify with standalone `python3 -c` that it's valid JSON and has exactly 15 entries.
-2. **Patch dashboard.html second** — use `patch` tool to replace the `const REPOS = [...]` array with the dashboard-format version (using `name`, `why`, `growth` as string, `signal` fields). The dashboard's CSS/HTML/JS structure stays unchanged; only the data array is replaced.
+2. **Patch dashboard.html second** — use `patch` tool to replace the `const REPOS = [...]` array with the updated data. The dashboard's CSS/HTML/JS structure stays unchanged; only the data array is replaced.
 3. **Run em dash gate** on dashboard.html after patching.
 
-## Data format (repos.json entry)
+## Data format (unified — repos.json and dashboard use the same fields)
+
+Both `repos.json` and the dashboard's inline `REPOS` array use the same field names. This avoids dual-format drift and makes the weekly update a single write + replace operation.
 
 ```json
 {
-  "owner": "openclaw",
-  "repo": "openclaw",
-  "fullName": "openclaw/openclaw",
+  "name": "openclaw/openclaw",
   "description": "One sentence description",
   "stars": 382737,
   "growth": 2800,
   "growthLabel": "2,800 stars this week",
   "category": "AI Agents",
   "url": "https://github.com/openclaw/openclaw",
-  "whyThisMatters": "Personalized line tied to Jared's context"
+  "whyMatters": "Personalized line tied to Jared's context"
 }
 ```
 
-**IMPORTANT — repos.json and dashboard.html use different field names for the same data:**
-- repos.json: `fullName`, `whyThisMatters`, `growth` (number), `growthLabel` (string), `owner`, `repo`
-- dashboard.html inline REPOS: `name`, `why`, `growth` (string like "+2,800 stars this week"), `signal`
-- The `signal` field ONLY exists in the dashboard embedded array — it determines tab allocation
-- repos.json has NO `signal` field; the dashboard doesn't read from repos.json at runtime
+**Field definitions:**
+- `name`: owner/repo (e.g., "bojieli/ai-agent-book")
+- `description`: one-sentence summary
+- `stars`: exact integer star count
+- `growth`: numeric growth (weekly or daily stars added)
+- `growthLabel`: human-readable growth string (e.g., "15,909 stars this week" or "900 stars today")
+- `category`: one of AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics
+- `url`: full GitHub URL
+- `whyMatters`: personalized line tied to Jared's context
 
-When updating the weekly refresh, BOTH files need updating with their respective formats. The repos.json is the canonical data store. The dashboard.html has its own embedded REPOS array that must be updated separately using targeted `patch` edits (the dashboard is ~200 lines and patches are safer than full rewrites).
+**Dashboard HTML format:** The `REPOS` array embedded in the dashboard's `<script>` tag uses the EXACT same field names as repos.json. When updating, write fresh repos.json first, then patch the `const REPOS = [...]` array in dashboard.html to match. Tab allocation is determined by JavaScript sort functions, not a separate `signal` field.
 
 Categories: AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics
 
@@ -191,12 +195,18 @@ cp /Users/jc/Desktop/hermes_builds/github-ai-dashboard/repos.json \
 ## Dashboard HTML structure
 
 - PerformOS dark theme: #0A0A0A background, #F5EADB cream text, #D4FF3B lime accent
-- Fonts: Archivo (display), Inter (body), JetBrains Mono (labels)
-- 4-tab layout: Trending Today | Fastest Growing | Most Starred | Archive
+- Fonts: Inter (body, display), JetBrains Mono (labels)
+- 3-tab layout: Trending Now | Most Starred | Fastest Growing
 - All data inline in HTML (no fetch calls, no external JS)
-- Archive tab shows previous week's repos as chips with date, name, stars, growth
-- Responsive grid: `repeat(auto-fill, minmax(380px, 1fr))`
-- Each card: name (linked), stars, category badge, description, growth badge, "Why this matters" section
+- Header stats row: repos tracked, combined stars, categories, top category
+- Single-column card grid with hover effects
+- Each card: name (linked with GitHub icon), category badge, growth badge, star count badge, description, "Why this matters" callout
+
+## First-build vs weekly update
+
+**First build (dashboard.html does not exist):** Write the complete dashboard with `write_file`. Use the unified field format above. The HTML, CSS, JS, and embedded `REPOS` data go in a single file.
+
+**Weekly update (dashboard.html exists):** Write fresh `repos.json` first. Then use `patch` to replace the `const REPOS = [...]` array in the dashboard. The CSS/HTML/JS structure stays unchanged; only the data array is replaced. This is faster and avoids regressions on the visual design.
 
 ## Em dash gate (cron-safe)
 
@@ -214,8 +224,7 @@ print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;')
 ## Verification
 
 - repos.json is valid JSON with exactly 15 entries
-- All repos have required fields: name, description, stars, growth, category, url, why
+- All repos have required fields: name, description, stars, growth, growthLabel, category, url, whyMatters
 - All URLs start with `https://github.com/`
 - dashboard.html has zero em dashes
-- dashboard.html contains REPOS array, ARCHIVE array, and tab switching function
-- Archive file exists with previous week's data
+- dashboard.html contains REPOS array, tab switching function, and stats row

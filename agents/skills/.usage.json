@@ -211,14 +211,14 @@
     "archived_at": null,
     "created_at": "2026-05-16T23:48:47.210556+00:00",
     "created_by": null,
-    "last_patched_at": "2026-07-13T06:15:42.484586+00:00",
-    "last_used_at": "2026-07-20T06:10:07.995323+00:00",
-    "last_viewed_at": "2026-07-20T06:10:07.993635+00:00",
-    "patch_count": 147,
+    "last_patched_at": "2026-07-27T07:43:24.369622+00:00",
+    "last_used_at": "2026-07-27T07:43:06.440522+00:00",
+    "last_viewed_at": "2026-07-27T07:43:06.438403+00:00",
+    "patch_count": 152,
     "pinned": false,
     "state": "active",
-    "use_count": 140,
-    "view_count": 132
+    "use_count": 144,
+    "view_count": 135
   },
   "claude-design": {
     "archived_at": null,
@@ -316,13 +316,13 @@
     "created_at": "2026-06-22T06:10:41.601957+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-07-20T06:10:50.789284+00:00",
-    "last_used_at": "2026-07-20T06:10:46.301386+00:00",
-    "last_viewed_at": "2026-07-20T06:10:46.299846+00:00",
+    "last_used_at": "2026-07-27T06:19:52.178412+00:00",
+    "last_viewed_at": "2026-07-27T06:19:52.177340+00:00",
     "patch_count": 10,
     "pinned": false,
     "state": "active",
-    "use_count": 4,
-    "view_count": 4
+    "use_count": 6,
+    "view_count": 6
   },
   "design-md": {
     "archived_at": null,
@@ -484,14 +484,14 @@
     "archived_at": null,
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-07-25T23:05:24.620046+00:00",
-    "last_used_at": "2026-07-26T23:48:14.985334+00:00",
-    "last_viewed_at": "2026-07-26T23:48:14.979819+00:00",
-    "patch_count": 7,
+    "last_patched_at": "2026-07-27T00:19:44.370415+00:00",
+    "last_used_at": "2026-07-27T23:02:02.281994+00:00",
+    "last_viewed_at": "2026-07-27T23:02:02.280148+00:00",
+    "patch_count": 10,
     "pinned": false,
     "state": "active",
-    "use_count": 25,
-    "view_count": 25
+    "use_count": 28,
+    "view_count": 28
   },
   "himalaya": {
     "archived_at": null,
