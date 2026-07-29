@@ -135,7 +135,7 @@ fi
 - **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
 - **`cp -r` fails when source has directories, target has files:** Skills can be upgraded from a single `SKILL.md` file to a directory with `references/`, `templates/`, etc. If the mirror already has the flat-file version, `cp -r` fails with "Not a directory". Use `rsync -a` instead — it replaces files with directories cleanly.
 - **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
-- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files
+- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files (this SKILL.md itself, references under `github/github-repo-management/`, and other skills that document the redaction pattern). When verifying, scope the grep to YAML/YML files only (`find . \( -name "*.yaml" -o -name "*.yml" \)`), not the whole repo. Matches in `.md` files are expected documentation artifacts.
 
 ## What NOT to include
 

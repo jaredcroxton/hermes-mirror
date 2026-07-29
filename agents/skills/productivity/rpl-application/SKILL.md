@@ -121,3 +121,4 @@ Use `word-document-generation` skill for .docx output. For RPL documents specifi
 ## Reference files
 
 - `references/ecu-rpl-example.md` — Full worked example of an ECU RPL statement structure with three-unit mapping pattern.
+- `references/award-nominations.md` — Award and scholarship nomination workflow: research, fit assessment, first-person drafting (self-nominations), course-content embedding, quality gates, and pitfalls. Load this when Jared asks about university awards or scholarships.
