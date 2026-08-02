@@ -66,10 +66,10 @@ done
 
 ### 5. Copy skills directory
 
-Use `rsync -a`, not `cp -r`. The mirror may contain stale plain files where the source now has directories (e.g., a skill upgraded from a single SKILL.md file to a directory with `references/`). `cp -r` chokes on this; `rsync -a` replaces files with directories cleanly.
+Use `rsync -a --delete`, not `cp -r`. The mirror may contain stale structures that conflict with the source: flat files where the source now has directories, or full directories where the source now has symlinks. `cp -r` chokes on both; `rsync -a --delete` handles all transitions cleanly.
 
 ```bash
-rsync -a /Users/jc/.hermes/skills/ /tmp/hermes-mirror-backup/agents/skills/
+rsync -a --delete /Users/jc/.hermes/skills/ /tmp/hermes-mirror-backup/agents/skills/
 ```
 
 ### 6. Copy Hermes config files
@@ -133,7 +133,7 @@ fi
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
 - **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
-- **`cp -r` fails when source has directories, target has files:** Skills can be upgraded from a single `SKILL.md` file to a directory with `references/`, `templates/`, etc. If the mirror already has the flat-file version, `cp -r` fails with "Not a directory". Use `rsync -a` instead — it replaces files with directories cleanly.
+- **`rsync` without `--delete` fails on structure conflicts:** The mirror can diverge from the source in two directions: (1) mirror has flat files, source has directories (skill upgraded from single SKILL.md to directory with `references/`); (2) mirror has directories with files, source has symlinks (skill migrated to a symlinked package). Both produce "Directory not empty" or "Not a directory" errors with plain `rsync -a`. Use `rsync -a --delete` — it replaces any stale structure with the current source form cleanly.
 - **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
 - **False-positive grep matches:** The `apify_api_` pattern appears in documentation files (this SKILL.md itself, references under `github/github-repo-management/`, and other skills that document the redaction pattern). When verifying, scope the grep to YAML/YML files only (`find . \( -name "*.yaml" -o -name "*.yml" \)`), not the whole repo. Matches in `.md` files are expected documentation artifacts.
 
