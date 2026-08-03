@@ -224,14 +224,14 @@
     "archived_at": null,
     "created_at": "2026-05-16T23:48:47.210556+00:00",
     "created_by": null,
-    "last_patched_at": "2026-07-27T07:43:24.369622+00:00",
-    "last_used_at": "2026-07-27T07:43:06.440522+00:00",
-    "last_viewed_at": "2026-07-27T07:43:06.438403+00:00",
-    "patch_count": 152,
+    "last_patched_at": "2026-08-03T06:11:51.122424+00:00",
+    "last_used_at": "2026-08-03T06:11:45.432139+00:00",
+    "last_viewed_at": "2026-08-03T06:11:45.430395+00:00",
+    "patch_count": 158,
     "pinned": false,
     "state": "active",
-    "use_count": 144,
-    "view_count": 135
+    "use_count": 148,
+    "view_count": 138
   },
   "claude-design": {
     "archived_at": null,
@@ -328,14 +328,14 @@
     "archived_at": null,
     "created_at": "2026-06-22T06:10:41.601957+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-07-20T06:10:50.789284+00:00",
-    "last_used_at": "2026-07-27T06:19:52.178412+00:00",
-    "last_viewed_at": "2026-07-27T06:19:52.177340+00:00",
-    "patch_count": 10,
+    "last_patched_at": "2026-08-03T06:10:30.765968+00:00",
+    "last_used_at": "2026-08-03T06:10:33.286481+00:00",
+    "last_viewed_at": "2026-08-03T06:10:33.284621+00:00",
+    "patch_count": 21,
     "pinned": false,
     "state": "active",
-    "use_count": 6,
-    "view_count": 6
+    "use_count": 9,
+    "view_count": 9
   },
   "design-md": {
     "archived_at": null,
@@ -498,13 +498,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-01T23:07:06.623010+00:00",
-    "last_used_at": "2026-08-02T23:21:23.432364+00:00",
-    "last_viewed_at": "2026-08-02T23:21:23.430178+00:00",
+    "last_used_at": "2026-08-03T23:00:17.899608+00:00",
+    "last_viewed_at": "2026-08-03T23:00:17.898012+00:00",
     "patch_count": 13,
     "pinned": false,
     "state": "active",
-    "use_count": 35,
-    "view_count": 35
+    "use_count": 36,
+    "view_count": 36
   },
   "himalaya": {
     "archived_at": null,
@@ -1226,13 +1226,13 @@
     "created_at": "2026-06-08T11:09:43.485989+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-21T04:32:51.713718+00:00",
-    "last_used_at": "2026-07-10T01:07:42.815744+00:00",
-    "last_viewed_at": "2026-07-10T01:07:42.814550+00:00",
+    "last_used_at": "2026-08-03T22:03:26.530567+00:00",
+    "last_viewed_at": "2026-08-03T22:03:26.528789+00:00",
     "patch_count": 3,
     "pinned": false,
     "state": "active",
-    "use_count": 7,
-    "view_count": 7
+    "use_count": 8,
+    "view_count": 8
   },
   "world-class-leads-dashboard": {
     "archived_at": null,

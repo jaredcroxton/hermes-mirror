@@ -310,7 +310,7 @@ minimum subset you'll usually touch — read `run_agent.py` for the full list.
 class AIAgent:
     def __init__(self,
         base_url: str = None,
-        api_key: str = None,
+        api_key: REDACTED
         provider: str = None,
         api_mode: str = None,              # "chat_completions" | "codex_responses" | ...
         model: str = "",                   # empty → resolved from config/provider later

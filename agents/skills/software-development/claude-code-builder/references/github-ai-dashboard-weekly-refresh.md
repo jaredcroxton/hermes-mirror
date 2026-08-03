@@ -142,13 +142,49 @@ Select 15 repos total (5 per tab). Every repo must have a real GitHub URL and re
 
 **Tab allocation pattern (proven in 13 July 2026 session):** After collecting ~20 candidate repos with exact API data, sort all candidates by growth (weekly stars). Allocate the top 5 by growth to "Trending Today", the next 5 to "Fastest Growing", and pick the 5 with highest absolute stars from the remaining pool for "Most Starred". This guarantees no overlaps and clean 5-per-tab distribution. Signal labels follow the pattern: "Trending today #N", "Fastest growing #N", "Most starred #N".
 
+## Dashboard BATCHES structure (critical)
+
+The dashboard does NOT use a flat `const REPOS = [...]` array. It uses a `var BATCHES` object with dated batch keys, each containing a `repos` array:
+
+```javascript
+var BATCHES = {
+  "20260803": {
+    label: "Week of 03 August 2026",
+    repos: [
+      {"name":"block/buzz","description":"...","stars":21289,...},
+      ...
+    ]
+  },
+  "20260727": {
+    label: "Week of 27 July 2026",
+    repos: [...]
+  }
+};
+```
+
+The dashboard has TWO sets of tabs: **batch tabs** (switching between weeks) and **sort tabs** (Trending Now | Most Starred | Fastest Growing). Both use the `BATCHES[currentBatchId].repos` array and sort it client-side.
+
 ## Dual-file update workflow
 
 This is a two-file update, not a single-file build:
 
-1. **Write repos.json first** — use `write_file` with the full 15-entry JSON array. Verify with standalone `python3 -c` that it's valid JSON and has exactly 15 entries.
-2. **Patch dashboard.html second** — use `patch` tool to replace the `const REPOS = [...]` array with the updated data. The dashboard's CSS/HTML/JS structure stays unchanged; only the data array is replaced.
-3. **Run em dash gate** on dashboard.html after patching.
+1. **Archive last week first** — copy current `repos.json` to `archive/repos_YYYY-MM-DD.json` before overwriting.
+2. **Write fresh repos.json** — use `write_file` with the full 15-entry JSON array. Verify with standalone `python3 -c` that it's valid JSON and has exactly 15 entries.
+3. **Update dashboard.html BATCHES data** — do NOT use `patch` tool (it fails on nested JS object literals with mixed quoting). Use a Python positional-index approach instead:
+   - Read the HTML file
+   - Find the `var BATCHES = {` marker
+   - Find the current week's batch key (e.g., `"20260803":`)
+   - Find the `repos: [` array start within that batch
+   - Find the next batch key (e.g., `"20260727":`) to locate the array end boundary
+   - Use `rindex(']', ...)` to find the exact closing bracket before the next batch
+   - Replace the array segment with the fresh serialized data
+   - Write the result back
+4. **Run em dash gate** on dashboard.html after updating.
+5. **Add a new batch tab** — add a button in the `#batch-tabs` div for the new week and update the `BATCHES` object with the previous week's data moved to a historical key.
+
+### Pitfall: regex replacement fails on nested JS objects
+
+The `BATCHES` object uses mixed quoting (unquoted JS keys like `repos:` but double-quoted string keys like `"20260803":`). Regex-based replacement is fragile and often fails. The positional-index method (finding exact character offsets via `.index()` and `.rindex()`) is reliable. Always prefer it over regex for dashboard data updates.
 
 ## Data format (unified — repos.json and dashboard use the same fields)
 
@@ -177,7 +213,7 @@ Both `repos.json` and the dashboard's inline `REPOS` array use the same field na
 - `url`: full GitHub URL
 - `whyMatters`: personalized line tied to Jared's context
 
-**Dashboard HTML format:** The `REPOS` array embedded in the dashboard's `<script>` tag uses the EXACT same field names as repos.json. When updating, write fresh repos.json first, then patch the `const REPOS = [...]` array in dashboard.html to match. Tab allocation is determined by JavaScript sort functions, not a separate `signal` field.
+**Dashboard HTML format:** The BATCHES object's `repos` arrays use the exact same field names as repos.json. When updating, write fresh repos.json first, then use positional-index replacement to update the `repos` array in dashboard.html for the new batch. Tab allocation is determined by JavaScript sort functions, not a separate `signal` field.
 
 Categories: AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics
 
@@ -196,17 +232,17 @@ cp /Users/jc/Desktop/hermes_builds/github-ai-dashboard/repos.json \
 
 - PerformOS dark theme: #0A0A0A background, #F5EADB cream text, #D4FF3B lime accent
 - Fonts: Inter (body, display), JetBrains Mono (labels)
-- 3-tab layout: Trending Now | Most Starred | Fastest Growing
-- All data inline in HTML (no fetch calls, no external JS)
+- TWO sets of tabs: batch tabs (week selector: e.g., 03 Aug 2026 | 27 Jul 2026) and sort tabs (Trending Now | Most Starred | Fastest Growing)
+- All data inline in HTML via `var BATCHES = { "YYYYMMDD": { label, repos: [...] } }` structure (no fetch calls, no external JS)
 - Header stats row: repos tracked, combined stars, categories, top category
 - Single-column card grid with hover effects
 - Each card: name (linked with GitHub icon), category badge, growth badge, star count badge, description, "Why this matters" callout
 
 ## First-build vs weekly update
 
-**First build (dashboard.html does not exist):** Write the complete dashboard with `write_file`. Use the unified field format above. The HTML, CSS, JS, and embedded `REPOS` data go in a single file.
+**First build (dashboard.html does not exist):** Write the complete dashboard with `write_file`. Use the BATCHES structure with one initial batch entry. The HTML, CSS, JS, and embedded BATCHES data go in a single file. Include batch-switching tabs and sort tabs.
 
-**Weekly update (dashboard.html exists):** Write fresh `repos.json` first. Then use `patch` to replace the `const REPOS = [...]` array in the dashboard. The CSS/HTML/JS structure stays unchanged; only the data array is replaced. This is faster and avoids regressions on the visual design.
+**Weekly update (dashboard.html exists):** Write fresh `repos.json` first. Archive last week's data. Then use Python positional-index replacement (NOT patch tool, NOT regex) to update the BATCHES object in the dashboard HTML. Add a new batch tab button for the current week. The CSS/HTML/JS structure stays unchanged; only the BATCHES data and batch tab markup are updated. This is faster and avoids regressions on the visual design.
 
 ## Em dash gate (cron-safe)
 
@@ -227,4 +263,7 @@ print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;')
 - All repos have required fields: name, description, stars, growth, growthLabel, category, url, whyMatters
 - All URLs start with `https://github.com/`
 - dashboard.html has zero em dashes
-- dashboard.html contains REPOS array, tab switching function, and stats row
+- dashboard.html contains BATCHES object with the current week's batch key, tab switching functions, and stats row
+- Previous week's batch data is preserved (not overwritten)
+- New batch tab button exists in `#batch-tabs` for the current week
+- Archive file exists at `archive/repos_YYYY-MM-DD.json`

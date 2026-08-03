@@ -422,6 +422,8 @@ Preferred Local artifact sequence:
 
 25. **GitHub search page extraction requires iteration.** Unlike trending pages (where `article.Box-row` selectors work reliably), search result pages have a different DOM structure. `browser_console` extraction with trending-page selectors returns empty arrays or truncated data. The star counts in search result links are abbreviated ("226k" not "226,393"). **Iteration is expected**: try `h3 a` for names, `browser_snapshot(full=true)` for full star counts, then fall back to manual transcription from snapshot labels. Do not give up after one failed extraction — the data IS in the page, it just takes 2-3 different approaches to surface it.
 
+26. **Regex replacement fails on nested JS object literals with mixed quoting.** When updating dashboard HTML that embeds data as a JS object (e.g., `var BATCHES = { "YYYYMMDD": { repos: [...] } }`), regex-based find-and-replace reliably fails. The object uses unquoted JS keys (`repos:`) alongside double-quoted string keys (`"20260803":`), and the nested array boundaries are ambiguous to regex. **Workaround: positional-index replacement.** Read the file, find the exact character offsets using Python's `.index()` and `.rindex()` methods with adjacent markers (e.g., find the next batch key `"20260727":` to locate the array end), then reconstruct the file with string slicing. This is a local artifact update pattern — no GitHub or Vercel deploy involved.
+
 ## Verification Checklist
 
 - [ ] **Taste bundle loaded** — `claude-design` and `popular-web-designs` loaded in Phase 1 before any design decisions.

@@ -7,33 +7,37 @@
 Saved as: `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/batch_YYYYMMDD.json`
 
 Each batch JSON contains:
-- `date`: "DD Month YYYY"
-- `source`: "GitHub Trending (weekly)"
-- `repositories`: Array of 14 repo objects with name, description, total_stars, stars_this_week, language, url, category, why_this_matters, signal
-- `hn_signals`: Object (often empty when Firecrawl is unavailable)
-- `ph_signals`: Object (often empty when Firecrawl is unavailable)
-- `notes`: Free-text notes about scraping limitations
+- `date`: "YYYY-MM-DD"
+- `batchId`: "YYYYMMDD"
+- `label`: "Week of DD Month YYYY"
+- `repos`: Array of 15 repo objects with: name, description, language, stars (number), growth (number), growthLabel (string), url, category, whyMatters, hnRank (null | number), phUpvotes (null | number)
+- `totalStars`: combined stars across all repos
+- `totalGrowth`: combined weekly growth
+- `categories`: list of category strings
+- `topCategory`: the most common category
 
-## HTML Template Architecture (Actual)
+## HTML Template Architecture (Current — August 2026)
 
-The dashboard does NOT use a `var BATCHES = {...}` pattern. It uses:
+The dashboard uses a **multi-batch BATCHES object** architecture:
 
-- `const REPOS = [...]` — flat array of all 14 repos for the current week. Each repo has a `signal` field that determines which tab it shows in.
-- `const ARCHIVE_WEEK1 = [...]` — previous week's repos in compact format
-- `const ARCHIVE_WEEK2 = [...]` — 2 weeks ago
-- `const ARCHIVE_WEEK3 = [...]` — 3 weeks ago
-- Tabs rendered by filtering REPOS by `signal` prefix:
-  - `renderTab('trending', REPOS.filter(r => r.signal.indexOf('Trending today') === 0))`
-  - `renderTab('growing', REPOS.filter(r => r.signal.indexOf('Fastest growing') === 0))`
-  - `renderTab('starred', REPOS.filter(r => r.signal.indexOf('Most starred') === 0))`
+- `var BATCHES = { "20260803": { label, repos }, "20260727": { label, repos } }` — each batch is a named key with its own repos array.
+- Batch tabs (`#batch-tabs`) let users switch between weeks. The active batch tab gets `class="tab-btn active"`.
+- Sort tabs (`#sort-tabs`) always show "Trending Now", "Most Starred", "Fastest Growing". These are VIEWS that sort the active batch's repos differently — no `signal` prefix filtering.
+- `refreshDisplay()` renders all three panels by sorting the current batch's repos by growth or stars.
+- `switchBatch(batchId)` updates `currentBatchId` and calls `refreshDisplay()`.
+- `switchTab(tab)` toggles the active sort-tab panel visibility.
+- No ARCHIVE_WEEK arrays needed — old batches live as additional keys in BATCHES.
 
-**Update approach:** Rewrite the entire HTML file. Targeted patching is too fragile for the flat REPOS array + archive shift pattern.
+**Update approach:** Use the `patch` tool for four targeted edits:
+1. Add a new batch tab button to `#batch-tabs` (set `active`, remove `active` from old button)
+2. Insert the new batch key at the top of the BATCHES object
+3. Update `.header-meta` to the new week
+4. Update `var currentBatchId` to the new key
 
 ## GitHub Trending Scrape Notes
 
-### Primary: Firecrawl
-URL: `https://github.com/trending?since=weekly`
-Use `mcp_firecrawl_firecrawl_scrape` with JSON format and schema, or markdown format with `maxAge`.
+### Primary: Firecrawl with JSON schema (preferred)
+Use `mcp_firecrawl_firecrawl_scrape` with `formats: ["json"]` and a schema that extracts: name, description, language, total_stars, stars_this_week, url. The page returns up to 25 repos; the dashboard targets the top 15. Use `maxAge` for cached data when freshness is not critical.
 
 ### Fallback: Browser DOM scraping (when Firecrawl is out of credits)
 1. `browser_navigate` to `https://github.com/trending?since=weekly`
@@ -70,18 +74,15 @@ Use `mcp_firecrawl_firecrawl_scrape` with JSON format and schema, or markdown fo
 
 ## HN / Product Hunt Cross-Reference
 
-When Firecrawl is available: scrape `https://news.ycombinator.com` and `https://www.producthunt.com` and cross-reference repo names.
-
-When Firecrawl is unavailable:
-- Use `browser_navigate` to HN front page, scan for repo names in story titles
-- PH may not be reachable — note in batch JSON
-- Direct repo matches on HN/PH front pages are rare; most weeks return empty hn_signals and ph_signals
+Scrape `https://news.ycombinator.com` and `https://www.producthunt.com` with Firecrawl (markdown format). Cross-reference repo names against story/product titles. Direct matches are rare — most weeks return null for `hnRank` and `phUpvotes`. This is expected; the batch JSON should record null values rather than fabricated signals.
 
 ## Batch History
 
-| Date | Repos | Top Repo | Top Growth |
-|------|-------|----------|------------|
-| 20 July 2026 | 14 | OpenCut-app/OpenCut | +12,743/week |
-| 13 July 2026 | 15 | openclaw/openclaw | +2,800/week |
-| 06 July 2026 | 10 | meetily | +1,409/day |
-| 29 June 2026 | 12 | headroom | +16,102/week |
+| Date | Batch ID | Repos | Top Repo | Top Growth | Architecture |
+|------|----------|-------|----------|------------|--------------|
+| 03 Aug 2026 | 20260803 | 15 | block/buzz | +8,217/week | BATCHES object + batch tabs |
+| 27 July 2026 | 20260727 | 15 | bojieli/ai-agent-book | +15,909/week | BATCHES object + batch tabs |
+| 20 July 2026 | 20260720 | 14 | OpenCut-app/OpenCut | +12,743/week | flat REPOS + ARCHIVE_WEEK |
+| 13 July 2026 | 20260713 | 15 | openclaw/openclaw | +2,800/week | flat REPOS + ARCHIVE_WEEK |
+| 06 July 2026 | 20260706 | 10 | meetily | +1,409/day | flat REPOS + ARCHIVE_WEEK |
+| 29 June 2026 | 20260629 | 12 | headroom | +16,102/week | flat REPOS + ARCHIVE_WEEK |

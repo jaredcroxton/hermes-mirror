@@ -1,6 +1,6 @@
 ---
 name: dashboard-batch-update
-description: Update an existing HTML dashboard template with a new batch of scraped data. Use when a recurring job or cron task needs to insert new data (e.g., GitHub trending repos, lead lists, KPI snapshots) into a self-contained HTML dashboard file that uses a flat REPOS array + archive arrays pattern.
+description: Update an existing HTML dashboard template with a new batch of scraped data. Use when a recurring job or cron task needs to insert new data (e.g., GitHub trending repos, lead lists, KPI snapshots) into a self-contained HTML dashboard that uses a BATCHES object with batch tabs architecture.
 version: 1.0.0
 author: Brock / Hermes Agent
 license: MIT
@@ -18,36 +18,51 @@ Typical trigger: a cron job or scheduled task that scrapes a data source (GitHub
 
 ## Expected Dashboard Template Pattern
 
-The GitHub AI dashboard uses a flat REPOS array + archive arrays pattern, NOT a BATCHES object. The actual structure:
+As of August 2026, the GitHub AI dashboard uses a **multi-batch BATCHES object** architecture. Each batch is a named key (e.g., `"20260803"`) with its own `repos` array and `label`. Batch tabs let users switch between weeks. Within each batch, sort tabs (Trending Now, Most Starred, Fastest Growing) are views that sort the same data differently — no `signal` prefix filtering needed.
 
 ```
-<div class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('trending')">Trending Today</button>
-  <button class="tab-btn" onclick="switchTab('growing')">Fastest Growing</button>
-  <button class="tab-btn" onclick="switchTab('starred')">Most Starred</button>
-  <button class="tab-btn" onclick="switchTab('archive')">Archive</button>
+<!-- Batch tabs (week selector) -->
+<div class="tabs" id="batch-tabs">
+  <button class="tab-btn active" onclick="switchBatch('20260803')">03 Aug 2026</button>
+  <button class="tab-btn" onclick="switchBatch('20260727')">27 Jul 2026</button>
 </div>
 
-<div class="tab-panel active" id="tab-trending"><div class="card-grid" id="grid-trending"></div></div>
-<div class="tab-panel" id="tab-growing"><div class="card-grid" id="grid-growing"></div></div>
-<div class="tab-panel" id="tab-starred"><div class="card-grid" id="grid-starred"></div></div>
-<div class="tab-panel" id="tab-archive"><!-- archive sections --></div>
+<!-- Sort tabs (view selector for the active batch) -->
+<div class="tabs" id="sort-tabs">
+  <button class="tab-btn active" onclick="switchTab('trending')">Trending Now</button>
+  <button class="tab-btn" onclick="switchTab('starred')">Most Starred</button>
+  <button class="tab-btn" onclick="switchTab('growing')">Fastest Growing</button>
+</div>
+
+<div id="panel-trending" class="tab-panel active"></div>
+<div id="panel-starred" class="tab-panel"></div>
+<div id="panel-growing" class="tab-panel"></div>
 
 <script>
-const REPOS = [ ... ];  // flat array, all repos. Each has a "signal" field like "Trending today #1"
+var BATCHES = {
+  "20260803": {
+    label: "Week of 03 August 2026",
+    repos: [ ... ]   // full repo objects with name, description, stars, growth, growthLabel, url, category, whyMatters
+  },
+  "20260727": {
+    label: "Week of 27 July 2026",
+    repos: [ ... ]
+  }
+};
 
-const ARCHIVE_WEEK1 = [ ... ];  // previous week's repos, compact format
-const ARCHIVE_WEEK2 = [ ... ];
-const ARCHIVE_WEEK3 = [ ... ];
-
-// Tabs populated by filtering REPOS by signal prefix:
-renderTab('trending', REPOS.filter(r => r.signal.indexOf('Trending today') === 0));
-renderTab('growing', REPOS.filter(r => r.signal.indexOf('Fastest growing') === 0));
-renderTab('starred', REPOS.filter(r => r.signal.indexOf('Most starred') === 0));
+// Tabs populated by sorting the active batch's repos differently:
+function refreshDisplay() {
+  var batch = BATCHES[currentBatchId];
+  var repos = batch.repos;
+  // Sort by growth for trending, by stars for starred, by growth for growing
+  document.getElementById('panel-trending').innerHTML = renderPanel(repos, function(a, b) { return b.growth - a.growth; });
+  document.getElementById('panel-starred').innerHTML = renderPanel(repos, function(a, b) { return b.stars - a.stars; });
+  document.getElementById('panel-growing').innerHTML = renderPanel(repos, function(a, b) { return b.growth - a.growth; });
+}
 </script>
 ```
 
-**Key insight:** The tabs are VIEWS onto a single flat REPOS array, not separate data containers. Each repo has a `signal` field that determines which tab it appears in. The archive is a separate data structure with compact entries.
+**Key insight:** Each batch is a self-contained data container. Sort tabs are VIEWS that sort the same data differently. No `signal` prefix strings, no ARCHIVE_WEEK arrays — old batches live as additional keys in the BATCHES object. Adding a new week means adding a new key to BATCHES and a new batch tab button.
 
 ## Workflow
 
@@ -91,57 +106,74 @@ For HN and PH, use `browser_navigate` to check front pages. If Firecrawl search 
 
 ### 2. Build the batch JSON
 
-Create a batch file at the expected path (e.g., `batch_YYYYMMDD.json`). Each repo entry should include:
+Create a batch file at `/Users/jc/Desktop/hermes_builds/github-ai-dashboard/batch_YYYYMMDD.json`. Each repo entry should include:
 
 ```json
 {
-  "name": "owner/repo",
-  "description": "Short description",
-  "stars": 12345,
-  "growth": "+X,XXX this week",
-  "url": "https://github.com/owner/repo",
-  "why": "1-2 sentences connecting this repo to Jared's work (PerformOS, Accor Plus, AgentOS, or his agent ecosystem)",
-  "signal": "Trending #N this week"
+  "date": "2026-08-03",
+  "batchId": "20260803",
+  "label": "Week of 03 August 2026",
+  "repos": [
+    {
+      "name": "owner/repo",
+      "description": "Short description",
+      "language": "Python",
+      "stars": 12345,
+      "growth": 5678,
+      "growthLabel": "5,678 stars this week",
+      "url": "https://github.com/owner/repo",
+      "category": "AI Agents",
+      "whyMatters": "1-2 sentences connecting this repo to Jared's work (PerformOS, Accor Plus, AgentOS, or his agent ecosystem)",
+      "hnRank": null,
+      "phUpvotes": null
+    }
+  ],
+  "totalStars": 342006,
+  "totalGrowth": 58048,
+  "categories": ["AI Agents", "Developer Tools & Infra", "LLMs & Foundation Models", "Data & Analytics"],
+  "topCategory": "AI Agents"
 }
 ```
 
-Also include a `cross_signals` object noting any HN ranking or Product Hunt upvotes for repos that appear on those platforms.
+Key fields:
+- `growth` and `stars` are NUMBERS for sorting, not strings
+- `growthLabel` is the display string (e.g., "8,217 stars this week")
+- `category` is used for badges in the UI
+- `hnRank` and `phUpvotes` are null when no cross-reference match is found
 
 ### 3. Read the existing dashboard HTML
 
 Read the full HTML file. Identify:
-- The current REPOS array (flat array of all repos with `signal` fields)
-- The ARCHIVE_WEEK1, ARCHIVE_WEEK2, ARCHIVE_WEEK3 arrays
-- The timestamp in the header
-- The archive section titles and date labels
+- The current BATCHES object and its keys (e.g., `"20260803"`, `"20260727"`)
+- The batch tabs section (`#batch-tabs`) — list of `<button>` elements with `switchBatch()` calls
+- The sort tabs section (`#sort-tabs`) — should always be "Trending Now", "Most Starred", "Fastest Growing"
+- The header timestamp (`.header-meta`)
 
-### 4. Update the HTML — full file rewrite
+### 4. Update the HTML — targeted patching
 
-Because the REPOS array is a single flat array that feeds all three tabs via `signal` prefix filtering, targeted patching is error-prone. **Rewrite the entire HTML file** using `write_file`:
+With the BATCHES architecture, **targeted patching** is the preferred approach. The file is small enough that individual patches are safer than a full rewrite:
 
-1. Replace the REPOS array with the new batch's repos
-2. Shift old REPOS data into ARCHIVE_WEEK1 (compact format: name, stars, growth, date)
-3. Shift old ARCHIVE_WEEK1 to ARCHIVE_WEEK2
-4. Shift old ARCHIVE_WEEK2 to ARCHIVE_WEEK3 (add a new archive section div if needed)
-5. Update the timestamp in `.timestamp` and `.section-header` to the current date
-6. Update the repo count in the timestamp text
+1. **Add the new batch tab button** to the `#batch-tabs` div: insert a new `<button class="tab-btn active" onclick="switchBatch('YYYYMMDD')">DD Mon YYYY</button>` as the first button, and remove `active` from the previously active button.
 
-**Archive chip format:**
-```javascript
-{"name": "owner/repo", "stars": 12345, "growth": "+X,XXX stars/week", "date": "DD Month"}
-```
+2. **Add the new batch to the BATCHES object**: insert a new key at the top of the BATCHES object with the new batch's label and repos array.
 
-Keep all CSS and tab-switching JavaScript unchanged.
+3. **Update the header timestamp**: patch `.header-meta` to the new week.
+
+4. **Set the new batch as active**: ensure `var currentBatchId = "YYYYMMDD";` points to the new batch.
+
+All CSS, tab-switching JavaScript (`switchBatch`, `switchTab`, `refreshDisplay`, `renderCard`, `renderPanel`), and sort-tab structure remain unchanged.
 
 ### 5. Verify
 
 After writing, read the file back and verify:
-- The new REPOS array contains 14 repos with correct `signal` prefixes
-- ARCHIVE_WEEK1 now holds last week's repos (compact format)
-- ARCHIVE_WEEK2 and ARCHIVE_WEEK3 are shifted correctly
-- The timestamp is updated to the current date
-- The archive section titles match the shifted dates
-- Tab nav buttons are unchanged (always the same four tabs)
+- The new batch key exists in BATCHES with 15 repos
+- Each repo has `name`, `description`, `stars`, `growth`, `growthLabel`, `url`, `category`, `whyMatters`
+- The batch tab button for the new week is present and has `class="tab-btn active"`
+- The previous batch's tab button no longer has `active`
+- `currentBatchId` is set to the new batch's key
+- The `.header-meta` text shows the new week
+- Sort-tab buttons are unchanged
+- All three panel divs exist with the correct IDs
 
 ## Cross-signal badge logic
 
@@ -159,11 +191,10 @@ After scraping GitHub trending, check HN and Product Hunt for the same repos:
 
 ## Pitfalls
 
-- **Firecrawl may run out of credits.** Always have the browser-based DOM scraping fallback ready. The `browser_navigate` + `browser_console` with JavaScript extraction pattern is proven and reliable for GitHub trending.
-- **GitHub trending page shows 14 repos, not 25.** The `querySelectorAll('article')` returns exactly 14 articles on the trending page. Don't expect 25 or try to scroll-infinite-load more — there aren't any more.
-- **Use href for repo names, not textContent.** The `h2 > a` textContent has whitespace artifacts (e.g., `"Nutlope /\n\n      hallmark"`). Extract the clean name from the href attribute: `href.replace(/^\//, '')`.
-- **Rewrite the entire HTML file, don't patch.** The flat REPOS array + archive shift pattern makes targeted patching too fragile. A full `write_file` is safer and the file is small (~20KB).
-- **Keep the CSS and JS identical.** Only the REPOS array, ARCHIVE arrays, and timestamp text change. Don't touch the styles or tab-switching logic.
-- **Archive entries are compact.** Not full repo objects. Just `name`, `stars`, `growth`, `date` for the archive chips.
-- **HN and PH cross-reference is best-effort.** When Firecrawl search is also unavailable, cross-reference is limited to front-page-only scanning via browser. Note this in the batch JSON's `notes` field.
-- **Match the existing format exactly.** The `growth` field format is `"+X,XXX stars this week"` or `"+X,XXX stars/week"` in archives. The `signal` field format is `"Trending today #N"`, `"Fastest growing #N"`, or `"Most starred #N"`.
+- **Firecrawl may run out of credits.** Always be aware of the browser-based DOM scraping fallback. The `browser_navigate` + `browser_console` with JavaScript extraction pattern works for GitHub trending when Firecrawl is unavailable.
+- **Use `patch` tool for targeted edits, not full rewrites.** The BATCHES architecture makes targeted patches clean: add a batch tab button, insert the new BATCHES key, update the header timestamp, and update `currentBatchId`. Four small patches are safer than one full file write.
+- **Do NOT touch the JavaScript functions.** `switchBatch`, `switchTab`, `refreshDisplay`, `renderCard`, `renderPanel` stay the same across updates. Only the data (BATCHES object) and batch tab buttons change.
+- **`growth` and `stars` are numbers, not strings.** The sort functions (`b.growth - a.growth`) depend on numeric comparisons. `growthLabel` is the display string.
+- **HN and PH cross-reference is best-effort.** Direct repo matches on HN/PH front pages are rare. Most weeks return empty `hnRank` and `phUpvotes`. Note scraping limitations in the batch JSON metadata.
+- **GitHub trending returns up to 25 repos per page.** Firecrawl with JSON schema reliably extracts all 25. The dashboard targets the top 15.
+- **Use `maxAge` for Firecrawl when data freshness is less critical.** Cached scrapes are faster and use fewer credits.
