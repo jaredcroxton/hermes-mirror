@@ -113,6 +113,18 @@ find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}/REDAC
 if grep -RIn --exclude-dir=.git "$APIFY_PREFIX" .; then
   exit 1
 fi
+
+# Redact common public-mirror token patterns and sensitive YAML key values.
+git ls-files -z | while IFS= read -r -d '' f; do
+  if [ -f "$f" ] && [ ! -L "$f" ]; then
+    perl -0pi -e 's/ghp_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_TOKEN/g; s/github_pat_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_PAT/g; s/sk-[A-Za-z0-9_-]{20,}/REDACTED_API_KEY/g; s/xox[baprs]-[A-Za-z0-9-]{20,}/REDACTED_SLACK_TOKEN/g; s/AIza[0-9A-Za-z_-]{20,}/REDACTED_GOOGLE_API_KEY/g' "$f"
+  fi
+done
+git ls-files -z '*.yaml' '*.yml' | while IFS= read -r -d '' f; do
+  if [ -f "$f" ] && [ ! -L "$f" ]; then
+    perl -0pi -e 's/^([ \t]*[A-Za-z0-9_.-]*(?:API_KEY|TOKEN|SECRET|PASSWORD|PRIVATE_KEY|CLIENT_SECRET|ACCESS_TOKEN|REFRESH_TOKEN)[A-Za-z0-9_.-]*:[ \t]*).+$/\1REDACTED/gmi' "$f"
+  fi
+done
 ```
 
 ### 8. Update memory export
