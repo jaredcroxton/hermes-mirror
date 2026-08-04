@@ -100,14 +100,19 @@ fi
 
 ### 7. Redact secrets
 
-Strip Apify API tokens from all YAML files. Verify no tokens remain before committing.
+Strip Apify API tokens and the literal Apify token prefix from every tracked mirror file, not just YAML. Verify the public mirror contains no literal Apify token prefix anywhere before committing. Build the prefix from two shell fragments in the script so the skill itself does not reintroduce the public-scan string.
 
 ```bash
 cd /tmp/hermes-mirror-backup
-find . \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i '' 's/REDACTED_APIFY_PREFIX_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
-# Verify no live tokens remain in config files only (ignore .md/.json doc examples)
-find . \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "REDACTED_APIFY_PREFIX_" {} \; 2>/dev/null | grep -v REDACTED
-# Should produce no output — if it does, stop and investigate
+APIFY_PREFIX='apify''_api_'
+# Redact full tokens first.
+find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}[a-zA-Z0-9]{30,}/REDACTED_APIFY_TOKEN/g" {} \;
+# Then redact the token prefix in docs, archived cron prompts, and examples so the final mirror scan is clean.
+find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}/REDACTED_APIFY_PREFIX_/g" {} \;
+# Verify no literal Apify token prefix remains anywhere in the mirror.
+if grep -RIn --exclude-dir=.git "$APIFY_PREFIX" .; then
+  exit 1
+fi
 ```
 
 ### 8. Update memory export
@@ -132,10 +137,10 @@ fi
 - **Stale non-git directory:** The pattern `git clone X || (cd X && git pull)` fails when the directory exists but is not a git repo. Always `rm -rf` first for cron safety.
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
-- **Leaked tokens:** The Apify token regex `REDACTED_APIFY_PREFIX_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
+- **Leaked tokens:** Build the Apify token prefix from shell fragments, redact both full tokens and the prefix across the entire mirror tree, then grep-check the whole mirror. Silent redaction commands are not evidence of clean output.
 - **`rsync` without `--delete` fails on structure conflicts:** The mirror can diverge from the source in two directions: (1) mirror has flat files, source has directories (skill upgraded from single SKILL.md to directory with `references/`); (2) mirror has directories with files, source has symlinks (skill migrated to a symlinked package). Both produce "Directory not empty" or "Not a directory" errors with plain `rsync -a`. Use `rsync -a --delete` — it replaces any stale structure with the current source form cleanly.
 - **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
-- **False-positive grep matches:** The `REDACTED_APIFY_PREFIX_` pattern appears in documentation files (this SKILL.md itself, references under `github/github-repo-management/`, and other skills that document the redaction pattern). When verifying, scope the grep to YAML/YML files only (`find . \( -name "*.yaml" -o -name "*.yml" \)`), not the whole repo. Matches in `.md` files are expected documentation artifacts.
+- **Do not accept documentation false positives:** Archived cron prompts and skill reference docs can contain token-prefix examples. Redact those examples in the mirror copy too, otherwise the final public scan will fail and the prefix will be reintroduced every day.
 
 ## What NOT to include
 
