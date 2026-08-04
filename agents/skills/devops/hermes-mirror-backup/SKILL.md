@@ -104,9 +104,9 @@ Strip Apify API tokens from all YAML files. Verify no tokens remain before commi
 
 ```bash
 cd /tmp/hermes-mirror-backup
-find . \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i '' 's/apify_api_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
+find . \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i '' 's/REDACTED_APIFY_PREFIX_[a-zA-Z0-9]\{30,\}/REDACTED_APIFY_TOKEN/g' {} \;
 # Verify no live tokens remain in config files only (ignore .md/.json doc examples)
-find . \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "apify_api_" {} \; 2>/dev/null | grep -v REDACTED
+find . \( -name "*.yaml" -o -name "*.yml" \) -exec grep -l "REDACTED_APIFY_PREFIX_" {} \; 2>/dev/null | grep -v REDACTED
 # Should produce no output — if it does, stop and investigate
 ```
 
@@ -132,10 +132,10 @@ fi
 - **Stale non-git directory:** The pattern `git clone X || (cd X && git pull)` fails when the directory exists but is not a git repo. Always `rm -rf` first for cron safety.
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
-- **Leaked tokens:** The Apify token regex `apify_api_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
+- **Leaked tokens:** The Apify token regex `REDACTED_APIFY_PREFIX_[a-zA-Z0-9]{30,}` must be verified with a follow-up grep. Silent failures on the sed command (e.g., no matches) are not evidence of clean output — always grep-check after redaction.
 - **`rsync` without `--delete` fails on structure conflicts:** The mirror can diverge from the source in two directions: (1) mirror has flat files, source has directories (skill upgraded from single SKILL.md to directory with `references/`); (2) mirror has directories with files, source has symlinks (skill migrated to a symlinked package). Both produce "Directory not empty" or "Not a directory" errors with plain `rsync -a`. Use `rsync -a --delete` — it replaces any stale structure with the current source form cleanly.
 - **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
-- **False-positive grep matches:** The `apify_api_` pattern appears in documentation files (this SKILL.md itself, references under `github/github-repo-management/`, and other skills that document the redaction pattern). When verifying, scope the grep to YAML/YML files only (`find . \( -name "*.yaml" -o -name "*.yml" \)`), not the whole repo. Matches in `.md` files are expected documentation artifacts.
+- **False-positive grep matches:** The `REDACTED_APIFY_PREFIX_` pattern appears in documentation files (this SKILL.md itself, references under `github/github-repo-management/`, and other skills that document the redaction pattern). When verifying, scope the grep to YAML/YML files only (`find . \( -name "*.yaml" -o -name "*.yml" \)`), not the whole repo. Matches in `.md` files are expected documentation artifacts.
 
 ## What NOT to include
 
