@@ -142,9 +142,10 @@ nano-pdf edit contract.pdf 2 "Change the client name from 'Acme Corp' to 'Acme I
 ## Pitfalls
 
 1. **Do not use AppleScript for document content.** Shell interpretation of `&`, quotes, and special characters causes fragile scripts. Use python-docx instead.
-2. **pip install if missing.** If `python-docx` is not installed: `pip3 install python-docx`
-3. **Verify Word is installed** before writing: `ls /Applications/Microsoft\ Word.app`
-4. **Launch Word first** if it's not already running: `open -a "Microsoft Word"`
+pip3 install python-docx
+3. **Verify Word is installed** before writing: `ls /Applications/Microsoft Word.app`
+4. **Launch Word first** if it's not already running.
+5. **No em dashes in document content.** Jared never uses em dashes. Replace with commas, full stops, or colons. Check all body text before saving.
 
 ## Reference files
 

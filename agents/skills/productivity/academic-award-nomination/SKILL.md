@@ -91,6 +91,21 @@ Most university awards require endorsement from a Dean of School or Director. Th
 - If not, the month before the deadline should include deliberate outreach to unit coordinators
 - The endorsement is not a formality — it is a gate. Plan for it.
 
+## Self-nomination voice
+
+Self-nominations are written in **first person** ("I applied...", "I led..."). Third person is only for nominations written by someone else. If the user is self-nominating, never default to third person. Ask once if unclear, then use the voice the user confirms.
+
+## Employer reference letter rules
+
+When drafting a reference letter for an employer to sign:
+- **Only include what the signatory can personally attest to.** Do not mention side ventures, external study, personal projects, or anything the employer did not witness firsthand.
+- Keep it to the role, the promotion, the observed application of learning, and character.
+- VP of People and Culture is the natural signatory for career/employability awards over VP of Operations.
+
+## Content removal rule
+
+If the nominee asks to remove specific content (a workshop, course, venture, product), remove it immediately. Do not argue. Do not suggest it still has value. The nominee knows what belongs in their own story. This applies equally to personal disclosures (see disclosure framework below) and professional content.
+
 ## Quality gates
 
 Before finalising:
@@ -101,6 +116,8 @@ Before finalising:
 5. The endorsement pathway is identified
 6. Award-specific word counts are respected
 7. No personal disclosures the nominee is uncertain about
+8. No em dashes anywhere in the final text
+9. No content the nominee requested be removed
 
 ## Reference files
 

@@ -24,7 +24,7 @@ import json, urllib.request
 from pathlib import Path
 profile = '<profile>'
 p = Path.home()/f'.hermes/profiles/{profile}/.env'
-token = REDACTED
+token = next(line.split('=', 1)[1].strip() for line in p.read_text().splitlines() if line.startswith('TELEGRAM_BOT_TOKEN='))
 with urllib.request.urlopen(f'https://api.telegram.org/bot{token}/getMe', timeout=20) as r:
     data = json.load(r)
 print({'ok': data.get('ok'), 'username': data.get('result', {}).get('username')})
@@ -85,7 +85,7 @@ p = Path.home()/f'.hermes/profiles/{profile}/.env'
 lines = p.read_text().splitlines()
 def get(k):
     return next((line.split('=', 1)[1].strip() for line in lines if line.startswith(k+'=')), '')
-token = REDACTED
+token = get('TELEGRAM_BOT_TOKEN')
 chat = get('TELEGRAM_HOME_CHANNEL') or get('TELEGRAM_ALLOWED_USERS')
 body = urllib.parse.urlencode({'chat_id': chat, 'text': 'Gateway test: I am back online. Please reply Who are you?'}).encode()
 with urllib.request.urlopen(f'https://api.telegram.org/bot{token}/sendMessage', data=body, timeout=20) as r:

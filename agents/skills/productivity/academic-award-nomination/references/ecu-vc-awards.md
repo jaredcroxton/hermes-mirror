@@ -1,4 +1,10 @@
-# ECU Vice-Chancellor's Student Awards
+## ECU Vice-Chancellor's Student Awards
+
+### Category evolution
+
+The 2024 and 2025 awards only had three categories: Contribution to University Life, Community Engagement, and Reconciliation. Career Ready Employability, Outstanding Research, and Research Impact were introduced in 2026. This means Career Ready Employability has no previous winners to benchmark against. The nomination is setting the template for future cohorts.
+
+
 
 ## Award details
 

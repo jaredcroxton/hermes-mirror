@@ -333,7 +333,7 @@ mcp_servers:
     command: npx
     connect_timeout: 120
     env:
-      APIFY_TOKEN: REDACTED_APIFY_PREFIX_UxmKA4ecfbgaLQjdBWgqdWLhwSVvve4vp4Ii
+      APIFY_TOKEN: REDACTED_APIFY_TOKEN
     timeout: 300
   zapier:
     args:
