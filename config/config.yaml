@@ -1,7 +1,8 @@
 model:
-  base_url: ''
-  default: gpt-5.5
-  provider: openai-codex
+  base_url: https://openrouter.ai/api/v1
+  default: nvidia/nemotron-3-ultra-550b-a55b:free
+  provider: openrouter
+  api_mode: chat_completions
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}
@@ -146,7 +147,7 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
     download_timeout: 30
@@ -154,42 +155,42 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 360
     extra_body: {}
   compression:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
   skills_hub:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   approval:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   mcp:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   title_generation:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
     language: ''
@@ -197,53 +198,53 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 30
     extra_body: {}
   triage_specifier:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
   kanban_decomposer:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 180
     extra_body: {}
   profile_describer:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 60
     extra_body: {}
   curator:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 600
     extra_body: {}
   monitor:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 60
     extra_body: {}
   background_review:
     provider: auto
     model: ''
     base_url: ''
-    api_key: REDACTED
+    api_key: ''
     timeout: 120
     extra_body: {}
   image_gen:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     model: ''
     provider: auto
@@ -304,15 +305,15 @@ display:
   tool_progress: all
 dashboard:
   theme: default
-  show_token_analytics: REDACTED
+  show_token_analytics: false
   oauth:
     client_id: ''
     portal_url: ''
   basic_auth:
     username: ''
-    password_hash: REDACTED
-    password: REDACTED
-    secret: REDACTED
+    password_hash: ''
+    password: ''
+    secret: ''
     session_ttl_seconds: 0
   public_url: ''
 privacy:
@@ -386,7 +387,7 @@ delegation:
   model: ''
   provider: ''
   base_url: ''
-  api_key: REDACTED
+  api_key: ''
   api_mode: ''
   inherit_mcp_toolsets: true
   max_iterations: 50
@@ -502,7 +503,7 @@ hooks_auto_accept: false
 personalities: {}
 security:
   allow_private_urls: false
-  redact_secrets: REDACTED
+  redact_secrets: true
   tirith_enabled: true
   tirith_path: tirith
   tirith_timeout: 5
@@ -589,7 +590,7 @@ x_search:
 secrets:
   bitwarden:
     enabled: false
-    access_token_env: REDACTED
+    access_token_env: BWS_ACCESS_TOKEN
     project_id: ''
     cache_ttl_seconds: 300
     override_existing: true
@@ -601,9 +602,9 @@ paste_collapse_char_threshold: 2000
 computer_use:
   cua_telemetry: false
 _config_version: 30
-EMAIL_ADDRESS: REDACTED
-EMAIL_ALLOWED_USERS: REDACTED
-EMAIL_PASSWORD: REDACTED
+EMAIL_ADDRESS: jaredcroxton@gmail.com
+EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
+EMAIL_PASSWORD: mfqu sucs sncr ysbh
 known_plugin_toolsets:
   cli:
   - spotify
@@ -615,7 +616,7 @@ mcp_servers:
     command: npx
     enabled: true
     env:
-      FIRECRAWL_API_KEY: REDACTED
+      FIRECRAWL_API_KEY: fc-9293f5fd8c524a10ade16e671c670a7e
 platform_toolsets:
   cli:
   - browser
