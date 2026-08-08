@@ -7,6 +7,17 @@
 - **Elo Rating:** 1269 (beats Google Veo 3, OpenAI Sora 2, Runway Gen-4.5)
 - **Architecture:** Multimodal audio-video joint generation
 
+## Seedance 2.5 (Released July 2026) — Key Upgrades
+- **Duration:** Up to 30 seconds single generation (was 15s)
+- **Multi-modal references:** Up to 50 (images, video, audio) — was 12 total
+- **Region-level editing:** Regenerate only a specific section of a clip
+- **Native audio sync:** Dialogue, SFX, music baked in with lip-sync
+- **Tempo shifts mid-clip:** Can change pacing inside one generation
+- **Persistent characters across sessions:** Via reference system
+- **Prompt adherence:** +20% over 2.0
+- **Scene changes:** Handle scene changes inside a single generation while character, lighting, camera stay consistent
+- **Platforms:** Higgsfield.ai, fal.ai API, OpenArt.ai, SeaDance.io, Imagine.Art, Neural4D
+
 ## Inputs
 | Type | Limit | Notes |
 |---|---|---|
@@ -20,7 +31,7 @@
 | Spec | Value |
 |---|---|
 | Resolution | 720p native (upscale to 4K post-generation) |
-| Duration | 4 to 15 seconds per clip |
+| Duration | 4 to 30 seconds per clip (2.5: up to 30s single gen) |
 | Aspect ratios | 21:9, 16:9, 4:3, 1:1, 3:4, 9:16 |
 | Audio | Native co-generation — lip-sync, music, SFX, dialogue, ambient |
 | Format | MP4 |
@@ -51,6 +62,43 @@
 | Limitation | Detail | Workaround |
 |---|---|---|
 | **No realistic human faces** | Identifiable faces blocked entirely. Use Seedance 1.5 Pro, Kling, or Veo 3.1 for people. | Product-only spectacle. Layer real human footage in post. |
+| **Best for scenes/architecture/environments** | Excels at products, spaces, abstract visuals. Struggles with realistic people. | Lean into the strength. Build worlds, not characters. |
+| **720p native** | Upscale to 4K post-generation inside Higgsfield. | Factor upscale step into production timeline. |
+
+## Seedance 2.5 Specific Capabilities (Added August 2026)
+
+| Capability | Description | Use Case |
+|---|---|---|
+| **30-second single generation** | One continuous clip, no stitching needed | Full narrative beats, multi-shot sequences |
+| **Up to 50 multi-modal references** | Images, video clips, audio files | Complex character consistency, brand asset libraries |
+| **Region-level editing** | Regenerate only a specific section | Fix hands, faces, background elements without full re-roll |
+| **Native audio sync** | Lip-sync, music, SFX, dialogue co-generated | Character speaking, synced action + sound |
+| **Tempo shifts mid-clip** | Change pacing inside one generation | Slow build → fast action → slow resolution |
+| **Scene changes in single gen** | Character/lighting/camera consistent across scene cuts | Multi-location stories, before/after transformations |
+| **Persistent characters across sessions** | Reference system maintains identity | Series content, recurring characters |
+
+## 2D Anime Generation with Seedance 2.5 (Added August 2026)
+
+**Why Seedance 2.5 works for 2D anime:**
+- No realistic face restriction applies — stylised anime faces are not "identifiable human faces"
+- Consistent character references via @Elements system (upload character sheets)
+- 30-second generations allow full anime scene beats (establish → action → reaction)
+- Native audio sync for dialogue, SFX, OST-style music
+- Region editing fixes common anime issues: hand signs, eye expressions, effect layers
+
+**Prompt pattern for 2D anime:**
+```
+@character_ref as main character, preserve face and outfit exactly + [one concrete action] + [stylised environment] + [one camera move] + [anime lighting: cel-shaded, rim light, limited palette] + [era anchor: 2000s digital / 90s cel / modern hybrid]
+```
+
+**Hard rules for anime:**
+- Under 80 words (same as all Seedance)
+- One camera move per shot
+- Max 2 characters (3+ = face drift even in stylised)
+- No on-screen text — add in CapCut post
+- Reference images first: upload character turnarounds as @Elements before prompting
+- Fast mode for drafts, Standard for keepers
+- 40% keeper rate target
 | **Best for scenes/architecture/environments** | Excels at products, spaces, abstract visuals. Struggles with realistic people. | Lean into the strength. Build worlds, not characters. |
 | **720p native** | Upscale to 4K post-generation inside Higgsfield. | Factor upscale step into production timeline. |
 
