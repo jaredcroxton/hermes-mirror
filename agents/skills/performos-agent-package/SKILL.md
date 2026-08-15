@@ -518,9 +518,11 @@ Jared's Vercel project is under `jaredcroxtons-projects`.
 - **Never include internal costs in client-facing documents.** When Jared says "this is the external one" — strip ALL cost data. Only the package price ($4,995/mo) and setup fee ($3,000) belong in the client document.
 - **Never name Obsidian in client documents.** The client does not need to know the specific tools used for local infrastructure. Use generic professional language.
 
-## Crew vs AgentOS — Two Separate Platforms (14 June 2026)
+**Crew vs AgentOS — Two Separate Platforms (14 June 2026)**
 
 PerformOS sells **two distinct platforms** with the same agent souls, different runtimes:
+
+**CREW local-first privacy positioning:** when explaining CREW against cloud chatbot uploads, use `references/crew-local-first-privacy-language.md`. Default language is "local-first, controlled access, no bulk upload." Do not say "nothing goes overseas" unless the model, tool calls, telemetry, logs, integrations, and inference path are confirmed local or approved. For Claude Code with a cloud model, frame it as locally staged and selectively processed, not zero offshore processing.
 
 | | Crew | AgentOS |
 |---|---|---|

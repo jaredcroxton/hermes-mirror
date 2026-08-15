@@ -78,6 +78,10 @@ For PerformOS specifically:
 
 ## The AI + Real Pairing Rule
 
+Every AI video campaign must have real-content companion pieces.
+
+**AI privacy to CREW authority pattern:** when Jared wants to connect Australian AI/privacy obligations to CREW, use `references/ai-privacy-to-crew-video-pattern.md`. Structure it as a two-part short-form sequence: Part one creates the disclosure/control problem, Part two positions CREW as local-first controlled access. Do not claim CREW makes a client compliant, and do not claim nothing goes overseas unless the setup is confirmed fully local.
+
 Every AI video campaign must have real-content companion pieces. Seedance carries the spectacle and builds the world. Jared's face, voice, and actual products on screen carry the trust. Never ship an AI-only campaign. Include real-content filming days in the production calendar.
 
 ## The 8-Second Standalone Clip Format

@@ -62,49 +62,49 @@ approvals:
   timeout: 60
 auxiliary:
   approval:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   compression:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 120
   curator:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 600
   kanban_decomposer:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 180
   mcp:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   profile_describer:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 60
   session_search:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     max_concurrency: 3
@@ -112,28 +112,28 @@ auxiliary:
     provider: auto
     timeout: 30
   skills_hub:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   title_generation:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   triage_specifier:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 120
   vision:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     download_timeout: 30
     extra_body: {}
@@ -141,7 +141,7 @@ auxiliary:
     provider: auto
     timeout: 120
   web_extract:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     extra_body: {}
     model: ''
@@ -213,10 +213,10 @@ curator:
   min_idle_hours: 2
   stale_after_days: 30
 dashboard:
-  show_token_analytics: false
+  show_token_analytics: REDACTED
   theme: default
 delegation:
-  api_key: ''
+  api_key: REDACTED
   api_mode: ''
   base_url: ''
   child_timeout_seconds: 600
@@ -398,7 +398,7 @@ security:
   acked_advisories: []
   allow_lazy_installs: true
   allow_private_urls: false
-  redact_secrets: true
+  redact_secrets: REDACTED
   tirith_enabled: true
   tirith_fail_open: true
   tirith_path: tirith

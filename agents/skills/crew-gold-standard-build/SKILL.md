@@ -121,6 +121,27 @@ Style skills must fail in two opposite directions with named verdict axes. The "
 
 After every ultracode build, run 3 independent lenses: harness-compliance, leak/ban audit, senior-domain-engineer content critique. Apply sharp refinements before smoke QA.
 
+## Concept, audit, edit, and release mode boundaries
+
+When Jared asks to understand a concept, do not convert the discussion into CREW edits. Discovery is not permission to modify a working product.
+
+Use four explicit modes:
+
+- **Concept mode:** explain only. No repo inspection unless Jared asks for it.
+- **Audit mode:** inspect and report only. No file changes.
+- **Edit mode:** change only the named files after explicit approval.
+- **Release mode:** version, QA, commit, push, or install only after explicit approval.
+
+If a concept lens surfaces possible CREW defects, stop at findings first. Give Jared the risk, the evidence, the blast radius, and the reversible options. Do not patch skills, QA, Handoffs, or play libraries until he explicitly chooses an edit scope.
+
+For accidental overreach, stabilise in this order: stop all edits, list every changed file, revert untested system-level changes first, reduce to the smallest safe diff, and leave the work uncommitted until Jared decides.
+
+## Play-library correction guardrail
+
+For `crew-core-using-crew/references/plays.md`, low-risk corrections are allowed only when they are one-file play-library fixes backed by the existing skill contracts. Examples: a chain step that runs before the skill it explicitly pulls from, or a brand voice check that runs before draft copy exists.
+
+Do not bundle play-library fixes with Handoffs audits, QA harness changes, graph checkers, schedulers, version bumps, installs, or pushes. Save them separately, preferably on a local branch, after verifying `git status --short` shows only `plays.md` and `git diff --check` passes.
+
 ## Engine-over-mass-patch principle (30 June 2026)
 
 When a fix affects 3+ skills in the same pack, fix the engine first. Do not patch each skill individually.
