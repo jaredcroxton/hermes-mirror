@@ -16,7 +16,7 @@ agent:
   image_input_mode: auto
   max_turns: 90
   parallel_tool_call_guidance: true
-  reasoning_effort: high
+  reasoning_effort: medium
   restart_drain_timeout: 180
   service_tier: ''
   task_completion_guidance: true
@@ -416,9 +416,9 @@ memory:
   user_profile_enabled: true
   write_approval: false
 model:
-  base_url: https://chatgpt.com/backend-api/codex
-  default: gpt-5.5
-  provider: openai-codex
+  base_url: ''
+  default: deepseek-v4-pro
+  provider: deepseek
 model_catalog:
   enabled: true
   providers: {}

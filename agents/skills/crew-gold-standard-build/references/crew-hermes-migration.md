@@ -1,5 +1,7 @@
 # CREW to Hermes Agent — Complete Migration
 
+> **OwnerOS v5 warning, 16 August 2026:** This reference is historical for the old full Hermes migration pattern. Do **not** use its `mkdir -p ~/.hermes/crew-state` or `sed` path-rewrite commands for OwnerOS v5, CREW workshop rollout, Personas, Workforce, or the one-brain demo. OwnerOS v5 keeps the shared cabinet at `~/.claude/crew-state/`. Rewriting skills to `~/.hermes/crew-state/` breaks the one-brain design and can mangle absolute paths. For OwnerOS v5, use `references/owneros-v5-crew-hermes-rollout.md`.
+
 Proven on a fresh Mac Mini (28 June 2026) with zero prior state.
 93 gold-standard skills across 14 packs, fully installed and tested.
 

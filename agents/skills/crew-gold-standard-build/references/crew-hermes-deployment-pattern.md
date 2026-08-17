@@ -1,6 +1,10 @@
 # CREW on Hermes — Deployment Pattern
 
-Proven on Mac Mini fresh install, 28 June 2026. 93 skills across 14 packs, deployed to Hermes Agent with profile-backed pack agents and Kanban orchestration.
+> **OwnerOS v5 warning, 16 August 2026:** This reference contains the old full Hermes migration pattern. Do **not** use any `sed` command that rewrites `.claude/crew-state/` to `~/.hermes/crew-state/` for OwnerOS v5, the CREW workshop rollout, Personas, Workforce, or the one-brain demo. OwnerOS v5 keeps the shared cabinet at `~/.claude/crew-state/`. For the current rollout, use `references/owneros-v5-crew-hermes-rollout.md`.
+
+Proven on Mac Mini fresh install, 28 June 2026.
+
+Proven on Mac Mini fresh install, 28 June 2026. 93 skills across 14 packs, deployed to Hermes Agent with profile-backed pack agents and Kanban orchestration. This is historical guidance, not the default OwnerOS v5 route.
 
 ## Prerequisites
 

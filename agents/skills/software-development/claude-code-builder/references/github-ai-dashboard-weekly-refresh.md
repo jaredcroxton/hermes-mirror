@@ -264,6 +264,8 @@ print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;')
 - All URLs start with `https://github.com/`
 - dashboard.html has zero em dashes
 - dashboard.html contains BATCHES object with the current week's batch key, tab switching functions, and stats row
+- Extract the inline `<script>` block and run `node --check` against it before browser verification. Dashboard rebuilds can pass structural HTML checks while still failing at runtime because Python f-strings corrupt quoted JavaScript selectors such as `querySelector('[onclick="..."]')`.
+- Browser verification confirms JavaScript actually executed: `typeof BATCHES === 'object'`, current batch id is defined, and five `.repo-card` elements render for each signal tab.
 - Previous week's batch data is preserved (not overwritten)
 - New batch tab button exists in `#batch-tabs` for the current week
 - Archive file exists at `archive/repos_YYYY-MM-DD.json`

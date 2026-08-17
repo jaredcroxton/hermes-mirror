@@ -305,11 +305,32 @@ When brand-context.md is created in `~/.claude/crew-state/` (home root) instead 
 
 **Prevention:** Always run Crew skills from the project directory so the relative `.claude/crew-state/` path stays consistent.
 
-## Hermes Agent deployment (28 June 2026)
+## Hermes Agent deployment
 
-CREW skills can run on Hermes Agent with profile-backed pack agents and Kanban orchestration. The full deployment pattern — 14 pack agents, Brock orchestrator, Obsidian SOUL source of truth, Kanban cross-pack chains — is documented in `references/crew-hermes-deployment-pattern.md`.
+CREW skills can run on Hermes Agent, but there are two distinct deployment patterns. Do not collapse them.
 
-Key architectural difference: on Claude Code, Step 0 auto-executes when a skill is invoked. On Hermes, skills are loaded as reference documents. The fix is profile SOULs that instruct the agent to always read brand-context and load relevant skills before working. The context loop (file-based handoffs) is replaced by Kanban card handoffs (`kanban_complete` with summary and metadata).
+### Pattern A: OwnerOS v5 one-brain workshop rollout
+
+Use this when Jared wants OwnerOS, CREW, and Hermes to share one business cabinet. Load `references/owneros-v5-crew-hermes-rollout.md` for the full guardrails before advising or building.
+
+When Jared asks whether OwnerOS is differentiated in the market, load `references/owneros-local-ai-market-positioning.md`. The durable positioning is not "first local AI OS" or "only agent OS". It is: local-first business operations, packaged as a visible owner OS, powered by SOP-backed AI roles.
+
+Short version: read more, delete nothing before the workshop, rewrite nothing in the cabinet, validate before showing, and fallback instead of crashing. Prompts for Hermes demos must name the exact `crew-*` skill and explicitly instruct Step 0 Context Recovery and Final Step Handoff Save.
+
+- Keep CREW memory at `~/.claude/crew-state/`.
+- Do **not** create or rewrite to `~/.hermes/crew-state/`.
+- Install with the CREW installer and `--target`, not manual copy plus `sed`.
+- Verify `~/.hermes/crew-state` is absent before and after.
+- Explicitly invoke the needed CREW skill in Hermes prompts; do not assume Claude Code-style description auto-match.
+- Treat profile wiring as separate: installing into default Hermes does not wire every named profile.
+
+Detailed pattern: `references/owneros-v5-hermes-rollout.md`.
+
+### Pattern B: historical pack-agent Kanban migration
+
+The older pattern — 14 pack agents, Brock orchestrator, Obsidian SOUL source of truth, Kanban cross-pack chains — is documented in `references/crew-hermes-deployment-pattern.md` as historical/specialist guidance. It contains a path-rewrite approach that is wrong for OwnerOS v5. Use it only when the explicit design goal is a separate Hermes cabinet and pack-agent Kanban handoffs.
+
+Key architectural difference: on Claude Code, Step 0 auto-executes when a skill is invoked. On Hermes, skills are loaded as reference documents. Profile SOULs or prompts must instruct the agent to read brand context and load the relevant skills before working.
 
 ## Fresh-install directory gap (27 June 2026)
 

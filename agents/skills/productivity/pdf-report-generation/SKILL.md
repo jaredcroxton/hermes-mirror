@@ -47,6 +47,22 @@ python3 /tmp/build_pdf.py
 
 Use `MEDIA:<path>` to deliver the PDF file directly to the user.
 
+## PerformOS-branded PDFs via HTML + headless Chrome
+
+When the deliverable needs PerformOS brand typography (Instrument Serif / Inter / JetBrains Mono) or embedded screenshots, skip reportlab and render an HTML file to PDF with headless Chrome:
+
+```bash
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+"$CHROME" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf="out.pdf" "file:///path/to/guide.html"
+```
+
+- Brand fonts are installed locally at `~/Library/Fonts/` (InstrumentSerif-Regular.ttf, InstrumentSerif-Italic.ttf, Inter.ttf variable, JetBrainsMono.ttf). Reference with `@font-face src: url('file:///Users/jc/Library/Fonts/<name>.ttf')`. Inter is a variable font, so `font-weight: 100 900` works.
+- Brand tokens: Ivory `#f2efe8`, Ivory Soft `#e8e4da`, Ink `#0a0a0a`, Electric Lime `#d4ff3b`. Ink opacity scale (60/40/12/6%), never hard-coded greys. Headings Instrument Serif, body Inter, labels JetBrains Mono uppercase with 1.5-2px letter-spacing. Wordmark "Perform" roman + "OS" italic.
+- Use `@page { size: A4; margin: 0; }` then each page as `<section class="page">` with `width:210mm; min-height:297mm; padding:20mm 18mm 22mm; page-break-after:always; overflow:hidden` and a per-page absolute footer. Add `print-color-adjust: exact` so backgrounds print.
+- **Pitfall (spillover to blank pages):** `min-height:297mm` + `page-break-after:always` silently creates a near-empty page whenever a section's content exceeds one A4 (the last element spills onto the next page). Detect with `pdfinfo` (page count vs designed page count), then render `pdftoppm -png -r 80 out.pdf page` and vision-check the suspiciously small `.png` files (near-empty pages are ~7-15KB vs ~30-50KB for full pages). Fix by tightening vertical rhythm (lede/callout/code font sizes and paddings) or capping images (`.shot { max-height:60mm }`).
+- Capture real screenshots with headless Chrome: `"$CHROME" --headless=new --disable-gpu --hide-scrollbars --screenshot=img/x.png --window-size=1280,900 "https://url"`. Never fake terminal output; render accurate command/output as styled dark mono blocks and caption them as examples.
+- Verify before shipping: `pdfinfo` for page count, `pdftoppm` + vision for layout, and `grep -n "—" guide.html` plus a forbidden-word grep (platform, suite, all-in-one, revolutionary, game-changer, enterprise-grade, seamless, unlock, leverage) and "sarah" must all return empty.
+
 ## Design conventions
 
 - **Header bar:** Dark background (#1a1a2e), white text, full-width rect at top of page
