@@ -55,12 +55,12 @@ fi
 
 ### 4. Copy agent profile configs
 
-Seven profiles. Copy `config.yaml` only — never `state.db` or `.env`.
+Profile list changes over time — do NOT hardcode it. Derive dynamically from the profiles directory, copying `config.yaml` only (never `state.db` or `.env`).
 
 ```bash
-for profile in bobbuilder laralearning samstudynerd pollyperformos harryhr atticuscounsel nellynotebook; do
-  mkdir -p /tmp/hermes-mirror-backup/agents/profiles/$profile
-  cp /Users/jc/.hermes/profiles/$profile/config.yaml /tmp/hermes-mirror-backup/agents/profiles/$profile/
+for profile in $(ls /Users/jc/.hermes/profiles/); do
+  mkdir -p "/tmp/hermes-mirror-backup/agents/profiles/$profile"
+  cp "/Users/jc/.hermes/profiles/$profile/config.yaml" "/tmp/hermes-mirror-backup/agents/profiles/$profile/config.yaml" 2>/dev/null
 done
 ```
 
