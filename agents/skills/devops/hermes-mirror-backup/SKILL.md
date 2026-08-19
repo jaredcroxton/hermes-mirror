@@ -115,16 +115,13 @@ if grep -RIn --exclude-dir=.git "$APIFY_PREFIX" .; then
 fi
 
 # Redact common public-mirror token patterns and sensitive YAML key values.
-git ls-files -z | while IFS= read -r -d '' f; do
-  if [ -f "$f" ] && [ ! -L "$f" ]; then
-    perl -0pi -e 's/ghp_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_TOKEN/g; s/github_pat_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_PAT/g; s/sk-[A-Za-z0-9_-]{20,}/REDACTED_API_KEY/g; s/xox[baprs]-[A-Za-z0-9-]{20,}/REDACTED_SLACK_TOKEN/g; s/AIza[0-9A-Za-z_-]{20,}/REDACTED_GOOGLE_API_KEY/g' "$f"
-  fi
-done
-git ls-files -z '*.yaml' '*.yml' | while IFS= read -r -d '' f; do
-  if [ -f "$f" ] && [ ! -L "$f" ]; then
-    perl -0pi -e 's/^([ \t]*[A-Za-z0-9_.-]*(?:API_KEY|TOKEN|SECRET|PASSWORD|PRIVATE_KEY|CLIENT_SECRET|ACCESS_TOKEN|REFRESH_TOKEN)[A-Za-z0-9_.-]*:[ \t]*).+$/\1REDACTED/gmi' "$f"
-  fi
-done
+# CRITICAL: use `find` over the WHOLE tree, not `git ls-files`. At this point
+# the freshly copied souls/profiles/skills/config are UNTRACKED, and `git ls-files`
+# only lists tracked/index files — so it would skip them and secrets would be
+# committed on the next `git add -A`. This is exactly how provider API keys in
+# profile config.yaml files leak into the public mirror.
+find . -type f -not -path './.git/*' -exec perl -0pi -e 's/ghp_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_TOKEN/g; s/github_pat_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_PAT/g; s/sk-[A-Za-z0-9_-]{20,}/REDACTED_API_KEY/g; s/xox[baprs]-[A-Za-z0-9-]{20,}/REDACTED_SLACK_TOKEN/g; s/AIza[0-9A-Za-z_-]{20,}/REDACTED_GOOGLE_API_KEY/g' {} \;
+find . -type f -not -path './.git/*' \( -name '*.yaml' -o -name '*.yml' \) -exec perl -0pi -e 's/^([ \t]*[A-Za-z0-9_.-]*(?:API_KEY|TOKEN|SECRET|PASSWORD|PRIVATE_KEY|CLIENT_SECRET|ACCESS_TOKEN|REFRESH_TOKEN)[A-Za-z0-9_.-]*:[ \t]*).+$/\1REDACTED/gmi' {} \;
 ```
 
 ### 8. Update memory export
@@ -150,6 +147,7 @@ fi
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
 - **Leaked tokens:** Build the Apify token prefix from shell fragments, redact both full tokens and the prefix across the entire mirror tree, then grep-check the whole mirror. Silent redaction commands are not evidence of clean output.
+- **`git ls-files` skips freshly copied (untracked) files:** The backup copies souls/profiles/skills/config in as NEW files, untracked until `git add -A`. `git ls-files` only lists tracked/index files, so any token-pattern or YAML-key redaction run over `git ls-files` misses exactly the files that were just copied — including profile `config.yaml` files carrying provider API keys. Run every redaction pass over `find . -not -path './.git/*'` (or `git add -A` first) so untracked files are covered before commit. The main `~/.hermes/config.yaml` is also untracked at redaction time (it is written via `cat >`, not `cp`), so its non-email API keys are only caught by a whole-tree pass.
 - **`rsync` without `--delete` fails on structure conflicts:** The mirror can diverge from the source in two directions: (1) mirror has flat files, source has directories (skill upgraded from single SKILL.md to directory with `references/`); (2) mirror has directories with files, source has symlinks (skill migrated to a symlinked package). Both produce "Directory not empty" or "Not a directory" errors with plain `rsync -a`. Use `rsync -a --delete` — it replaces any stale structure with the current source form cleanly.
 - **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
 - **Do not accept documentation false positives:** Archived cron prompts and skill reference docs can contain token-prefix examples. Redact those examples in the mirror copy too, otherwise the final public scan will fail and the prefix will be reintroduced every day.

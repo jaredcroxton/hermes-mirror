@@ -43,13 +43,13 @@
     "created_at": "2026-06-18T12:17:43.828138+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-15T08:12:24.775421+00:00",
-    "last_used_at": "2026-08-18T00:23:33.525838+00:00",
-    "last_viewed_at": "2026-08-18T00:23:33.523975+00:00",
+    "last_used_at": "2026-08-19T11:22:23.334532+00:00",
+    "last_viewed_at": "2026-08-19T11:22:23.332335+00:00",
     "patch_count": 19,
     "pinned": false,
     "state": "active",
-    "use_count": 16,
-    "view_count": 16
+    "use_count": 17,
+    "view_count": 17
   },
   "airtable": {
     "archived_at": null,
@@ -485,13 +485,13 @@
     "created_at": "2026-06-02T01:14:10.839768+00:00",
     "created_by": null,
     "last_patched_at": "2026-06-07T01:16:53.826167+00:00",
-    "last_used_at": "2026-08-17T07:29:45.137124+00:00",
-    "last_viewed_at": "2026-08-17T07:29:45.135582+00:00",
+    "last_used_at": "2026-08-19T07:42:43.638520+00:00",
+    "last_viewed_at": "2026-08-19T07:42:43.637331+00:00",
     "patch_count": 2,
     "pinned": false,
     "state": "active",
-    "use_count": 54,
-    "view_count": 54
+    "use_count": 55,
+    "view_count": 55
   },
   "hermes-gateway-troubleshooting": {
     "archived_at": null,
@@ -510,14 +510,14 @@
     "archived_at": null,
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-08-17T23:05:08.019764+00:00",
-    "last_used_at": "2026-08-18T23:00:36.766952+00:00",
-    "last_viewed_at": "2026-08-18T23:00:36.765342+00:00",
-    "patch_count": 18,
+    "last_patched_at": "2026-08-18T23:05:19.202445+00:00",
+    "last_used_at": "2026-08-19T23:00:29.227221+00:00",
+    "last_viewed_at": "2026-08-19T23:00:29.225344+00:00",
+    "patch_count": 20,
     "pinned": false,
     "state": "active",
-    "use_count": 42,
-    "view_count": 42
+    "use_count": 43,
+    "view_count": 43
   },
   "himalaya": {
     "archived_at": null,
@@ -614,14 +614,14 @@
     "archived_at": null,
     "created_at": "2026-06-13T09:11:35.215315+00:00",
     "created_by": null,
-    "last_patched_at": "2026-06-13T09:13:57.064487+00:00",
-    "last_used_at": "2026-08-16T13:08:42.561238+00:00",
-    "last_viewed_at": "2026-08-16T13:08:42.559468+00:00",
-    "patch_count": 2,
+    "last_patched_at": "2026-08-19T08:10:21.206020+00:00",
+    "last_used_at": "2026-08-19T07:39:35.287453+00:00",
+    "last_viewed_at": "2026-08-19T07:39:35.286176+00:00",
+    "patch_count": 8,
     "pinned": false,
     "state": "active",
-    "use_count": 2,
-    "view_count": 2
+    "use_count": 4,
+    "view_count": 4
   },
   "llm-wiki": {
     "archived_at": null,
@@ -706,13 +706,13 @@
     "created_at": "2026-07-24T23:30:35.626456+00:00",
     "created_by": null,
     "last_patched_at": null,
-    "last_used_at": "2026-08-18T21:05:19.151618+00:00",
-    "last_viewed_at": "2026-08-18T21:05:19.149518+00:00",
+    "last_used_at": "2026-08-19T08:29:59.614656+00:00",
+    "last_viewed_at": "2026-08-19T08:29:59.612821+00:00",
     "patch_count": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 3,
-    "view_count": 3
+    "use_count": 4,
+    "view_count": 4
   },
   "meta-ads-campaign-build": {
     "archived_at": null,
@@ -1278,13 +1278,13 @@
     "created_at": "2026-08-17T23:10:09.425721+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-17T23:10:16.614780+00:00",
-    "last_used_at": "2026-08-18T00:23:32.307980+00:00",
-    "last_viewed_at": "2026-08-18T00:23:32.305972+00:00",
+    "last_used_at": "2026-08-19T09:01:13.245430+00:00",
+    "last_viewed_at": "2026-08-19T09:01:13.243246+00:00",
     "patch_count": 1,
     "pinned": false,
     "state": "active",
-    "use_count": 1,
-    "view_count": 1
+    "use_count": 2,
+    "view_count": 2
   },
   "writing-plans": {
     "archived_at": null,
