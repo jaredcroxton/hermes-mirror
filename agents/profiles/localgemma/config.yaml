@@ -516,8 +516,8 @@ paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
 _config_version: 26
-EMAIL_ADDRESS: REDACTED
-EMAIL_ALLOWED_USERS: REDACTED
+EMAIL_ADDRESS: jaredcroxton@gmail.com
+EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
 EMAIL_PASSWORD: REDACTED
 known_plugin_toolsets:
   cli:

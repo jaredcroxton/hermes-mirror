@@ -569,6 +569,10 @@ Each soul contains product identity, tagline, visual system, voice principles, t
 
 **Neo_NemoClaw (specialist agent, not a product sub-agent):** Neo is the NemoClaw sandbox specialist. He knows the NVIDIA NemoClaw/Hermes stack, Brev cloud quirks, wizard sequence, model compatibility, audit architecture, and enterprise deployment path. He reports to Brock, not Polly. Soul at `/Users/jc/Desktop/Obsidian/Agents/neo-nemoclaw-soul.md`. Telegram bot: `@Nemo_JCbot`. Runs on NVIDIA Nemotron 120B with delegation locked, daily cron refresh from NVIDIA docs/GitHub/YouTube.
 
+## LearnOS ISO 21001 certification path
+
+When Jared asks about ISO 21001 for LearnOS, use `references/learnos-iso21001-certification-path.md`. Key rule: ISO 21001 certifies the Educational Organisation Management System, not Supabase or the app alone. Supabase certifications support supplier/infrastructure evidence only. For certification enquiries, contact Sales at a certification body, not Customer Support; choose Management Systems Certification or the closest ISO certification topic.
+
 ## Prospecting dashboard patterns
 
 When Jared wants to generate leads for AgentOS or private AI agents, build a signal dashboard around operational pain rather than a generic company list.
