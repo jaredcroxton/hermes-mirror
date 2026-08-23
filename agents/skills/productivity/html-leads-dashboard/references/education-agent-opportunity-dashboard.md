@@ -58,7 +58,7 @@ Working first-build flow:
 
 1. Create a project folder on Desktop.
 2. Write a reusable `build_dashboard.py` script into that folder.
-3. Load `APIFY_TOKEN` or `APIFY_API_TOKEN` and `APOLLO_API_KEY` from `/Users/jc/.hermes/.env` without printing secret values.
+3. Load `APIFY_TOKEN` or `REDACTED_APIFY_PREFIX_TOKEN` and `APOLLO_API_KEY` from `/Users/jc/.hermes/.env` without printing secret values.
 4. Start the Apify run for `compass~crawler-google-places`.
 5. Poll the actor run until terminal status. The API may return initial status `READY` even when `waitForFinish` is supplied. Treat that as not done, not as failure.
 6. Fetch the default dataset items only after status is `SUCCEEDED` or `TIMED-OUT` and a `defaultDatasetId` exists.

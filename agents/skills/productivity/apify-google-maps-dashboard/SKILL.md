@@ -180,7 +180,7 @@ The HTML file itself works fine — the issue is only with `file://` protocol on
 
 Load tokens from `/Users/jc/.hermes/.env` when available:
 
-- `APIFY_TOKEN` or `APIFY_API_TOKEN`
+- `APIFY_TOKEN` or `REDACTED_APIFY_PREFIX_TOKEN`
 - `APOLLO_API_KEY`
 
 Never print token values.
