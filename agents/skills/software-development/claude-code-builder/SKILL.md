@@ -379,9 +379,11 @@ Preferred Local artifact sequence:
 
    ```bash
    python3 -c "
-   content = Path('<output filepath>').read_text()
+   from pathlib import Path
+   path = Path('<output filepath>')
+   content = path.read_text()
    content = content.replace('\u2014', '-').replace('&mdash;', '-')
-   Path('<output filepath>').write_text(content)
+   path.write_text(content)
    print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;'))
    "
    ```
@@ -419,6 +421,10 @@ Preferred Local artifact sequence:
 
     **Star count quirk on GitHub search pages:** The star link text on search results is abbreviated (e.g., "241k" instead of "240,873"). The full count lives in the raw page text content, not in the star link. When extracting from search results, get the star count from the card's full textContent via a regex like `/(\d[\d,]+)\s*stars/`, not from `a[href*="/stargazers"]` link text (which is abbreviated). Trending pages (daily/weekly) do NOT have this issue — their star links contain the full number.
 23. **Headless browser blocks JavaScript on `file://` URLs.** When verifying a local HTML dashboard, the headless browser will not execute inline JavaScript. `browser_snapshot` will show only the static HTML shell (header, tabs, timestamp) with no rendered cards. `typeof BATCHES` will return `undefined`. This is normal — the dashboard works fine in Chrome/Safari. Verify local dashboards with structural HTML checks instead: count GitHub URLs, check DOCTYPE/script/style tags, validate JSON data integrity. Do not report a non-rendering local file as a build failure.
+
+24. **Existing cron dashboards may already have a rebuild script.** Before manually rewriting `dashboard.html`, check the dashboard directory for a purpose-built script such as `refresh_dashboard.py`. If it exists, update the source selection block or input data, run the script, then verify generated files. This preserves archive handling, BATCHES structure, tab markup, and design polish better than rebuilding the HTML by hand. For the GitHub AI Dashboard pattern, a reliable route is: scrape fresh candidates, verify exact star counts with `gh api repos/<owner>/<repo>`, update the `SELECTED` block in `refresh_dashboard.py`, run `python3 -m py_compile refresh_dashboard.py`, then run `python3 refresh_dashboard.py`.
+
+25. **Use local HTTP browser verification for generated dashboards when possible.** After structural checks and `node --check`, serve the dashboard directory with `python3 -m http.server <port> --bind 127.0.0.1`, open `http://127.0.0.1:<port>/dashboard.html`, and verify JavaScript state with `browser_console`: `typeof BATCHES`, `currentBatchId`, current repo count, `.repo-card` count, visible repo names, description count, why-count, and console errors. Kill the server before finishing.
 
 25. **GitHub search page extraction requires iteration.** Unlike trending pages (where `article.Box-row` selectors work reliably), search result pages have a different DOM structure. `browser_console` extraction with trending-page selectors returns empty arrays or truncated data. The star counts in search result links are abbreviated ("226k" not "226,393"). **Iteration is expected**: try `h3 a` for names, `browser_snapshot(full=true)` for full star counts, then fall back to manual transcription from snapshot labels. Do not give up after one failed extraction — the data IS in the page, it just takes 2-3 different approaches to surface it.
 

@@ -193,7 +193,8 @@ After scraping GitHub trending, check HN and Product Hunt for the same repos:
 
 - **Firecrawl may run out of credits.** Always be aware of the browser-based DOM scraping fallback. The `browser_navigate` + `browser_console` with JavaScript extraction pattern works for GitHub trending when Firecrawl is unavailable.
 - **Use `patch` tool for targeted edits, not full rewrites.** The BATCHES architecture makes targeted patches clean: add a batch tab button, insert the new BATCHES key, update the header timestamp, and update `currentBatchId`. Four small patches are safer than one full file write.
-- **Do NOT touch the JavaScript functions.** `switchBatch`, `switchTab`, `refreshDisplay`, `renderCard`, `renderPanel` stay the same across updates. Only the data (BATCHES object) and batch tab buttons change.
+- **Cron jobs may block `execute_code`.** If a scheduled dashboard job needs scripted HTML manipulation, write a temporary Python script with `write_file`, run it with `terminal`, then verify and delete the script. Do not stop just because `execute_code` is unavailable.
+- **Do NOT touch the JavaScript functions unless the user explicitly requires a new display capability.** `switchBatch`, `switchTab`, `refreshDisplay`, `renderCard`, `renderPanel` should usually stay the same across updates. Only data and tab buttons change by default; add renderer logic only for new required fields such as HN/Product Hunt badges.
 - **`growth` and `stars` are numbers, not strings.** The sort functions (`b.growth - a.growth`) depend on numeric comparisons. `growthLabel` is the display string.
 - **HN and PH cross-reference is best-effort.** Direct repo matches on HN/PH front pages are rare. Most weeks return empty `hnRank` and `phUpvotes`. Note scraping limitations in the batch JSON metadata.
 - **GitHub trending returns up to 25 repos per page.** Firecrawl with JSON schema reliably extracts all 25. The dashboard targets the top 15.

@@ -68,8 +68,15 @@ done
 
 Use `rsync -a --delete`, not `cp -r`. The mirror may contain stale structures that conflict with the source: flat files where the source now has directories, or full directories where the source now has symlinks. `cp -r` chokes on both; `rsync -a --delete` handles all transitions cleanly.
 
+Exclude `state.db`, `.env`, and `.env.*` including `.env.example`. Even example env files are unnecessary in the public mirror and trigger the repo's "never include .env" rule.
+
 ```bash
-rsync -a --delete /Users/jc/.hermes/skills/ /tmp/hermes-mirror-backup/agents/skills/
+rsync -a --delete \
+  --exclude 'state.db' \
+  --exclude '*.db' \
+  --exclude '.env' \
+  --exclude '.env.*' \
+  /Users/jc/.hermes/skills/ /tmp/hermes-mirror-backup/agents/skills/
 ```
 
 ### 6. Copy Hermes config files
@@ -105,12 +112,12 @@ Strip Apify API tokens and the literal Apify token prefix from every tracked mir
 ```bash
 cd /tmp/hermes-mirror-backup
 APIFY_PREFIX='apify''_api_'
-# Redact full tokens first.
-find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}[a-zA-Z0-9]{30,}/REDACTED_APIFY_TOKEN/g" {} \;
+# Redact full tokens first. Use case-insensitive matching because docs and examples may contain upper-case variants.
+find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}[a-zA-Z0-9]{30,}/REDACTED_APIFY_TOKEN/gi" {} \;
 # Then redact the token prefix in docs, archived cron prompts, and examples so the final mirror scan is clean.
-find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}/REDACTED_APIFY_PREFIX_/g" {} \;
-# Verify no literal Apify token prefix remains anywhere in the mirror.
-if grep -RIn --exclude-dir=.git "$APIFY_PREFIX" .; then
+find . -type f -not -path './.git/*' -exec perl -0pi -e "s/${APIFY_PREFIX}/REDACTED_APIFY_PREFIX_/gi" {} \;
+# Verify no literal Apify token prefix remains anywhere in the mirror. Use -i so mixed-case examples do not slip through.
+if grep -RIni --exclude-dir=.git "$APIFY_PREFIX" .; then
   exit 1
 fi
 
@@ -150,7 +157,8 @@ fi
 - **`git ls-files` skips freshly copied (untracked) files:** The backup copies souls/profiles/skills/config in as NEW files, untracked until `git add -A`. `git ls-files` only lists tracked/index files, so any token-pattern or YAML-key redaction run over `git ls-files` misses exactly the files that were just copied — including profile `config.yaml` files carrying provider API keys. Run every redaction pass over `find . -not -path './.git/*'` (or `git add -A` first) so untracked files are covered before commit. The main `~/.hermes/config.yaml` is also untracked at redaction time (it is written via `cat >`, not `cp`), so its non-email API keys are only caught by a whole-tree pass.
 - **`rsync` without `--delete` fails on structure conflicts:** The mirror can diverge from the source in two directions: (1) mirror has flat files, source has directories (skill upgraded from single SKILL.md to directory with `references/`); (2) mirror has directories with files, source has symlinks (skill migrated to a symlinked package). Both produce "Directory not empty" or "Not a directory" errors with plain `rsync -a`. Use `rsync -a --delete` — it replaces any stale structure with the current source form cleanly.
 - **Nested Obsidian path:** The Obsidian vault may live at `/Users/jc/Desktop/Desktop/Obsidian/` (nested Desktop) rather than `/Users/jc/Desktop/Obsidian/`. This varies across Macs and iCloud sync configurations. Steps 3 and 6 now include `find` fallbacks — never assume the primary path is correct if `cp` or `ls` fails silently.
-- **Do not accept documentation false positives:** Archived cron prompts and skill reference docs can contain token-prefix examples. Redact those examples in the mirror copy too, otherwise the final public scan will fail and the prefix will be reintroduced every day.
+- **`.env.example` still counts as `.env.*`:** The public mirror rule is "Never include `.env`". Treat `.env.example` as forbidden too, even though it often contains placeholders. Exclude it during skills copy and verify staged additions/modifications do not include `.env`, `.env.*`, or `state.db`. If a forbidden file is already tracked and now deleted, do not fail the staged-file check solely because the deletion is staged.
+- **Case-sensitive token scans miss documentation examples:** Some skills and archived prompts may contain mixed-case token-prefix examples. Redact and verify Apify prefixes case-insensitively (`perl ... /gi` and `grep -RIni`).
 
 ## What NOT to include
 
