@@ -105,7 +105,7 @@ curl -s "https://api.airtable.com/v0/$BASE_ID/$TABLE?filterByFormula=$ENC&maxRec
 ```
 
 Useful formula patterns:
-- Exact match: `{Email}='user@example.com'`
+- Exact match: `{Email}='REDACTED_EMAIL'`
 - Contains: `FIND('bug', LOWER({Title}))`
 - Multiple conditions: `AND({Status}='Todo', {Priority}='High')`
 - Or: `OR({Owner}='alice', {Owner}='bob')`
@@ -167,7 +167,7 @@ curl -s -X PATCH "https://api.airtable.com/v0/$BASE_ID/$TABLE" \
   -d '{
     "performUpsert": {"fieldsToMergeOn": ["Email"]},
     "records": [
-      {"fields": {"Email": "user@example.com", "Status": "Active"}}
+      {"fields": {"Email": "REDACTED_EMAIL", "Status": "Active"}}
     ]
   }' | python3 -m json.tool
 ```

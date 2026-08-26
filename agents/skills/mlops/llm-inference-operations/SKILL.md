@@ -31,13 +31,15 @@ This umbrella covers the operational path from model discovery to serving and ev
 - Use Hugging Face Hub search/list commands first.
 - Capture license, file size, quantization, and hardware requirements before downloading.
 
-### Local inference: llama.cpp / GGUF
+### Local inference: llama.cpp / GGUF / Ollama
 - Match quantization to available RAM/VRAM.
 - Prefer small smoke tests before long generations.
 - For server mode, verify the OpenAI-compatible endpoint with a real request.
 - For workshop demos on 24GB Apple Silicon, prioritise reliability over peak quant quality: cap context, keep one client active at a time, and use a Q4-class GGUF rather than squeezing in Q5. See `references/local-workshop-model-demo-macos.md`.
 - Before downloading 15GB+ model files, check free disk space and use resumable downloads (`curl --continue-at -` or equivalent). If a download fails with a write error near completion, check disk before retrying and do not delete user files without approval.
 - For Jared demoing local models through Hermes, Claude Code, or Antigravity on a 24GB Apple Silicon MacBook Air, use `references/macbook-air-24gb-local-agent-demo.md`: prefer LM Studio serving `Qwen3.8-27B-Q4_K_M.gguf`, cap context at 4096 for coding-agent demos, pre-warm the model, and run one agent workflow at a time.
+- For Jared connecting already-downloaded Ollama/Qwen models to Antigravity, use `references/antigravity-ollama-local-models.md`: first run `ollama list`, use the exact model name including tag, then connect via Cline inside Antigravity or DeepSeek Harness beside Antigravity. Do not tell him to install, pull, or start services unless he explicitly asks.
+- For Antigravity + Ollama + Qwen on macOS, use `references/antigravity-ollama-qwen-macos.md`. The key pattern is: `ollama list` for exact model name, `ollama run <model>` to keep Qwen alive, then enter `http://localhost:11434/v1`, API key `ollama`, and the exact model name inside Antigravity. Do not present Antigravity field labels as Terminal commands.
 
 ### GPU serving: vLLM
 - Use vLLM when throughput, batching, tensor parallelism, or production-style OpenAI API serving matters.

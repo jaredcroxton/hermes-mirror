@@ -143,7 +143,7 @@ curl -s -X POST https://api.linear.app/graphql \
 curl -s -X POST https://api.linear.app/graphql \
   -H "Authorization: $LINEAR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"query": "{ issues(filter: { team: { key: { eq: \"ENG\" } }, assignee: { email: { eq: \"user@example.com\" } } }, first: 20) { nodes { identifier title state { name } priority } } }"}' | python3 -m json.tool
+  -d '{"query": "{ issues(filter: { team: { key: { eq: \"ENG\" } }, assignee: { email: { eq: \"REDACTED_EMAIL\" } } }, first: 20) { nodes { identifier title state { name } priority } } }"}' | python3 -m json.tool
 ```
 
 ### List projects

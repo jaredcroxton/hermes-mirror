@@ -52,7 +52,7 @@ Correct format (Gmail example — from references/configuration.md):
 
 ```toml
 [accounts.personal]
-email = "you@gmail.com"
+email = "REDACTED_EMAIL"
 display-name = "Your Name"
 default = true
 
@@ -60,7 +60,7 @@ backend.type = "imap"
 backend.host = "imap.gmail.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "you@gmail.com"
+backend.login = "REDACTED_EMAIL"
 backend.auth.type = "password"
 backend.auth.raw = "izvfrbvxlekek"  # or use backend.auth.cmd for pass/keyring
 
@@ -68,7 +68,7 @@ message.send.backend.type = "smtp"
 message.send.backend.host = "smtp.gmail.com"
 message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
-message.send.backend.login = "you@gmail.com"
+message.send.backend.login = "REDACTED_EMAIL"
 message.send.backend.auth.type = "password"
 message.send.backend.auth.raw = "same-or-different-app-password"
 
@@ -92,7 +92,7 @@ If BACKENDS column is empty, the config format is wrong. Fix before proceeding. 
 
 ```toml
 [accounts.personal]
-email = "you@example.com"
+email = "REDACTED_EMAIL"
 display-name = "Your Name"
 default = true
 
@@ -100,7 +100,7 @@ backend.type = "imap"
 backend.host = "imap.example.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "you@example.com"
+backend.login = "REDACTED_EMAIL"
 backend.auth.type = "password"
 backend.auth.cmd = "pass show email/imap"  # or use keyring
 
@@ -108,7 +108,7 @@ message.send.backend.type = "smtp"
 message.send.backend.host = "smtp.example.com"
 message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
-message.send.backend.login = "you@example.com"
+message.send.backend.login = "REDACTED_EMAIL"
 message.send.backend.auth.type = "password"
 message.send.backend.auth.cmd = "pass show email/smtp"
 
@@ -171,7 +171,7 @@ himalaya envelope list --page 1 --page-size 20
 ### Search Emails
 
 ```bash
-himalaya envelope list from john@example.com subject meeting
+himalaya envelope list from REDACTED_EMAIL subject meeting
 ```
 
 ### Read an Email
@@ -201,8 +201,8 @@ Or build the reply manually:
 
 ```bash
 cat << 'EOF' | himalaya template send
-From: you@example.com
-To: sender@example.com
+From: REDACTED_EMAIL
+To: REDACTED_EMAIL
 Subject: Re: Original Subject
 In-Reply-To: <original-message-id>
 
@@ -220,7 +220,7 @@ himalaya message reply 42 --all
 
 ```bash
 # Get forward template and pipe with modifications
-himalaya template forward 42 | sed 's/^To:.*/To: newrecipient@example.com/' | himalaya template send
+himalaya template forward 42 | sed 's/^To:.*/To: REDACTED_EMAIL/' | himalaya template send
 ```
 
 ### Write a New Email
@@ -229,8 +229,8 @@ himalaya template forward 42 | sed 's/^To:.*/To: newrecipient@example.com/' | hi
 
 ```bash
 cat << 'EOF' | himalaya template send
-From: you@example.com
-To: recipient@example.com
+From: REDACTED_EMAIL
+To: REDACTED_EMAIL
 Subject: Test Message
 
 Hello from Himalaya!
@@ -240,7 +240,7 @@ EOF
 Or with headers flag:
 
 ```bash
-himalaya message write -H "To:recipient@example.com" -H "Subject:Test" "Message body here"
+himalaya message write -H "To:REDACTED_EMAIL" -H "Subject:Test" "Message body here"
 ```
 
 Note: `himalaya message write` without piped input opens `$EDITOR`. This works with `pty=true` + background mode, but piping is simpler and more reliable.

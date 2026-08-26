@@ -178,7 +178,7 @@ That is the exact moment onboarding goes ad hoc and the new hires improvise inst
 We drop a fractional ops lead into cold-chain 3PLs in week one so the structure is there before the people are.
 Worth a 15-minute call next Tuesday to see if it fits?
 Marcus
-Marcus Reed, Fieldway Ops, fractional ops lead, marcus@fieldway.co
+Marcus Reed, Fieldway Ops, fractional ops lead, REDACTED_EMAIL
 [Unsubscribe + physical address: business to supply at send]
 
 Length: 71 words (body only, excludes signature and unsubscribe)

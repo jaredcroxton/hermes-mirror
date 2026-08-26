@@ -36,7 +36,7 @@ npx -y mcporter --config /Users/jc/config/mcporter.json call zapier gmail_create
 - `--params '{"key":"value"}'` — fails when tools expect arrays (to, cc, bcc). Zapier's resolver handles array inference from instructions text.
 - `--param key value` flags — mcporter parses them wrong for MCP tools
 
-**Gmail array inference:** Writing `"Create a draft to jaredcroxton@gmail.com"` in instructions is enough. Zapier resolves `to: ["jaredcroxton@gmail.com"]` automatically. You do not pass `to:` separately.
+**Gmail array inference:** Writing `"Create a draft to REDACTED_EMAIL"` in instructions is enough. Zapier resolves `to: ["REDACTED_EMAIL"]` automatically. You do not pass `to:` separately.
 
 ## Config and auth
 - Config file: `/Users/jc/config/mcporter.json`

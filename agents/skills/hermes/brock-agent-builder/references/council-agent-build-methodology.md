@@ -68,7 +68,7 @@ When building a council agent for a new local government area, follow this seque
 - DA tracking: eTrack (TechnologyOne) + Planning Alerts
 - Primary risk factor: Bushfire BAL rating
 - Lot typology: 1,000m² to 50+ hectares rural
-- Council contact: 1300 697 372, mail@sdrc.qld.gov.au
+- Council contact: 1300 697 372, REDACTED_EMAIL
 - Online mapping: sdrc.spatial.t1cloud.com/spatial/intramaps/
 - eTrack: sdrc-web.t1cloud.com/T1PRDefault/WebApps/eProperty/
 

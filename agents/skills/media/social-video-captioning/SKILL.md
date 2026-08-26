@@ -70,6 +70,7 @@ hyperframes transcribe --engine auto --model base.en --language en --json -d /tm
 - Do not over-polish into brand manifesto copy unless Jared asks for that.
 - Do not give ten variants when he asked for two trials.
 - Do not make the caption a literal transcript. Use the transcript to find the argument, then write the post.
+- When Jared pushes back on caption framing as too generic, stop expanding the concept and simplify the mechanics. For AI/folder/markdown explainer posts, the core mechanic is: AI only uses what enters its context window; folders organise the source material; markdown is plain text with headings the AI can parse; retrieval pulls the relevant sections into the answer. Avoid "business brain" language unless he asks for a strategic frame.
 - When Jared asks whether HyperFrames is the best local editing software for creator reels, do not oversell it as a universal editor. Position it as a repeatable production engine, not the easiest manual timeline editor. CapCut Desktop, DaVinci Resolve, Final Cut Pro, or Premiere are better for hands-on cuts and finishing polish; HyperFrames is better for reusable 9:16 systems with captions, PiP, screenshots, proof cards, and batch variation.
 - For AI creator reels in the style of a YouTube Short with talking head, proof screens, and cinematic b-roll, recommend the practical stack: HeyGen for face/avatar source, Higgsfield for pattern-interrupt b-roll, HyperFrames for composition/render, and CapCut or DaVinci only as a final polish bench.
 

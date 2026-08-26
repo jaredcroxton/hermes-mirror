@@ -29,7 +29,7 @@ When LinkedIn is on (default), every lead card must include:
 - Verification date (month and year)
 
 ### 3. Derived email (mandatory)
-Pattern-match email from company domain and contact name. Always tagged "verify before send." Never presented as confirmed. Format: firstname.lastname@company.com or the most common pattern for that company.
+Pattern-match email from company domain and contact name. Always tagged "verify before send." Never presented as confirmed. Format: REDACTED_EMAIL or the most common pattern for that company.
 
 ### 4. Personalised insight per lead (mandatory)
 One specific sentence that connects the decision-maker's world to the offer. This is the hardest part and the most valuable. Not "Company X is in Y industry." Write: "CPO signs off benefits directly — one fast conversation. Travel-and-dining perk helps compete against larger tech employers." The insight must name the mechanism, not the category.

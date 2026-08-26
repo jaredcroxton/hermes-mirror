@@ -39,13 +39,17 @@ functionality is covered by the `nearby` command below, with the same
 
 Python 3.8+ (stdlib only — no pip installs needed).
 
-Script path: `~/.hermes/skills/maps/scripts/maps_client.py`
+Script path depends on the installed skill category. Use the `skill_view` response's `skill_dir` when available. On Jared's current profile this skill lives at:
+
+`~/.hermes/skills/productivity/maps/scripts/maps_client.py`
 
 ## Commands
 
 ```bash
-MAPS=~/.hermes/skills/maps/scripts/maps_client.py
+MAPS="$HOME/.hermes/skills/productivity/maps/scripts/maps_client.py"
 ```
+
+If that path fails, do not record a durable "maps tool broken" rule. Locate the skill directory from `skill_view(name="maps")` and run `scripts/maps_client.py` from there.
 
 ### search — Geocode a place name
 
@@ -187,9 +191,9 @@ current.
 ## Verification
 
 ```bash
-python3 ~/.hermes/skills/maps/scripts/maps_client.py search "Statue of Liberty"
+python3 ~/.hermes/skills/productivity/maps/scripts/maps_client.py search "Statue of Liberty"
 # Should return lat ~40.689, lon ~-74.044
 
-python3 ~/.hermes/skills/maps/scripts/maps_client.py nearby --near "Times Square" --category restaurant --limit 3
+python3 ~/.hermes/skills/productivity/maps/scripts/maps_client.py nearby --near "Times Square" --category restaurant --limit 3
 # Should return a list of restaurants within ~500m of Times Square
 ```

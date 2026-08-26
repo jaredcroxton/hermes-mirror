@@ -14,9 +14,9 @@ Standard Gmail search operators work in the `query` argument.
 | `in:drafts` | `in:drafts` | Drafts |
 | `in:trash` | `in:trash` | Trash |
 | `in:anywhere` | `in:anywhere` | All mail including spam/trash |
-| `from:` | `from:alice@example.com` | Sender |
-| `to:` | `to:bob@example.com` | Recipient |
-| `cc:` | `cc:team@example.com` | CC recipient |
+| `from:` | `from:REDACTED_EMAIL` | Sender |
+| `to:` | `to:REDACTED_EMAIL` | Recipient |
+| `cc:` | `cc:REDACTED_EMAIL` | CC recipient |
 | `subject:` | `subject:invoice` | Subject contains |
 | `label:` | `label:work` | Has label |
 | `has:attachment` | `has:attachment` | Has attachments |
@@ -50,7 +50,7 @@ Standard Gmail search operators work in the `query` argument.
 is:unread newer_than:1d
 
 # Emails with PDF attachments from a specific sender
-from:accounting@company.com has:attachment filename:pdf
+from:REDACTED_EMAIL has:attachment filename:pdf
 
 # Important unread emails (not promotions/social)
 is:unread -category:promotions -category:social

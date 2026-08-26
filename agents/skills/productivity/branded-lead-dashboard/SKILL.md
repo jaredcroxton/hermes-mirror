@@ -143,7 +143,7 @@ For each lead with a verified contact_name and company, run a web lookup to find
 "<first name> <last name>" "<company>" email OR contact
 "<first name> <last name>" "@<company domain>"
 
-If web lookup finds a pattern but cannot confirm an address, set email_status: pattern_unverified and note the likely pattern (e.g. firstname.lastname@company.com). If lookup fails entirely, set email_status: not_found. Never guess an email address.
+If web lookup finds a pattern but cannot confirm an address, set email_status: pattern_unverified and note the likely pattern (e.g. REDACTED_EMAIL). If lookup fails entirely, set email_status: not_found. Never guess an email address.
 
 Log every source citation in memory/findings.md.
 
