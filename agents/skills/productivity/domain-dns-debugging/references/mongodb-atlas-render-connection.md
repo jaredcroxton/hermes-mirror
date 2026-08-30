@@ -17,7 +17,7 @@ Replace placeholders:
 
 Add database name after `.net/`:
 ```
-mongodb+srv://jared:REDACTED_EMAIL/trainrtech?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://jared:TrainrTech2026@cluster0.abcde.mongodb.net/trainrtech?retryWrites=true&w=majority&appName=Cluster0
 ```
 
 ## Network access (most common failure)

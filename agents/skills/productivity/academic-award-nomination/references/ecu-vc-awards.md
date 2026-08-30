@@ -61,4 +61,4 @@ Via Microsoft Forms link on the awards webpage. Form must be complete with endor
 
 ## Contact
 
-REDACTED_EMAIL
+studentawards@ecu.edu.au

@@ -172,7 +172,7 @@ What this means for you / next steps:
 - Book any desk you need for the three fixed days using the desk tool by 25 August.
 - Update recurring meetings to land on Tuesday to Thursday.
 
-Questions: Priya Anand, REDACTED_EMAIL, or the open session on 20 August at 11am.
+Questions: Priya Anand, people@company.com, or the open session on 20 August at 11am.
 
 Open items: [Not provided: whether parking permits change with the new days] (sender to confirm).
 [Not provided: how existing approved individual arrangements are handled] (sender to confirm the carve-out holds).

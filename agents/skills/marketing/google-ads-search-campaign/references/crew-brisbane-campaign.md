@@ -7,7 +7,7 @@
 **Location:** Park Regis North Quay, Brisbane CBD
 **Landing page:** https://www.performos.com.au/
 **Booking platform:** Eventbrite
-**Google Ads account:** REDACTED_EMAIL (PerformOS)
+**Google Ads account:** jaredcroxton@gmail.com (PerformOS)
 **Days until event at plan time:** 56
 
 ---

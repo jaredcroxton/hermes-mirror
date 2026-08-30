@@ -94,7 +94,7 @@ git clone --depth 1 https://github.com/owner/repo-name.git
 git clone --branch develop https://github.com/owner/repo-name.git
 
 # Clone via SSH (if SSH is configured)
-git clone REDACTED_EMAIL:owner/repo-name.git
+git clone git@github.com:owner/repo-name.git
 ```
 
 **With gh (shorthand):**

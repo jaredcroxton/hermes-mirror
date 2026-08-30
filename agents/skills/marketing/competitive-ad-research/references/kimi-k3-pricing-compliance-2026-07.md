@@ -49,7 +49,7 @@ K3 is mid-pack on price — on par with Claude Sonnet, 21x output cost vs DeepSe
 **Entity**: MOONSHOT AI PTE. LTD. (Singapore)
 **Data storage**: Servers in Singapore
 **Last policy update**: 30 April 2025
-**DPO contact**: REDACTED_EMAIL
+**DPO contact**: api-service@moonshot.ai
 
 ### What they collect
 - Account info (email, phone, username, profile picture)

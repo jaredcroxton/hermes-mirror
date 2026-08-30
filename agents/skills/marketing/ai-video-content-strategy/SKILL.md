@@ -84,6 +84,14 @@ Every AI video campaign must have real-content companion pieces.
 
 Every AI video campaign must have real-content companion pieces. Seedance carries the spectacle and builds the world. Jared's face, voice, and actual products on screen carry the trust. Never ship an AI-only campaign. Include real-content filming days in the production calendar.
 
+## Seedance 2.5 Reference-Video Recreation
+
+When Jared wants to recreate a reference video in Seedance 2.5 using character reference images, use `references/seedance-2.5-reference-video-recreation.md`.
+
+Core rule: inspect the reference video, create timestamped beats, then generate 4 to 7 second clips separately and stitch them. Do not default to one long generation when face and wardrobe continuity matter. Build a continuity bible first: reference image order, Character A/B labels, wardrobe, setting, lighting, camera language, and negative blocks. Treat social media screen recordings as choreography references only, not as app-interface frames to recreate.
+
+When Jared wants the reference video broken into screenshot inputs for Seedance, use `references/seedance-reference-frame-rebuild-pack.md`. Create a working folder with original frames, hard-cropped no-UI scene refs, selected best scenes, a Jared-photo drop folder, prompt templates, generated clips folder, and final stitch folder. Crop social/app UI first. Only inpaint final selected frames if cropping cannot remove remaining overlays without damaging the scene.
+
 ## The 8-Second Standalone Clip Format
 
 When Jared asks for short launch videos ("8sec 720P"), deliver standalone clips — not a single 60-second multi-shot. Each 8-second clip carries ONE message. They can be used individually on social or strung together as a reel.
@@ -221,6 +229,8 @@ When faces are off the table (Seedance 2.0 limitation), here is the proven struc
 - `references/seedance-2.0-capabilities.md` — Full capability map, prompt engineering rules, cinematography vocabulary bank, platform comparison
 - `references/performos-brand-for-video.md` — PerformOS brand applied to video: colours, fonts, voice, master lines, what carries into every prompt
 - `references/seedance-research-sources.md` — Full research bibliography from the 18 June 2026 deep dive
+- `references/seedance-2.5-reference-video-recreation.md` — Workflow for recreating a reference video as 4 to 7 second Seedance clips using character references, continuity blocks, and stitching rules
+- `references/seedance-reference-frame-rebuild-pack.md` — Folder-pack workflow for extracting 50 reference screenshots, cropping social/app UI, selecting usable scene refs, adding Jared's identity photo, and preparing Seedance clip prompts
 - `references/crew-launch-video-case-study.md` — Proven Elements-first workflow, 8-second clip format, and prompt libraries from the 24 June 2026 Crew catalogue launch
 
 ## Seedance 2.0 Prompt Engineering Rules (absorbed from seedance-video-generation)

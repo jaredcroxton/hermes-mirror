@@ -22,7 +22,7 @@ For Jared's setup this usually means copying:
    - Plug it into power.
    - Put it on the same network.
    - Enable System Settings → General → Sharing → Remote Login.
-   - Confirm the SSH target, for example `REDACTED_EMAIL`.
+   - Confirm the SSH target, for example `jc@Mac-mini.local`.
 
 2. Copy first, do not cut over yet.
    - Use `rsync -aH --info=progress2` so symlinks, file modes, and profile folders survive.

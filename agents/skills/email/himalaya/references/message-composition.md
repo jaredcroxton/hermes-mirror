@@ -7,8 +7,8 @@ Himalaya uses MML for composing emails. MML is a simple XML-based syntax that co
 An email message is a list of **headers** followed by a **body**, separated by a blank line:
 
 ```
-From: REDACTED_EMAIL
-To: REDACTED_EMAIL
+From: sender@example.com
+To: recipient@example.com
 Subject: Hello World
 
 This is the message body.
@@ -29,10 +29,10 @@ Common headers:
 ### Address Formats
 
 ```
-To: REDACTED_EMAIL
-To: John Doe <REDACTED_EMAIL>
-To: "John Doe" <REDACTED_EMAIL>
-To: REDACTED_EMAIL, REDACTED_EMAIL, "Jane" <REDACTED_EMAIL>
+To: user@example.com
+To: John Doe <john@example.com>
+To: "John Doe" <john@example.com>
+To: user1@example.com, user2@example.com, "Jane" <jane@example.com>
 ```
 
 ## Plain Text Body
@@ -186,7 +186,7 @@ cat message.txt | himalaya template send
 
 ```bash
 himalaya message write \
-  -H "To:REDACTED_EMAIL" \
+  -H "To:recipient@example.com" \
   -H "Subject:Quick Message" \
   "Message body here"
 ```

@@ -19,7 +19,7 @@ description: Draft emails and written messages in Jared's voice — casual, huma
 - Plain "here's the reality" framing over "per my previous correspondence" framing.
 
 ## People (spell names correctly)
-- Jayne Brown — VP Ops. It is "Jayne", not "Jane". REDACTED_EMAIL.
+- Jayne Brown — VP Ops. It is "Jayne", not "Jane". jayne.brown@accorplus.com.
 - Leanne Edwards — VP P&C.
 - Chris Douglas.
 - Confirm the recipient list and framing before finalising. He often widens the audience mid-draft (e.g. adds Leanne) or re-frames the purpose (e.g. "with budgets for next year").

@@ -1,11 +1,11 @@
 ---
 name: social-video-captioning
-description: Use when Jared sends short social videos and asks for captions, caption trials, post copy, hooks, or variants. Covers direct video inspection, transcript grounding, and punchy caption drafting for A/B tests.
+description: Use when Jared sends short social videos and asks for captions, caption trials, post copy, hooks, variants, or asks whether a recorded explanation is correct. Covers direct video inspection, transcript grounding, punchy caption drafting, and concise explanation critique.
 ---
 
 # social-video-captioning
 
-Use this skill when Jared sends one or more short videos and asks for captions, caption trials, post copy, hooks, or options for testing.
+Use this skill when Jared sends one or more short videos and asks for captions, caption trials, post copy, hooks, options for testing, or whether his recorded explanation is correct and clear.
 
 ## Operating rule
 
@@ -77,3 +77,4 @@ hyperframes transcribe --engine auto --model base.en --language en --json -d /tm
 ## References
 
 - `references/social-video-caption-trials.md` for the detailed inspection and drafting pattern.
+- `references/video-explanation-review.md` for checking whether Jared explained an idea correctly from a recorded video.

@@ -27,7 +27,7 @@ npx -y mcporter --config /Users/jc/config/mcporter.json call zapier gmail_find_e
   'in:inbox'
 
 npx -y mcporter --config /Users/jc/config/mcporter.json call zapier gmail_create_draft \
-  'Create a draft email to REDACTED_EMAIL with subject test and body Just testing if everything is okay from your end.' \
+  'Create a draft email to jaredcroxton@gmail.com with subject test and body Just testing if everything is okay from your end.' \
   'message_id subject'
 ```
 
@@ -59,7 +59,7 @@ Let Zapier infer `to`/`subject`/`body`:
 
 ```bash
 npx -y mcporter --config /Users/jc/config/mcporter.json call zapier gmail_create_draft \
-  'Create a draft email to REDACTED_EMAIL with subject test and body Just testing if everything is okay from your end.' \
+  'Create a draft email to jaredcroxton@gmail.com with subject test and body Just testing if everything is okay from your end.' \
   'message_id subject'
 ```
 

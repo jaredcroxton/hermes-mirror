@@ -39,7 +39,7 @@ Wait 4 seconds for startup, then verify with GET /health.
 ### 3. Set up live dashboard for user to watch
 Use an SSH reverse tunnel via localhost.run so the user can view
 the dashboard in their browser. Connect with ssh, forwarding local
-port 9876 to remote port 80 on REDACTED_EMAIL. Redirect output
+port 9876 to remote port 80 on nokey@localhost.run. Redirect output
 to a log file, wait 10 seconds, then grep the log for the .lhr.life
 URL. Give the user the URL with /dashboard/ appended.
 The tunnel URL changes each time — give the user the new one if restarted.

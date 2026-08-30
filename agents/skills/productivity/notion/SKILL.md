@@ -314,7 +314,7 @@ Common property formats for database items:
 - **Checkbox:** `{"checkbox": true}`
 - **Number:** `{"number": 42}`
 - **URL:** `{"url": "https://..."}`
-- **Email:** `{"email": "REDACTED_EMAIL"}`
+- **Email:** `{"email": "user@example.com"}`
 - **Relation:** `{"relation": [{"id": "page_id"}]}`
 
 ## API Version 2025-09-03 — Databases vs Data Sources
