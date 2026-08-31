@@ -263,14 +263,14 @@
     "archived_at": null,
     "created_at": "2026-05-16T23:48:47.210556+00:00",
     "created_by": null,
-    "last_patched_at": "2026-08-24T06:17:06.751953+00:00",
-    "last_used_at": "2026-08-24T06:01:08.208823+00:00",
-    "last_viewed_at": "2026-08-24T06:01:08.205315+00:00",
-    "patch_count": 161,
+    "last_patched_at": "2026-08-31T06:54:16.450653+00:00",
+    "last_used_at": "2026-08-31T06:09:16.223886+00:00",
+    "last_viewed_at": "2026-08-31T06:09:16.221945+00:00",
+    "patch_count": 162,
     "pinned": false,
     "state": "active",
-    "use_count": 155,
-    "view_count": 142
+    "use_count": 157,
+    "view_count": 143
   },
   "claude-design": {
     "archived_at": null,
@@ -380,14 +380,14 @@
     "archived_at": null,
     "created_at": "2026-06-22T06:10:41.601957+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-08-24T06:17:07.935360+00:00",
-    "last_used_at": "2026-08-24T06:00:52.903529+00:00",
-    "last_viewed_at": "2026-08-24T06:00:52.901682+00:00",
-    "patch_count": 22,
+    "last_patched_at": "2026-08-31T06:37:38.677844+00:00",
+    "last_used_at": "2026-08-31T06:37:13.841752+00:00",
+    "last_viewed_at": "2026-08-31T06:37:13.839798+00:00",
+    "patch_count": 25,
     "pinned": false,
     "state": "active",
-    "use_count": 13,
-    "view_count": 13
+    "use_count": 16,
+    "view_count": 16
   },
   "design-md": {
     "archived_at": null,
@@ -498,13 +498,13 @@
     "created_at": "2026-06-06T23:00:32.835381+00:00",
     "created_by": null,
     "last_patched_at": "2026-06-25T23:05:24.473123+00:00",
-    "last_used_at": "2026-08-15T07:47:46.812157+00:00",
-    "last_viewed_at": "2026-08-15T07:47:46.808851+00:00",
+    "last_used_at": "2026-08-31T06:09:17.423840+00:00",
+    "last_viewed_at": "2026-08-31T06:09:17.421586+00:00",
     "patch_count": 10,
     "pinned": false,
     "state": "active",
-    "use_count": 32,
-    "view_count": 32
+    "use_count": 33,
+    "view_count": 33
   },
   "godmode": {
     "archived_at": null,
@@ -576,13 +576,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-24T23:03:15.357771+00:00",
-    "last_used_at": "2026-08-30T23:01:03.884629+00:00",
-    "last_viewed_at": "2026-08-30T23:01:03.882676+00:00",
+    "last_used_at": "2026-08-31T23:00:28.115327+00:00",
+    "last_viewed_at": "2026-08-31T23:00:28.112986+00:00",
     "patch_count": 28,
     "pinned": false,
     "state": "active",
-    "use_count": 51,
-    "view_count": 51
+    "use_count": 52,
+    "view_count": 52
   },
   "himalaya": {
     "archived_at": null,
@@ -775,7 +775,7 @@
     "last_viewed_at": "2026-08-26T03:45:15.467066+00:00",
     "patch_count": 2,
     "pinned": false,
-    "state": "stale",
+    "state": "active",
     "use_count": 2,
     "view_count": 2
   },
@@ -1178,7 +1178,7 @@
     "last_viewed_at": "2026-07-29T05:38:40.244430+00:00",
     "patch_count": 3,
     "pinned": false,
-    "state": "active",
+    "state": "stale",
     "use_count": 3,
     "view_count": 3
   },

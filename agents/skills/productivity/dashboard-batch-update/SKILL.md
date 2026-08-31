@@ -70,7 +70,7 @@ function refreshDisplay() {
 
 **Primary approach — Firecrawl (preferred, but credits may run out):**
 
-Use `firecrawl_scrape` or `mcp_firecrawl_firecrawl_scrape` to scrape GitHub trending. Use `maxAge` for cached data.
+Use `firecrawl_scrape` or `mcp_firecrawl_firecrawl_scrape` to scrape GitHub trending. Use JSON format with a schema for repo fields. For freshness-sensitive signal sources like HN and Product Hunt front pages, set `maxAge: 0`; otherwise Firecrawl may legitimately return a cached front page from the prior day. Use `maxAge` caching only when freshness is less critical than speed or credit use.
 
 **Fallback — Browser-based DOM scraping (when Firecrawl is out of credits):**
 
@@ -153,11 +153,11 @@ Read the full HTML file. Identify:
 
 With the BATCHES architecture, **targeted patching** is the preferred approach. The file is small enough that individual patches are safer than a full rewrite:
 
-1. **Add the new batch tab button** to the `#batch-tabs` div: insert a new `<button class="tab-btn active" onclick="switchBatch('YYYYMMDD')">DD Mon YYYY</button>` as the first button, and remove `active` from the previously active button.
+1. **Add or replace the new batch tab button** in the `#batch-tabs` div: insert a new `<button class="tab-btn active" onclick="switchBatch('YYYYMMDD')">DD Mon YYYY</button>` as the first button, and remove `active` from every other batch button. Scheduled jobs can rerun on the same date, so treat the current `batchId` as an upsert: if the key already exists, replace that batch's object and move its tab to the top instead of creating a duplicate or failing the run.
 
-2. **Add the new batch to the BATCHES object**: insert a new key at the top of the BATCHES object with the new batch's label and repos array.
+2. **Add or replace the batch in the BATCHES object**: insert the new key at the top of the BATCHES object. If the key already exists, parse brace depth from that key's opening `{` and replace only that top-level batch object. Do not rely on naive regex for nested repo arrays.
 
-3. **Update the header timestamp**: patch `.header-meta` to the new week.
+3. **Update the header timestamp**: patch `.header-meta` or the dashboard's visible scan marker to the new week.
 
 4. **Set the new batch as active**: ensure `var currentBatchId = "YYYYMMDD";` points to the new batch.
 
@@ -191,6 +191,9 @@ After scraping GitHub trending, check HN and Product Hunt for the same repos:
 
 ## Pitfalls
 
+- **Firecrawl may return cached front pages unless told not to.** For HN and Product Hunt signal badges, use `maxAge: 0` when the job is meant to reflect the live front page. Cached scrapes can be useful for GitHub trending when the weekly page is stable, but stale HN/PH data can create false badges.
+- **Same-day cron reruns are upserts, not duplicates.** If `batch_YYYYMMDD.json` or the `BATCHES[YYYYMMDD]` key already exists, replace it after verification rather than failing or adding a second tab. A partial prior run may have inserted an older same-day batch before stopping.
+- **Use brace-depth replacement for existing BATCHES entries.** A top-level batch contains nested repo objects and arrays; regex alone is brittle. Locate the batch key, find the opening `{`, scan strings/escapes while counting braces, and replace exactly that object.
 - **Firecrawl may run out of credits.** Always be aware of the browser-based DOM scraping fallback. The `browser_navigate` + `browser_console` with JavaScript extraction pattern works for GitHub trending when Firecrawl is unavailable.
 - **Use `patch` tool for targeted edits, not full rewrites.** The BATCHES architecture makes targeted patches clean: add a batch tab button, insert the new BATCHES key, update the header timestamp, and update `currentBatchId`. Four small patches are safer than one full file write.
 - **Cron jobs may block `execute_code`.** If a scheduled dashboard job needs scripted HTML manipulation, write a temporary Python script with `write_file`, run it with `terminal`, then verify and delete the script. Do not stop just because `execute_code` is unavailable.

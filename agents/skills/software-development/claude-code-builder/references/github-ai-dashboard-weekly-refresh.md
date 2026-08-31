@@ -266,6 +266,9 @@ print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;')
 - dashboard.html contains BATCHES object with the current week's batch key, tab switching functions, and stats row
 - Extract the inline `<script>` block and run `node --check` against it before browser verification. Dashboard rebuilds can pass structural HTML checks while still failing at runtime because Python f-strings corrupt quoted JavaScript selectors such as `querySelector('[onclick="..."]')`.
 - Browser verification confirms JavaScript actually executed: `typeof BATCHES === 'object'`, current batch id is defined, and five `.repo-card` elements render for each signal tab.
+- Verify all three signal tabs, not only the default view: call `switchSignal('Trending Today')`, `switchSignal('Fastest Growing')`, and `switchSignal('Most Starred')` in the browser console and confirm each renders five `.repo-card` elements with the expected repo names.
+- After browser verification, run one final file-level guard from the dashboard directory: confirm `repos.json` has 15 entries, `batch_YYYYMMDD.json` is a 15-item list, `dashboard.html` contains the intended current-week repos, old category labels from any previous run are absent, and em dash count is zero. This catches same-directory cron or parallel-process overwrites that can happen between the build and the final report.
+- If the final guard shows the dashboard regressed after a successful refresh, immediately rerun the purpose-built `refresh_dashboard.py`, then repeat the script check, browser check, and final guard. Report only the final verified state.
 - Previous week's batch data is preserved (not overwritten)
 - New batch tab button exists in `#batch-tabs` for the current week
 - Archive file exists at `archive/repos_YYYY-MM-DD.json`
