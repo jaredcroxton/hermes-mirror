@@ -39,3 +39,10 @@ description: "Build article-ready research briefs for Jared: sourced case lists,
 
 ## Useful reference files
 - `references/australia-ai-operational-failure-cases.md` — session-derived case bank on Australian AI job cuts, backtracks, hallucinations, governance failures, and global rehiring comparators.
+- `references/anthropic-fable-5-1-pricing-claims.md` — case bank on Fable 5.1 pricing coverage, including accurate cheaper/lower-cost claims, misleading 50% cheaper drift, and the distinction between base API pricing, cache-read pricing, and effective agentic workload cost.
+
+## Pricing-claim research pattern
+- When researching model pricing claims, separate base/sticker token pricing from effective workload cost, cache reads, batch discounts, and cost-per-benchmark-task claims.
+- Search exact claim strings first, including quoted phrases such as “50% cheaper”, “half the cost”, “up to 45%”, and “75% cheaper cache reads”.
+- Classify each source as accurate, misleading, or adjacent. Adjacent means the claim is true for a related model or comparison but not the user's target claim.
+- Treat social snippets as leads only. Do not use them as authoritative proof unless the page itself can be accessed and the claim can be quoted.

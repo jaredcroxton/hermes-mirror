@@ -133,14 +133,14 @@
     "archived_at": null,
     "created_at": "2026-08-20T05:25:02.943430+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-08-20T05:25:46.752608+00:00",
-    "last_used_at": "2026-08-25T06:24:26.793567+00:00",
-    "last_viewed_at": "2026-08-25T06:24:26.790416+00:00",
-    "patch_count": 1,
+    "last_patched_at": "2026-09-01T21:51:18.551290+00:00",
+    "last_used_at": "2026-09-01T21:35:34.595909+00:00",
+    "last_viewed_at": "2026-09-01T21:35:34.591157+00:00",
+    "patch_count": 3,
     "pinned": false,
     "state": "active",
-    "use_count": 1,
-    "view_count": 1
+    "use_count": 2,
+    "view_count": 2
   },
   "arxiv": {
     "archived_at": null,
@@ -576,13 +576,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-24T23:03:15.357771+00:00",
-    "last_used_at": "2026-08-31T23:00:28.115327+00:00",
-    "last_viewed_at": "2026-08-31T23:00:28.112986+00:00",
+    "last_used_at": "2026-09-01T23:02:01.576481+00:00",
+    "last_viewed_at": "2026-09-01T23:02:01.573988+00:00",
     "patch_count": 28,
     "pinned": false,
     "state": "active",
-    "use_count": 52,
-    "view_count": 52
+    "use_count": 53,
+    "view_count": 53
   },
   "himalaya": {
     "archived_at": null,
