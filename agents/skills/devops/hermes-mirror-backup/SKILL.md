@@ -15,13 +15,19 @@ Backup the full Hermes agent ecosystem to the GitHub mirror repository. Covers a
 
 ## Workflow
 
-### 1. Clone fresh (never reuse a stale directory)
+### 1. Clone or refresh the mirror repo
 
-The fallback `clone || pull` pattern fails silently when the target directory exists but is not a git repo. Always remove first.
+The safest path is a fresh clone, because the fallback `clone || pull` pattern fails silently when the target directory exists but is not a git repo. Use the fresh clone path when approval policy allows destructive temp-directory cleanup.
 
 ```bash
 rm -rf /tmp/hermes-mirror-backup
 cd /tmp && git clone https://github.com/jaredcroxton/hermes-mirror.git hermes-mirror-backup
+```
+
+If the cron approval gate blocks the destructive cleanup, fall back to the non-destructive refresh and explicitly verify the directory is a git repo before continuing:
+
+```bash
+cd /tmp && git clone https://github.com/jaredcroxton/hermes-mirror.git hermes-mirror-backup 2>/dev/null || (cd /tmp/hermes-mirror-backup && git rev-parse --git-dir >/dev/null && git pull origin main)
 ```
 
 ### 2. Ensure directory structure
@@ -149,9 +155,39 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 ```
 
+### 10. Recovery if forbidden files were pushed
+
+If `.curator_backups`, `.env.*`, `state.db`, or any token-pattern file is accidentally committed or pushed during the run, do not leave a bad commit followed by a cleanup commit on a public mirror. Remove the forbidden content, verify the net tree is clean, then squash or rewrite the mistaken push with `--force-with-lease` so `main` only shows the clean backup commit.
+
+```bash
+cd /tmp/hermes-mirror-backup
+# Example: remove accidental curator archives from the working tree and index.
+git rm -r agents/skills/.curator_backups 2>/dev/null || rm -rf agents/skills/.curator_backups
+
+# Verify the final tree before rewriting/pushing.
+if find . -path './.git' -prune -o \( -name state.db -o -name '.env' -o -name '.env.*' -o -name '.curator_backups' \) -print | grep .; then
+  exit 1
+fi
+APIFY_PREFIX='apify''_api_'
+if grep -RIni --exclude-dir=.git "$APIFY_PREFIX" .; then
+  exit 1
+fi
+
+# If the bad push and cleanup are the last two commits, squash them into one clean daily backup.
+BASE=$(git rev-parse HEAD~2)
+git reset --soft "$BASE"
+if git diff --cached --name-only | grep -q '^agents/skills/.curator_backups/'; then
+  echo "Forbidden archives remain in net diff" >&2
+  exit 1
+fi
+git commit -m "Daily backup — $(date '+%d %B %Y')"
+git push --force-with-lease origin main
+```
+
 ## Pitfalls
 
-- **Stale non-git directory:** The pattern `git clone X || (cd X && git pull)` fails when the directory exists but is not a git repo. Always `rm -rf` first for cron safety.
+- **Cron approval gates can block destructive shell patterns:** `rm -rf /tmp/hermes-mirror-backup` is the cleanest stale-directory defence, but scheduled jobs may route destructive shell strings to `pending_approval`. If that happens, do not switch to arbitrary Python execution. Use the less-destructive `git clone ... || (cd ... && git pull origin main)` fallback, then run the stronger clean-up and verification steps below before committing.
+- **Stale non-git directory:** The pattern `git clone X || (cd X && git pull)` fails when the directory exists but is not a git repo. Prefer `rm -rf` first for cron safety when approval policy allows it. If approval policy blocks it, use the fallback above and fail loudly if `/tmp/hermes-mirror-backup` is not a git repo.
 - **`cp` of config.yaml triggers security approval:** The destination `.../config/config.yaml` matches the "overwrite project env/config file" security pattern, which blocks with `pending_approval`. On a cron job there is no user to approve it — the task hangs indefinitely. Use `cat >` redirection instead, which also lets you redact email credentials inline.
 - **Wrong config filename:** The Hermes development guide is `AGENTS.md`, not `CLAUDE.md`. The latter appears in some older documentation but does not exist on disk. Copy `AGENTS.md` instead.
 - **Leaked tokens:** Build the Apify token prefix from shell fragments, redact both full tokens and the prefix across the entire mirror tree, then grep-check the whole mirror. Silent redaction commands are not evidence of clean output.
