@@ -421,7 +421,7 @@ prompt_caching:
 providers: {}
 quick_commands: {}
 secrets:
-  bitwarden:
+  REDACTED
     access_token_env: REDACTED
     auto_install: true
     cache_ttl_seconds: 300
