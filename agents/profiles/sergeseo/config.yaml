@@ -518,7 +518,7 @@ x_search:
   timeout_seconds: 180
   retries: 2
 secrets:
-  REDACTED
+  bitwarden:
     enabled: false
     access_token_env: REDACTED
     project_id: ''

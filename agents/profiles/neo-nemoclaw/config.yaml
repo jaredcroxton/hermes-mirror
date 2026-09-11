@@ -1,5 +1,5 @@
-EMAIL_ADDRESS: REDACTED
-EMAIL_ALLOWED_USERS: REDACTED
+EMAIL_ADDRESS: jaredcroxton@gmail.com
+EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
 EMAIL_PASSWORD: REDACTED
 _config_version: 28
 agent:
@@ -424,7 +424,7 @@ prompt_caching:
 providers: {}
 quick_commands: {}
 secrets:
-  REDACTED
+  bitwarden:
     access_token_env: REDACTED
     auto_install: true
     cache_ttl_seconds: 300

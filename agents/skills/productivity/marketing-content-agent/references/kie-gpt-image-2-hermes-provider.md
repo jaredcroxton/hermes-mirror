@@ -34,7 +34,7 @@ POST https://api.kie.ai/api/v1/jobs/createTask
 Auth comes from the active profile env:
 
 ```text
-KIE_API_KEY=...
+KIE_API_KEY=REDACTED
 ```
 
 Do not store the key in Obsidian, plugin files, docs, or chat summaries.

@@ -13,7 +13,7 @@ Do not treat this as the full reference-image workflow. For uploaded image → s
 Store the API key in the profile-local `.env`:
 
 ```bash
-KIE_API_KEY=<secret>
+KIE_API_KEY=REDACTED
 ```
 
 For Mira:
