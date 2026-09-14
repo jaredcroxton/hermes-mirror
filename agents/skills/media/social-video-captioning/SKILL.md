@@ -18,8 +18,9 @@ The job is not to summarise the video. The job is to create usable captions that
 1. **Inspect the file first.** Use `ffprobe` to confirm duration, dimensions, and whether audio exists.
 2. **Create visual grounding.** Make a contact sheet with `ffmpeg` at roughly one frame per second. Identify the subject, setting, on-screen text, gestures, mood, and visual hook.
 3. **Transcribe when audio exists.** Use `hyperframes transcribe` so the caption reflects what is actually said, not what the frames imply.
-4. **Draft distinct trials.** If Jared says he is testing captions, produce genuinely different angles, not tiny rewrites.
-5. **Keep the output lean.** Give the captions. Only add a short strategic note if one version is clearly stronger.
+4. **Fact-check if asked whether it is true.** When Jared asks to verify a recorded explanation, extract claims from both the transcript and on-screen text, then verify against primary sources before giving a publish-readiness verdict. Use `references/video-explanation-fact-checking.md`.
+5. **Draft distinct trials.** If Jared says he is testing captions, produce genuinely different angles, not tiny rewrites.
+6. **Keep the output lean.** Give the captions or verdict. Only add a short strategic note if one version is clearly stronger.
 
 ## Jared's default social-caption style
 
@@ -80,3 +81,4 @@ hyperframes transcribe --engine auto --model base.en --language en --json -d /tm
 
 - `references/social-video-caption-trials.md` for the detailed inspection and drafting pattern.
 - `references/video-explanation-review.md` for checking whether Jared explained an idea correctly from a recorded video.
+- `references/video-explanation-fact-checking.md` for verifying factual claims in a recorded social video and giving a publish-readiness verdict.

@@ -70,11 +70,13 @@ Use `mcp_firecrawl_firecrawl_scrape` with `formats: ["json"]` and a schema that 
 - Total stars: `a[href*="/stargazers"]` → strip non-digits
 - Weekly growth: regex `/([\d,]+)\s+stars?\s+this\s+week/` on full article textContent → strip commas
 - Language: `[itemprop="programmingLanguage"]` textContent
-- Only 14 articles on the page — no infinite scroll, no pagination
+- Repository count can vary by GitHub render and date. On 14 September 2026 the weekly page exposed 23 articles via DOM extraction. Do not hard-code 14; extract all articles and then slice to the dashboard target count.
 
 ## HN / Product Hunt Cross-Reference
 
 Scrape `https://news.ycombinator.com` and `https://www.producthunt.com` with Firecrawl (markdown format). Cross-reference repo names against story/product titles. Direct matches are rare — most weeks return null for `hnRank` and `phUpvotes`. This is expected; the batch JSON should record null values rather than fabricated signals.
+
+If Product Hunt is blocked by Cloudflare in the browser and Firecrawl credits are unavailable, try direct HTTP fetches of `https://www.producthunt.com/` and `https://www.producthunt.com/feed` from Python requests. The homepage often contains embedded post names, ranks, and scores, while the Atom feed exposes product names and taglines. Upvote counts may still be unavailable; keep `phUpvotes` null rather than guessing.
 
 ## Batch History
 

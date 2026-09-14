@@ -191,6 +191,7 @@ After scraping GitHub trending, check HN and Product Hunt for the same repos:
 
 ## Pitfalls
 
+- **Check the live dashboard template before assuming the tab architecture.** On 14 September 2026 the production file still used `#signal-tabs`, `currentSignal`, and per-repo `bucket` values, even though newer guidance describes pure sort tabs. If the file has signal tabs, adapt the new batch data to the existing renderer unless the user explicitly asks for a UI refactor.
 - **Firecrawl may return cached front pages unless told not to.** For HN and Product Hunt signal badges, use `maxAge: 0` when the job is meant to reflect the live front page. Cached scrapes can be useful for GitHub trending when the weekly page is stable, but stale HN/PH data can create false badges.
 - **Same-day cron reruns are upserts, not duplicates.** If `batch_YYYYMMDD.json` or the `BATCHES[YYYYMMDD]` key already exists, replace it after verification rather than failing or adding a second tab. A partial prior run may have inserted an older same-day batch before stopping.
 - **Use brace-depth replacement for existing BATCHES entries.** A top-level batch contains nested repo objects and arrays; regex alone is brittle. Locate the batch key, find the opening `{`, scan strings/escapes while counting braces, and replace exactly that object.

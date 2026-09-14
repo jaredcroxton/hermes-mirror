@@ -257,6 +257,22 @@ print('Em dashes remaining:', content.count('\u2014') + content.count('&mdash;')
 "
 ```
 
+## Cron-safe selected-repo update pattern
+
+When `refresh_dashboard.py` already exists, preserve it rather than rebuilding the dashboard by hand. The cleanest cron-safe flow is:
+
+1. Scrape candidate repos with `browser_console` from GitHub Trending and Topics.
+2. Verify exact current stars, descriptions, URLs, and topics with `gh api repos/<owner>/<repo>`.
+3. Write a short standalone helper script in the dashboard directory, e.g. `update_selected_YYYYMMDD.py`, that imports `Path`, finds the `SELECTED = ` block in `refresh_dashboard.py`, and replaces only that block using `pprint.pformat(..., sort_dicts=True)`.
+4. Run `python3 update_selected_YYYYMMDD.py`, then `python3 -m py_compile refresh_dashboard.py`, then `python3 refresh_dashboard.py`.
+5. Do not edit the generated `repos.json` or `dashboard.html` first. Let the existing builder enrich via GitHub API, archive the previous data, write the batch file, and rebuild the BATCHES dashboard.
+
+This avoids fragile manual JSON edits, preserves the archive/tab structure, and keeps the weekly refresh inside cron-safe standalone Python files instead of piped interpreters or `execute_code`.
+
+## Browser verification note
+
+When using `browser_console` to test all signal tabs, the dashboard will remain on the last tab tested. If a screenshot is taken afterwards, it may show `Most Starred` rather than the default `Trending Today`. That is not a failure if the console check already confirms all three tabs render five cards each. If the final visual screenshot should show the default state, call `switchSignal('Trending Today')` before `browser_vision`.
+
 ## Verification
 
 - repos.json is valid JSON with exactly 15 entries
