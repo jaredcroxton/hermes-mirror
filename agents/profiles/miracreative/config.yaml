@@ -119,7 +119,7 @@ browser:
     loopback_host_alias: host.docker.internal
     managed_persistence: false
     rewrite_loopback_urls: false
-    session_key: REDACTED
+    session_key: ''
     user_id: ''
   cdp_url: ''
   command_timeout: 30
@@ -487,7 +487,7 @@ voice:
   auto_tts: false
   beep_enabled: true
   max_recording_seconds: 120
-  record_key: REDACTED
+  record_key: ctrl+b
   silence_duration: 3.0
   silence_threshold: 200
 web:

@@ -26,6 +26,7 @@ description: "Build article-ready research briefs for Jared: sourced case lists,
 ## Research workflow
 1. Extract the user-provided source links first. Capture dates, organisation, what happened, numbers, quotes, and why it matters.
 2. Run broad web searches for comparable incidents. Use source-quality filters where possible: ABC, Guardian Australia, Reuters, BBC, OAIC, ANAO, official regulator pages, government pages, credible union statements.
+   - If search/scrape tools are unavailable or a docs site blocks the browser, try direct markdown retrieval via Jina Reader (`https://r.jina.ai/http://...`) for known documentation URLs before giving up. For OpenAI Help Center, article and collection URLs work well through this pattern.
 3. For each candidate case, verify with a primary or reputable source before including it as a fact.
 4. Sort cases by article usefulness, not by discovery order.
 5. Name the pattern. Jared needs the argument, not just examples.
@@ -40,6 +41,7 @@ description: "Build article-ready research briefs for Jared: sourced case lists,
 ## Useful reference files
 - `references/australia-ai-operational-failure-cases.md` — session-derived case bank on Australian AI job cuts, backtracks, hallucinations, governance failures, and global rehiring comparators.
 - `references/anthropic-fable-5-1-pricing-claims.md` — case bank on Fable 5.1 pricing coverage, including accurate cheaper/lower-cost claims, misleading 50% cheaper drift, and the distinction between base API pricing, cache-read pricing, and effective agentic workload cost.
+- `references/chatgpt-business-daily-brief-architecture.md` — source-backed OpenAI/ChatGPT architecture notes for business daily briefs using Projects, SharePoint, Outlook, Company Knowledge, Scheduled Tasks, and custom MCP apps.
 
 ## Pricing-claim research pattern
 - When researching model pricing claims, separate base/sticker token pricing from effective workload cost, cache reads, batch discounts, and cost-per-benchmark-task claims.

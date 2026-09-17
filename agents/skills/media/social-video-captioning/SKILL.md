@@ -5,7 +5,7 @@ description: Use when Jared sends short social videos and asks for captions, cap
 
 # social-video-captioning
 
-Use this skill when Jared sends one or more short videos and asks for captions, caption trials, post copy, hooks, options for testing, or whether his recorded explanation is correct and clear.
+Use this skill when Jared sends one or more short videos, social posts, X/Twitter links, or creator content and asks for captions, talking points, post copy, hooks, options for testing, or whether his recorded explanation is correct and clear.
 
 ## Operating rule
 
@@ -15,12 +15,13 @@ The job is not to summarise the video. The job is to create usable captions that
 
 ## Workflow
 
-1. **Inspect the file first.** Use `ffprobe` to confirm duration, dimensions, and whether audio exists.
-2. **Create visual grounding.** Make a contact sheet with `ffmpeg` at roughly one frame per second. Identify the subject, setting, on-screen text, gestures, mood, and visual hook.
-3. **Transcribe when audio exists.** Use `hyperframes transcribe` so the caption reflects what is actually said, not what the frames imply.
+1. **Inspect the source first.** For uploaded video files, use `ffprobe` to confirm duration, dimensions, and whether audio exists. For X/Twitter links, extract the post text and any attached media before drafting.
+2. **Create visual grounding.** Make a contact sheet with `ffmpeg` at roughly one frame per second for videos. Identify the subject, setting, on-screen text, gestures, mood, and visual hook.
+3. **Transcribe when audio exists.** Use `hyperframes transcribe` so the caption or talking points reflect what is actually said, not what the frames imply.
 4. **Fact-check if asked whether it is true.** When Jared asks to verify a recorded explanation, extract claims from both the transcript and on-screen text, then verify against primary sources before giving a publish-readiness verdict. Use `references/video-explanation-fact-checking.md`.
-5. **Draft distinct trials.** If Jared says he is testing captions, produce genuinely different angles, not tiny rewrites.
-6. **Keep the output lean.** Give the captions or verdict. Only add a short strategic note if one version is clearly stronger.
+5. **Turn the source into usable output.** If Jared asks for talking points, give the strategic angles, plain-language soundbites, audience-specific implications, and watch-outs. Do not just summarise the post.
+6. **Draft distinct trials.** If Jared says he is testing captions, produce genuinely different angles, not tiny rewrites.
+7. **Keep the output lean.** Give the captions, talking points, or verdict. Only add a short strategic note if one version is clearly stronger.
 
 ## Jared's default social-caption style
 
@@ -82,3 +83,4 @@ hyperframes transcribe --engine auto --model base.en --language en --json -d /tm
 - `references/social-video-caption-trials.md` for the detailed inspection and drafting pattern.
 - `references/video-explanation-review.md` for checking whether Jared explained an idea correctly from a recorded video.
 - `references/video-explanation-fact-checking.md` for verifying factual claims in a recorded social video and giving a publish-readiness verdict.
+- `references/x-post-extraction.md` for extracting X/Twitter posts, attached videos, and drafting talking points when normal scraping fails.

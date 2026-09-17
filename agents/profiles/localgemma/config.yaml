@@ -67,7 +67,7 @@ browser:
   camofox:
     managed_persistence: false
     user_id: ''
-    session_key: REDACTED
+    session_key: ''
     adopt_existing_tab: false
     rewrite_loopback_urls: false
     loopback_host_alias: host.docker.internal
@@ -304,7 +304,7 @@ stt:
     tag_audio_events: false
     diarize: true
 voice:
-  record_key: REDACTED
+  record_key: ctrl+b
   max_recording_seconds: 120
   auto_tts: true
   beep_enabled: true
@@ -516,8 +516,8 @@ paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
 _config_version: 26
-EMAIL_ADDRESS: REDACTED
-EMAIL_ALLOWED_USERS: REDACTED
+EMAIL_ADDRESS: jaredcroxton@gmail.com
+EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
 EMAIL_PASSWORD: REDACTED
 known_plugin_toolsets:
   cli:
