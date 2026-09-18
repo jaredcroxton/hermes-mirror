@@ -576,13 +576,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-09-05T23:08:29.642889+00:00",
-    "last_used_at": "2026-09-17T23:09:54.334045+00:00",
-    "last_viewed_at": "2026-09-17T23:09:54.331588+00:00",
+    "last_used_at": "2026-09-18T23:00:14.700549+00:00",
+    "last_viewed_at": "2026-09-18T23:00:14.697757+00:00",
     "patch_count": 31,
     "pinned": false,
     "state": "active",
-    "use_count": 67,
-    "view_count": 67
+    "use_count": 68,
+    "view_count": 68
   },
   "himalaya": {
     "archived_at": null,
@@ -1070,13 +1070,13 @@
     "created_at": "2026-05-27T12:31:20.587869+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-30T05:04:58.218847+00:00",
-    "last_used_at": "2026-06-30T05:04:23.351835+00:00",
-    "last_viewed_at": "2026-06-30T05:04:23.349105+00:00",
+    "last_used_at": "2026-09-18T00:20:37.655760+00:00",
+    "last_viewed_at": "2026-09-18T00:20:37.654551+00:00",
     "patch_count": 92,
     "pinned": false,
     "state": "stale",
-    "use_count": 98,
-    "view_count": 98
+    "use_count": 99,
+    "view_count": 99
   },
   "personas": {
     "archived_at": null,
@@ -1447,13 +1447,13 @@
     "created_at": "2026-08-17T23:10:09.425721+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-17T23:10:16.614780+00:00",
-    "last_used_at": "2026-09-17T05:27:36.283811+00:00",
-    "last_viewed_at": "2026-09-17T05:27:36.264855+00:00",
+    "last_used_at": "2026-09-18T00:18:07.836937+00:00",
+    "last_viewed_at": "2026-09-18T00:18:07.835448+00:00",
     "patch_count": 1,
     "pinned": false,
     "state": "active",
-    "use_count": 11,
-    "view_count": 11
+    "use_count": 12,
+    "view_count": 12
   },
   "writing-plans": {
     "archived_at": null,
