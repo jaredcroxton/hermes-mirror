@@ -134,7 +134,7 @@ fi
 # only lists tracked/index files — so it would skip them and secrets would be
 # committed on the next `git add -A`. This is exactly how provider API keys in
 # profile config.yaml files leak into the public mirror.
-find . -type f -not -path './.git/*' -exec perl -0pi -e 's/ghp_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_TOKEN/g; s/github_pat_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_PAT/g; s/sk-[A-Za-z0-9_-]{20,}/REDACTED_API_KEY/g; s/xox[baprs]-[A-Za-z0-9-]{20,}/REDACTED_SLACK_TOKEN/g; s/AIza[0-9A-Za-z_-]{20,}/REDACTED_GOOGLE_API_KEY/g' {} \;
+find . -type f -not -path './.git/*' -exec perl -0pi -e 's/ghp_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_TOKEN/g; s/github_pat_[A-Za-z0-9_]{20,}/REDACTED_GITHUB_PAT/g; s/sk-[A-Za-z0-9_-]{20,}/REDACTED_API_KEY/g; s/xox[baprs]-[A-Za-z0-9-]{20,}/REDACTED_SLACK_TOKEN/g; s/AIza[0-9A-Za-z_-]{20,}/REDACTED_GOOGLE_API_KEY/g; s/Bearer\s+[A-Za-z0-9._~+\/=:-]{20,}/REDACTED_BEARER_TOKEN/gi' {} \;
 find . -type f -not -path './.git/*' \( -name '*.yaml' -o -name '*.yml' \) -exec perl -0pi -e 's/^([ \t]*[A-Za-z0-9_.-]*(?:API_KEY|TOKEN|SECRET|PASSWORD|PRIVATE_KEY|CLIENT_SECRET|ACCESS_TOKEN|REFRESH_TOKEN)[A-Za-z0-9_.-]*:[ \t]*).+$/\1REDACTED/gmi' {} \;
 ```
 
@@ -197,6 +197,7 @@ git push --force-with-lease origin main
 - **`.env.example` still counts as `.env.*`:** The public mirror rule is "Never include `.env`". Treat `.env.example` as forbidden too, even though it often contains placeholders. Exclude it during skills copy and verify staged additions/modifications do not include `.env`, `.env.*`, or `state.db`. If a forbidden file is already tracked and now deleted, do not fail the staged-file check solely because the deletion is staged.
 - **Curator backups contain compressed historical snapshots:** Exclude `.curator_backups` during skills copy. The `skills.tar.gz` archives can contain old docs and prompts with literal token-pattern examples, and redaction does not inspect compressed content before commit.
 - **Case-sensitive token scans miss documentation examples:** Some skills and archived prompts may contain mixed-case token-prefix examples. Redact and verify Apify prefixes case-insensitively (`perl ... /gi` and `grep -RIni`).
+- **Bearer redaction can flag its own placeholder:** If you add a common-secret scan for `Bearer <token>`, redact the entire `Bearer <value>` string to `REDACTED_BEARER_TOKEN`. Do not preserve the `Bearer ` prefix before a long placeholder, or the verification scan will match the replacement text and fail even after successful redaction.
 
 ## What NOT to include
 
