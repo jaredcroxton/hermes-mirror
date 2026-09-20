@@ -408,7 +408,7 @@ def revoke():
         import urllib.request
         urllib.request.urlopen(
             urllib.request.Request(
-                f"https://oauth2.googleapis.com/revoke?token={creds.token}",
+                f"https://oauth2.googleapis.com/revoke?token=REDACTED",
                 method="POST",
                 headers={"Content-Type": "application/x-www-form-urlencoded"},
             )
