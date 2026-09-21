@@ -11,7 +11,7 @@ auth/path differences.**
 | Base URL | `http://127.0.0.1:8188` | `https://cloud.comfy.org` |
 | API path prefix | none (`/prompt`, `/view`, …) | `/api/...` (`/api/prompt`, `/api/view`, …) |
 | Auth | none (or bearer token if configured) | `X-API-Key` header |
-| WebSocket | `ws://host:port/ws?clientId={uuid}` | `wss://cloud.comfy.org/ws?clientId={uuid}&token=REDACTED |
+| WebSocket | `ws://host:port/ws?clientId={uuid}` | `wss://cloud.comfy.org/ws?clientId={uuid}&token={API_KEY}` |
 | `/api/view` response | direct bytes | 302 redirect → signed URL (use `curl -L`) |
 
 The skill scripts route URLs automatically via `_common.resolve_url()`.
@@ -147,7 +147,7 @@ Connect for real-time execution events.
 wscat -c "ws://127.0.0.1:8188/ws?clientId=MY-UUID"
 
 # Cloud
-wscat -c "wss://cloud.comfy.org/ws?clientId=MY-UUID&token=REDACTED"
+wscat -c "wss://cloud.comfy.org/ws?clientId=MY-UUID&token=$COMFY_CLOUD_API_KEY"
 ```
 
 **Note:** on Cloud the `clientId` is currently ignored — all messages for a

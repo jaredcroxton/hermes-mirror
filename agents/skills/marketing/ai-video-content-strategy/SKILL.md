@@ -92,6 +92,19 @@ Core rule: inspect the reference video, create timestamped beats, then generate 
 
 When Jared wants the reference video broken into screenshot inputs for Seedance, use `references/seedance-reference-frame-rebuild-pack.md`. Create a working folder with original frames, hard-cropped no-UI scene refs, selected best scenes, a Jared-photo drop folder, prompt templates, generated clips folder, and final stitch folder. Crop social/app UI first. Only inpaint final selected frames if cropping cannot remove remaining overlays without damaging the scene.
 
+## Fast AI Platform Announcement Scripts
+
+When Jared gives rough spoken notes for a short video about a current AI platform announcement, produce the polished script first. Keep it sharp, founder-led, and around 85 to 90 words for a 30-second delivery. Verify factual claims before strengthening them, especially valuation, pricing, GitHub ownership, whether a repo is official or third-party, and whether the pricing is subscription, credit, or per-use.
+
+Use this shape:
+1. Hook: the lesson or market shift.
+2. Proof: valuation, API launch, pricing page, GitHub repo, or official announcement.
+3. Consequence: what this kills or exposes.
+4. Founder angle: what Jared can now build or control.
+5. Closing line: a punchy market thesis.
+
+If the topic is Higgsfield API/open-source positioning, check `references/higgsfield-api-announcement-video-notes.md` before scripting. It captures the verified wording, pricing examples, repo distinctions, and the valuation/evaluation correction.
+
 ## The 8-Second Standalone Clip Format
 
 When Jared asks for short launch videos ("8sec 720P"), deliver standalone clips — not a single 60-second multi-shot. Each 8-second clip carries ONE message. They can be used individually on social or strung together as a reel.
@@ -232,6 +245,8 @@ When faces are off the table (Seedance 2.0 limitation), here is the proven struc
 - `references/seedance-2.5-reference-video-recreation.md` — Workflow for recreating a reference video as 4 to 7 second Seedance clips using character references, continuity blocks, and stitching rules
 - `references/seedance-reference-frame-rebuild-pack.md` — Folder-pack workflow for extracting 50 reference screenshots, cropping social/app UI, selecting usable scene refs, adding Jared's identity photo, and preparing Seedance clip prompts
 - `references/crew-launch-video-case-study.md` — Proven Elements-first workflow, 8-second clip format, and prompt libraries from the 24 June 2026 Crew catalogue launch
+
+- `references/higgsfield-api-announcement-video-notes.md` — Fact anchors and scripting pattern for short Higgsfield API/open-source market-shift videos, including valuation wording, official vs third-party repo distinction, and per-second pricing examples
 
 ## Seedance 2.0 Prompt Engineering Rules (absorbed from seedance-video-generation)
 

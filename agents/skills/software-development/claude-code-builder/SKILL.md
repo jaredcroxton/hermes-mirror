@@ -155,6 +155,8 @@ Before running any command, write a complete build brief. Internally answer:
 
 Use both to shape the five answers into a proper design brief. By the end of Blueprint, the functional spec AND the design direction are locked. No design decisions happen later in the process.
 
+**Taste fallback:** if `popular-web-designs` is not available in the active profile, do not block the build or invent a missing skill. Continue with `claude-design`, use its `references/design-systems/` catalog where relevant, and mention the unavailable Taste reference only if it materially affects the output.
+
 See `references/express-taste-bundle-placement.md` for the rationale behind Taste-in-Blueprint and the before/after flow.
 
 Default visual system (PerformOS master brand):

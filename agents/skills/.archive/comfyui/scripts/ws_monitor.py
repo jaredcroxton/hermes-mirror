@@ -142,7 +142,7 @@ def main(argv: list[str] | None = None) -> int:
     base_path = parsed.path.rstrip("/")
     ws_url = f"{scheme}://{netloc}{base_path}/ws?clientId={client_id}"
     if cloud and api_key:
-        ws_url += f"&token=REDACTED"
+        ws_url += f"&token={api_key}"
 
     color_on = not args.no_color and sys.stdout.isatty()
 

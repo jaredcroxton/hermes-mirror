@@ -76,7 +76,7 @@ Use `mcp_firecrawl_firecrawl_scrape` with `formats: ["json"]` and a schema that 
 
 Scrape `https://news.ycombinator.com` and `https://www.producthunt.com` with Firecrawl (markdown format). Cross-reference repo names against story/product titles. Direct matches are rare — most weeks return null for `hnRank` and `phUpvotes`. This is expected; the batch JSON should record null values rather than fabricated signals.
 
-If Product Hunt is blocked by Cloudflare in the browser and Firecrawl credits are unavailable, try direct HTTP fetches of `https://www.producthunt.com/` and `https://www.producthunt.com/feed` from Python requests. The homepage often contains embedded post names, ranks, and scores, while the Atom feed exposes product names and taglines. Upvote counts may still be unavailable; keep `phUpvotes` null rather than guessing.
+If Product Hunt is blocked by Cloudflare in the browser and Firecrawl credits are unavailable, try direct HTTP fetches of `https://www.producthunt.com/` and `https://www.producthunt.com/feed` from Python requests. The homepage can return normal HTML even when the browser sees Cloudflare verification; inspect the embedded GraphQL/cache JSON for `__typename":"Post"`, `name`, `slug`, `tagline`, `dailyRank`, `latestScore`, `launchDayScore`, and `commentsCount`. Treat `launchDayScore` as the best available upvote-like count for PH badges. The Atom feed exposes product names and taglines but usually not upvotes; keep `phUpvotes` null rather than guessing when scores are unavailable.
 
 ## Batch History
 

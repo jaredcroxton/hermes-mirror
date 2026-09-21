@@ -82,7 +82,7 @@ for _ in range(80):
         break
     time.sleep(6)
     run = request_json(
-        f'https://api.apify.com/v2/actor-runs/{run_id}?token=REDACTED',
+        f'https://api.apify.com/v2/actor-runs/{run_id}?token={urllib.parse.quote(apify_token)}',
         timeout=60,
     )['data']
 ```
