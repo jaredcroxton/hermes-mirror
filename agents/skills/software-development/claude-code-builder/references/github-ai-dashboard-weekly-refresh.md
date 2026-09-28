@@ -246,7 +246,7 @@ cp /Users/jc/Desktop/hermes_builds/github-ai-dashboard/repos.json \
 
 ## Em dash gate (cron-safe)
 
-After writing dashboard.html, strip em dashes using standalone python3 via terminal (NOT execute_code, NOT piped heredoc):
+After writing dashboard.html, strip em dashes using standalone python3 via terminal (NOT execute_code, NOT piped heredoc). If a refresh script reports zero em dashes but a final guard still finds them, inspect the script for escaped checks like `'\\u2014'` that only match the literal backslash-u sequence. The gate must count and replace the actual characters `—` and `–` as well as `&mdash;`.
 
 ```bash
 python3 -c "
