@@ -44,18 +44,25 @@ mkdir -p /tmp/hermes-mirror-backup/memory
 
 The Obsidian vault may be at a nested path (e.g., `Desktop/Desktop/Obsidian`). Verify the primary path first; fall back to `find` if it's missing.
 
+Copy Markdown files recursively, not just top-level `*.md`. Some agent packages, such as Mira and Piper, keep playbooks and style profiles in nested folders under `Obsidian/Agents`; a top-level-only copy silently deletes them from the mirror if the destination is refreshed.
+
 ```bash
 # Primary path — try first
-if ls /Users/jc/Desktop/Obsidian/Agents/*.md >/dev/null 2>&1; then
-  cp /Users/jc/Desktop/Obsidian/Agents/*.md /tmp/hermes-mirror-backup/agents/souls/
-# Fallback: locate the Agents directory under Desktop and copy from there
+AGENTS_DIR=""
+if [ -d /Users/jc/Desktop/Obsidian/Agents ]; then
+  AGENTS_DIR="/Users/jc/Desktop/Obsidian/Agents"
 else
   AGENTS_DIR=$(find /Users/jc/Desktop -maxdepth 4 -path "*/Obsidian/Agents" -type d 2>/dev/null | head -1)
-  if [ -n "$AGENTS_DIR" ]; then
-    cp "$AGENTS_DIR"/*.md /tmp/hermes-mirror-backup/agents/souls/
-  else
-    echo "ERROR: Cannot find Obsidian Agents directory" >&2
-  fi
+fi
+
+if [ -n "$AGENTS_DIR" ]; then
+  rsync -a --delete --prune-empty-dirs \
+    --include '*/' \
+    --include '*.md' \
+    --exclude '*' \
+    "$AGENTS_DIR"/ /tmp/hermes-mirror-backup/agents/souls/
+else
+  echo "ERROR: Cannot find Obsidian Agents directory" >&2
 fi
 ```
 
