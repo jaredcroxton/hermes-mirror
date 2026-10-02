@@ -576,13 +576,13 @@
     "created_at": "2026-06-29T23:04:53.672946+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-09-28T23:04:51.014629+00:00",
-    "last_used_at": "2026-09-30T23:00:12.573304+00:00",
-    "last_viewed_at": "2026-09-30T23:00:12.571815+00:00",
+    "last_used_at": "2026-10-02T23:03:00.992487+00:00",
+    "last_viewed_at": "2026-10-02T23:03:00.989883+00:00",
     "patch_count": 34,
     "pinned": false,
     "state": "active",
-    "use_count": 79,
-    "view_count": 79
+    "use_count": 81,
+    "view_count": 81
   },
   "himalaya": {
     "archived_at": "2026-09-28T06:55:04.985056+00:00",
@@ -908,6 +908,19 @@
     "state": "stale",
     "use_count": 5,
     "view_count": 5
+  },
+  "n8n-local-operations": {
+    "archived_at": null,
+    "created_at": "2026-10-02T23:04:19.065035+00:00",
+    "created_by": null,
+    "last_patched_at": null,
+    "last_used_at": "2026-10-02T23:04:19.069004+00:00",
+    "last_viewed_at": "2026-10-02T23:04:19.065045+00:00",
+    "patch_count": 0,
+    "pinned": false,
+    "state": "active",
+    "use_count": 1,
+    "view_count": 1
   },
   "native-mcp": {
     "archived_at": null,
@@ -1303,14 +1316,14 @@
     "archived_at": null,
     "created_at": "2026-08-20T03:40:00.896496+00:00",
     "created_by": "agent",
-    "last_patched_at": "2026-09-15T01:41:48.654255+00:00",
-    "last_used_at": "2026-09-29T22:42:06.756206+00:00",
-    "last_viewed_at": "2026-09-29T22:42:06.751786+00:00",
-    "patch_count": 14,
+    "last_patched_at": "2026-10-02T07:56:59.227272+00:00",
+    "last_used_at": "2026-10-02T07:55:52.287257+00:00",
+    "last_viewed_at": "2026-10-02T07:55:52.284709+00:00",
+    "patch_count": 15,
     "pinned": false,
     "state": "active",
-    "use_count": 15,
-    "view_count": 15
+    "use_count": 16,
+    "view_count": 16
   },
   "specialist-agent-deployment": {
     "archived_at": null,
@@ -1447,13 +1460,13 @@
     "created_at": "2026-06-04T21:50:11.015345+00:00",
     "created_by": null,
     "last_patched_at": "2026-06-24T22:37:49.818699+00:00",
-    "last_used_at": "2026-06-24T22:37:36.462203+00:00",
-    "last_viewed_at": "2026-06-24T22:37:36.461140+00:00",
+    "last_used_at": "2026-10-02T23:04:19.066838+00:00",
+    "last_viewed_at": "2026-10-02T23:04:19.062461+00:00",
     "patch_count": 9,
     "pinned": false,
     "state": "active",
-    "use_count": 5,
-    "view_count": 5
+    "use_count": 6,
+    "view_count": 6
   },
   "writing-in-jareds-voice": {
     "archived_at": null,

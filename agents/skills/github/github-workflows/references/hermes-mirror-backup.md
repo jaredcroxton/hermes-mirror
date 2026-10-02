@@ -91,7 +91,7 @@ grep -rI "REDACTED_APIFY_PREFIX_\|sk-\|ghp_\|github_pat_\|xox[baprs]-\|AIza\|fc-
 Also check EMAIL_PASSWORD separately since it's a label match not a token-pattern match:
 
 ```bash
-grep -r "EMAIL_PASSWORD:" . --include="*.yaml" 2>/dev/null | grep -v REDACTED || echo "All clean"
+grep -r "EMAIL_PASSWORD:"REDACTED"*.yaml" 2>/dev/null | grep -v REDACTED || echo "All clean"
 ```
 
 Matches in documentation files (showing the redaction regex itself) are harmless. Matches in `.yaml` config files are a problem — re-check the redaction step.

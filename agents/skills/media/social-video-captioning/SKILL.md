@@ -69,6 +69,7 @@ hyperframes transcribe --engine auto --model base.en --language en --json -d /tm
 ## Pitfalls
 
 - Do not rely only on the contact sheet when the video has speech.
+- If `hyperframes transcribe --engine auto ... --language en` fails with a Parakeet error like `No such option: --language`, rerun the same file with `--engine whisper --model base.en --language en`. Do not stop at the auto-engine failure.
 - When transcribing more than one video, run `hyperframes transcribe` separately for each file into distinct output directories. A multi-file call can return a single `transcript.json`, which makes it unclear which clip the transcript belongs to.
 - When Downloads contains duplicate exported files like `Video.mp4` and `Video (1).mp4`, inspect sizes and durations first, then use the clean non-duplicate filename unless the user clearly names the copy.
 - Do not over-polish into brand manifesto copy unless Jared asks for that.
