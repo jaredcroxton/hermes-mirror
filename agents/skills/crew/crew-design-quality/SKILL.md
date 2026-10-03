@@ -86,7 +86,7 @@ The dimensions to sweep. Each has a premium rule and the slop it replaces.
 
 - **Typography:** display at strong sizes with tight tracking and short leading; control hierarchy with weight and colour, not just scale. Avoid Inter for premium or creative work, prefer Geist, Outfit, Cabinet Grotesk, or Satoshi. Serif is banned on dashboards and software UI, use a high-end sans pairing (Geist plus Geist Mono, or Satoshi plus JetBrains Mono). Body at a comfortable measure (about 65ch), relaxed leading.
 - **Colour:** max one accent, saturation under 80 percent, on a neutral base (Zinc or Slate). No AI-purple or neon gradient glow (the AI-purple ban in Anti-patterns). One palette for the whole output, do not drift warm to cool.
-- **Layout and composition:** no centered hero when DESIGN_VARIANCE is above 4, use split-screen, left-content with right-asset, or asymmetric white space. Grid over flexbox percentage math. Contain the page (a sensible max width, centered).
+- **Layout and composition:** no centered hero when DESIGN_VARIANCE is above 4, use split-screen, left-content with right-asset, or asymmetric white space. Grid over flexbox percentage math. Contain the page (a sensible max width, centered). If the brief promises a map, graph, intelligence board, cluster view, or spatial system, a table-first dashboard is a Major or Critical miss even if it is visually clean.
 - **Spacing and density:** a consistent scale, aligned to a grid, generous padding inside containers; at high density drop card boxes for 1px dividers and negative space.
 - **Hierarchy:** weight, contrast, and position carry the eye before size does.
 - **Materiality and shadows:** cards only when elevation communicates hierarchy; tint a shadow to the background hue; for high density, group with border-t and divide-y, not boxes.
@@ -112,6 +112,21 @@ What premium looks like, a library to pull from instead of defaulting to generic
 ## Anti-patterns and AI tells
 
 The slop signatures to red-flag. Any of these, unrequested, is a quality failure.
+
+### Visual intelligence map tells
+
+For content intelligence, lead intelligence, and JEV-style pattern-mapping products, red-flag table-first composition when the brief is spatial or visual. If the value is seeing where posts, leads, or patterns sit, the first viewport should be a calm visual map or workspace. Tables, legends, model metadata, workflow strips, and evidence rows belong in subtabs or disclosures unless they are the primary job of the screen.
+
+Specific tells:
+
+- map exists but is visually secondary to tables or KPI cards
+- too many panels visible at once: workflow, legend, inspector, output, evidence, and table
+- raw model labels and confidence fields dominate the first viewport
+- nodes are plain dots or generic cards when the object should feel like content
+- density is solved by shrinking everything instead of clustering or fan-out
+- lead scoring polish begins before the content map is strong
+
+Review rule: if the user should understand the map in three seconds, anything not needed for that should be hidden, moved below the fold, or placed in a subtab.
 
 ```
 VISUAL AND CSS
@@ -157,6 +172,17 @@ The condensed checklist a design gate embeds. Run it as the last filter before a
 [ ] Content: real names, organic numbers, a contextual brand, no filler words, no broken image hotlinks.
 [ ] Execution: no animating layout properties; grain on a fixed layer; z-index restrained.
 ```
+
+For Jared's content-intelligence, AI scoring, JEV, Instagram-map, and lead-scoring products, run an extra density gate:
+
+```
+[ ] The first screen has one job, not every requirement visible at once.
+[ ] The visual map, board, or primary workspace is the hero before tables and KPI cards.
+[ ] Tables are supporting evidence or a subtab, not the default experience.
+[ ] Details, legends, raw model fields, and inspectors are hidden until selected or placed in subtabs.
+[ ] If the user says it is confusing or too busy, the next fix is subtraction and separation, not another panel.
+```
+
 
 ## Workflow
 

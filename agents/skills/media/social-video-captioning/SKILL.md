@@ -33,6 +33,9 @@ The job is not to summarise the video. The job is to create usable captions that
 - No em dashes.
 - No long setup.
 - No explaining the process.
+- Use normal plain text for captions by default, not fenced code blocks. Only use code blocks when Jared asks for copy-and-paste blocks or multiple structured variants.
+- For short reel captions, keep to three to six lines unless he asks for a longer version.
+- When Jared asks for a "link in bio" version, keep it blunt and short. Example shape: one line naming the system, one line naming the outcome, one line saying "Link in bio."
 
 ## Default output shape
 

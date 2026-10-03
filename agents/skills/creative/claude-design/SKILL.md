@@ -482,6 +482,48 @@ For marketing surfaces, make one idea land per section.
 
 For dashboards, avoid “data slop.” Only show data that helps the user decide or act.
 
+When Jared is reacting to a visual AI workspace as "too busy" or comparing it to an Instagram/LottieFiles-style reference, the fix is usually subtraction and separation, not more panels. Use subtabs or progressive disclosure: one screen, one job. Make the primary visual object the hero, hide tables as evidence, collapse inspectors until a user clicks, and move legends, workflows, and raw details behind secondary tabs. For content-intelligence products, visual nodes/maps are the product; tables are supporting evidence.
+
+For AI dashboards where the product value is a visual map, content map, pattern space, or strategy graph, use `references/visual-intelligence-map-workspaces.md`. The key lesson: the map is the product and the table is supporting evidence. Use subtabs/disclosure to keep the default screen calm, visual, and single-purpose instead of cramming map, table, inspector, legend, workflow row, and secondary modules into one viewport.
+
+## Visual Content Intelligence Maps
+
+When Jared is building a content research, lead intelligence, JEV scoring, or pattern-discovery interface, do not default to a table-first dashboard. The visual map is often the product; tables are evidence.
+
+Use a calm workspace shell: left sidebar, top search/header, light grey background, large white canvas, one clear title, one primary action, and details on click. If a screen starts to show workflow steps, legends, inspectors, raw evidence, KPI cards, and tables at once, split it into subtabs or disclosures.
+
+Default tab pattern for content intelligence systems:
+
+- Map: only the visual map and minimal controls.
+- Patterns: message library and angle cards.
+- Post Detail: selected item and model detail.
+- Evidence: source table.
+- Leads: later-stage lead scoring.
+
+For Instagram/content pattern systems, prefer a 2D map where X = replicability and Y = outbound or commercial value. Render each post as a content object, not a plain dot or row. Encode angle, confidence, retained state, review state, and similarity visually. Always stress test with 10, 25, and 50 items before calling the design scalable.
+
+Detailed pattern reference: `references/visual-content-intelligence-map.md`.
+
+### Content intelligence maps for Jared
+
+When Jared is building an AI content research, JEV scoring, Instagram-to-message-library, or content-to-lead system, do not default to a table-first dashboard. The visual map is the product.
+
+Required pattern:
+
+- Instagram/content posts become visible nodes or mini tiles, not just rows.
+- Lead with a 2D spatial map before KPI cards and tables.
+- Use meaningful axes, usually `Replicability` on X and `Outbound Angle Value` on Y.
+- Colour nodes by JEV message angle.
+- Size nodes by engagement or content strength.
+- Use border, glow, opacity, or motion to show confidence, retained status, and manual review.
+- Clicking a node opens an intelligence panel with hook, snippet, scores, confidence, and suggested outbound use.
+- Move tables below the map as supporting evidence.
+- If Jared says the page is confusing or too busy, subtract rather than add: use subtabs, hide details until click, and make the default map view do one job.
+- For LottieFiles-style workspace references, prefer a calm light shell, soft grey background, white canvas, simple left nav, sparse controls, and details on click.
+- Do not polish LinkedIn/Apollo lead scoring UI until the Instagram content map and message library are compelling.
+
+Reference: `references/instagram-content-intelligence-map.md` contains the detailed pattern, visual encoding, subtabs, and busy-layout corrections.
+
 ## Motion
 
 Use motion as discipline, not theater.

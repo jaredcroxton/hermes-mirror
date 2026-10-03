@@ -21,6 +21,8 @@ This is the master skill. Every lead dashboard request starts here. This skill h
 
 Load this skill first. If the request is for one named brand, brand-specific outreach, Gmail drafts, calendar focus blocks, or individual LinkedIn decision-makers, switch to `branded-lead-dashboard` as the execution skill. Otherwise load `apify-google-maps-dashboard` for the scrape/enrich pipeline, then route to `html-leads-dashboard` for the final HTML build if needed.
 
+If Jared shares a reel or example about Apollo + Claude/GPT + Jev lead scoring, do not jump straight to CRM/n8n/Jev implementation. First explain the lean MVP: Apollo CSV, one offer, one ICP, scoring rubric, message-angle scoring, ranked output, then local dashboard. See `references/jev-lead-scoring-mvp.md`.
+
 Core question every dashboard must answer:
 
 > Who should Jared contact first, why now, what evidence supports it, what should he say, and where can he reach them?
@@ -299,6 +301,28 @@ Worth a quick 10-minute chat this week?
 ## PHASE FIVE — Scoring Model
 
 Transparent 100-point model. Adapt factors to the offer.
+
+### OpenRouter JEV scoring pattern
+
+When Jared wants a JEV-style lead scoring system inspired by Instagram/LinkedIn workflows, use the two-stage pattern in `references/openrouter-jev-instagram-linkedin-scoring.md`.
+
+Default order:
+1. Analyse Instagram content first to create a message library.
+2. Score LinkedIn or Apollo leads against that message library second.
+3. Use OpenRouter Decisions API at `POST https://openrouter.ai/api/alpha/decisions` with `typesafe/jev-1.13`.
+4. Keep JEV as the decision engine only. Use a generative model later for readable copy.
+
+Pitfall: do not start with the dashboard or the lead list. Without the Instagram message library, the lead scoring will produce generic outreach.
+
+Transparent 100-point model. Adapt factors to the offer.
+
+### Optional JEV scoring engine
+
+When Jared asks to use JEV, TypeSafe AI, System One models, or wants an Instagram-style lead ranking system, use JEV for structured lead decisions and use a generative model only after JEV for copywriting. See `references/jev-lead-scoring.md` for the standard JEV state design, Score / Choice / Noul question set, score normalisation, confidence gates, and implementation pitfalls.
+
+Key rule: JEV scores, classifies, and chooses the outreach angle. It does not write LinkedIn or email copy. Do not add n8n, CRM syncing, or automated sending until the scored CSV has proved useful.
+
+
 
 ### Default factors (customise per build)
 
