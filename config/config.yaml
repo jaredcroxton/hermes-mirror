@@ -1,5 +1,5 @@
-EMAIL_ADDRESS: REDACTED
-EMAIL_ALLOWED_USERS: REDACTED
+EMAIL_ADDRESS: jaredcroxton@gmail.com
+EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
 EMAIL_PASSWORD: REDACTED
 _config_version: 30
 agent:
@@ -29,76 +29,76 @@ approvals:
   timeout: 60
 auxiliary:
   approval:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   background_review:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 120
   compression:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 120
   curator:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 600
   image_gen:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     model: ''
     provider: auto
     timeout: 120
   kanban_decomposer:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 180
   mcp:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   monitor:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 60
   profile_describer:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 60
   skills_hub:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   title_generation:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     language: ''
@@ -106,21 +106,21 @@ auxiliary:
     provider: auto
     timeout: 30
   triage_specifier:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 120
   tts_audio_tags:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   vision:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     download_timeout: 30
     extra_body: {}
@@ -128,7 +128,7 @@ auxiliary:
     provider: auto
     timeout: 120
   web_extract:
-    api_key: REDACTED
+    api_key: ''
     base_url: ''
     extra_body: {}
     model: ''
@@ -231,19 +231,19 @@ curator:
   stale_after_days: 30
 dashboard:
   basic_auth:
-    password: REDACTED
-    password_hash: REDACTED
-    secret: REDACTED
+    password: ''
+    password_hash: ''
+    secret: ''
     session_ttl_seconds: 0
     username: ''
   oauth:
     client_id: ''
     portal_url: ''
   public_url: ''
-  show_token_analytics: REDACTED
+  show_token_analytics: false
   theme: default
 delegation:
-  api_key: REDACTED
+  api_key: ''
   api_mode: ''
   base_url: ''
   child_timeout_seconds: 600
