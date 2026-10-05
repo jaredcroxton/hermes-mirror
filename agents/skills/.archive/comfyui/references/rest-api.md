@@ -289,7 +289,7 @@ curl -X POST "http://127.0.0.1:8188/manager/queue/install_model" \
   },
   "client_id": "unique-uuid-for-ws-filtering",
   "extra_data": {
-    "api_key_comfy_org": "optional-PARTNER-NODE-key (NOT the cloud auth key)"
+    "api_key_comfy_org": "REDACTED"
   }
 }
 ```

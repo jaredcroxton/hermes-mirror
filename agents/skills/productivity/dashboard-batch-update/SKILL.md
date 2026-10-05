@@ -188,6 +188,7 @@ After scraping GitHub trending, check HN and Product Hunt for the same repos:
 ## References
 
 - `references/github-trending-dashboard.md` — session-specific details for the GitHub trending dashboard: file paths, batch history, scrape notes for GitHub/HN/PH, and HTML anchor patterns for patching.
+- `references/github-trending-20261005.md` — concrete Firecrawl MCP run notes: JSON wrapper parsing, signal-tab dashboard shape, generator alignment, and verification checks from the 05 October 2026 batch.
 
 ## Pitfalls
 
@@ -203,5 +204,9 @@ After scraping GitHub trending, check HN and Product Hunt for the same repos:
 - **Product Hunt may block the homepage but allow `/posts` with a simple user agent.** If `https://www.producthunt.com` returns Cloudflare/403, try `https://www.producthunt.com/posts` using `User-Agent: Mozilla/5.0`, then parse embedded `Post` objects for `name`, `slug`, `latestScore`, and `dailyRank` before declaring PH unavailable.
 - **`growth` and `stars` are numbers, not strings.** The sort functions (`b.growth - a.growth`) depend on numeric comparisons. `growthLabel` is the display string.
 - **HN and PH cross-reference is best-effort.** Direct repo matches on HN/PH front pages are rare. Most weeks return empty `hnRank` and `phUpvotes`. Note scraping limitations in the batch JSON metadata.
-- **GitHub trending returns up to 25 repos per page.** Firecrawl with JSON schema reliably extracts all 25. The dashboard targets the top 15.
+- **GitHub trending returns up to 25 repos per page.** Firecrawl with JSON schema reliably extracts all 25. The dashboard targets the top 15. When the user asks for the top 15 repos, preserve the GitHub Trending page order and slice the first 15 unless they explicitly ask for fastest-growing sorting.
+- **Firecrawl MCP JSON scrape returns nested tool data.** The MCP result may arrive as a JSON string containing `metadata` and `json`; extract the actual repos from `result.json.repos`, not from the top-level tool response.
+- **Signal-tab dashboards need `bucket` populated.** Some live dashboard versions still use `signal-tabs`, `currentSignal`, and `signalRepos()` instead of sort panels. In that shape, set each new top-15 repo's `bucket` to `Trending Today` (or another valid bucket) so the active default tab shows all current results rather than falling back unpredictably.
+- **Keep the generator aligned with the rendered HTML.** If `refresh_dashboard.py` exists, update its `SELECTED` block or source data as well as `dashboard.html`; otherwise a later refresh can regenerate the dashboard and discard the new batch.
+- **Verify the dashboard as a local file, not just by parsing JSON.** After patching, open `file:///Users/jc/Desktop/hermes_builds/github-ai-dashboard/dashboard.html` in the browser, check for JS console errors, and confirm the visible hero date, active batch tab, repo count, top cards, and archive controls render correctly.
 - **Use `maxAge` for Firecrawl when data freshness is less critical.** Cached scrapes are faster and use fewer credits.

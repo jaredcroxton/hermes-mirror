@@ -126,7 +126,7 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 120
     extra_body: {}
     download_timeout: 30
@@ -134,74 +134,74 @@ auxiliary:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 360
     extra_body: {}
   compression:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 120
     extra_body: {}
   skills_hub:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 30
     extra_body: {}
   approval:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 30
     extra_body: {}
   mcp:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 30
     extra_body: {}
   title_generation:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 30
     extra_body: {}
   triage_specifier:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 120
     extra_body: {}
   kanban_decomposer:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 180
     extra_body: {}
   profile_describer:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 60
     extra_body: {}
   curator:
     provider: auto
     model: ''
     base_url: ''
-    api_key: ''
+    api_key: REDACTED
     timeout: 600
     extra_body: {}
   image_gen:
-    api_key: ''
+    api_key: REDACTED
     base_url: ''
     model: ''
     provider: auto
@@ -256,7 +256,7 @@ display:
   tool_progress: all
 dashboard:
   theme: default
-  show_token_analytics: false
+  show_token_analytics: REDACTED
   oauth:
     client_id: ''
     portal_url: ''
@@ -326,7 +326,7 @@ delegation:
   model: ''
   provider: ''
   base_url: ''
-  api_key: ''
+  api_key: REDACTED
   api_mode: ''
   inherit_mcp_toolsets: true
   max_iterations: 50

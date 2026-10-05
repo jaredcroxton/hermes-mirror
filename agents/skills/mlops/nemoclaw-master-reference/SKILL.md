@@ -80,8 +80,8 @@ Custom onboarding script pattern:
 ```bash
 nemoclaw hermes create \
   --name alice \
-  --env GITHUB_TOKEN="***" \
-  --env TELEGRAM_BOT_TOKEN="***" \
+  --env GITHUB_TOKEN="REDACTED" \
+  --env TELEGRAM_BOT_TOKEN="REDACTED" \
   --policy policy.yaml
 ```
 

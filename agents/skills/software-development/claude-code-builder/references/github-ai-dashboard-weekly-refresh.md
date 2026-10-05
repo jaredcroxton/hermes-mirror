@@ -215,9 +215,21 @@ Both `repos.json` and the dashboard's inline `REPOS` array use the same field na
 
 **Dashboard HTML format:** The BATCHES object's `repos` arrays use the exact same field names as repos.json. When updating, write fresh repos.json first, then use positional-index replacement to update the `repos` array in dashboard.html for the new batch. Tab allocation is determined by JavaScript sort functions, not a separate `signal` field.
 
-Categories: AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics
+Categories must stay inside the user-approved six-category set unless Jared explicitly changes the taxonomy: AI Agents, LLMs & Foundation Models, Developer Tools & Infra, Open Source AI Models, Productivity & Automation, Data & Analytics. Do not introduce near-duplicate ad hoc labels such as Agent Safety & Quality, Knowledge & RAG, Web App Infrastructure, Agent-Native Tools, AI Infrastructure, AI Engineering Education, or Infrastructure in the weekly dashboard output.
 
 Signal values: "Trending today", "Fastest growing #N", "Most starred top N"
+
+### Missing GitHub description fallback
+
+GitHub API `description` can be empty for useful trending repos. Do not leave the dashboard card thin or blank. For any selected repo with an empty API description, fetch the README download URL and extract a one-sentence description from the first useful paragraph:
+
+```bash
+gh api repos/<owner>/<repo>/readme --jq .download_url
+curl -L -s -o /tmp/<repo>_README.md <download_url>
+python3 -c "from pathlib import Path; text=Path('/tmp/<repo>_README.md').read_text(errors='replace'); print(text[:1500])"
+```
+
+Then write a concise factual description into `SELECTED` before running `refresh_dashboard.py`. This keeps all final dashboard descriptions real without fabricating from the repo name alone.
 
 ## Archive step (mandatory)
 

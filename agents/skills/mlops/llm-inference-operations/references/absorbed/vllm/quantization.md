@@ -57,7 +57,7 @@ Test that outputs are acceptable:
 ```python
 from openai import OpenAI
 
-client = OpenAI(base_url="http://localhost:8000/v1", api_key="EMPTY")
+client = OpenAI(base_url="http://localhost:8000/v1", api_key="REDACTED")
 
 # Test complex reasoning
 response = client.chat.completions.create(
