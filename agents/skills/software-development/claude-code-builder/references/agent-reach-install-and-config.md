@@ -37,7 +37,7 @@ If `twitter-cli login` is unavailable, export cookies manually from a browser wh
 
 1. Open Developer Tools (`Command + Option + I`), Application tab → Cookies → `x.com`
 2. Copy `auth_token` and `ct0` values
-3. Export: `export TWITTER_AUTH_TOKEN="REDACTED"` and `export TWITTER_CT0="..."`
+3. Export: `export TWITTER_AUTH_TOKEN="..."` and `export TWITTER_CT0="..."`
 4. Persist in `~/.zshrc`
 
 Verify with `twitter status` — should return `ok: true`. Then `agent-reach doctor` shows X green.

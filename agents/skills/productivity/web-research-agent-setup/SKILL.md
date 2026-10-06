@@ -46,7 +46,7 @@ Use a burner account. Cookies stored at `~/.twitter-cli/.cookies` with 600 permi
 3. Copy `auth_token` (long hex string) and `ct0` (shorter hex string)
 4. Export as env vars or configure via `agent-reach configure`:
 ```bash
-export TWITTER_AUTH_TOKEN="REDACTED"
+export TWITTER_AUTH_TOKEN="paste-auth-token"
 export TWITTER_CT0="paste-ct0"
 ```
 

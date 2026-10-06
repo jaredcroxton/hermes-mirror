@@ -55,7 +55,7 @@ Tokens must be injected at the OpenShell layer as environment variables, never w
 ```bash
 nemoclaw hermes create \
   --name "$CLIENT" \
-  --env TELEGRAM_BOT_TOKEN="REDACTED" \
+  --env TELEGRAM_BOT_TOKEN="$TOKEN" \
   --env TELEGRAM_CHAT_ID="$CHAT_ID" \
   --policy client-policy.yaml
 ```

@@ -24,7 +24,7 @@ Response structure:
           "question": "Will X happen?",
           "outcomePrices": "[\"0.65\", \"0.35\"]",
           "outcomes": "[\"Yes\", \"No\"]",
-          "clobTokenIds": "REDACTED"TOKEN_YES\", \"TOKEN_NO\"]",
+          "clobTokenIds": "[\"TOKEN_YES\", \"TOKEN_NO\"]",
           "conditionId": "0xabc...",
           "volume": 500000
         }
@@ -175,8 +175,8 @@ Response:
       "condition_id": "0xabc...",
       "question": "Will X?",
       "tokens": [
-        {"token_id": "REDACTED", "outcome": "Yes", "price": 0.65},
-        {"token_id": "REDACTED", "outcome": "No", "price": 0.35}
+        {"token_id": "123...", "outcome": "Yes", "price": 0.65},
+        {"token_id": "456...", "outcome": "No", "price": 0.35}
       ],
       "active": true,
       "closed": false
