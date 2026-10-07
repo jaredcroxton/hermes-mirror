@@ -42,6 +42,14 @@ description: "Build article-ready research briefs for Jared: sourced case lists,
 - `references/australia-ai-operational-failure-cases.md` — session-derived case bank on Australian AI job cuts, backtracks, hallucinations, governance failures, and global rehiring comparators.
 - `references/anthropic-fable-5-1-pricing-claims.md` — case bank on Fable 5.1 pricing coverage, including accurate cheaper/lower-cost claims, misleading 50% cheaper drift, and the distinction between base API pricing, cache-read pricing, and effective agentic workload cost.
 - `references/chatgpt-business-daily-brief-architecture.md` — source-backed OpenAI/ChatGPT architecture notes for business daily briefs using Projects, SharePoint, Outlook, Company Knowledge, Scheduled Tasks, and custom MCP apps.
+- `references/australia-psychosocial-safety-workhopper-marketing.md` — recent Australian psychosocial safety cases, regulator actions, claims statistics, and marketing-safe positioning for Workhopper/Tortoise & Hare.
+- `references/psychosocial-safety-workhopper-marketing.md` — source-backed case bank and messaging spine for psychological safety / psychosocial hazards / construction site safety marketing, including Workhopper positioning and safe claims language.
+
+## Regulated safety / legal-risk marketing pattern
+- When researching a regulated safety, employment, or compliance topic for marketing, separate: legal/regulatory duty, claim-cost evidence, industry-specific statistics, enforcement case bank, adjacent civil cases, and safe marketing language.
+- Use official regulators and government sources first. Law firm commentary can explain significance, but do not treat it as primary proof when an official source exists.
+- Explicitly mark withdrawn, discontinued, or grey-zone cases. They are useful as evidence of regulatory scrutiny, not proof of liability.
+- For marketing copy, convert evidence into positioning without over-claiming outcomes. Prefer "helps identify", "supports monitoring", "surfaces signals", and "complements WHS systems" over guarantees like "prevents claims" or "ensures compliance".
 
 ## Pricing-claim research pattern
 - When researching model pricing claims, separate base/sticker token pricing from effective workload cost, cache reads, batch discounts, and cost-per-benchmark-task claims.
