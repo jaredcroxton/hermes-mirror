@@ -3,12 +3,10 @@ model:
   default: gpt-5.5
   provider: openai-codex
   api_key: REDACTED
-providers: {}
 fallback_providers: []
-credential_pool_strategies: {}
 toolsets:
-- hermes-cli
-- kanban
+  - hermes-cli
+  - kanban
 agent:
   max_turns: 90
   gateway_timeout: 1800
@@ -34,12 +32,7 @@ terminal:
   env_passthrough: []
   shell_init_files: []
   auto_source_bashrc: true
-  docker_image: nikolaik/python-nodejs:python3.11-nodejs20
   docker_forward_env: []
-  docker_env: {}
-  singularity_image: docker://nikolaik/python-nodejs:python3.11-nodejs20
-  modal_image: nikolaik/python-nodejs:python3.11-nodejs20
-  daytona_image: nikolaik/python-nodejs:python3.11-nodejs20
   container_cpu: 1
   container_memory: 5120
   container_disk: 51200
@@ -49,7 +42,6 @@ terminal:
   docker_extra_args: []
   docker_run_as_host_user: false
   persistent_shell: true
-  vercel_runtime: node24
 web:
   backend: ''
   search_backend: ''
@@ -128,7 +120,6 @@ auxiliary:
     base_url: ''
     api_key: REDACTED
     timeout: 120
-    extra_body: {}
     download_timeout: 30
   web_extract:
     provider: auto
@@ -143,63 +134,54 @@ auxiliary:
     base_url: ''
     api_key: REDACTED
     timeout: 120
-    extra_body: {}
   skills_hub:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 30
-    extra_body: {}
   approval:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 30
-    extra_body: {}
   mcp:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 30
-    extra_body: {}
   title_generation:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 30
-    extra_body: {}
   triage_specifier:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 120
-    extra_body: {}
   kanban_decomposer:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 180
-    extra_body: {}
   profile_describer:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 60
-    extra_body: {}
   curator:
     provider: auto
     model: ''
     base_url: ''
     api_key: REDACTED
     timeout: 600
-    extra_body: {}
   image_gen:
     api_key: REDACTED
     base_url: ''
@@ -208,7 +190,7 @@ auxiliary:
     timeout: 120
 display:
   compact: false
-  personality: kawaii
+  personality: ''
   resume_display: full
   resume_exchanges: 10
   resume_max_user_chars: 300
@@ -249,9 +231,9 @@ display:
   runtime_footer:
     enabled: false
     fields:
-    - model
-    - context_pct
-    - cwd
+      - model
+      - context_pct
+      - cwd
   copy_shortcut: auto
   tool_progress: all
 dashboard:
@@ -329,10 +311,10 @@ delegation:
   api_key: REDACTED
   api_mode: ''
   inherit_mcp_toolsets: true
-  max_iterations: 50
+  max_iterations: 250
   child_timeout_seconds: 600
   reasoning_effort: ''
-  max_concurrent_children: 3
+  max_concurrent_children: 10
   max_spawn_depth: 1
   orchestrator_enabled: true
   subagent_auto_approve: false
@@ -349,19 +331,17 @@ curator:
   enabled: true
   interval_hours: 168
   min_idle_hours: 2
-  stale_after_days: 30
-  archive_after_days: 90
+  stale_after_days: 14
+  archive_after_days: 30
   prune_builtins: true
   backup:
     enabled: true
     keep: 5
-honcho: {}
 timezone: ''
 slack:
   require_mention: true
   free_response_channels: ''
   allowed_channels: ''
-  channel_prompts: {}
 discord:
   require_mention: true
   free_response_channels: ''
@@ -371,21 +351,17 @@ discord:
   history_backfill: true
   history_backfill_limit: 50
   reactions: true
-  channel_prompts: {}
   dm_role_auth_guild: ''
   server_actions: ''
   allow_any_attachment: false
   max_attachment_bytes: 33554432
-whatsapp: {}
 telegram:
   reactions: false
-  channel_prompts: {}
   allowed_chats: ''
 mattermost:
   require_mention: true
   free_response_channels: ''
   allowed_channels: ''
-  channel_prompts: {}
 matrix:
   require_mention: true
   free_response_rooms: ''
@@ -397,34 +373,27 @@ approvals:
   mcp_reload_confirm: true
   destructive_slash_confirm: false
 command_allowlist:
-- kill process via pgrep expansion (self-termination)
-- sudo with combined-flag privilege escalation
-- delete in root path
-- overwrite project env/config via redirection
-- script execution via -e/-c flag
-- stop/restart hermes gateway (kills running agents)
-- overwrite system file via redirection
-- force kill processes
-- shell command via -c/-lc flag
-- overwrite system config
-- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
-- script execution via heredoc
-- git force push (rewrites remote history)
-- stop/restart system service
-- pipe remote content to shell
-- kill hermes/gateway process (self-termination)
-- recursive delete
-quick_commands: {}
-hooks: {}
+  - kill process via pgrep expansion (self-termination)
+  - sudo with combined-flag privilege escalation
+  - delete in root path
+  - overwrite project env/config via redirection
+  - script execution via -e/-c flag
+  - stop/restart hermes gateway (kills running agents)
+  - overwrite system file via redirection
+  - force kill processes
+  - shell command via -c/-lc flag
+  - overwrite system config
+  - start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
+  - script execution via heredoc
+  - git force push (rewrites remote history)
+  - stop/restart system service
+  - pipe remote content to shell
+  - kill hermes/gateway process (self-termination)
+  - recursive delete
 hooks_auto_accept: false
-personalities: {}
 security:
   allow_private_urls: false
   redact_secrets: REDACTED
-  tirith_enabled: true
-  tirith_path: tirith
-  tirith_timeout: 5
-  tirith_fail_open: true
   website_blocklist:
     enabled: false
     domains: []
@@ -433,7 +402,7 @@ security:
   allow_lazy_installs: true
 cron:
   wrap_response: true
-  max_parallel_jobs: null
+  max_parallel_jobs:
 kanban:
   dispatch_in_gateway: true
   dispatch_interval_seconds: 60
@@ -442,7 +411,7 @@ kanban:
   worker_log_backup_count: 1
   orchestrator_profile: default
   default_assignee: ''
-  max_in_progress_per_profile: null
+  max_in_progress_per_profile:
   auto_decompose: true
   auto_decompose_per_tick: 3
   dispatch_stale_timeout_seconds: 14400
@@ -464,8 +433,6 @@ logging:
 model_catalog:
   enabled: true
   url: https://hermes-agent.nousresearch.com/docs/api/model-catalog.json
-  ttl_hours: 1
-  providers: {}
 network:
   force_ipv4: false
 gateway:
@@ -478,7 +445,7 @@ streaming:
   transport: auto
   edit_interval: 0.8
   buffer_threshold: 24
-  cursor: " \u2589"
+  cursor: " ▉"
   fresh_final_after_seconds: 60
 sessions:
   auto_prune: false
@@ -498,12 +465,11 @@ lsp:
   wait_mode: document
   wait_timeout: 5
   install_strategy: auto
-  servers: {}
 x_search:
   model: grok-4.20-reasoning
   timeout_seconds: 180
   retries: 2
-secrets: REDACTED
+secrets:
   bitwarden:
     enabled: false
     access_token_env: REDACTED
@@ -515,42 +481,43 @@ secrets: REDACTED
 paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
 paste_collapse_char_threshold: 2000
-_config_version: 26
-EMAIL_ADDRESS: jaredcroxton@gmail.com
-EMAIL_ALLOWED_USERS: jaredcroxton@gmail.com
+_config_version: 50
+EMAIL_ADDRESS: REDACTED
+EMAIL_ALLOWED_USERS: REDACTED
 EMAIL_PASSWORD: REDACTED
 known_plugin_toolsets:
   cli:
-  - spotify
+    - spotify
 mcp_servers:
   firecrawl:
     args:
-    - -y
-    - firecrawl-mcp
+      - -y
+      - firecrawl-mcp
     command: npx
     enabled: true
     env:
       FIRECRAWL_API_KEY: REDACTED
 platform_toolsets:
   cli:
-  - browser
-  - clarify
-  - code_execution
-  - computer_use
-  - cronjob
-  - delegation
-  - file
-  - image_gen
-  - kanban
-  - memory
-  - messaging
-  - session_search
-  - skills
-  - terminal
-  - todo
-  - tts
-  - vision
-  - web
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - connections
+    - cronjob
+    - delegation
+    - file
+    - image_gen
+    - kanban
+    - memory
+    - messaging
+    - session_search
+    - skills
+    - terminal
+    - todo
+    - tts
+    - vision
+    - web
 plugins:
   disabled: []
   enabled: []

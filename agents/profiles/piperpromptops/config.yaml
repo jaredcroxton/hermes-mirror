@@ -1,4 +1,4 @@
-_config_version: 26
+_config_version: 50
 agent:
   api_max_retries: 3
   clarify_timeout: 600
@@ -26,21 +26,18 @@ auxiliary:
   approval:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   compression:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 120
   curator:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 600
@@ -53,42 +50,36 @@ auxiliary:
   kanban_decomposer:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 180
   mcp:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   profile_describer:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 60
   skills_hub:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   title_generation:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 30
   triage_specifier:
     api_key: REDACTED
     base_url: ''
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 120
@@ -96,7 +87,6 @@ auxiliary:
     api_key: REDACTED
     base_url: ''
     download_timeout: 30
-    extra_body: {}
     model: ''
     provider: auto
     timeout: 120
@@ -147,23 +137,23 @@ checkpoints:
 code_execution:
   mode: project
 command_allowlist:
-- kill process via pgrep expansion (self-termination)
-- sudo with combined-flag privilege escalation
-- delete in root path
-- overwrite project env/config via redirection
-- script execution via -e/-c flag
-- stop/restart hermes gateway (kills running agents)
-- overwrite system file via redirection
-- force kill processes
-- shell command via -c/-lc flag
-- overwrite system config
-- start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
-- script execution via heredoc
-- git force push (rewrites remote history)
-- stop/restart system service
-- pipe remote content to shell
-- kill hermes/gateway process (self-termination)
-- recursive delete
+  - kill process via pgrep expansion (self-termination)
+  - sudo with combined-flag privilege escalation
+  - delete in root path
+  - overwrite project env/config via redirection
+  - script execution via -e/-c flag
+  - stop/restart hermes gateway (kills running agents)
+  - overwrite system file via redirection
+  - force kill processes
+  - shell command via -c/-lc flag
+  - overwrite system config
+  - start gateway outside systemd (use 'systemctl --user restart hermes-gateway')
+  - script execution via heredoc
+  - git force push (rewrites remote history)
+  - stop/restart system service
+  - pipe remote content to shell
+  - kill hermes/gateway process (self-termination)
+  - recursive delete
 compression:
   abort_on_summary_failure: false
   enabled: true
@@ -174,12 +164,11 @@ compression:
   threshold: 0.5
 context:
   engine: compressor
-credential_pool_strategies: {}
 cron:
-  max_parallel_jobs: null
+  max_parallel_jobs:
   wrap_response: true
 curator:
-  archive_after_days: 90
+  archive_after_days: 30
   backup:
     enabled: true
     keep: 5
@@ -187,7 +176,7 @@ curator:
   interval_hours: 168
   min_idle_hours: 2
   prune_builtins: true
-  stale_after_days: 30
+  stale_after_days: 14
 dashboard:
   oauth:
     client_id: ''
@@ -201,8 +190,8 @@ delegation:
   base_url: ''
   child_timeout_seconds: 600
   inherit_mcp_toolsets: true
-  max_concurrent_children: 3
-  max_iterations: 50
+  max_concurrent_children: 10
+  max_iterations: 250
   max_spawn_depth: 1
   model: ''
   orchestrator_enabled: true
@@ -213,7 +202,6 @@ discord:
   allow_any_attachment: false
   allowed_channels: ''
   auto_thread: true
-  channel_prompts: {}
   dm_role_auth_guild: ''
   free_response_channels: ''
   history_backfill: true
@@ -237,7 +225,7 @@ display:
   language: en
   persistent_output: true
   persistent_output_max_lines: 200
-  personality: kawaii
+  personality: ''
   platforms:
     discord:
       streaming: false
@@ -252,9 +240,9 @@ display:
   runtime_footer:
     enabled: false
     fields:
-    - model
-    - context_pct
-    - cwd
+      - model
+      - context_pct
+      - cwd
   show_cost: false
   show_reasoning: false
   skin: default
@@ -280,8 +268,6 @@ gateway:
   trust_recent_files_seconds: 600
 goals:
   max_turns: 20
-honcho: {}
-hooks: {}
 hooks_auto_accept: false
 human_delay:
   max_ms: 2500
@@ -295,13 +281,13 @@ kanban:
   dispatch_interval_seconds: 60
   dispatch_stale_timeout_seconds: 14400
   failure_limit: 2
-  max_in_progress_per_profile: null
+  max_in_progress_per_profile:
   orchestrator_profile: default
   worker_log_backup_count: 1
   worker_log_rotate_bytes: 2097152
 known_plugin_toolsets:
   cli:
-  - spotify
+    - spotify
 logging:
   backup_count: 3
   level: INFO
@@ -312,7 +298,6 @@ logging:
 lsp:
   enabled: true
   install_strategy: auto
-  servers: {}
   wait_mode: document
   wait_timeout: 5.0
 matrix:
@@ -321,14 +306,13 @@ matrix:
   require_mention: true
 mattermost:
   allowed_channels: ''
-  channel_prompts: {}
   free_response_channels: ''
   require_mention: true
 mcp_servers:
   firecrawl:
     args:
-    - -y
-    - firecrawl-mcp
+      - -y
+      - firecrawl-mcp
     command: npx
     enabled: true
     env:
@@ -345,8 +329,6 @@ model:
   provider: openai-codex
 model_catalog:
   enabled: true
-  providers: {}
-  ttl_hours: 1
   url: https://hermes-agent.nousresearch.com/docs/api/model-catalog.json
 network:
   force_ipv4: false
@@ -361,27 +343,27 @@ openrouter:
 paste_collapse_char_threshold: 2000
 paste_collapse_threshold: 5
 paste_collapse_threshold_fallback: 5
-personalities: {}
 platform_toolsets:
   cli:
-  - browser
-  - clarify
-  - code_execution
-  - computer_use
-  - cronjob
-  - delegation
-  - file
-  - image_gen
-  - kanban
-  - memory
-  - messaging
-  - session_search
-  - skills
-  - terminal
-  - todo
-  - tts
-  - vision
-  - web
+    - browser
+    - clarify
+    - code_execution
+    - computer_use
+    - connections
+    - cronjob
+    - delegation
+    - file
+    - image_gen
+    - kanban
+    - memory
+    - messaging
+    - session_search
+    - skills
+    - terminal
+    - todo
+    - tts
+    - vision
+    - web
 plugins:
   disabled: []
   enabled: []
@@ -390,9 +372,7 @@ privacy:
   redact_pii: false
 prompt_caching:
   cache_ttl: 5m
-providers: {}
-quick_commands: {}
-secrets: REDACTED
+secrets:
   bitwarden:
     access_token_env: REDACTED
     auto_install: true
@@ -406,10 +386,6 @@ security:
   allow_lazy_installs: true
   allow_private_urls: false
   redact_secrets: REDACTED
-  tirith_enabled: true
-  tirith_fail_open: true
-  tirith_path: tirith
-  tirith_timeout: 5
   website_blocklist:
     domains: []
     enabled: false
@@ -432,12 +408,11 @@ skills:
   template_vars: true
 slack:
   allowed_channels: ''
-  channel_prompts: {}
   free_response_channels: ''
   require_mention: true
 streaming:
   buffer_threshold: 24
-  cursor: " \u2589"
+  cursor: " ▉"
   edit_interval: 0.8
   enabled: false
   fresh_final_after_seconds: 60.0
@@ -459,7 +434,6 @@ stt:
   provider: local
 telegram:
   allowed_chats: ''
-  channel_prompts: {}
   reactions: false
 terminal:
   auto_source_bashrc: true
@@ -469,22 +443,16 @@ terminal:
   container_memory: 5120
   container_persistent: true
   cwd: .
-  daytona_image: nikolaik/python-nodejs:python3.11-nodejs20
-  docker_env: {}
   docker_extra_args: []
   docker_forward_env: []
-  docker_image: nikolaik/python-nodejs:python3.11-nodejs20
   docker_mount_cwd_to_workspace: false
   docker_run_as_host_user: false
   docker_volumes: []
   env_passthrough: []
-  modal_image: nikolaik/python-nodejs:python3.11-nodejs20
   modal_mode: auto
   persistent_shell: true
   shell_init_files: []
-  singularity_image: docker://nikolaik/python-nodejs:python3.11-nodejs20
   timeout: 180
-  vercel_runtime: node24
 timezone: ''
 tool_loop_guardrails:
   hard_stop_after:
@@ -508,8 +476,8 @@ tools:
     search_default_limit: 5
     threshold_pct: 10
 toolsets:
-- hermes-cli
-- kanban
+  - hermes-cli
+  - kanban
 tts:
   edge:
     voice: en-US-GuyNeural
@@ -549,7 +517,6 @@ web:
   backend: ''
   extract_backend: ''
   search_backend: ''
-whatsapp: {}
 x_search:
   model: grok-4.20-reasoning
   retries: 2
