@@ -478,7 +478,7 @@ def test_names_hyperlinks_notes(tmp_path):
 
 def test_sheet_protection(tmp_path):
     spec = {"sheets": [{"name": "P", "rows": [["locked", "open"]],
-                        "protection": {"password": "REDACTED",
+                        "protection": {"password": "your-password",
                                        "unlock": ["B1:B1"]}}]}
     spec_path = tmp_path / "pspec.json"
     spec_path.write_text(json.dumps(spec), encoding="utf-8")

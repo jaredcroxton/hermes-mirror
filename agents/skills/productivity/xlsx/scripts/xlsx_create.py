@@ -31,7 +31,7 @@ Spec (JSON object):
           {"name": "Sales", "range": "A1:C4",
            "style": "TableStyleMedium9"}        # native Excel table
         ],
-        "protection": {"password": "REDACTED",   # NOT security --
+        "protection": {"password": "your-password",   # NOT security --
                        "unlock": ["B2:B9"]}           # see SKILL.md Pitfalls
       }
     ]

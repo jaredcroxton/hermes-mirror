@@ -19,9 +19,10 @@ The job is not to summarise the video. The job is to create usable captions that
 2. **Create visual grounding.** Make a contact sheet with `ffmpeg` at roughly one frame per second for videos. Identify the subject, setting, on-screen text, gestures, mood, and visual hook.
 3. **Transcribe when audio exists.** Use `hyperframes transcribe` so the caption or talking points reflect what is actually said, not what the frames imply.
 4. **Fact-check if asked whether it is true.** When Jared asks to verify a recorded explanation, extract claims from both the transcript and on-screen text, then verify against primary sources before giving a publish-readiness verdict. Use `references/video-explanation-fact-checking.md`.
-5. **Turn the source into usable output.** If Jared asks for talking points, give the strategic angles, plain-language soundbites, audience-specific implications, and watch-outs. Do not just summarise the post.
-6. **Draft distinct trials.** If Jared says he is testing captions, produce genuinely different angles, not tiny rewrites.
-7. **Keep the output lean.** Give the captions, talking points, or verdict. Only add a short strategic note if one version is clearly stronger.
+5. **Identify the real change or differentiation.** Separate the established concept from what is genuinely new in the clip. Do not call a long-existing capability "the next step" or imply it is novel; frame the shift around the changed architecture, workflow, handoff, or use case that the source actually supports. If the distinction is unclear and would change the caption, ask one focused question rather than inventing a product thesis.
+6. **Turn the source into usable output.** If Jared asks for talking points, give the strategic angles, plain-language soundbites, audience-specific implications, and watch-outs. Do not just summarise the post.
+7. **Draft distinct trials.** If Jared says he is testing captions, produce genuinely different angles, not tiny rewrites.
+8. **Keep the output lean.** Give the captions, talking points, or verdict. Only add a short strategic note if one version is clearly stronger.
 
 ## Jared's default social-caption style
 
@@ -76,6 +77,10 @@ hyperframes transcribe --engine auto --model base.en --language en --json -d /tm
 - When transcribing more than one video, run `hyperframes transcribe` separately for each file into distinct output directories. A multi-file call can return a single `transcript.json`, which makes it unclear which clip the transcript belongs to.
 - When Downloads contains duplicate exported files like `Video.mp4` and `Video (1).mp4`, inspect sizes and durations first, then use the clean non-duplicate filename unless the user clearly names the copy.
 - Do not over-polish into brand manifesto copy unless Jared asks for that.
+- Do not present an established capability as new just to make a stronger hook; make the hook about the actual change, such as skills becoming connected into a handoff workflow, when the clip supports that claim.
+- Do not claim that skills automatically pass work, content, or context to each other unless the demonstrated product or workflow actually does this; phrase it as a possibility or design direction when it is aspirational.
+- Avoid introducing platform names such as Hermes or OpenClaw into the caption unless they matter to the audience or the clip. They can distract people unfamiliar with them.
+- When Jared signals that a caption framing feels off or says he is unsure, do not keep polishing the same framing. Revisit the underlying claim and value proposition, then offer one simpler option.
 - Do not give ten variants when he asked for two trials.
 - Do not make the caption a literal transcript. Use the transcript to find the argument, then write the post.
 - When Jared pushes back on caption framing as too generic, stop expanding the concept and simplify the mechanics. For AI/folder/markdown explainer posts, the core mechanic is: AI only uses what enters its context window; folders organise the source material; markdown is plain text with headings the AI can parse; retrieval pulls the relevant sections into the answer. Avoid "business brain" language unless he asks for a strategic frame.

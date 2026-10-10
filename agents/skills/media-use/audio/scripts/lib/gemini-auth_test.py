@@ -23,7 +23,7 @@ spec.loader.exec_module(auth)
 
 class AuthenticationTests(unittest.TestCase):
     def setUp(self):
-        self.info = {"type": "service_account", "project_id": "account-project", "token_uri": "REDACTED"}
+        self.info = {"type": "service_account", "project_id": "account-project", "token_uri": "https://untrusted.invalid/token"}
         self.credentials = Mock(token="fixture-token")
         self.factory = Mock(return_value=self.credentials)
         self.request = Mock(return_value=object())
@@ -38,7 +38,7 @@ class AuthenticationTests(unittest.TestCase):
         patch.dict(os.environ, {"GCS_CREDS": json.dumps(self.info)}, clear=True).start()
 
     def test_scope_endpoint_and_refresh(self):
-        self.assertEqual(auth.authenticate(), {"token": "REDACTED", "project": "account-project"})
+        self.assertEqual(auth.authenticate(), {"token": "fixture-token", "project": "account-project"})
         info = self.factory.call_args.args[0]
         self.assertEqual(info["token_uri"], "https://oauth2.googleapis.com/token")
         self.assertEqual(self.factory.call_args.kwargs["scopes"], ["https://www.googleapis.com/auth/generative-language.retriever"])

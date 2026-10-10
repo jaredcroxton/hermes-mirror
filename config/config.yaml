@@ -16,7 +16,7 @@ agent:
   image_input_mode: auto
   max_turns: 90
   parallel_tool_call_guidance: true
-  reasoning_effort: xhigh
+  reasoning_effort: high
   restart_drain_timeout: 180
   service_tier: ''
   task_completion_guidance: true
@@ -397,7 +397,7 @@ memory:
   write_approval: false
 model:
   base_url: https://chatgpt.com/backend-api/codex
-  default: gpt-5.5
+  default: gpt-6-luna-900k
   provider: openai-codex
 model_catalog:
   enabled: true
