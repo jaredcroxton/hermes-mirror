@@ -605,14 +605,14 @@
     "created_by": "agent",
     "last_patched_at": "2026-10-06T23:05:31.619922+00:00",
     "last_reused_patch_generation": 0,
-    "last_used_at": "2026-10-10T23:00:19.088101+00:00",
-    "last_viewed_at": "2026-10-10T23:00:19.085528+00:00",
+    "last_used_at": "2026-10-11T23:00:11.364015+00:00",
+    "last_viewed_at": "2026-10-11T23:00:11.363290+00:00",
     "patch_count": 35,
     "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 88,
-    "view_count": 88
+    "use_count": 89,
+    "view_count": 89
   },
   "himalaya": {
     "archived_at": "2026-09-28T06:55:04.985056+00:00",
@@ -1373,15 +1373,15 @@
     "created_at": "2026-08-20T03:40:00.896496+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-10-10T12:43:23.640640+00:00",
-    "last_reused_patch_generation": 0,
-    "last_used_at": "2026-10-10T12:43:17.369698+00:00",
-    "last_viewed_at": "2026-10-10T12:43:17.368487+00:00",
+    "last_reused_patch_generation": 2,
+    "last_used_at": "2026-10-11T01:16:32.528048+00:00",
+    "last_viewed_at": "2026-10-11T01:16:32.526586+00:00",
     "patch_count": 18,
     "patch_generation": 2,
     "pinned": false,
     "state": "active",
-    "use_count": 22,
-    "view_count": 22
+    "use_count": 23,
+    "view_count": 23
   },
   "specialist-agent-deployment": {
     "archived_at": null,
