@@ -403,7 +403,7 @@ privacy:
 prompt_caching:
   cache_ttl: 5m
 secrets:
-  REDACTED
+  bitwarden:
     access_token_env: REDACTED
     auto_install: true
     cache_ttl_seconds: 300
