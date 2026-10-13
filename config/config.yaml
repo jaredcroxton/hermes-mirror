@@ -608,3 +608,8 @@ x_search:
   model: grok-4.20-reasoning
   retries: 2
   timeout_seconds: 180
+telemetry:
+  shared_metrics:
+    enabled: false
+    send: false
+    offer_version: 2
