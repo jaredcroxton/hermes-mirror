@@ -55,7 +55,7 @@ mcp_servers:
       - -y
       - <stitch-mcp-package>
     env:
-      STITCH_API_KEY: ${STITCH_API_KEY}
+      STITCH_API_KEY: REDACTED
     timeout: 180
     connect_timeout: 60
 ```
