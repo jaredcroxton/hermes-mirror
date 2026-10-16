@@ -739,14 +739,14 @@
     "created_by": "agent",
     "last_patched_at": "2026-10-06T23:05:31.619922+00:00",
     "last_reused_patch_generation": 0,
-    "last_used_at": "2026-10-15T23:00:16.611470+00:00",
-    "last_viewed_at": "2026-10-15T23:00:16.610620+00:00",
+    "last_used_at": "2026-10-16T23:01:01.668804+00:00",
+    "last_viewed_at": "2026-10-16T23:01:01.667572+00:00",
     "patch_count": 35,
     "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 93,
-    "view_count": 93
+    "use_count": 94,
+    "view_count": 94
   },
   "himalaya": {
     "archived_at": "2026-09-28T06:55:04.985056+00:00",
@@ -925,13 +925,15 @@
     "created_at": "2026-06-13T09:11:35.215315+00:00",
     "created_by": null,
     "last_patched_at": "2026-08-26T12:49:31.589650+00:00",
-    "last_used_at": "2026-10-04T23:02:45.728581+00:00",
-    "last_viewed_at": "2026-10-04T23:02:45.722824+00:00",
+    "last_reused_patch_generation": 0,
+    "last_used_at": "2026-10-16T22:58:58.069147+00:00",
+    "last_viewed_at": "2026-10-16T22:58:58.066046+00:00",
     "patch_count": 12,
+    "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 8,
-    "view_count": 8
+    "use_count": 9,
+    "view_count": 9
   },
   "llm-wiki": {
     "archived_at": "2026-09-21T06:09:28.896122+00:00",
@@ -1762,13 +1764,15 @@
     "created_at": "2026-08-17T23:10:09.425721+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-17T23:10:16.614780+00:00",
-    "last_used_at": "2026-10-03T11:48:00.276623+00:00",
-    "last_viewed_at": "2026-10-03T11:48:00.245786+00:00",
+    "last_reused_patch_generation": 0,
+    "last_used_at": "2026-10-16T22:59:30.312995+00:00",
+    "last_viewed_at": "2026-10-16T22:59:30.311406+00:00",
     "patch_count": 1,
+    "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 16,
-    "view_count": 16
+    "use_count": 17,
+    "view_count": 17
   },
   "writing-plans": {
     "archived_at": null,
