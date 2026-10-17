@@ -28,6 +28,8 @@ This umbrella covers three related editing jobs: explain technical concepts to n
 - Start with the real-world outcome, not the architecture.
 - Use analogies only where they reduce cognitive load.
 - Define unavoidable terms once, then use plain wording.
+- For a requested short explainer script, write it directly in chat. Use a spoken hook, one clear mechanism, one practical implication or caveat, and a memorable takeaway. Keep it concise, avoid dense spec lists, and do not start a video-production workflow unless the user asks to produce the video.
+- When the script explains current products or announcements, distinguish shipping hardware from announced or rolling-out software, and present vendor performance claims as claims rather than established independent results.
 
 ### Simplify training content
 - Rewrite for a day-three frontline worker or sales rep.
