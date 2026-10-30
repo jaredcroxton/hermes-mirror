@@ -37,7 +37,7 @@ mcp_servers:
       - 'firecrawl-mcp'
     enabled: true
     env:
-      FIRECRAWL_API_KEY: fc-...
+      FIRECRAWL_API_KEY: REDACTED
 ```
 
 ## Tools available
