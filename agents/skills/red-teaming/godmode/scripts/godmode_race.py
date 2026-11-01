@@ -305,7 +305,7 @@ def race_models(query, tier="standard", api_key=None, system_prompt=None,
     Args:
         query: The user's query
         tier: 'fast' (10), 'standard' (24), 'smart' (38), 'power' (49), 'ultra' (55)
-        api_key: REDACTED
+        api_key: OpenRouter API key (defaults to OPENROUTER_API_KEY env var)
         system_prompt: Optional system prompt (overrides jailbreak_system)
         max_workers: Max parallel requests (default: 10)
         timeout: Per-request timeout in seconds (default: 60)

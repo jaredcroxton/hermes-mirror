@@ -91,7 +91,7 @@ class ComfyRunner:
     def __init__(
         self,
         host: str = DEFAULT_LOCAL_HOST,
-        api_key: REDACTED
+        api_key: str | None = None,
         client_id: str | None = None,
         partner_key: str | None = None,
     ):
