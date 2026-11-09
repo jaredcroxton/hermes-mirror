@@ -130,7 +130,7 @@
     "view_count": 1
   },
   "article-research-briefs": {
-    "archived_at": null,
+    "archived_at": "2026-11-09T10:25:39.603881+00:00",
     "created_at": "2026-08-20T05:25:02.943430+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-10-06T23:18:10.861209+00:00",
@@ -138,7 +138,7 @@
     "last_viewed_at": "2026-10-06T23:03:59.555600+00:00",
     "patch_count": 10,
     "pinned": false,
-    "state": "stale",
+    "state": "archived",
     "use_count": 4,
     "view_count": 4
   },
@@ -271,14 +271,14 @@
     "created_by": null,
     "last_patched_at": "2026-06-01T11:27:35.155761+00:00",
     "last_reused_patch_generation": 0,
-    "last_used_at": "2026-11-02T06:00:45.338378+00:00",
-    "last_viewed_at": "2026-11-02T06:00:45.336386+00:00",
+    "last_used_at": "2026-11-09T06:17:33.056838+00:00",
+    "last_viewed_at": "2026-11-09T06:17:33.055114+00:00",
     "patch_count": 13,
     "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 16,
-    "view_count": 16
+    "use_count": 17,
+    "view_count": 17
   },
   "caller-id-business-listing-correction": {
     "archived_at": "2026-10-12T09:02:30.252038+00:00",
@@ -299,17 +299,17 @@
     "created_by": null,
     "last_patched_at": "2026-10-05T06:09:06.800880+00:00",
     "last_reused_patch_generation": 0,
-    "last_used_at": "2026-11-02T06:00:39.898747+00:00",
-    "last_viewed_at": "2026-11-02T06:00:39.897342+00:00",
+    "last_used_at": "2026-11-09T06:16:27.076950+00:00",
+    "last_viewed_at": "2026-11-09T06:16:27.075662+00:00",
     "patch_count": 168,
     "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 182,
-    "view_count": 156
+    "use_count": 185,
+    "view_count": 158
   },
   "claude-design": {
-    "archived_at": null,
+    "archived_at": "2026-11-09T10:25:40.394233+00:00",
     "created_at": "2026-06-03T22:05:40.415565+00:00",
     "created_by": null,
     "last_patched_at": "2026-10-03T12:34:44.390054+00:00",
@@ -317,7 +317,7 @@
     "last_viewed_at": "2026-10-05T06:00:58.833581+00:00",
     "patch_count": 15,
     "pinned": false,
-    "state": "stale",
+    "state": "archived",
     "use_count": 24,
     "view_count": 24
   },
@@ -460,14 +460,14 @@
     "created_by": "agent",
     "last_patched_at": "2026-10-12T06:18:51.351334+00:00",
     "last_reused_patch_generation": 1,
-    "last_used_at": "2026-11-02T06:00:45.435411+00:00",
-    "last_viewed_at": "2026-11-02T06:00:45.431139+00:00",
+    "last_used_at": "2026-11-09T06:16:27.824362+00:00",
+    "last_viewed_at": "2026-11-09T06:16:27.823083+00:00",
     "patch_count": 35,
     "patch_generation": 1,
     "pinned": false,
     "state": "active",
-    "use_count": 28,
-    "view_count": 28
+    "use_count": 30,
+    "view_count": 30
   },
   "design-md": {
     "archived_at": "2026-09-07T05:05:34.468134+00:00",
@@ -714,14 +714,14 @@
     "first_seen_at": "2026-10-12T09:02:32.196659+00:00",
     "last_patched_at": null,
     "last_reused_patch_generation": 0,
-    "last_used_at": "2026-10-16T23:03:50.361903+00:00",
-    "last_viewed_at": "2026-10-16T23:03:50.357993+00:00",
+    "last_used_at": "2026-11-09T06:16:18.373288+00:00",
+    "last_viewed_at": "2026-11-09T06:16:18.371577+00:00",
     "patch_count": 0,
     "patch_generation": 0,
     "pinned": false,
-    "state": "stale",
-    "use_count": 2,
-    "view_count": 2
+    "state": "active",
+    "use_count": 3,
+    "view_count": 3
   },
   "hermes-agent": {
     "archived_at": "2026-10-26T09:50:06.119134+00:00",
@@ -755,14 +755,14 @@
     "created_by": "agent",
     "last_patched_at": "2026-10-06T23:05:31.619922+00:00",
     "last_reused_patch_generation": 0,
-    "last_used_at": "2026-11-06T23:15:47.985430+00:00",
-    "last_viewed_at": "2026-11-06T23:15:47.983628+00:00",
+    "last_used_at": "2026-11-09T23:00:37.001534+00:00",
+    "last_viewed_at": "2026-11-09T23:00:36.998811+00:00",
     "patch_count": 35,
     "patch_generation": 0,
     "pinned": false,
     "state": "active",
-    "use_count": 113,
-    "view_count": 113
+    "use_count": 115,
+    "view_count": 115
   },
   "himalaya": {
     "archived_at": "2026-09-28T06:55:04.985056+00:00",
@@ -965,7 +965,7 @@
     "view_count": 1
   },
   "local-dashboard-access": {
-    "archived_at": null,
+    "archived_at": "2026-11-09T10:25:41.611372+00:00",
     "created_at": "2026-05-30T02:14:15.188284+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-06-13T13:37:21.749796+00:00",
@@ -973,7 +973,7 @@
     "last_viewed_at": "2026-10-05T01:21:04.248582+00:00",
     "patch_count": 14,
     "pinned": false,
-    "state": "stale",
+    "state": "archived",
     "use_count": 20,
     "view_count": 20
   },
@@ -1311,7 +1311,7 @@
     "view_count": 47
   },
   "performos-agent-package": {
-    "archived_at": null,
+    "archived_at": "2026-11-09T10:25:42.519909+00:00",
     "created_at": "2026-05-29T12:23:21.077125+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-08-22T05:36:26.755167+00:00",
@@ -1319,7 +1319,7 @@
     "last_viewed_at": "2026-10-04T23:33:54.132352+00:00",
     "patch_count": 107,
     "pinned": false,
-    "state": "stale",
+    "state": "archived",
     "use_count": 75,
     "view_count": 75
   },
@@ -1525,7 +1525,7 @@
     "view_count": 3
   },
   "saas-connector-architecture": {
-    "archived_at": null,
+    "archived_at": "2026-11-09T10:25:43.783435+00:00",
     "created_at": "2026-10-05T01:25:00.128222+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-10-05T01:25:28.493104+00:00",
@@ -1533,7 +1533,7 @@
     "last_viewed_at": null,
     "patch_count": 1,
     "pinned": false,
-    "state": "stale",
+    "state": "archived",
     "use_count": 0,
     "view_count": 0
   },
